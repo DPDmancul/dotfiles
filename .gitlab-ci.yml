@@ -1,0 +1,30 @@
+image: iquiw/alpine-emacs
+before_script:
+  - apk update && apk add make
+
+stages:
+  - test
+  - publish
+
+test:
+  script:
+  - make test
+
+.publish: &publish
+  script:
+  - make publish
+  artifacts:
+    paths:
+    - public
+
+pages:
+  stage: publish
+  <<: *publish
+  only:
+  - main
+
+pages:test:
+  stage: publish
+  <<: *publish
+  except:
+  - main

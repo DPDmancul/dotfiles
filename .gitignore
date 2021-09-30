@@ -1,0 +1,7 @@
+.cache/
+.timestamps/
+*.elc
+
+public/
+
+sitemap.org

@@ -1,0 +1,26 @@
+#+TITLE: dotfiles
+#+AUTHOR: Davide Peressoni
+#+KEYWORDS: dotfiles config orgmode
+#+EXPORT_FILE_NAME: index
+#+LANG: en
+
+Inspired by [[https://writepermission.com/introducing-literate-dotfiles.html][Toon Claes]], these dotfiles are managed by [[https://orgmode.org][OrgMode]] literate programming.
+
+View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
+
+* Usage
+Just run ~make~ to update all dotfiles. ~make publish~ will generate the HTML for these dotfiles.
+
+*Warning* read the dotfiles before apply them!
+
+* Index
++ [ ] Desktop environment / Window manager
++ [ ] Doom Emacs
++ [X] [[file:git.org][git]]
++ [ ] Locale
++ [ ] Profile (most environment variables)
++ [ ] SSH (not sure about this one)
++ [ ] X11 (Window System)
++ [ ] ZSH (shell)
+
+#  LocalWords:  dotfiles
