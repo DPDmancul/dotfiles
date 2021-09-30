@@ -12,7 +12,9 @@ Inspired by [[https://writepermission.com/introducing-literate-dotfiles.html][To
 View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 
 * Usage
-Just run ~make~ to update all dotfiles. ~make publish~ will generate the HTML for these dotfiles.
+
+1. Clone the repo [[https://gitlab.com/DPDmancul/dotfiles.git]]
+2. Just run ~make~ to update all dotfiles; ~make publish~ will generate the HTML for these dotfiles.
 
 *Warning* read the dotfiles before apply them!
 
