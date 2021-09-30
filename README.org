@@ -4,6 +4,9 @@
 #+EXPORT_FILE_NAME: index
 #+LANG: en
 
+#+ATTR_HTML: :width 200px
+[[file:img/icon.png]]
+
 Inspired by [[https://writepermission.com/introducing-literate-dotfiles.html][Toon Claes]], these dotfiles are managed by [[https://orgmode.org][OrgMode]] literate programming.
 
 View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
