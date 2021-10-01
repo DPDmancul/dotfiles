@@ -1,0 +1,66 @@
+#+TITLE: SSH configuration
+#+AUTHOR: Davide Peressoni
+#+KEYWORDS: ssh config
+
+* SSH config
+:PROPERTIES:
+:header-args: :tangle ~/.ssh/config
+:header-args+: :mkdirp yes
+:END:
+
+** Hosts
+
+*** Git remotes
+
+Login to git remotes using keys, instead of writing the password each time.
+
+#+begin_src conf-space
+Host gitlab.com
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/dpd-GitLab
+  User git
+
+Host github.com
+  Preferredauthentications publickey
+  IdentityFile ~/.ssh/dpd-GitHub
+  User git
+#+end_src
+
+*** AUR
+
+#+begin_src conf-space
+Host aur.archlinux.org
+  IdentityFile ~/.ssh/aur
+  User aur
+#+end_src
+
+*** UniPD DEI
+
+To log in to remote machines of the Department of Information Engineering at the University of Padua you have to pass through a login server. I set this as a proxy so I don't have to log in twice each time and I can use =scp= without making a temp copy on the login server.
+
+#+begin_src conf-space
+Host dei
+  Hostname login.dei.unipd.it
+  IdentityFile ~/.ssh/DEI
+  User peressonid
+
+Host capri
+  ProxyCommand ssh dei -W %h:%p
+  Hostname capri.dei.unipd.it
+  IdentityFile ~/.ssh/DEI
+  User p1045u27
+
+Host cloudveneto
+  ProxyCommand ssh dei -W %h:%p
+  Hostname 147.162.226.106
+  IdentityFile ~/.ssh/DEI
+  User group11
+  Port 2222
+#+end_src
+
+
+* Private keys
+
+What?
+
+You must *never share private keys*!!!

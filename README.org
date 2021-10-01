@@ -24,7 +24,7 @@ View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 + [X] [[file:git.org][git]]
 + [ ] Locale
 + [ ] Profile (most environment variables)
-+ [ ] SSH (not sure about this one)
++ [X] [[file:ssh.org][SSH]]
 + [ ] X11 (Window System)
 + [ ] ZSH (shell)
 
