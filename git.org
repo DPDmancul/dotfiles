@@ -114,13 +114,24 @@ It is an awesome feature that helps you to resolve the same conflicts over and o
 #+END_SRC
 
 ** Diff
-*** Emacs diff tool
 
-Use emacs(client) as a difftool.
+*** Delta
 
-#+begin_src conf
-# [difftool "ediffclient"]
-#   cmd = emacsclient --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+Delta enhance your git diff output by adding some cool features like syntax highlighting, line numbering, and side-by-side view.
+
+#+begin_src conf :tangle ~/.config/git/config :mkdirp yes
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only --features=interactive
+[delta]
+  side-by-side = true
+  # syntax-theme = Nord
+#+end_src
+
+To choose a theme run:
+#+begin_src sh :tangle no
+delta --list-syntax-themes
 #+end_src
 
 *** Better OrgMode diff

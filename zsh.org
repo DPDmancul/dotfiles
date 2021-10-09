@@ -1,0 +1,233 @@
+#+TITLE:      Z shell configuration
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   zsh zshell shell config
+#+PROPERTY:   header-args :tangle "~/.zshrc" :mkdirp yes
+
+* Locale
+
+#+begin_src sh
+export LANG=it_IT.utf8
+#+end_src
+
+* oh-my-zsh
+
+I use the oh-my-zsh framework for managing Zsh configuration
+
+#+begin_src sh
+export ZSH=/usr/share/oh-my-zsh/
+#+end_src
+
+** Plugins
+
+For more info: [[https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins-Overview][Official wiki]]
+
++ =colored-man-pages= :: Colors less and man
++ =command-not-found= :: Suggests packages for that command
++ =common-aliases= :: Helpful shortcut aliases for many commonly used commands
++ =compleat= :: Completes command arguments
++ =history-substring-search= :: Search history with substrings
++ =safe-paste= :: Do not execute after pasting a return
++ =urltools= :: ~urlencode~, ~urldecode~
++ =vi-mode= :: Go evil also in Zsh
++ Rust ::
+  * =cargo= :: Add completion for Cargo
+  * =rust= :: Add completion for rustc
+  * =rustup= :: Add completion for rustup
+
+#+begin_src sh
+plugins=(
+  colored-man-pages
+  command-not-found
+  common-aliases
+  compleat
+  history-substring-search
+  safe-paste
+  urltools
+  vi-mode
+
+  cargo
+  rust
+  rustup
+)
+#+end_src
+
+Highlight Zsh syntax
+
+#+begin_src sh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#+end_src
+
+** COMMENT Theme
+
+#+begin_src sh
+ZSH_THEME="spaceship"
+#+end_src
+
+** Load oh-my-zsh
+
+#+begin_src sh
+source $ZSH/oh-my-zsh.sh
+#+end_src
+
+* History
+
+ + =append_history= :: Append instead of replacing history file.
+ + =extended_history= :: Save commands with timestamp and duration.
+ + =inc_append_history= :: Add history lines incrementally (as soon as
+      they are entered).
+
+#+BEGIN_SRC sh
+setopt append_history
+unsetopt extended_history
+setopt inc_append_history
+#+END_SRC
+
+* Completion
+
+Autocompletion of command line switches for aliases.
+
+#+BEGIN_SRC sh
+setopt complete_aliases
+#+END_SRC
+
+automatically find new executables in path
+
+#+begin_src sh
+zstyle ':completion:*' rehash true
+#+end_src
+
+Speed up completions
+
+#+begin_src sh
+zstyle ':completion:*' accept-exact '*(N)'
+#+end_src
+
+*** Autosuggestion
+
+#+begin_src sh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=1000
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+#+end_src
+
+* Aliases
+
+#+BEGIN_SRC sh
+alias df='df -h' # Human-readable sizes
+alias free='free -m' # Show sizes in MB
+alias gitu='git add . && git commit && git push'
+#+END_SRC
+
+* Options
++ =correct= :: Auto correct mistakes
++ =extendedglob= :: Extended globbing. Allows using regular expressions with *
++ =nocaseglob= :: Case insensitive globbing
++ =rcexpandparam= :: Array expension with parameters
++ =nocheckjobs= :: Don't warn about running processes when exiting
++ =numericglobsort= :: Sort filenames numerically when it makes sense
++ =nobeep= :: No beep
++ =autocd= :: if only directory path is entered, cd there
++ =prompt_subst= :: enable substitution for prompt
+
+#+begin_src sh
+setopt correct
+setopt extendedglob
+setopt nocaseglob
+setopt rcexpandparam
+setopt nocheckjobs
+setopt numericglobsort
+setopt nobeep
+setopt autocd
+setopt prompt_subst
+#+end_src
+
+Don't consider certain characters part of the word
+
+#+begin_src sh
+WORDCHARS=${WORDCHARS//\/[&.;]}
+#+end_src
+
+* Prompt
+
+** Welcome prompt
+
+Print a greeting message when shell is started
+
+#+NAME: welcome
+#+begin_src sh
+echo -e "$fg[green]$USER@$HOST$fg[yellow] $(uname -srm) $fg[cyan]$(lsb_release -rcs)"
+#+end_src
+
+** Starship
+I use starship to manage the prompt.
+
+#+begin_src sh
+eval "$(starship init zsh)"
+#+end_src
+
+*** Configuration
+:PROPERTIES:
+:header-args: :tangle "~/.config/starship.toml" :mkdirp yes
+:END:
+
+**** Prompt format
+
+# ╭─$directory$all▓▒░
+
+#+begin_src toml
+format="╭─$all╰─$character"
+right_format="$status"
+#+end_src
+
+**** Directory
+
+Replace =~= with an emoji.
+
+#+begin_src toml
+[directory]
+home_symbol = "🏠" # Nerd font variant: 
+#+end_src
+
+**** Show status
+
+Display status of previous failed command with a symbol and a small description.
+
+# format = '[]($style)[ $symbol $common_meaning$signal_name$maybe_int ](white bg:red)[]($style)'
+
+#+begin_src toml
+[status]
+disabled = false
+map_symbol = true
+#+end_src
+
+* Rust tools
+
+Use Rust modern tools.
+
+Taken from: [[https://www.mahmoudashraf.dev/blog/my-terminal-became-more-rusty/]]
+
+** Exa
+
+Exa is an implementation of ls command but with colors and icons and it renders very fast.
+
+#+begin_src sh
+if [ "$(command -v exa)" ]; then
+    unalias -m 'll'
+    unalias -m 'l'
+    unalias -m 'la'
+    unalias -m 'ls'
+    alias ls='exa -G  --color auto --icons -a -s type'
+    alias ll='exa -l --color always --icons -a -s type'
+fi
+#+end_src
+
+** Bat
+
+Bat is an implementation for cat command but with syntax highlighted.
+
+#+begin_src sh
+if [ "$(command -v bat)" ]; then
+  unalias -m 'cat'
+  alias cat='bat' # -pp --theme="Nord"'
+fi
+#+end_src

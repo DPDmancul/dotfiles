@@ -26,6 +26,6 @@ View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 + [ ] Profile (most environment variables)
 + [X] [[file:ssh.org][SSH]]
 + [ ] X11 (Window System)
-+ [ ] ZSH (shell)
++ [X] [[file:zsh.org][ZSH]] (shell)
 
 #  LocalWords:  dotfiles
