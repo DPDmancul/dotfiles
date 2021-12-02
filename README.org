@@ -21,11 +21,14 @@ View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 * Index
 + [ ] Desktop environment / Window manager
 + [ ] Doom Emacs
++ [ ] fcitx (Input method)
++ [ ] Firefox
 + [X] [[file:git.org][git]]
 + [ ] Locale
++ [ ] Neovim
 + [ ] Profile (most environment variables)
 + [X] [[file:ssh.org][SSH]]
-+ [ ] X11 (Window System)
++ [X] [[file:wezterm.org][WezTerm]] (terminal emulator)
 + [X] [[file:zsh.org][ZSH]] (shell)
 
 #  LocalWords:  dotfiles

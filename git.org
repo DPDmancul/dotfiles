@@ -103,7 +103,7 @@ When pulling only update the current branch by fast-forwarding.
   ff = only
 #+end_src
 
-** Rerere
+** COMMENT Rerere
 
 git-rerere stands for: Reuse recorded resolution of conflicted merges.
 It is an awesome feature that helps you to resolve the same conflicts over and over again.
@@ -126,7 +126,7 @@ Delta enhance your git diff output by adding some cool features like syntax high
   diffFilter = delta --color-only --features=interactive
 [delta]
   side-by-side = true
-  # syntax-theme = Nord
+  syntax-theme = gruvbox-light
 #+end_src
 
 To choose a theme run:

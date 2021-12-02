@@ -13,7 +13,7 @@
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
   (package-refresh-contents))
-(dolist (pkg '(org-plus-contrib htmlize))
+(dolist (pkg '(org-plus-contrib htmlize toml-mode lua-mode))
   (unless (package-installed-p pkg)
     (package-install pkg)))
 

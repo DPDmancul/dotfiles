@@ -118,6 +118,14 @@ alias free='free -m' # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 #+END_SRC
 
+Use the ssh wrapper of kitty when using kitty terminal
+
+#+BEGIN_SRC sh
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh="kitty +kitten ssh"
+fi
+#+END_SRC
+
 * Options
 + =correct= :: Auto correct mistakes
 + =extendedglob= :: Extended globbing. Allows using regular expressions with *
@@ -136,7 +144,6 @@ setopt nocaseglob
 setopt rcexpandparam
 setopt nocheckjobs
 setopt numericglobsort
-setopt nobeep
 setopt autocd
 setopt prompt_subst
 #+end_src
@@ -175,7 +182,7 @@ eval "$(starship init zsh)"
 # ╭─$directory$all▓▒░
 
 #+begin_src toml
-format="╭─$all╰─$character"
+format="╭─$all╰─$jobs$character"
 right_format="$status"
 #+end_src
 
@@ -228,6 +235,7 @@ Bat is an implementation for cat command but with syntax highlighted.
 #+begin_src sh
 if [ "$(command -v bat)" ]; then
   unalias -m 'cat'
-  alias cat='bat' # -pp --theme="Nord"'
+  alias cat='bat'
+  export BAT_THEME="gruvbox-light"
 fi
 #+end_src

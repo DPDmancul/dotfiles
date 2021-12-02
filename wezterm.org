@@ -1,0 +1,169 @@
+#+TITLE:      Wezterm
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   wezterm terminal config
+#+PROPERTY:   header-args :tangle "~/.config/wezterm/wezterm.lua" :mkdirp yes
+
+#+begin_src lua
+local wezterm = require 'wezterm';
+local config = {};
+#+end_src
+
+See [[https://wezfurlong.org/wezterm/config/][Official doc]].
+
+* Appearance
+
+** Font
+
+#+begin_src lua
+config.font = wezterm.font("Hasklig", {weight="Light"})
+config.font_size = 10.0
+#+end_src
+
+** Colors
+
+#+begin_src lua
+config.color_scheme = "Gruvbox Light"
+#+end_src
+
+*** Tab bar
+
+Use the same color scheme for tab bar.
+
+#+begin_src lua
+local colors = {
+  foreground = "#282828",
+  background = "#fbf1c7",
+  selection_bg = "#d5c4a1",
+  selection_fg = "#665c54"
+}
+config.colors = {
+  tab_bar = {
+    background = colors.selection_bg,
+    active_tab = {
+      bg_color = colors.background,
+      fg_color = colors.foreground,
+    },
+    inactive_tab = {
+      bg_color = colors.selection_bg,
+      fg_color = colors.selection_fg,
+    },
+    inactive_tab_hover = {
+      bg_color = colors.selection_bg,
+      fg_color = colors.foreground,
+    }
+  }
+}
+config.colors.tab_bar.new_tab = config.colors.tab_bar.inactive_tab
+config.colors.tab_bar.new_tab_hover = config.colors.tab_bar.inactive_tab_hover
+#+end_src
+
+*** COMMENT Background
+
+#+begin_src lua
+config.window_background_gradient = {
+  orientation = "Vertical",
+  colors = {
+    "#0f0c29",
+    "#302b63",
+    "#24243e"
+  }
+}
+#+end_src
+
+** Tab bar
+
+Hide if there is only one tab.
+
+#+begin_src lua
+config.hide_tab_bar_if_only_one_tab = true
+#+end_src
+
+** TODO Visual bell
+
+It works in nightly builds only 🙁
+
+#+begin_src lua
+config.visual_bell = {
+  fade_in_function = "EaseIn",
+  fade_in_duration_ms = 150,
+  fade_out_function = "EaseOut",
+  fade_out_duration_ms = 150,
+}
+config.colors.visual_bell = "#202020"
+#+end_src
+
+* Keybinds
+
+Use more common key binds:
+
+
+#+begin_src lua
+config.keys = {
+#+end_src
+
+** Window
+
+#+begin_src lua
+{key="q", mods="CTRL|SHIFT", action="QuitApplication"},
+{key="F11", action="ToggleFullScreen"},
+#+end_src
+
+** Tab bar
+
+#+begin_src lua
+{key="w", mods="CTRL|SHIFT", action=wezterm.action{CloseCurrentTab={confirm=true}}},
+{key="1", mods="ALT", action=wezterm.action{ActivateTab=0}},
+{key="2", mods="ALT", action=wezterm.action{ActivateTab=1}},
+{key="3", mods="ALT", action=wezterm.action{ActivateTab=2}},
+{key="4", mods="ALT", action=wezterm.action{ActivateTab=3}},
+{key="5", mods="ALT", action=wezterm.action{ActivateTab=4}},
+{key="6", mods="ALT", action=wezterm.action{ActivateTab=5}},
+{key="7", mods="ALT", action=wezterm.action{ActivateTab=6}},
+{key="8", mods="ALT", action=wezterm.action{ActivateTab=7}},
+{key="9", mods="ALT", action=wezterm.action{ActivateTab=8}},
+{key="0", mods="ALT", action=wezterm.action{ActivateTab=-1}},
+{key="Tab", mods="CTRL", action=wezterm.action{ActivateTabRelative=1}},
+{key="Tab", mods="CTRL|SHIFT", action=wezterm.action{ActivateTabRelative=-1}},
+#+end_src
+
+** Split
+
+#+begin_src lua
+{key="(", mods="CTRL", action=wezterm.action{SplitHorizontal={domain="CurrentPaneDomain"}}},
+{key=")", mods="CTRL", action=wezterm.action{SplitVertical={domain="CurrentPaneDomain"}}},
+{key="F3", action=wezterm.action{CloseCurrentPane={confirm=true}}},
+#+end_src
+
+#+begin_src lua
+}
+#+end_src
+
+* Resizing
+
+Do not resize window when changing font size
+
+#+begin_src lua
+config.adjust_window_size_when_changing_font_size = false
+#+end_src
+
+* Input method
+
+Enable support for fcitx (or ibus, ...)
+
+#+begin_src lua
+config.use_ime = true
+#+end_src
+
+* Wayland
+
+Enable Wayland support
+
+#+begin_src lua
+config.enable_wayland = true
+#+end_src
+
+* Return config
+
+#+begin_src lua
+return config
+#+end_src
