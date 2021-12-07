@@ -12,8 +12,9 @@
 
 (defun literate-dotfiles-tangle (&rest files)
   "Tangle FILES or all files in the project."
-  (when (null files)
-    (setq files command-line-args-left))
-  (dolist (file files)
-    (with-current-buffer (find-file-noselect file)
-      (org-babel-tangle))))
+  (let ((org-confirm-babel-evaluate nil))
+       (when (null files)
+         (setq files command-line-args-left))
+       (dolist (file files)
+         (with-current-buffer (find-file-noselect file)
+           (org-babel-tangle)))))

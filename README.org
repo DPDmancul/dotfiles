@@ -20,10 +20,19 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 
 *Warning* read the dotfiles before apply them!
 
+** Tangle only one file
+
+~make zsh~ for example will tangle only zsh config.
+
+** Without Emacs
+
+Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?job=tangle][tangled dotfiles]] and copy them.
+
+
 * Index
 + [ ] Desktop environment / Window manager
 + [ ] Doom Emacs
-+ [ ] fcitx (Input method)
++ [X] [[file:fcitx.org][fcitx]] (Input method)
 + [ ] Firefox
 + [X] [[file:git.org][git]]
 + [ ] Locale

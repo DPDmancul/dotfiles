@@ -1,0 +1,137 @@
+#+TITLE:      fcitx
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   fcitx input method config
+#+PROPERTY:   header-args :tangle "~/.config/fcitx5/config" :mkdirp yes
+
+
+* Profile
+:PROPERTIES:
+:header-args: :tangle ~/.config/fcitx5/profile
+:header-args+: :mkdirp yes
+:END:
+
+** Physical layouts
+
+*** European
+
+#+BEGIN_SRC conf :noweb strip-export
+[Groups/0]
+Name=European
+Default Layout=eu
+DefaultIM=keyboard-eu
+
+[Groups/0/Items/0]
+Name=keyboard-eu
+
+<<logical(0)>>
+#+END_SRC
+
+*** Italian
+
+#+BEGIN_SRC conf :noweb strip-export
+[Groups/0]
+Name=Italian
+Default Layout=it
+DefaultIM=keyboard-it
+
+[Groups/1/Items/0]
+Name=keyboard-it
+
+<<logical(1)>>
+#+END_SRC
+
+** Logical layouts
+
+Greek, Japanese, Russian and International Phonetic Alphabet
+
+#+NAME: logical
+#+BEGIN_SRC elisp :tangle no :var group=0 :exports none
+(format "[Groups/%d/Items/1]
+Name=keyboard-gr
+
+[Groups/%d/Items/2]
+Name=mozc
+
+[Groups/%d/Items/3]
+Name=keyboard-ru-phonetic
+
+[Groups/%d/Items/4]
+Name=keyboard-trans"
+         group group group group)
+#+END_SRC
+
+#+BEGIN_SRC conf :noweb yes :tangle no
+<<logical()>>
+#+END_SRC
+
+** Groups order
+
+#+BEGIN_SRC conf
+[GroupOrder]
+0=European
+1=Italian
+#+END_SRC
+
+* Hotkeys
+
+#+BEGIN_SRC conf
+[Hotkey]
+EnumerateWithTriggerKeys=True
+EnumerateForwardKeys=
+EnumerateBackwardKeys=
+EnumerateSkipFirst=False
+
+[Hotkey/TriggerKeys]
+0=Alt+space
+1=Zenkaku_Hankaku
+2=Hangul
+
+[Hotkey/AltTriggerKeys]
+0=Shift_L
+
+[Hotkey/EnumerateGroupForwardKeys]
+0=Super+space
+
+[Hotkey/EnumerateGroupBackwardKeys]
+0=Shift+Super+space
+
+[Hotkey/ActivateKeys]
+0=Hangul_Hanja
+
+[Hotkey/DeactivateKeys]
+0=Hangul_Romaja
+
+[Hotkey/PrevPage]
+0=Up
+
+[Hotkey/NextPage]
+0=Down
+
+[Hotkey/PrevCandidate]
+0=Shift+Tab
+
+[Hotkey/NextCandidate]
+0=Tab
+
+[Hotkey/TogglePreedit]
+0=Control+Alt+P
+#+END_SRC
+
+* Behavior
+
+#+BEGIN_SRC conf
+[Behavior]
+ActiveByDefault=False
+ShareInputState=No
+PreeditEnabledByDefault=True
+ShowInputMethodInformation=True
+showInputMethodInformationWhenFocusIn=False
+CompactInputMethodInformation=True
+ShowFirstInputMethodInformation=True
+DefaultPageSize=5
+EnabledAddons=
+DisabledAddons=
+PreloadInputMethod=True
+#+END_SRC
+
+

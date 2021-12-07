@@ -88,7 +88,9 @@ INFO is a plist used as a communication channel."
         (org-html-validation-link           nil)
         (org-html-doctype                   "html5")
         (org-html-htmlize-output-type       'css)
-        (org-export-headline-levels 6))
+        (org-export-headline-levels 6)
+        (org-confirm-babel-evaluate nil))
+
     (org-publish-all)))
 
 ;;; publish.el ends here
