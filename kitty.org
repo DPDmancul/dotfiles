@@ -1,0 +1,83 @@
+#+TITLE:      Kitty
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   kitty terminal config
+#+PROPERTY:   header-args :tangle "~/.config/kitty/kitty.conf" :mkdirp yes
+
+* Appearance
+
+** Font
+
+#+BEGIN_SRC conf
+font_family      firacode nerd font
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+
+font_size 10.0
+#+END_SRC
+
+Do not use curly style for urls
+
+#+BEGIN_SRC conf
+url_style single
+#+END_SRC
+
+** Colors
+
+Gruvbox light
+
+#+BEGIN_SRC conf
+cursor                  #928374
+background              #fbf1c7
+foreground              #282828
+selection_foreground    #665c54
+selection_background    #d5c4a1
+# white
+color0                  #fbf1c7
+color8                  #9d8374
+# red
+color1                  #cc241d
+color9                  #9d0006
+# green
+color2                  #98971a
+color10                 #79740e
+# yellow
+color3                  #d79921
+color11                 #b57614
+# blue
+color4                  #458588
+color12                 #076678
+# purple
+color5                  #b16286
+color13                 #8f3f71
+# aqua
+color6                  #689d6a
+color14                 #427b58
+# black
+color7                  #7c6f64
+color15                 #3c3836
+#+END_SRC
+
+*** Tabs
+
+#+BEGIN_SRC conf
+active_tab_background #fbf1c7
+inactive_tab_background #d5c4a1
+tab_bar_background none
+#+END_SRC
+
+*** Title bar
+
+Automatically match title bar color on Wayland
+
+#+BEGIN_SRC conf
+wayland_titlebar_color background
+#+END_SRC
+
+** Tabs style
+
+#+BEGIN_SRC conf
+tab_bar_edge top
+tab_bar_style powerline
+tab_powerline_style slanted
+#+END_SRC

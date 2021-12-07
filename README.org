@@ -11,6 +11,8 @@ Inspired by [[https://writepermission.com/introducing-literate-dotfiles.html][To
 
 View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 
+Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?job=tangle][tangled dotfiles]].
+
 * Usage
 
 1. Clone the repo [[https://gitlab.com/DPDmancul/dotfiles.git]]
@@ -28,7 +30,7 @@ View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 + [ ] Neovim
 + [ ] Profile (most environment variables)
 + [X] [[file:ssh.org][SSH]]
-+ [X] [[file:wezterm.org][WezTerm]] (terminal emulator)
++ [X] [[file:kitty.org][Kitty]] (terminal emulator)
 + [X] [[file:zsh.org][ZSH]] (shell)
 
 #  LocalWords:  dotfiles

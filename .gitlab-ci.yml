@@ -3,12 +3,18 @@ before_script:
   - apk update && apk add make
 
 stages:
-  - test
+  - build
   - publish
 
-test:
+tangle:
+  stage: build
   script:
-  - make test
+  - sed -i 's/\(:tangle \+"\?\)~/\1tangled/g' *.org
+  - make tangle
+  artifacts:
+    paths:
+    - tangled
+
 
 .publish: &publish
   script:

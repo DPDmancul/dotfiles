@@ -12,8 +12,6 @@ EMACS.funcall = emacs --batch --no-init-file $(addprefix --load ,$(^el)) --funca
 
 all: publish tangle
 
-test: tangle
-
 publish: $(publish_el) $(orgs)
 	$(EMACS.funcall) literate-dotfiles-publish-all
 
@@ -25,7 +23,5 @@ tangle: $(basename $(orgs))
 
 %: %.org $(tangle_el)
 	$(EMACS.funcall) literate-dotfiles-tangle $<
-
-git: emacs_pkgs = gitconfig-mode gitattributes-mode gitignore-mode
 
 .PHONY: all clean
