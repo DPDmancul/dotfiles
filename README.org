@@ -36,8 +36,8 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 + [ ] Firefox
 + [X] [[file:git.org][git]]
 + [ ] Locale
-+ [ ] Neovim
-+ [ ] Profile (most environment variables)
++ [-] [[file:nvim.org][Neovim]]
++ [X] [[file:env.org][Environment variables]]
 + [X] [[file:ssh.org][SSH]]
 + [X] [[file:kitty.org][Kitty]] (terminal emulator)
 + [X] [[file:zsh.org][ZSH]] (shell)
