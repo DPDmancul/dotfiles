@@ -31,7 +31,7 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 
 * Index
 + [ ] Desktop environment / Window manager
-+ [ ] Doom Emacs
++ [X] [[https://gitlab.com/DPDmancul/doom-emacs-dotfiles][Doom Emacs]]
 + [X] [[file:fcitx.org][fcitx]] (Input method)
 + [ ] Firefox
 + [X] [[file:git.org][git]]
