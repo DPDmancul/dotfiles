@@ -1,0 +1,21 @@
+#+TITLE:      keyd
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   keyd keyboard mapping config
+#+PROPERTY:   header-args :tangle "/sudo::/etc/keyd/default.cfg" :mkdirp yes
+
+Manage key mapping config at system level (for tty, X11 and Wayland).
+
+* Better capslock
+
+Use =caps= as =esc= (one tap) or =ctrl= (long press)
+
+#+BEGIN_SRC conf
+capslock = overload(C, esc)
+#+END_SRC
+
+Just in case it could be needed remap =caps= from =right ctrl=
+
+#+BEGIN_SRC conf
+rightcontrol = overload(C, capslock)
+#+END_SRC
+

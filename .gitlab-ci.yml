@@ -10,6 +10,7 @@ tangle:
   stage: build
   script:
   - sed -i 's/\(:tangle \+"\?\)~/\1tangled/g' *.org
+  - sed -i 's/\(:tangle \+"\?\)\(\/sudo::\)\?\//\1tangled\//g' *.org
   - make tangle
   artifacts:
     paths:

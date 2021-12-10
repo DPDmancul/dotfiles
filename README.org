@@ -32,12 +32,14 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 * Index
 + [ ] Desktop environment / Window manager
 + [X] [[https://gitlab.com/DPDmancul/doom-emacs-dotfiles][Doom Emacs]]
++ [X] [[file:env.org][Environment variables]]
 + [X] [[file:fcitx.org][fcitx]] (Input method)
 + [ ] Firefox
 + [X] [[file:git.org][git]]
++ [X] [[file:keyd.org][keyd]] (keyboard mapping)
 + [ ] Locale
 + [-] [[file:nvim.org][Neovim]]
-+ [X] [[file:env.org][Environment variables]]
++ [ ] Packages
 + [X] [[file:ssh.org][SSH]]
 + [X] [[file:kitty.org][Kitty]] (terminal emulator)
 + [X] [[file:zsh.org][ZSH]] (shell)
