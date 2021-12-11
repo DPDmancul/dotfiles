@@ -166,6 +166,22 @@ Read [[https://about.gitlab.com/2018/12/10/git-protocol-v2-enabled-for-ssh-on-gi
   version = 2
 #+END_SRC
 
+** Credential helper
+
+Use Bitwarden as credential helper (see [[https://github.com/bitwarden/cli/pull/388]])
+
+#+BEGIN_SRC conf
+[credential]
+  helper = bw
+#+END_SRC
+
+Requires Bitwarden CLI and
+
+#+BEGIN_SRC sh :tangle no
+curl https://raw.githubusercontent.com/bitwarden/cli/406c340e53e9bae9309ae40de2fb9bb570b8b082/scripts/git-credential-bw.sh > ~/.local/bin/git-credential-bw
+chmod +x ~/.local/bin/git-credential-bw
+#+END_SRC
+
 ** Sendmail
 
 Configure git to send mails directly from git.
