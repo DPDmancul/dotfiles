@@ -247,7 +247,7 @@ vim.opt.whichwrap   = "b,s,h,l,<,>,[,]" -- Allow moving along lines when the sta
 vim.opt.clipboard   = "unnamedplus"     -- sync yank register with system clipboard
 #+END_SRC
 
-** Tabs
+** Indentation
 
 1. Use =editorconfig= to set indentation
 2. If not, try detect used indentation with =sleuth=
@@ -264,15 +264,20 @@ vim.opt.tabstop     = 2       -- Display 2 spaces for a tab
 vim.opt.shiftwidth  = 2       -- Use this number of spaces for indentation
 vim.opt.smartindent = true    -- Make indenting smart
 vim.opt.autoindent  = true    -- Use auto indent
-vim.opt.virtualedit = "block" -- Allow going past the end of line in visual block mode
 vim.opt.breakindent = true    -- Indent wrapped lines to match line start
 #+END_SRC
 
 ** Motion
 
+Allow going past the end of line in visual block mode
+
+#+BEGIN_SRC lua
+vim.opt.virtualedit = "block"
+#+END_SRC
+
 *** Case motion
 
-Move into CamelCase and snake_case words
+Move into CamelCase and snake\under{}case words
 
 #+BEGIN_SRC lua :tangle no :noweb-ref plugins
 use {
@@ -631,7 +636,7 @@ use {
 
 #+BEGIN_SRC lua :tangle no :noweb-ref plugins
 use {
-  "glepnir/lspsaga.nvim",
+  "tami5/lspsaga.nvim",
   require = "neovim/nvim-lspconfig",
   config = function()
     require"lspsaga".init_lsp_saga()

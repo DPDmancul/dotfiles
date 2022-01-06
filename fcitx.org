@@ -26,6 +26,10 @@ Name=keyboard-eu
 <<logical(0)>>
 #+END_SRC
 
+#+BEGIN_SRC conf :tangle no :exports none :noweb-ref groups
+0=European
+#+END_SRC
+
 *** Italian
 
 #+BEGIN_SRC conf :noweb strip-export
@@ -38,6 +42,10 @@ DefaultIM=keyboard-it
 Name=keyboard-it
 
 <<logical(1)>>
+#+END_SRC
+
+#+BEGIN_SRC conf :tangle no :exports none :noweb-ref groups
+1=Italian
 #+END_SRC
 
 ** Logical layouts
@@ -66,10 +74,9 @@ Name=keyboard-trans"
 
 ** Groups order
 
-#+BEGIN_SRC conf
+#+BEGIN_SRC conf :noweb yes
 [GroupOrder]
-0=European
-1=Italian
+<<groups>>
 #+END_SRC
 
 * Hotkeys
@@ -122,7 +129,7 @@ EnumerateSkipFirst=False
 #+BEGIN_SRC conf
 [Behavior]
 ActiveByDefault=False
-ShareInputState=No
+ShareInputState=All
 PreeditEnabledByDefault=True
 ShowInputMethodInformation=True
 showInputMethodInformationWhenFocusIn=False

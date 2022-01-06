@@ -1,9 +1,17 @@
 #+TITLE:      keyd
 #+AUTHOR:     Davide Peressoni
 #+KEYWORDS:   keyd keyboard mapping config
-#+PROPERTY:   header-args :tangle "/sudo::/etc/keyd/default.cfg" :mkdirp yes
+#+PROPERTY:   header-args :tangle "/sudo::/etc/keyd/default.conf" :mkdirp yes
 
 Manage key mapping config at system level (for tty, X11 and Wayland).
+
+#+BEGIN_SRC conf :exports none
+[ids]
+
+*
+
+[main]
+#+END_SRC
 
 * Better capslock
 

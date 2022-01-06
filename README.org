@@ -44,4 +44,10 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 + [X] [[file:kitty.org][Kitty]] (terminal emulator)
 + [X] [[file:zsh.org][ZSH]] (shell)
 
+** Old configs
+
+Old configurations of programs I use no more
+
++ [X] [[file:wezterm.org][Wezterm]] (terminal emulator)
+
 #  LocalWords:  dotfiles

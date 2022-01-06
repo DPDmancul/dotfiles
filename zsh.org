@@ -73,13 +73,14 @@ source $ZSH/oh-my-zsh.sh
 
  + =append_history= :: Append instead of replacing history file.
  + =extended_history= :: Save commands with timestamp and duration.
- + =inc_append_history= :: Add history lines incrementally (as soon as
-      they are entered).
+ + =inc_append_history= :: Add history lines incrementally (as soon as they are entered).
+ + =hist_ignore_space= :: Prevent adding commands with leading spaces to the history.
 
 #+BEGIN_SRC sh
 setopt append_history
 unsetopt extended_history
 setopt inc_append_history
+setopt hist_ignore_space
 #+END_SRC
 
 * Completion
@@ -116,6 +117,8 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
 alias df='df -h' # Human-readable sizes
 alias free='free -m' # Show sizes in MB
 alias gitu='git add . && git commit && git push'
+alias nv=nvim
+alias mk=make
 #+END_SRC
 
 Use the ssh wrapper of kitty when using kitty terminal
