@@ -1,0 +1,147 @@
+#+TITLE:      fish shell configuration
+#+AUTHOR:     Davide Peressoni
+#+KEYWORDS:   fish shell config
+#+PROPERTY:   header-args :tangle "~/.config/fish/config.fish" :mkdirp yes
+
+* Vi mode
+
+Use the same movements of vi, vim and neovim
+
+#+begin_src fish
+fish_vi_key_bindings
+#+end_src
+
+* Plugins
+
+#+BEGIN_SRC sh :exports none :tangle tangled/fisher.sh :noweb yes
+#!/bin/sh
+<<fisher>>
+#+END_SRC
+
+** Theme
+
+Use Gruvbox Light theme
+
+#+begin_src sh :tangle no :noweb-ref fisher
+fisher install tomyun/base16-fish
+#+end_src
+
+#+begin_src fish
+base16-gruvbox-light-medium
+#+end_src
+
+*** Colored manpages
+
+#+begin_src sh :tangle no :noweb-ref fisher
+fisher install decors/fish-colored-man
+#+end_src
+
+Color scheme
+
+#+begin_src fish
+set -g man_blink -o red
+set -g man_bold -o green
+set -g man_standout cyan
+set -g man_underline -o yellow
+#+end_src
+
+
+* Aliases
+
+#+BEGIN_SRC fish
+alias df 'df -h' # Human-readable sizes
+alias free 'free -m' # Show sizes in MB
+alias gitu 'git add . && git commit && git push'
+alias nv nvim
+alias mk make
+#+END_SRC
+
+Use the ssh wrapper of kitty when using kitty terminal
+
+#+BEGIN_SRC fish
+if test $TERM = "xterm-kitty"
+  alias ssh "kitty +kitten ssh"
+end
+#+END_SRC
+
+* Prompt
+
+** Welcome prompt
+
+Print a greeting message when shell is started
+
+#+NAME: welcome
+#+begin_src fish
+set fish_greeting (set_color green)$USER@(hostname)(set_color yellow) (uname -srm) (set_color cyan)(lsb_release -rcs)
+#+end_src
+
+** Starship
+I use starship to manage the prompt.
+
+#+begin_src fish
+source (/usr/bin/starship init fish --print-full-init | psub)
+#+end_src
+
+*** Configuration
+:PROPERTIES:
+:header-args: :tangle "~/.config/starship.toml" :mkdirp yes
+:END:
+
+**** Prompt format
+
+# ╭─$directory$all▓▒░
+
+#+begin_src toml
+format="╭─$all╰─$jobs$character"
+right_format="$status"
+#+end_src
+
+**** Directory
+
+Replace =~= with an emoji.
+
+#+begin_src toml
+[directory]
+home_symbol = "🏠" # Nerd font variant: 
+#+end_src
+
+**** Show status
+
+Display status of previous failed command with a symbol and a small description.
+
+# format = '[]($style)[ $symbol $common_meaning$signal_name$maybe_int ](white bg:red)[]($style)'
+
+#+begin_src toml
+[status]
+disabled = false
+map_symbol = true
+#+end_src
+
+* Rust tools
+
+Use Rust modern tools.
+
+Taken from: [[https://www.mahmoudashraf.dev/blog/my-terminal-became-more-rusty/]]
+
+** Exa
+
+Exa is an implementation of ls command but with colors and icons and it renders very fast.
+
+#+begin_src fish
+if type -q exa
+  alias ls "exa -G  --color auto --icons -a -s type"
+  alias ll "exa -l --color always --icons -a -s type"
+end
+#+end_src
+
+** Bat
+
+Bat is an implementation for cat command but with syntax highlighted.
+
+#+begin_src fish
+if type -q bat
+  alias cat bat
+  set -x BAT_THEME gruvbox-light
+end
+#+end_src
+
