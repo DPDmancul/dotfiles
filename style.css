@@ -9,4 +9,5 @@
 .org-src-container > pre.src-toml::before { content: "toml"; }
 .org-src-container > pre.src-lua::before { content: "lua"; }
 .org-src-container > pre.src-vimrc::before { content: "vim"; }
+.org-src-container > pre.src-fish::before { content: "fish"; }
 

@@ -125,7 +125,9 @@ Delta enhance your git diff output by adding some cool features like syntax high
 [interactive]
   diffFilter = delta --color-only --features=interactive
 [delta]
-  side-by-side = true
+  # side-by-side = true
+  wrap-max-lines = unlimited
+  max-line-length = 2048
   syntax-theme = gruvbox-light
 #+end_src
 

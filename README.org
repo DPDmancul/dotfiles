@@ -42,12 +42,13 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 + [ ] Packages
 + [X] [[file:ssh.org][SSH]]
 + [X] [[file:kitty.org][Kitty]] (terminal emulator)
-+ [X] [[file:zsh.org][ZSH]] (shell)
++ [X] [[file:fish.org][fish]] (shell)
 
 ** Old configs
 
 Old configurations of programs I use no more
 
 + [X] [[file:wezterm.org][Wezterm]] (terminal emulator)
++ [X] [[file:zsh.org][ZSH]] (shell)
 
 #  LocalWords:  dotfiles
