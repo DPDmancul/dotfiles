@@ -58,6 +58,24 @@ Host cloudveneto
   Port 2222
 #+end_src
 
+*** Nas
+
+#+begin_src conf-space
+Host nassuz
+  Hostname 10.10.10.10
+  IdentityFile ~/.ssh/nassuz
+  User admin
+
+Host pc3
+  Hostname 10.10.10.10
+  User cominfo
+  Port 822
+
+Host nassuz_web
+  Hostname lon1.tmate.io
+  IdentityFile ~/.ssh/nassuz
+  User cominfo/nassuz
+#+end_src
 
 * Private keys
 

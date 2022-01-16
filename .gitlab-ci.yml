@@ -27,11 +27,13 @@ tangle:
 pages:
   stage: publish
   <<: *publish
-  only:
-  - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 
 pages:test:
   stage: publish
   <<: *publish
-  except:
-  - main
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
