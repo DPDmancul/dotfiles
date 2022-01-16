@@ -28,7 +28,7 @@ INFO is a plist used as a communication channel."
 <p>
 <p class=\"Source\">Source: "
      (format "<a href=\"%s/%s\">%s</a></p>"
-             "https://gitlab.com/DPDmancul/dotfiles/blob/main"
+             "https://gitlab.com/DPDmancul/dotfiles/blob/org-mode"
              buffer buffer)
      (unless (equal buffer "README.org")
        "<p>Return to <a href=\"index.html\">index</a>.</p>"))))

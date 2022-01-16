@@ -11,7 +11,7 @@ Inspired by [[https://writepermission.com/introducing-literate-dotfiles.html][To
 
 View [[https://dpdmancul.gitlab.io/dotfiles][HTML version]].
 
-Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?job=tangle][tangled dotfiles]].
+Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/org-mode/download?job=tangle][tangled dotfiles]].
 
 * Usage
 
@@ -26,7 +26,7 @@ Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?
 
 ** Without Emacs
 
-Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/main/download?job=tangle][tangled dotfiles]] and copy them.
+Download [[https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/org-mode/download?job=tangle][tangled dotfiles]] and copy them.
 
 
 * Index
