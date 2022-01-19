@@ -9,7 +9,7 @@ tangle:
   script:
     - pwd
     - ls
-    nix-shell --run "pwd;ls;make build"
+    - nix-shell --run "pwd;ls;make build"
   cache:
     paths: [ /nix/store ]
   artifacts:
