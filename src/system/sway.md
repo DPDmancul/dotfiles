@@ -20,6 +20,10 @@ XDG_CURRENT_DESKTOP = "sway";
 
 Use waybar instead of swaybar
 
+```nix "sway_packages" +=
+waybar
+```
+
 ```nix "config" +=
 programs.waybar.enable = true;
 ```

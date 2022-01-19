@@ -3,7 +3,7 @@
 # dotfiles
 
 <center>
-  <img src="img/icon.png" />
+  <img width="200px" src="img/icon.png" />
 </center>
 
 My dotfiles for NixOs and the Nix package manager, written in literate programming.
