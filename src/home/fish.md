@@ -41,6 +41,7 @@ Use Gruvbox Light theme
 
 ```fish "fish-init" +=
 base16-gruvbox-light-medium
+set -x BAT_THEME gruvbox-light
 ```
 
 #### Colored manpages
@@ -104,13 +105,13 @@ set fish_greeting  (set_color green)$USER@(hostname)(set_color yellow) (uname -s
 
 Use starship to manage the prompt
 
-```nix "home_config" +=
+```nix "home-config" +=
 programs.starship = {
   enable = true;
-  config = {
+  settings = {
     <<<starship-config>>>
   };
-}
+};
 ```
 
 #### Configuration
