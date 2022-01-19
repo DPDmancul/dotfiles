@@ -12,8 +12,13 @@
     - [Login manager](./system/greetd.md)
   - [Users](./system/users.md)
   - [Packages](./system/packages.md)
-  - [Window Manager](./system/sway.md)
+  - [Sway (window manager)](./system/sway.md)
 
 - [Home](./home/index.md)
-  - [TODO]()
+  - [Kitty (terminal emulator)](./home/kitty.md)
+  - [Fish (shell)](./home/fish.md)
+  - [Neovim](./home/nvim.md)
+  - [Sway (window manager)](./home/sway.md)
+  - [git](./home/git.md)
+  - [SSH](./home/ssh.md)
 

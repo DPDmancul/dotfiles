@@ -29,10 +29,11 @@ VISUAL = "nvim";
 
 ### Terminal and shell
 
-Use kitty as terminal
+Use kitty as terminal with starship as prompt
 
 ```nix "packages" +=
 kitty
+starship
 ```
 
 Use fish as default shell
@@ -40,6 +41,21 @@ Use fish as default shell
 ```nix "config" +=
 programs.fish.enable = true;
 users.defaultUserShell = pkgs.fish;
+```
+
+#### Rust tools
+
+Use Rust modern tools.
+
+Taken from: <https://www.mahmoudashraf.dev/blog/my-terminal-became-more-rusty/>
+
+Bat is an implementation for cat command but with syntax highlighted.
+
+Exa is an implementation of ls command but with colors and icons and it renders very fast.
+
+```nix "packages" +=
+bat
+exa
 ```
 
 ### Internet

@@ -7,7 +7,7 @@ programs.sway = {
   enable = true;
   wrapperFeatures.gtk = true;
   extraPackages = with pkgs; [
-    <<<sway_packages>>>
+    <<<sway-packages>>>
   ];
 };
 ```
@@ -20,7 +20,7 @@ XDG_CURRENT_DESKTOP = "sway";
 
 Use waybar instead of swaybar
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 waybar
 ```
 
@@ -30,33 +30,33 @@ programs.waybar.enable = true;
 
 ## Applications runner
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 wofi
 ```
 
 ## Lockscreen
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 swaylock
 swayidle
 ```
 
 ## Clipboard
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 wl-clipboard
 ```
 
 ## Notifications
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 mako
 ```
 ## Screen
 
 ### Automatic randr
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 autorandr
 ```
 
@@ -76,7 +76,7 @@ xdg.portal.wlr.enable = true;
 
 ## X compatibility
 
-```nix "sway_packages" +=
+```nix "sway-packages" +=
 xwayland
 ```
 

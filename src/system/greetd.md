@@ -6,7 +6,7 @@ Use greetd as login manager for Sway
 services.greetd = {
   enable = true;
   settings = {
-    <<<greetd_sessions>>>
+    <<<greetd-sessions>>>
   };
 };
 ```
@@ -15,7 +15,7 @@ services.greetd = {
 
 Run agreety as greeter
 
-```nix "greetd_sessions" +=
+```nix "greetd-sessions" +=
 default_session = {
   command = "${pkgs.greetd.greetd}/bin/agreety --cmd sway";
   user = "greeter";
@@ -26,7 +26,7 @@ default_session = {
 
 Start Sway without login at startup: being the drive encrypted, a password was already asked
 
-```nix "greetd_sessions" +=
+```nix "greetd-sessions" +=
 initial_session = {
   command = "${pkgs.sway}/bin/sway";
   user = "dpd-";
