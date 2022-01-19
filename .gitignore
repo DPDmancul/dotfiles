@@ -1,8 +1,2 @@
-.cache/
-.timestamps/
-*.elc
-
-public/
-tangled/
-
-sitemap.org
+book
+config

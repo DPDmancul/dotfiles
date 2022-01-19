@@ -1,1 +1,2 @@
-*.org linguist-detectable=true
+*.md linguist-detectable=true
+secrets.nix filter=git-crypt diff=git-crypt

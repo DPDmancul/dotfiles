@@ -1,10 +1,9 @@
-.PHONY: all doc clean
-.PHONY: build build-system build-home
+.PHONY: all build doc clean
 .PHONY: install install-system install-home
 
 TIMESTAMPS := .timestamps
-BUILD := tangled
-DOC := public
+BUILD := config
+DOC := book
 
 ELISP = elisp
 EMACS = emacs --batch --no-init-file
@@ -15,22 +14,22 @@ all: install doc
 install: install-system install-home
 
 install-system: build-system
-	cp "$(BUILD)/home.nix" ~/.config/nixpkgs/
-	sudo nixos-rebuild switch
+	sudo nixos-rebuild switch -f "$(BUILD)/configuration.nix"
 
 install-home: build-home
-	sudo cp "$(BUILD)/configuration.nix" /etc/nixos/
-	home-manager switch
+	home-manager switch -f "$(BUILD)/home.nix"
 
 
 build: build-system build-home
 
-build-%: %
-	$(EMACS) --load $(ELISP)/tangle.el <(cat $^/*.org)
+build-%: src/%
+	mkdir -p $(BUILD)
+	cd $(BUILD) && lmt `find ../$</ -type f -name '*.md'`
 
 
 doc:
-	$(EMACS) --load $(ELISP)/publish.el
+	mdbook build
+	@cp -r img $(DOC)/
 
 
 clean:
