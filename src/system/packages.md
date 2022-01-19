@@ -55,6 +55,14 @@ Force Firefox to use wayland
 MOZ_ENABLE_WAYLAND = "1";
 ```
 
+## Build utils
+
+### git
+
+```nix "packages" +=
+git
+```
+
 ## Settings
 
 ### Audio

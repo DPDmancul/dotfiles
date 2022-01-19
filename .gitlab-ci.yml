@@ -6,7 +6,12 @@ stages:
 
 tangle:
   stage: build
-  script: [ nix-shell --run "make build" ]
+  script:
+    - pwd
+    - ls
+    nix-shell --run "pwd;ls;make build"
+  cache:
+    paths: [ /nix/store ]
   artifacts:
     paths: [ config ]
 
@@ -16,6 +21,8 @@ tangle:
   script:
     - nix-shell --run "make doc"
     - mv book public
+  cache:
+    paths: [ /nix/store ]
   artifacts:
     paths: [ public ]
 
