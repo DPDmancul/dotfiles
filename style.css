@@ -1,0 +1,14 @@
+/* Content indentation */
+.outline-3, .outline-4, .outline-5, .outline-6 {
+    margin-left: 1.2em;
+}
+
+/* Missing languages badges */
+.org-src-container > pre.src-conf::before,
+.org-src-container > pre.src-nix::before { content: "nix"; }
+.org-src-container > pre.src-conf-space::before { content: "conf"; }
+.org-src-container > pre.src-toml::before { content: "toml"; }
+.org-src-container > pre.src-lua::before { content: "lua"; }
+.org-src-container > pre.src-vimrc::before { content: "vim"; }
+.org-src-container > pre.src-fish::before { content: "fish"; }
+

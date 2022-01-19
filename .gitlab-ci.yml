@@ -1,0 +1,27 @@
+image: nixos/nix
+
+stages:
+  - build
+  - publish
+
+tangle:
+  stage: build
+  script: [ nix-shell --run "make build" ]
+  artifacts:
+    paths: [ tangled ]
+
+
+.publish: &publish
+  stage: publish
+  script: [ nix-shell --run "make doc" ]
+  artifacts:
+    paths: [ public ]
+
+pages:
+  <<: *publish
+  rules: [ if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH ]
+
+pages:test:
+  <<: *publish
+  rules: [ if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH ]
+
