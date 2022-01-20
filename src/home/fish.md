@@ -63,7 +63,7 @@ Color scheme
 ```fish "fish-init" +=
 set -g man_blink -o red
 set -g man_bold -o green
-set -g man_standout cyan
+set -g man_standout -b cyan black
 set -g man_underline -o yellow
 ```
 

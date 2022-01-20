@@ -3,9 +3,9 @@
 ```nix "home-config" +=
 programs.ssh = {
   enable = true;
-  matchBlocks = [
+  matchBlocks = {
     <<<ssh-hosts>>>
-  ];
+  };
 };
 ```
 
@@ -16,26 +16,23 @@ programs.ssh = {
 Login to git remotes using keys, instead of writing the password each time
 
 ```nix "ssh-hosts" +=
-{
-  host         = "gitlab.com";
+"gitlab.com" = {
   user         = "git";
   identityFile = "~/.ssh/dpd-GitLab";
-}
-{
-  host         = "github.com";
+};
+"github.com" = {
   user         = "git";
   identityFile = "~/.ssh/dpd-GitHub";
-}
+};
 ```
 
 ### AUR
 
 ```nix "ssh-hosts" +=
-{
-  host         = "aur.archlinux.org";
+"aur.archlinux.org" = {
   user         = "aur";
   identityFile = "~/.ssh/aur";
-}
+};
 ```
 
 ### UniPD DEI
@@ -43,50 +40,44 @@ Login to git remotes using keys, instead of writing the password each time
  To log in to remote machines of the Department of Information Engineering at the University of Padua you have to pass through a login server. I set this as a proxy so I don't have to log in twice each time and I can use `scp` without making a temp copy on the login server.
 
 ```nix "ssh-hosts" +=
-{
-  host         = "dei";
+dei = {
   hostname     = "login.dei.unipd.it";
   user         = "peressonid";
   identityFile = "~/.ssh/DEI";
-}
-{
-  host         = "capri";
+};
+capri = {
   proxyJump    = "dei";
   hostname     = "capri.dei.unipd.it";
   user         = "p1045u27";
   identityFile = "~/.ssh/DEI";
-}
-{
-  host         = "cloudveneto";
+};
+cloudveneto = {
   proxyJump    = "dei";
   hostname     = "147.162.226.106";
   port         = 2222;
   user         = "group11";
   identityFile = "~/.ssh/DEI";
-}
+};
 ```
 
 ### Nas
 
 ```nix "ssh-hosts" +=
-{
-  host         = "nassuz";
+nassuz = {
   hostname     = "10.10.10.10";
   user         = "admin";
   identityFile = "~/.ssh/nassuz";
-}
-{
-  host         = "pc3";
+};
+pc3 = {
   hostname     = "10.10.10.10";
   port         = 822;
   user         = "cominfo";
-}
-{
-  host         = "nassuz_web";
+};
+nassuz_web = {
   hostname     = "lon1.tmate.io";
   user         = "cominfo/nassuz";
   identityFile = "~/.ssh/nassuz";
-}
+};
 ```
 
 ## Private keys
