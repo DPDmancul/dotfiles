@@ -1,1 +1,1 @@
-# Sway (window manager)
+# Sway
