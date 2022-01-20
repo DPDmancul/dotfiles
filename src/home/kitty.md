@@ -4,9 +4,9 @@
 programs.kitty = {
   enable = true;
   <<<kitty-config>>>
-  setting = ''
+  settings = {
     <<<kitty-settings>>>
-  '';
+  };
 };
 ```
 

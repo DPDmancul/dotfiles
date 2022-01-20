@@ -73,10 +73,17 @@ MOZ_ENABLE_WAYLAND = "1";
 
 ## Build utils
 
-### git
+### Utilities
 
 ```nix "packages" +=
 git
+gnumake
+```
+
+### Compilers
+
+```nix "packages" +=
+gcc
 ```
 
 ## Settings
