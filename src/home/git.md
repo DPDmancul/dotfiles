@@ -125,7 +125,7 @@ ignores = [
 
 ## CCLS LSP
 
-For C code I’m using CCLS with LSP in Neovim. Ignore the files this creates.
+For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 
 ```nix "git-ignore" +=
 ".ccls-cache/"

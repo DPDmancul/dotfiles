@@ -14,6 +14,7 @@ Enable OpenSSH daemon
 
 ```nix "config" +=
 services.openssh.enable = true;
+programs.ssh.startAgent = true;
 ```
 <!--
 ## Antivirus
