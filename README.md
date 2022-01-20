@@ -12,6 +12,7 @@ My dotfiles for NixOs and the Nix package manager, written in literate programmi
 
 View the [HTML version](https://dpdmancul.gitlab.io/dotfiles).
 
+See [table of contents](./src/SUMMARY.md).
 
 <!-- ANCHOR: content -->
 
@@ -31,4 +32,6 @@ Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifac
 Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/nix/download?job=tangle) and copy them.
 
 <!-- ANCHOR_END: content -->
+
+
 
