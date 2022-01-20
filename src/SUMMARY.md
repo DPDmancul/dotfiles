@@ -14,6 +14,7 @@
   - [Users](./system/users.md)
   - [Packages](./system/packages.md)
   - [Sway (window manager)](./system/sway.md)
+  - [Fonts](./system/fonts.md)
 
 - [Home](./home/index.md)
   - [Kitty (terminal emulator)](./home/kitty.md)
