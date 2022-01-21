@@ -90,14 +90,6 @@ autorandr
 programs.light.enable = true;
 ```
 
-### Screen capturing
-
-#### Screen sharing
-
-```nix "config" +=
-xdg.portal.wlr.enable = true;
-```
-
 ## X compatibility
 
 ```nix "sway-packages" +=

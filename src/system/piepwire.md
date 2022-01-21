@@ -18,6 +18,15 @@ Use RealtimeKit to permit PipeWire acquiring realtime priority
 security.rtkit.enable = true;
 ```
 
+## xdg portal
+
+Enable xdg portal, required by pipewire to share screen:
+
+```nix "config" +=
+# xdg.portal.wlr.enable = true;
+```
+
+
 ## Bluetooth headsets
 
 Use mSBC and SBC-XQ codes for better quality
