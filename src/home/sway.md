@@ -34,7 +34,7 @@ terminal = "kitty";
 ## Application launcher
 
 ```nix "sway-config" +=
-menu = ''wofi --show=drun --line=5 --prompt=""'';
+menu = ''wofi --show=drun --prompt=""'';
 ```
 
 ## Appearance

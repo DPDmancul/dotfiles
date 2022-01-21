@@ -4,6 +4,8 @@
 
 [License](./license.md)
 
+[Installation](./installation/index.md)
+
 - [System](./system/index.md)
   - [Bootloader](./system/boot.md)
   - [Networking](./system/net.md)

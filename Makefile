@@ -8,7 +8,7 @@ DOC := book
 ELISP = elisp
 EMACS = emacs --batch --no-init-file
 
-all: install doc
+all: build install doc
 
 
 install: install-system install-home
@@ -20,10 +20,10 @@ install-home: build-home
 	home-manager switch -f "$(BUILD)/home.nix"
 
 
-build: build-system build-home
+build: build-system build-home build-installation
 
 build-%: src/%
-	mkdir -p $(BUILD)
+	@mkdir -p $(BUILD)
 	cd $(BUILD) && lmt `find ../$</ -type f -name '*.md'`
 
 
