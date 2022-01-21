@@ -24,10 +24,6 @@ Use waybar instead of swaybar
 waybar
 ```
 
-```nix "config" +=
-programs.waybar.enable = true;
-```
-
 ## Applications runner
 
 ```nix "sway-packages" +=
