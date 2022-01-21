@@ -30,11 +30,11 @@ waybar
 wofi
 ```
 
-## Lockscreen
+## Notifications
 
 ```nix "sway-packages" +=
-swaylock
-swayidle
+mako
+avizo
 ```
 
 ## Clipboard
@@ -52,7 +52,7 @@ nixpkgs.overlays = [
     pname = "wl-clipboard-x11";
     version = "5";
 
-    src = super.fetchFromGitHub {
+src = super.fetchFromGitHub {
       owner = "brunelli";
       repo = "wl-clipboard-x11";
       rev = "v${version}";
@@ -71,18 +71,7 @@ nixpkgs.overlays = [
 ];
 ```
 
-## Notifications
-
-```nix "sway-packages" +=
-mako
-```
 ## Screen
-
-### Automatic randr
-
-```nix "sway-packages" +=
-autorandr
-```
 
 ### Brightness
 
@@ -90,9 +79,16 @@ autorandr
 programs.light.enable = true;
 ```
 
-## X compatibility
+### Lockscreen
 
 ```nix "sway-packages" +=
-xwayland
+swaylock-effects
+swayidle
+```
+
+### Capturing
+
+```nix "sway-packages" +=
+swappy
 ```
 

@@ -3,8 +3,11 @@
 ```nix "home-config" +=
 wayland.windowManager.sway = {
   enable = true;
-  config = {
+  config = rec {
     <<<sway-config>>>
+    keybindings = lib.mkOptionDefault {
+      <<<sway-keybind>>>
+    };
   };
   extraConfig = ''
     <<<sway-extra-config>>>
@@ -38,6 +41,72 @@ terminal = "kitty";
 
 ```nix "sway-config" +=
 menu = ''wofi --show=drun --prompt=""'';
+```
+
+## Notifications
+
+```nix "home-config" +=
+programs.mako = {
+  enable = true;
+};
+```
+
+## Volume
+
+```nix "sway-keybind" +=
+"--locked XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+"--locked XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
+"--locked XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
+```
+
+## Screen
+
+### Brightness
+
+```nix "sway-keybind" +=
+"--locked XF86MonBrightnessDown" = "exec light -U 30";
+"--locked XF86MonBrightnessUp" = "exec light -A 30";
+```
+
+#### Red light
+
+TODO
+
+```nix "home-config-TODO" +=
+programs.wlsunset = {
+  enable = true;
+  latitude = 46; # North
+  longitude = 13; # East
+};
+```
+
+### Autorandr
+
+```nix "home-config" +=
+programs.kanshi = {
+  enable = true;
+};
+```
+
+### Lock
+
+```nix "sway-keybind" +=
+"${modifier}+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+```
+
+### Idle
+
+TODO
+
+```nix "home-config-TODO" +=
+services.swayidle = {
+  enable = true;
+  timeouts = [{
+    timeout = 600;
+    command = ''swaymsg "output * dpms off"'';
+    resumeCommand = ''swaymsg "output * dpms on"'';
+  }];
+};
 ```
 
 ## Appearance

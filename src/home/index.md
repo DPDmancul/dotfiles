@@ -1,7 +1,7 @@
 # Home
 
 ```nix home.nix
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   <<<home-config>>>
 }

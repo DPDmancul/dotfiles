@@ -43,6 +43,12 @@ programs.fish.enable = true;
 users.defaultUserShell = pkgs.fish;
 ```
 
+#### Task manager
+
+```nix "packages" +=
+bottom
+```
+
 #### Rust tools
 
 Use Rust modern tools.
@@ -63,12 +69,20 @@ exa
 ```nix "packages" +=
 wget
 firefox-wayland
+tor-browser-bundle-bin
 ```
 
 Force Firefox to use wayland
 
 ```nix "env" +=
 MOZ_ENABLE_WAYLAND = "1";
+```
+
+### File manager
+
+```nix "packages" +=
+xfce.thunar
+udiskie
 ```
 
 ## Build utils
@@ -88,10 +102,16 @@ gcc
 
 ## Settings
 
-### Audio
-
 ```nix "packages" +=
-pavucontrol
+pavucontrol # audio
+blueman # bluetooth
 ```
 
+## Viewers
+
+```nix "packages" +=
+imv # images
+libsForQt5.okular # PDF
+vlc # multimedia
+```
 
