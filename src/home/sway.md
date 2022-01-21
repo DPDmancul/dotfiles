@@ -72,9 +72,9 @@ wayland.windowManager.sway.systemdIntegration = false;
 Manual enabling systemd integration:
 
 ```sh "sway-extra-config" +=
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK && \
      hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK && \
      systemctl --user start sway-session.target
 ```
 
