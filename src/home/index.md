@@ -14,14 +14,6 @@ home.username = "dpd-";
 home.homeDirectory = "/home/dpd-";
 ```
 
-## Self management
-
-Let Home Manager install and manage itself.
-
-```nix "home-config" +=
-programs.home-manager.enable = true;
-```
-
 ## State version
 
 **DO NOT TOUCH!**

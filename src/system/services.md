@@ -1,5 +1,13 @@
 # Services
 
+## D-Bus
+
+Required by many other services (e.g. `xdg-desktop-portal`)
+
+```nix "config" +=
+services.dbus.enable = true;
+```
+
 ## CUPS
 
 Enable printing
