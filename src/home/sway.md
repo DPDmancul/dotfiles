@@ -70,20 +70,18 @@ programs.mako = {
 
 #### Red light
 
-TODO
-
-```nix "home-config-TODO" +=
-programs.wlsunset = {
+```nix "home-config" +=
+services.wlsunset = {
   enable = true;
-  latitude = 46; # North
-  longitude = 13; # East
+  latitude = "46"; # North
+  longitude = "13"; # East
 };
 ```
 
 ### Autorandr
 
 ```nix "home-config" +=
-programs.kanshi = {
+services.kanshi = {
   enable = true;
 };
 ```
@@ -102,7 +100,7 @@ TODO
 services.swayidle = {
   enable = true;
   timeouts = [{
-    timeout = 600;
+    timeout = 300;
     command = ''swaymsg "output * dpms off"'';
     resumeCommand = ''swaymsg "output * dpms on"'';
   }];
@@ -114,7 +112,6 @@ services.swayidle = {
 ### Border and gaps
 
 ```nix "sway-config" +=
-# TODO default_border pixel 2
 gaps.inner = 5;
 ```
 

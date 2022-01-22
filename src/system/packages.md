@@ -49,6 +49,12 @@ users.defaultUserShell = pkgs.fish;
 bottom
 ```
 
+### xdg utils
+
+```nix "packages" +=
+xdg-utils
+```
+
 #### Rust tools
 
 Use Rust modern tools.

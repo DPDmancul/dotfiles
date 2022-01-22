@@ -95,10 +95,15 @@ end
 
 ### Welcome prompot
 
-Print a greeting message when shell is started
+Print a greeting message when shell is started, reporting 
+
+- User and hostname
+- Kernel version
+- OS and distribution
 
 ```fish "fish-init" +=
-set fish_greeting  (set_color green)$USER@(hostname)(set_color yellow) (uname -srm) (set_color cyan) # (lsb_release -rcs)
+set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
+set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
 ```
 
 ### Starship
