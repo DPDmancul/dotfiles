@@ -1,4 +1,4 @@
-# Install NixOs
+# Install NixOS
 
 <!--
 ```sh installation.sh +=
@@ -16,7 +16,7 @@ fi
 ```
 -->
 
-1. Run the live image of NixOs.
+1. Run the live image of NixOS.
 2. Switch to root:
    ```sh
    sudo -i

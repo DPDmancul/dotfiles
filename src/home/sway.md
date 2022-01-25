@@ -107,6 +107,17 @@ services.swayidle = {
 };
 ```
 
+### Capture
+
+Use flameshot to take screenshots
+
+```nix "home-config" +=
+services.flameshot = {
+  enable = true;
+  settings = {}; # TODO
+};
+```
+
 ## Appearance
 
 ### Border and gaps

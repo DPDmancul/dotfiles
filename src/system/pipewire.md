@@ -23,7 +23,7 @@ security.rtkit.enable = true;
 Enable xdg portal, required by pipewire to share screen:
 
 ```nix "config" +=
-# xdg.portal.wlr.enable = true;
+xdg.portal.wlr.enable = true;
 ```
 
 

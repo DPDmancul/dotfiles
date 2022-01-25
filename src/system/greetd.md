@@ -17,7 +17,7 @@ Run agreety as greeter
 
 ```nix "greetd-sessions" +=
 default_session = {
-  command = "${pkgs.greetd.greetd}/bin/agreety --cmd sway";
+  command = "${pkgs.greetd.greetd}/bin/agreety --cmd dbus-run-session sway";
   user = "greeter";
 };
 ```
@@ -28,7 +28,7 @@ Start Sway without login at startup: being the drive encrypted, a password was a
 
 ```nix "greetd-sessions" +=
 initial_session = {
-  command = "${pkgs.sway}/bin/sway";
+  command = "dbus-run-session sway";
   user = "dpd-";
 };
 ```

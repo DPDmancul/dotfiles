@@ -86,9 +86,4 @@ swaylock-effects
 swayidle
 ```
 
-### Capturing
-
-```nix "sway-packages" +=
-swappy
-```
 

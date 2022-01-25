@@ -6,7 +6,7 @@
   <img width="200px" src="img/icon.png" />
 </center>
 
-My dotfiles for NixOs and the Nix package manager, written in literate programming.
+My dotfiles for NixOS and the Nix package manager, written in literate programming.
 
 <!-- ANCHOR_END: header -->
 

@@ -49,25 +49,20 @@ users.defaultUserShell = pkgs.fish;
 bottom
 ```
 
+#### Utilities
+
+```nix "packages" +=
+bat      # cat with syntax highlighting
+exa      # ls with colors and icosn
+tldr     # short command examples
+fd       # faster find
+ripgrep  # alternative grep
+```
+
 ### xdg utils
 
 ```nix "packages" +=
 xdg-utils
-```
-
-#### Rust tools
-
-Use Rust modern tools.
-
-Taken from: <https://www.mahmoudashraf.dev/blog/my-terminal-became-more-rusty/>
-
-Bat is an implementation for cat command but with syntax highlighted.
-
-Exa is an implementation of ls command but with colors and icons and it renders very fast.
-
-```nix "packages" +=
-bat
-exa
 ```
 
 ### Internet
@@ -87,7 +82,7 @@ MOZ_ENABLE_WAYLAND = "1";
 ### File manager
 
 ```nix "packages" +=
-xfce.thunar
+pcmanfm
 udiskie
 ```
 
@@ -110,14 +105,16 @@ gcc
 
 ```nix "packages" +=
 pavucontrol # audio
-blueman # bluetooth
+blueman     # bluetooth
+wdisplays   # screen
 ```
 
 ## Viewers
 
 ```nix "packages" +=
-imv # images
+imv               # images
 libsForQt5.okular # PDF
-vlc # multimedia
+mpv               # video
+lollypop          # audio
 ```
 

@@ -11,7 +11,7 @@
   - [Networking](./system/net.md)
   - [Internationalization](./system/i18n.md)
   - [Services](./system/services.md)
-    - [PipeWire](./system/piepwire.md)
+    - [PipeWire](./system/pipewire.md)
     - [Login manager](./system/greetd.md)
   - [Users](./system/users.md)
   - [Packages](./system/packages.md)
@@ -26,4 +26,5 @@
     - [Waybar](./home/waybar.md)
   - [git](./home/git.md)
   - [SSH](./home/ssh.md)
+  - [Packages](./home/packages.md)
 

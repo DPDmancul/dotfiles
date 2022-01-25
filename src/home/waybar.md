@@ -1,15 +1,12 @@
 # Waybar
 
-Manage waybar via systemd
-
 ```nix "sway-config" +=
-bars = [];
+bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
 ```
 
 ```nix "home-config" +=
 programs.waybar = {
   enable = true;
-  systemd.enable = true;
   # settings = {};
 };
 ```

@@ -77,6 +77,7 @@ programs.fish.shellAliases = {
   gitu = "git add . && git commit && git push";
   nv = "nvim";
   mk = "make";
+  nix-fish = "nix-shell --run fish";
   cat = "bat";
   ls = "exa -G  --color auto --icons -a -s type";
   ll = "exa -l --color always --icons -a -s type";
