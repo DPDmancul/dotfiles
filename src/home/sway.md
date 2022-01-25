@@ -89,7 +89,7 @@ services.kanshi = {
 ### Lock
 
 ```nix "sway-keybind" +=
-"${modifier}+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+"${modifier}+Shift+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
 ```
 
 ### Idle
@@ -109,13 +109,28 @@ services.swayidle = {
 
 ### Capture
 
-Use flameshot to take screenshots
+Use grimshot to take screenshots
 
-```nix "home-config" +=
-services.flameshot = {
-  enable = true;
-  settings = {}; # TODO
-};
+```nix "home-packages" +=
+sway-contrib.grimshot
+```
+
+Save (_print_) to file
+
+```nix "sway-keybind" +=
+"${modifier}+p" = "exec grimshot save active";       # Active window
+"${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+"${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+"${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+```
+
+Copy (_yank_) to clipboard
+
+```nix "sway-keybind" +=
+"${modifier}+y" = "exec grimshot copy active";       # Active window
+"${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+"${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+"${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
 ```
 
 ## Appearance
