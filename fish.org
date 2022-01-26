@@ -11,6 +11,14 @@ Use the same movements of vi, vim and neovim
 fish_vi_key_bindings
 #+end_src
 
+Change the cursor based on the mode
+
+#+begin_src fish
+set fish_cursor_default block blink
+set fish_cursor_insert line blink
+set fish_cursor_replace_one underscore blink
+#+end_src
+
 * Plugins
 
 #+BEGIN_SRC sh :exports none :tangle tangled/fisher.sh :noweb yes
