@@ -28,6 +28,7 @@ fi
    screen
    nixos-help
    # C-a S
+   # C-a tab
    # C-a c
    # Switch region with C-a tab
    ```
