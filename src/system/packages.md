@@ -8,8 +8,10 @@ environment.systemPackages = with pkgs; [
 
 Run the rolling release version of Nix
 
-```nix "config" +=
-system.autoUpgrade.channel = "github:nixos/nixpkgs/nixos-unstable";
+TODO: migrate to flakes.
+
+```sh
+sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 ```
 
 ## Essentials

@@ -23,3 +23,9 @@ networking.useDHCP = false;
 networking.interfaces.wlp2s0.useDHCP = true;
 ```
 
+## WiFi key drivers
+
+```nix "packages" +=
+config.boot.kernelPackages.rtl8821cu
+```
+

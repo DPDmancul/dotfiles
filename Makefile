@@ -14,7 +14,7 @@ all: build install doc
 install: install-system install-home
 
 install-system: build-system
-	sudo nixos-rebuild switch -I nixos-config="./$(BUILD)/configuration.nix"
+	sudo nixos-rebuild switch --upgrade -I nixos-config="./$(BUILD)/configuration.nix"
 
 install-home: build-home
 	home-manager switch -f "$(BUILD)/home.nix"

@@ -28,20 +28,6 @@ environment.sessionVariables = {
 };
 ```
 
-## Qemu
-
-Enable virtual GPUs to run in Qemu
-
-```nix "config" +=
-virtualisation.kvmgt.vgpus = true;
-```
-
-Fix cursor for Sway
-
-```nix "env" +=
-WLR_NO_HARDWARE_CURSORS = "1";
-```
-
 ## State version
 
 **DO NOT TOUCH!**
