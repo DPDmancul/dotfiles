@@ -3,6 +3,10 @@
 #+KEYWORDS:   fish shell config
 #+PROPERTY:   header-args :tangle "~/.config/fish/config.fish" :mkdirp yes
 
+#+begin_src fish
+status --is-interactive; and begin
+#+end_src
+
 * Vi mode
 
 Use the same movements of vi, vim and neovim
@@ -152,4 +156,12 @@ if type -q bat
   set -x BAT_THEME gruvbox-light
 end
 #+end_src
+
+
+#+begin_src fish
+end
+#+end_src
+
+
+
 

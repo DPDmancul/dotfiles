@@ -395,6 +395,12 @@ use {
 }
 #+END_SRC
 
+Nix expression language highlighting
+
+#+BEGIN_SRC lua :tangle no :noweb-ref plugins
+use "LnL7/vim-nix"
+#+END_SRC
+
 ** TODO Format
 
 *** Trailing spaces
@@ -613,12 +619,12 @@ use {
     require"org-bullets".setup{}
   end
 }
-use {
-  "lukas-reineke/headlines.nvim",
-  config = function()
-    require"headlines".setup()
-  end,
-}
+-- use {
+--   "lukas-reineke/headlines.nvim",
+--   config = function()
+--     require"headlines".setup()
+--   end,
+-- }
 #+END_SRC
 
 * TODO LSP
