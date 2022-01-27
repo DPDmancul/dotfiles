@@ -16,8 +16,13 @@ gnome.file-roller
 ### LaTeX
 
 ```nix "home-packages" +=
-texlive.combined.scheme-basic
-git-latexdiff
+(texlive.combine {
+  inherit (texlive)
+    scheme-basic
+    latexmk
+    latexdiff
+  ;
+})
 ```
 
 ### PDF
@@ -93,12 +98,24 @@ simplenote
 ipscan
 ```
 
+## Developing
+
+```nix "home-packages" +=
+python3
+```
+
+## LSP servers
+
+Servers for language server protocol integration in NeoVim
+
+```nix "home-packages" +=
+texlab
+```
 
 ## TODO add:
 - pnpm
 - LSP servers
   * rust-analyzer
-  * texlab
   * bash-language-server
   * ccls
   * pyright
