@@ -25,7 +25,8 @@ networking.interfaces.wlp2s0.useDHCP = true;
 
 ## WiFi key drivers
 
-```nix "packages" +=
-config.boot.kernelPackages.rtl8821cu
+```nix "config" +=
+boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8821cu ];
+boot.kernelModules = [ "8821cu" ];
 ```
 

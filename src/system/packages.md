@@ -59,6 +59,8 @@ exa      # ls with colors and icosn
 tldr     # short command examples
 fd       # faster find
 ripgrep  # alternative grep
+usbutils
+pciutils
 ```
 
 ### xdg utils
