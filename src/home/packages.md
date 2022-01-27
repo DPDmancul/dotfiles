@@ -16,13 +16,7 @@ gnome.file-roller
 ### LaTeX
 
 ```nix "home-packages" +=
-(texlive.combine {
-  inherit (texlive)
-    scheme-basic
-    latexmk
-    latexdiff
-  ;
-})
+texlive.combined.scheme-medium
 ```
 
 ### PDF
