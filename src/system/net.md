@@ -6,10 +6,10 @@
 networking.hostName = "nixos";
 ```
 
-## Wireless
+## NetworkManager
 
 ```nix "config" +=
-# networking.wireless.enable = true;
+networking.networkmanager.enable = true;
 ```
 
 ## DHCP
@@ -20,6 +20,6 @@ Per-interface useDHCP will be mandatory in the future, so this config replicates
 
 ```nix "config" +=
 networking.useDHCP = false;
-networking.interfaces.ens3.useDHCP = true;
+networking.interfaces.wlp2s0.useDHCP = true;
 ```
 

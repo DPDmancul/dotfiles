@@ -35,7 +35,7 @@ environment.etc."dual-function-keys.yaml".text = ''
     <<<dual-function-keys-mappings>>>
 '';
 services.interception-tools = {
-  enable = false; # TODO test true;
+  enable = true;
   plugins = [ pkgs.interception-tools-plugins.dual-function-keys ];
   udevmonConfig = ''
     - JOB: "${pkgs.interception-tools}/bin/intercept -g $DEVNODE | ${pkgs.interception-tools-plugins.dual-function-keys}/bin/dual-function-keys -c /etc/dual-function-keys.yaml | ${pkgs.interception-tools}/bin/uinput -d $DEVNODE"
@@ -70,7 +70,7 @@ Just in case it could be needed remap `caps` from `right ctrl`
 ```yaml "dual-function-keys-mappings" +=
 - KEY: KEY_RIGHTCTRL
   TAP: KEY_CAPSLOCK
-  HOLD: KEY_CAPSLOCK
+  HOLD: KEY_RIGHTCTRL
 ```
 
 <!--
