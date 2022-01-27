@@ -8,6 +8,18 @@ Required by many other services (e.g. `xdg-desktop-portal`)
 services.dbus.enable = true;
 ```
 
+## Virtual filesystems
+
+```nix "config" +=
+services.gvfs.enable = true;
+```
+
+### Mount removable devices
+
+```nix "config" +=
+services.udisks2.enable = true;
+```
+
 ## CUPS
 
 Enable printing

@@ -89,7 +89,6 @@ MOZ_ENABLE_WAYLAND = "1";
 
 ```nix "packages" +=
 pcmanfm
-udiskie
 ```
 
 ## Build utils
