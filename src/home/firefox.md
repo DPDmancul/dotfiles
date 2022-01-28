@@ -1,0 +1,74 @@
+# Firefox
+
+```nix "home-config" +=
+programs.firefox = {
+  enable = true;
+  package = pkgs.firefox-wayland;
+  extensions = with nur.repos.rycee.firefox-addons; [
+    <<<firefox-ext>>>
+  ];
+  profiles.default.settings = {
+    <<<firefox-settings>>>
+  };
+};
+```
+
+Force Firefox to use wayland
+
+```nix "home-env" +=
+MOZ_ENABLE_WAYLAND = 1;
+```
+
+## Settings
+
+```nix "firefox-settings" +=
+```
+
+### DuckDuckGo
+
+The search engine must be chosen manually.
+
+## Extensions
+
+```nix "firefox-ext" +=
+bitwarden
+vim-vixen
+videospeed
+(buildFirefoxXpiAddon {
+  pname = "proxydocile";
+  version = "2.2";
+  addonId = "proxydocile@unipd.it";
+  url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+  sha256 = "4O4fB/1Mujn1x18UvUJcWDEGc+K+ejkFlFtiNbtYvmc=";
+  meta = {};
+})
+(buildFirefoxXpiAddon {
+  pname = "musescore-downloader";
+  version = "0.26.0";
+  addonId = "{69856097-6e10-42e9-acc7-0c063550c7b8}";
+  url = "https://addons.mozilla.org/firefox/downloads/file/3818223/musescore_downloader-0.26.0-an+fx.xpi";
+  sha256 = "LX0dcNlTIxqnRk+JozFUt4AZuu7oVShL/p3S21BajnY=";
+  meta = {};
+})
+```
+
+### Privacy
+
+Block many trackers
+
+```nix "firefox-ext" +=
+ublock-origin
+multi-account-containers
+facebook-container
+decentraleyes
+i-dont-care-about-cookies
+(buildFirefoxXpiAddon {
+  pname = "behind-the-overlay-revival";
+  version = "1.8.3";
+  addonId = "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}";
+  url = "https://addons.mozilla.org/firefox/downloads/file/1749632/behind_the_overlay_revival-1.8.3-fx.xpi";
+  sha256 = "lcmwPIfy0CyuNiXYWzqrKGsBZHyEdSgR+wvptJs/aiI=";
+  meta = {};
+})
+```
+

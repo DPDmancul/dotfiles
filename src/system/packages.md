@@ -73,16 +73,6 @@ xdg-utils
 
 ```nix "packages" +=
 wget
-firefox-wayland
-(tor-browser-bundle-bin.override {
-  useHardenedMalloc = false;
-})
-```
-
-Force Firefox to use wayland
-
-```nix "env" +=
-MOZ_ENABLE_WAYLAND = "1";
 ```
 
 ### File manager

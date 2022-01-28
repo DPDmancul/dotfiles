@@ -73,8 +73,15 @@ losslesscut-bin
 obs-studio
 ```
 
+## Internet
 
-## Downloads
+```nix "packages" +=
+(tor-browser-bundle-bin.override {
+  useHardenedMalloc = false;
+})
+```
+
+### Downloads
 
 ```nix "home-packages" +=
 clipgrab
