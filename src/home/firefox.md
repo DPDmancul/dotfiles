@@ -7,9 +7,15 @@ programs.firefox = {
   extensions = with nur.repos.rycee.firefox-addons; [
     <<<firefox-ext>>>
   ];
-  profiles.default.settings = {
-    <<<firefox-settings>>>
+  profiles.default = {
+    settings = {
+      <<<firefox-settings>>>
+    };
+    userChrome = ''
+      <<<firefox-css>>>
+    '';
   };
+
 };
 ```
 
@@ -24,6 +30,13 @@ MOZ_ENABLE_WAYLAND = 1;
 ```nix "firefox-settings" +=
 "browser.uidensity" = 1; # Compact mode
 "browser.download.useDownloadDir" = false;
+```
+
+Developer tools to inspect Firefox UI
+
+```nix "firefox-settings" +=
+"devtools.debugger.remote-enabled" = true;
+"devtools.chrome.enabled" = true;
 ```
 
 ### DuckDuckGo
@@ -73,4 +86,24 @@ i-dont-care-about-cookies
   meta = {};
 })
 ```
+
+## Appearance
+
+```nix "firefox-settings" +=
+"toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+```
+
+Transparent bar
+
+```css "firefox-css" +=
+#main-window {
+  background: #f9f9fa95 !important;
+}
+.tab-background:is([selected], [multiselected]),
+.browser-toolbar:not(.titlebar-color) {
+  background-color: #f9f9fa65 !important;
+}
+```
+
+
 
