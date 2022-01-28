@@ -22,6 +22,8 @@ MOZ_ENABLE_WAYLAND = 1;
 ## Settings
 
 ```nix "firefox-settings" +=
+"browser.uidensity" = 1; # Compact mode
+"browser.download.useDownloadDir" = false;
 ```
 
 ### DuckDuckGo
