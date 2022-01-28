@@ -110,19 +110,18 @@ python3
 Servers for language server protocol integration in NeoVim
 
 ```nix "home-packages" +=
+rust-analyzer
 texlab
+nodePackages.bash-language-server
+ccls
+nodePackages.pyright
+deno
+nodePackages.yaml-language-server
+nodePackages.vscode-css-languageserver-bin
+nodePackages.vscode-html-languageserver-bin
+nodePackages.vscode-json-languageserver
 ```
 
 ## TODO add:
 - pnpm
-- LSP servers
-  * rust-analyzer
-  * bash-language-server
-  * ccls
-  * pyright
-  * debo
-  * yaml-language-server
-  * vscode-css-languageserver
-  * vscode-html-languageserver
-  * vscode-json-languageserver
 
