@@ -13,6 +13,23 @@ libreoffice
 gnome.file-roller
 ```
 
+```nix "xdg-mime" +=
+"application/zip" = "org.gnome.FileRoller.desktop";
+"application/rar" = "org.gnome.FileRoller.desktop";
+"application/7z" = "org.gnome.FileRoller.desktop";
+"application/*tar" = "org.gnome.FileRoller.desktop";
+```
+
+### File manager
+
+```nix "home-packages" +=
+pcmanfm
+```
+
+```nix "xdg-mime" +=
+"inode/directory" = "pcmanfm.desktop";
+```
+
 ### LaTeX
 
 ```nix "home-packages" +=
@@ -20,6 +37,14 @@ texlive.combined.scheme-medium
 ```
 
 ### PDF
+
+```nix "home-packages" +=
+libsForQt5.okular
+```
+
+```nix "xdg-mime" +=
+"application/pdf" = "okularApplication_pdf.desktop";
+```
 
 ```nix "home-packages" +=
 diffpdf
@@ -35,7 +60,23 @@ calibre
 jmtpfs # For kindle
 ```
 
+## Settings
+
+```nix "home-packages" +=
+pavucontrol # audio
+blueman     # bluetooth
+wdisplays   # screen
+```
+
 ## Image and graphics
+
+```nix "home-packages" +=
+imv
+```
+
+```nix "xdg-mime" +=
+"image/*" = "imv-folder.desktop";
+```
 
 ### Drawing
 
@@ -53,6 +94,16 @@ inkscape
 ```
 
 ## Multimedia 
+
+```nix "home-packages" +=
+mpv
+lollypop
+```
+
+```nix "xdg-mime" +=
+"video/*" = "umpv.desktop";
+"audio/*" = "org.gnome.Lollypop.desktop";
+```
 
 ### Audio and music production
 
@@ -75,7 +126,7 @@ obs-studio
 
 ## Internet
 
-```nix "packages" +=
+```nix "home-packages" +=
 (tor-browser-bundle-bin.override {
   useHardenedMalloc = false;
 })
@@ -97,6 +148,10 @@ baobab # disk usage
 tdesktop # Telegram
 simplenote
 ipscan
+```
+
+```nix "xdg-mime" +=
+"x-scheme-handler/tg" = "telegramdesktop.desktop";
 ```
 
 ## Developing

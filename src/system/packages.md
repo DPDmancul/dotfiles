@@ -29,14 +29,7 @@ EDITOR = "nvim";
 VISUAL = "nvim";
 ```
 
-### Terminal and shell
-
-Use kitty as terminal with starship as prompt
-
-```nix "packages" +=
-kitty
-starship
-```
+### Shell
 
 Use fish as default shell
 
@@ -74,13 +67,6 @@ xdg-utils
 ```nix "packages" +=
 wget
 ```
-
-### File manager
-
-```nix "packages" +=
-pcmanfm
-```
-
 ## Build utils
 
 ### Utilities
@@ -94,22 +80,5 @@ gnumake
 
 ```nix "packages" +=
 gcc
-```
-
-## Settings
-
-```nix "packages" +=
-pavucontrol # audio
-blueman     # bluetooth
-wdisplays   # screen
-```
-
-## Viewers
-
-```nix "packages" +=
-imv               # images
-libsForQt5.okular # PDF
-mpv               # video
-lollypop          # audio
 ```
 

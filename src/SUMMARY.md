@@ -25,6 +25,7 @@
   - [Sway (window manager)](./home/sway.md)
     - [Waybar](./home/waybar.md)
   - [Firefox](./home/firefox.md)
+  - [freedesktop.org](./home/xdg.md)
   - [git](./home/git.md)
   - [SSH](./home/ssh.md)
   - [Packages](./home/packages.md)
