@@ -34,19 +34,13 @@ BROWSER = "firefox";
 ## Mime
 
 ```nix "xdg-mime" +=
-"text/html" = "firefox.desktop";
-"x-scheme-handler/http" = "firefox.desktop";
-"x-scheme-handler/https" = "firefox.desktop";
-"x-scheme-handler/ftp" = "firefox.desktop";
-"x-scheme-handler/chrome" = "firefox.desktop";
-"x-scheme-handler/about" = "firefox.desktop";
-"x-scheme-handler/unknown" = "firefox.desktop";
-"application/x-extension-htm" = "firefox.desktop";
-"application/x-extension-html" = "firefox.desktop";
-"application/x-extension-shtml" = "firefox.desktop";
-"application/xhtml+xml" = "firefox.desktop";
-"application/x-extension-xhtml" = "firefox.desktop";
-"application/x-extension-xht" = "firefox.desktop";
+{ "text/html" = "firefox.desktop"; }
+(subtypes "x-scheme-handler" "firefox.desktop"
+  [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+(subtypes "aplication" "firefox.desktop"
+  (map (ext: "x-extension-" + ext)
+    [ "htm" "html" "shtml" "xhtml" "xht" ]
+  ++ [ "xhtml+xml" ]))
 ```
 
 ## Settings

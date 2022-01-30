@@ -14,10 +14,8 @@ gnome.file-roller
 ```
 
 ```nix "xdg-mime" +=
-"application/zip" = "org.gnome.FileRoller.desktop";
-"application/rar" = "org.gnome.FileRoller.desktop";
-"application/7z" = "org.gnome.FileRoller.desktop";
-"application/*tar" = "org.gnome.FileRoller.desktop";
+(subtypes "application" "org.gnome.FileRoller.desktop"
+  ["zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
 ```
 
 ### File manager
@@ -27,7 +25,7 @@ pcmanfm
 ```
 
 ```nix "xdg-mime" +=
-"inode/directory" = "pcmanfm.desktop";
+{ "inode/directory" = "pcmanfm.desktop"; }
 ```
 
 ### LaTeX
@@ -43,7 +41,7 @@ libsForQt5.okular
 ```
 
 ```nix "xdg-mime" +=
-"application/pdf" = "okularApplication_pdf.desktop";
+{ "application/pdf" = "okularApplication_pdf.desktop"; }
 ```
 
 ```nix "home-packages" +=
@@ -75,8 +73,8 @@ imv
 ```
 
 ```nix "xdg-mime" +=
-"image/*" = "imv-folder.desktop";
-"image/png" = "imv-folder.desktop";
+(subtypes "image" "imv-folder.desktop"
+  [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
 ```
 
 ### Drawing
@@ -102,9 +100,16 @@ lollypop
 ```
 
 ```nix "xdg-mime" +=
-"video/*" = "umpv.desktop";
-"video/mp4" = "umpv.desktop";
-"audio/*" = "org.gnome.Lollypop.desktop";
+(subtypes "video" "umpv.desktop"
+  [
+    "avi" "msvideo" "x-msvideo"
+    "mpeg" "x-mpeg" "mp4" "H264" "H265"
+    "ogg"
+    "quicktime"
+    "webm"
+  ])
+(subtypes "audio" "org.gnome.Lollypop.desktop"
+  [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
 ```
 
 ### Audio and music production
@@ -153,7 +158,7 @@ ipscan
 ```
 
 ```nix "xdg-mime" +=
-"x-scheme-handler/tg" = "telegramdesktop.desktop";
+{ "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
 ```
 
 ## Developing
