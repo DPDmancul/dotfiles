@@ -7,6 +7,17 @@ xdg = {
 };
 ```
 
+## User directories
+
+Create standard user directories
+
+```nix "xdg-config" +=
+userDirs = {
+  enable = true;
+  createDirectories = true;
+};
+```
+
 ## Default applications
 
 ```nix "xdg-config" +=

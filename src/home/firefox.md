@@ -121,7 +121,7 @@ Transparent bar
 
 ```css "firefox-css" +=
 #main-window {
-  background: #f9f9fa95 !important;
+  background: #f9f9faa5 !important;
 }
 .tab-background:is([selected], [multiselected]),
 .browser-toolbar:not(.titlebar-color) {

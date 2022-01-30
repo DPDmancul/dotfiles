@@ -76,6 +76,7 @@ imv
 
 ```nix "xdg-mime" +=
 "image/*" = "imv-folder.desktop";
+"image/png" = "imv-folder.desktop";
 ```
 
 ### Drawing
@@ -102,6 +103,7 @@ lollypop
 
 ```nix "xdg-mime" +=
 "video/*" = "umpv.desktop";
+"video/mp4" = "umpv.desktop";
 "audio/*" = "org.gnome.Lollypop.desktop";
 ```
 
