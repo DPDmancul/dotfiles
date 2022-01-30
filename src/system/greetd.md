@@ -17,7 +17,7 @@ Run agreety as greeter
 
 ```nix "greetd-sessions" +=
 default_session = {
-  command = "${pkgs.greetd.greetd}/bin/agreety --cmd dbus-run-session sway";
+  command = ''${pkgs.greetd.greetd}/bin/agreety --cmd "dbus-run-session sway"'';
   user = "greeter";
 };
 ```

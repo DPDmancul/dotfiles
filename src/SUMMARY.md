@@ -24,6 +24,7 @@
   - [Neovim](./home/nvim.md)
   - [Sway (window manager)](./home/sway.md)
     - [Waybar](./home/waybar.md)
+    - [Theme](./home/theme.md)
   - [Firefox](./home/firefox.md)
   - [freedesktop.org](./home/xdg.md)
   - [git](./home/git.md)
