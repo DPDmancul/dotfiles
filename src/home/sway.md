@@ -49,7 +49,7 @@ menu = ''wofi --show=drun --prompt=""'';
 "${modifier}+Shift+e" = ''
   exec sh -c ' \
     case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-      "Shutdown") systemctl shutdown;; \
+      "Shutdown") systemctl poweroff;; \
       "Suspend") systemctl suspend;; \
       "Reboot") systemctl reboot;; \
       "Logout") swaymsg exit;; \
