@@ -29,5 +29,6 @@
   - [freedesktop.org](./home/xdg.md)
   - [git](./home/git.md)
   - [SSH](./home/ssh.md)
+  - [GnuPG](./home/gpg.md)
   - [Packages](./home/packages.md)
 
