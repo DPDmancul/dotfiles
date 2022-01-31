@@ -48,7 +48,7 @@ menu = ''wofi --show=drun --prompt=""'';
 ```nix "sway-keybind" +=
 "${modifier}+Shift+e" = ''
   exec sh -c ' \
-    case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu --prompt="Logout menu") in \
+    case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
       "Shutdown") systemctl shutdown;; \
       "Suspend") systemctl suspend;; \
       "Reboot") systemctl reboot;; \
