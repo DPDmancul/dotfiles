@@ -86,4 +86,11 @@ swaylock-effects
 swayidle
 ```
 
+Grant PAM access to swaylock
+
+```nix "config" +=
+security.pam.services.swaylock = {
+  text = "auth include login";
+};
+```
 

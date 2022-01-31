@@ -6,6 +6,19 @@
 gaps.inner = 5;
 ```
 
+Disable border for inactive windows and for alone ones
+
+```nix "sway-config" +=
+colors.unfocused = let transparent = "#00000000"; in {
+  background = "#222222";
+  border = transparent;
+  childBorder = transparent;
+  indicator = "#292d2e";
+  text = "#888888";
+};
+gaps.smartBorders = "on";
+```
+
 ## Background
 
 Use wpaperd for random backgrounds
