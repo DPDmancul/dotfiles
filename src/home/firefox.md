@@ -46,7 +46,6 @@ BROWSER = "firefox";
 ## Settings
 
 ```nix "firefox-settings" +=
-"browser.uidensity" = 1; # Compact mode
 "browser.download.useDownloadDir" = false;
 ```
 
@@ -57,9 +56,66 @@ Developer tools to inspect Firefox UI
 "devtools.chrome.enabled" = true;
 ```
 
-### DuckDuckGo
+### Privacy
+
+Enable HTTPS everywhere
+
+```nix "firefox-settings" +=
+"dom.security.https_only_mode" = true;
+"dom.security.https_only_mode_ever_enabled" = true;
+```
+
+Block some trackers
+
+```nix "firefox-settings" +=
+"privacy.donottrackheader.enabled" = true;
+"privacy.trackingprotection.enabled" = true;
+"privacy.trackingprotection.socialtracking.enabled" = true;
+"privacy.partition.network_state.ocsp_cache" = true;
+```
+
+Disable telemetry
+
+```nix "firefox-settings" +=
+"browser.newtabpage.activity-stream.feeds.telemetry" = false;
+"browser.newtabpage.activity-stream.telemetry" = false;
+"browser.ping-centre.telemetry" = false;
+"toolkit.telemetry.archive.enabled" = false;
+"toolkit.telemetry.bhrPing.enabled" = false;
+"toolkit.telemetry.enabled" = false;
+"toolkit.telemetry.firstShutdownPing.enabled" = false;
+"toolkit.telemetry.hybridContent.enabled" = false;
+"toolkit.telemetry.newProfilePing.enabled" = false;
+"toolkit.telemetry.reportingpolicy.firstRun" = false;
+"toolkit.telemetry.shutdownPingSender.enabled" = false;
+"toolkit.telemetry.unified" = false;
+"toolkit.telemetry.updatePing.enabled" = false;
+```
+
+Disable tracking ads in newtab
+
+```nix "firefox-settings" +=
+"browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+"browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+"browser.newtabpage.activity-stream.showSponsored" = false;
+```
+
+#### DuckDuckGo
 
 The search engine must be chosen manually.
+
+### Pocket
+
+Disable unused Pocket
+
+```nix "firefox-settings" +=
+"browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+"extensions.pocket.enabled" = false;
+"extensions.pocket.api" = "";
+"extensions.pocket.oAuthConsumerKey" = "";
+"extensions.pocket.showHome" = false;
+"extensions.pocket.site" = "";
+```
 
 ## Extensions
 
@@ -106,6 +162,14 @@ i-dont-care-about-cookies
 ```
 
 ## Appearance
+
+Compact mode
+
+```nix "firefox-settings" +=
+"browser.uidensity" = 1;
+```
+
+Enable custom stylesheet
 
 ```nix "firefox-settings" +=
 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
