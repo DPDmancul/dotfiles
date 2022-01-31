@@ -89,7 +89,7 @@ services.kanshi = {
 ### Lock
 
 ```nix "sway-keybind" +=
-"${modifier}+Shift+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+"Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
 ```
 
 ### Idle
@@ -133,53 +133,13 @@ Copy (_yank_) to clipboard
 "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
 ```
 
-## Appearance
+## Shortcuts
 
-### Border and gaps
-
-```nix "sway-config" +=
-gaps.inner = 5;
+```nix "sway-keybind" +=
+"${modifier}+z" = "exec firefox";
+"${modifier}+x" = "exec pcmanfm";
 ```
 
-### Background
-
-Use wpaperd for random backgrounds
-
-```nix "home-packages" +=
-(rustPlatform.buildRustPackage rec {
-  pname = "wpaperd";
-  version = "0.1.0";
-
-  src = fetchFromGitHub {
-    owner = "DPDmancul";
-    repo = "wpaperd-no-nightly";
-    rev = "81a17ea424c96b1e6b2eba2a12e0396c5b7f7eda";
-    sha256 = "DUMuCWwSECoONeaCCi7u1ubzngFjOpo9gnPLvc00zh0=";
-  };
-
-  cargoSha256 = "SssN6cFSRDKt6MSyeeOwv31zXQHRdGVbjHf5Bd5d4l4=";
-})
-```
-
-```nix "home-config" +=
-xdg.configFile."wpaperd/output.conf".text = ''
-  [default]
-  path = "/home/dpd-/Pictures/Wallpapers/"
-  duration = "1m"
-'';
-```
-
-TODO: wpaperd cannot find libwayland
-
-```sh "sway-extra-config" +=
-# exec {pkgs.wpaperd}/bin/wpaperd
-```
-
-Temporary ""
-
-```nix "sway-config" +=
-output."*".bg = ''`find ~/Pictures/Wallpapers/ -type f | shuf -n 1` fill'';
-```
 ## Fix dbus
 
 Dbus cannot find sway and so GTK+ takes 20 seconds to start
