@@ -40,7 +40,7 @@ terminal = "kitty";
 ## Application launcher
 
 ```nix "sway-config" +=
-menu = ''wofi --show=drun --prompt=""'';
+menu = ''wofi --show=drun -i --prompt=""'';
 ```
 
 ### Poweroff
