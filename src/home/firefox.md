@@ -3,10 +3,20 @@
 ```nix "home-config" +=
 programs.firefox = {
   enable = true;
-  package = pkgs.firefox-wayland;
-  extensions = with nur.repos.rycee.firefox-addons; [
-    <<<firefox-ext>>>
-  ];
+  package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+    forceWayland = true;
+    extraPolicies = {
+      ExtensionSettings = let
+        ext = name: {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+        };
+      in {
+        <<<firefox-ext>>>
+      };
+      <<<firefox-policies>>>
+    };
+  };
   profiles.default = {
     settings = {
       <<<firefox-settings>>>
@@ -56,6 +66,12 @@ Developer tools to inspect Firefox UI
 "devtools.chrome.enabled" = true;
 ```
 
+Disable password manager
+
+```nix "firefox-policies" +=
+PasswordManagerEnabled = false;
+```
+
 ### Privacy
 
 Enable HTTPS everywhere
@@ -67,6 +83,15 @@ Enable HTTPS everywhere
 
 Block some trackers
 
+```nix "firefox-policies" +=
+EnableTrackingProtection = {
+  Value = true;
+  Locked = true;
+  Cryptomining = true;
+  Fingerprinting = true;
+};
+```
+
 ```nix "firefox-settings" +=
 "privacy.donottrackheader.enabled" = true;
 "privacy.trackingprotection.enabled" = true;
@@ -75,6 +100,11 @@ Block some trackers
 ```
 
 Disable telemetry
+
+```nix "firefox-policies" +=
+DisableTelemetry = true;
+DisableFirefoxStudies = true;
+```
 
 ```nix "firefox-settings" +=
 "browser.newtabpage.activity-stream.feeds.telemetry" = false;
@@ -108,6 +138,10 @@ The search engine must be chosen manually.
 
 Disable unused Pocket
 
+```nix "firefox-policies" +=
+DisablePocket = true;
+```
+
 ```nix "firefox-settings" +=
 "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
 "extensions.pocket.enabled" = false;
@@ -119,26 +153,24 @@ Disable unused Pocket
 
 ## Extensions
 
+Manage all extensions via home-manager
+
 ```nix "firefox-ext" +=
-bitwarden
-vim-vixen
-videospeed
-(buildFirefoxXpiAddon {
-  pname = "proxydocile";
-  version = "2.2";
-  addonId = "proxydocile@unipd.it";
-  url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-  sha256 = "4O4fB/1Mujn1x18UvUJcWDEGc+K+ejkFlFtiNbtYvmc=";
-  meta = {};
-})
-(buildFirefoxXpiAddon {
-  pname = "musescore-downloader";
-  version = "0.26.0";
-  addonId = "{69856097-6e10-42e9-acc7-0c063550c7b8}";
-  url = "https://addons.mozilla.org/firefox/downloads/file/3818223/musescore_downloader-0.26.0-an+fx.xpi";
-  sha256 = "LX0dcNlTIxqnRk+JozFUt4AZuu7oVShL/p3S21BajnY=";
-  meta = {};
-})
+"*" = {
+  installation_mode = "blocked";
+  blocked_install_message = "Extensions managed by home-manager.";
+};
+```
+
+```nix "firefox-ext" +=
+"{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+"vim-vixen@i-beam.org" = ext "vim-vixen";
+"{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+"proxydocile@unipd.it"= {
+  installation_mode = "force_installed";
+  install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+};
+"{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
 ```
 
 ### Privacy
@@ -146,19 +178,12 @@ videospeed
 Block many trackers
 
 ```nix "firefox-ext" +=
-ublock-origin
-multi-account-containers
-facebook-container
-decentraleyes
-i-dont-care-about-cookies
-(buildFirefoxXpiAddon {
-  pname = "behind-the-overlay-revival";
-  version = "1.8.3";
-  addonId = "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}";
-  url = "https://addons.mozilla.org/firefox/downloads/file/1749632/behind_the_overlay_revival-1.8.3-fx.xpi";
-  sha256 = "lcmwPIfy0CyuNiXYWzqrKGsBZHyEdSgR+wvptJs/aiI=";
-  meta = {};
-})
+"uBlock0@raymondhill.net" = ext "ublock-origin";
+"@testpilot-containers" = ext "multi-account-containers";
+"@contain-facebook" = ext "facebook-container";
+"jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+"jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+"{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
 ```
 
 ## Appearance

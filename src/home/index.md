@@ -2,12 +2,6 @@
 
 ```nix home.nix
 { config, pkgs, lib, ... }:
-let
-  nur = import (builtins.fetchTarball { 
-    url = "https://github.com/nix-community/NUR/archive/master.tar.gz";
-    sha256 = "0qbix64vp7smy93ibn0zzidgp817fyp0jqrsmk2la4h1877i6hyk";
-  }) { inherit pkgs; };
-in
 {
   <<<home-config>>>
 }
