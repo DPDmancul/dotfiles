@@ -96,7 +96,7 @@ inkscape
 
 ```nix "home-packages" +=
 mpv
-lollypop
+rhythmbox
 ```
 
 ```nix "xdg-mime" +=
@@ -108,7 +108,7 @@ lollypop
     "quicktime"
     "webm"
   ])
-(subtypes "audio" "org.gnome.Lollypop.desktop"
+(subtypes "audio" "rhythmbox.desktop"
   [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
 ```
 
