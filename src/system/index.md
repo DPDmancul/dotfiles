@@ -28,6 +28,12 @@ environment.sessionVariables = {
 };
 ```
 
+## Enable NTFS support
+
+```nix "config" +=
+boot.supportedFilesystems = [ "ntfs" ];
+```
+
 ## State version
 
 **DO NOT TOUCH!**
