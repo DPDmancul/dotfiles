@@ -103,7 +103,7 @@ rhythmbox
 (subtypes "video" "umpv.desktop"
   [
     "avi" "msvideo" "x-msvideo"
-    "mpeg" "x-mpeg" "mp4" "H264" "H265"
+    "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
     "ogg"
     "quicktime"
     "webm"
