@@ -16,7 +16,7 @@ programs.kitty = {
 
 ```nix "kitty-config" +=
 font = {
-  name = "firacode nerd font";
+  name = "jetbrainsmono nerd font";
   size = 10;
 };
 ```
