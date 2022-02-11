@@ -1,4 +1,4 @@
-.PHONY: all build doc unlock clean
+.PHONY: all update build doc unlock clean
 .PHONY: install install-system install-home
 
 TIMESTAMPS := .timestamps
@@ -10,11 +10,14 @@ EMACS = emacs --batch --no-init-file
 
 all: build install doc
 
+update:
+	sudo nix-channel --update
+	$(MAKE) all
 
 install: install-system install-home
 
 install-system: build-system
-	sudo nixos-rebuild switch --upgrade -I nixos-config="./$(BUILD)/configuration.nix"
+	sudo nixos-rebuild switch -I nixos-config="./$(BUILD)/configuration.nix"
 
 install-home: build-home
 	home-manager switch -f "$(BUILD)/home.nix"
