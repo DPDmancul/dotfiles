@@ -186,6 +186,14 @@ Block many trackers
 "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
 ```
 
+<!--
+Block scripts
+
+```nix "firefox-ext" +=
+# "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+```
+-->
+
 ## Appearance
 
 Compact mode

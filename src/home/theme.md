@@ -59,6 +59,21 @@ Temporary "fix"
 output."*".bg = ''`find ~/Pictures/Wallpapers/ -type f | shuf -n 1` fill'';
 ```
 
+## Qt as GTK
+
+Use GTK theme in Qt apps
+
+```nix "home-config" +=
+qt = {
+  enable = true;
+  platformTheme = "gnome";
+  style = {
+    name = "adwaita";
+    package = pkgs.adwaita-qt;
+  };
+};
+```
+
 ## Icons
 
 ```nix "home-config" +=
@@ -66,6 +81,14 @@ gtk.enable = true;
 gtk.iconTheme = {
   name = "Tela";
   package = pkgs.tela-icon-theme;
+};
+```
+
+Use the same icons in Qt apps
+
+```nix "home-config" +=
+dconf.settings."org/gnome/desktop/interface" = {
+  icon-theme = config.gtk.iconTheme.name;
 };
 ```
 

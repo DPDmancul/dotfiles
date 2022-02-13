@@ -45,23 +45,32 @@ Use DoH protocol
 services.dnscrypt-proxy2 = {
   enable = true;
   settings = {
-    ipv6_servers = true;
-    require_dnssec = true;
-
-    sources.public-resolvers = {
-      urls = [
-        "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
-          "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
-      ];
-      cache_file = "/var/lib/dnscrypt-proxy2/public-resolvers.md";
-      minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
-    };
-
+    static.adguard-dns-doh.stamp = "sdns://AgMAAAAAAAAADzE3Ni4xMDMuMTMwLjEzMCCaOjT3J965vKUQA9nOnDn48n3ZxSQpAcK6saROY1oCGQ9kbnMuYWRndWFyZC5jb20KL2Rucy1xdWVyeQ";
     server_names = [ "adguard-dns-doh" ];
+
+    forwarding_rules = let
+      router = "192.168.1.1";
+    in pkgs.writeText "forwarding-rules.txt" ''
+      lan              ${router}
+      local            ${router}
+      home             ${router}
+      home.arpa        ${router}
+      internal         ${router}
+      localdomain      ${router}
+      192.in-addr.arpa ${router}
+    '';
   };
 };
 ```
 
+### Captive portal
+
+Manual enable Wiffi captive portal
+
+```nix "config" +=
+networking.hosts."192.168.19.253" = [ "mt.wiffi.it" ];
+networking.hosts."52.19.181.253" = [ "autenticazione.wiffi.it" ];
+```
 ## WiFi key drivers
 
 ```nix "config" +=
