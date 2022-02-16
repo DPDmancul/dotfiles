@@ -3,9 +3,9 @@
 ```vim "nvim-config" +=
 set termguicolors     " Enable gui colors
 set cursorline        " Enable highlighting of the current line
-set signcolumn="yes"  " Always show signcolumn or it would frequently shift
+set signcolumn=yes  " Always show signcolumn or it would frequently shift
 set pumheight=10      " Make popup menu smaller
-set colorcolumn="+1"  " Draw colored column one step to the right of desired maximum width
+set colorcolumn=+1  " Draw colored column one step to the right of desired maximum width
 set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
 set scrolloff=2       " Show more lines on top and bottom
 set title             " Enable window title
@@ -28,7 +28,7 @@ Show relative numbers only when needed
 vim-numbertoggle
 ```
 
-## TODO Conceal
+## *TODO* Conceal
 
 Use conceal to show pretty symbols 
 
@@ -41,6 +41,7 @@ set conceallevel=2
 Use Gruvbox theme 
 
 ```nix "nvim-plugins" +=
+lush-nvim
 {
   plugin = gruvbox-nvim;
   config = "colorscheme gruvbox";
@@ -119,7 +120,7 @@ set noshowmode
 }
 ```
 
-## TODO sidebar dir tree
+## *TODO* sidebar dir tree
 
 TODO fix: <https://github.com/kyazdani42/nvim-tree.lua/issues/793#issuecomment-985880207>
 

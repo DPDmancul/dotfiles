@@ -167,23 +167,6 @@ ipscan
 python3
 ```
 
-## LSP servers
-
-Servers for language server protocol integration in NeoVim
-
-```nix "home-packages" +=
-rust-analyzer
-texlab
-nodePackages.bash-language-server
-ccls
-nodePackages.pyright
-deno
-nodePackages.yaml-language-server
-nodePackages.vscode-css-languageserver-bin
-nodePackages.vscode-html-languageserver-bin
-nodePackages.vscode-json-languageserver
-```
-
-## TODO add:
+## *TODO* add:
 - pnpm
 

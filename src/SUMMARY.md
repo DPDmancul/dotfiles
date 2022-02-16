@@ -24,6 +24,8 @@
   - [Neovim](./home/nvim/index.md)
     - [UI](./home/nvim/ui.md)
     - [Editing](./home/nvim/editing.md)
+    - [Key mappings](./home/nvim/keymap.md)
+    - [Language support](./home/nvim/lang.md)
   - [Sway (window manager)](./home/sway.md)
     - [Waybar](./home/waybar.md)
     - [Theme](./home/theme.md)
