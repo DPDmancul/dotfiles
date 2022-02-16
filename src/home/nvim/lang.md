@@ -62,19 +62,32 @@ Set completeopt to have a better completion experience
 set completeopt=menuone,noselect
 ```
 
-Install LSP servers
+Declare LSP servers
 
-```nix "home-packages" +=
-rust-analyzer
-texlab
-nodePackages.bash-language-server
-ccls
-nodePackages.pyright
-deno
-nodePackages.yaml-language-server
-nodePackages.vscode-css-languageserver-bin
-nodePackages.vscode-html-languageserver-bin
-nodePackages.vscode-json-languageserver
+```nix "lsp-servers" +=
+rust-tools = {
+  package = rust-analyzer;
+  config = { settings = { rust-analyzer =
+    { checkOnSave = { command = "clippy"; }; }; }; };
+};
+texlab = texlab;
+bashls = nodePackages.bash-language-server;
+ccls = ccls;
+pyright = nodePackages.pyright;
+denols = deno; # JS and TS
+yamlls = nodePackages.yaml-language-server;
+html = {
+  package = nodePackages.vscode-html-languageserver-bin;
+  config = { cmd = ["html-languageserver" "--stdio"]; };
+};
+cssls = {
+  package = nodePackages.vscode-css-languageserver-bin;
+  config = { cmd = ["css-languageserver" "--stdio"]; };
+};
+jsonls = {
+  package = nodePackages.vscode-json-languageserver;
+  config = { cmd = ["vscode-json-languageserver" "--stdio"]; };
+};
 ```
 
 Enable some language servers with the additional completion capabilities
@@ -97,22 +110,11 @@ offered by nvim-cmp
                    (wk.register {
                      <<<nvim-lsp-keybind>>>
                      })))
-      servers {:rust-tools {:settings {:rust-analyzer
-                                        {:checkOnSave {:command "clippy"}}}}
-               :texlab {}
-               :bashls {}
-               :ccls {}
-               :pyright {}
-               :html {:cmd ["html-languageserver" "--stdio"]}
-               :cssls {:cmd ["css-languageserver" "--stdio"]}
-               :denols {} ; JS and TS
-               :jsonls {:cmd ["vscode-json-languageserver" "--stdio"]}
-               :yamlls {}
-               }]
-  (each [lsp opt (pairs servers)]
-    (tset opt :on_attach on_attach)
-    (tset opt :capabilities capabilities)
-    ((. nvim_lsp lsp :setup) opt))
+      servers ${lsp_servers_config}]
+  (each [lsp cfg (pairs servers)]
+    (tset cfg :on_attach on_attach)
+    (tset cfg :capabilities capabilities)
+    ((. nvim_lsp lsp :setup) cfg))
 ```
 
 nvim-cmp setup

@@ -1,11 +1,33 @@
 # Neovim
 
 ```nix "home-config" +=
-programs.neovim = {
+programs.neovim = let
+  lsp_servers = {
+    <<<lsp-servers>>>
+  };
+  let
+    value_to_fennel = value:
+      if builtins.isAttrs value then
+        set_to_fennel value
+      else if builtins.isList value then
+        list_to_fennel value
+      else
+        ''"${value}"'';
+    list_to_fennel = list: "[${builtins.toString
+      (builtins.map value_to_fennel list)}]";
+    set_to_fennel = set: "{" +
+      builtins.toString (builtins.attrValues (builtins.mapAttrs
+        (name: value: ''"${name}" ${value_to_fennel value}'') set
+      )) + "}";
+  in lsp_servers_config = set_to_fennel (builtins.mapAttrs
+    (_: x: x.config or {}) lsp_servers);
+in {
   enable = false; # TODO enable
   extraConfig = ''
     <<<nvim-config>>>
   '';
+  extraPackages = builtins.map (x: x.package or x)
+    (builtins.attrValues lsp_servers);
   plugins = with pkgs.vimPlugins; let
     inherit (pkgs.vimUtils) buildVimPlugin;
   in [
