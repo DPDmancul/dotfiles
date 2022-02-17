@@ -2,10 +2,10 @@
 
 ```nix "home-config" +=
 programs.neovim = let
-  lsp_servers = {
+  lsp_servers = with pkgs; {
     <<<lsp-servers>>>
   };
-  let
+  lsp_servers_config = let
     value_to_fennel = value:
       if builtins.isAttrs value then
         set_to_fennel value
@@ -19,7 +19,7 @@ programs.neovim = let
       builtins.toString (builtins.attrValues (builtins.mapAttrs
         (name: value: ''"${name}" ${value_to_fennel value}'') set
       )) + "}";
-  in lsp_servers_config = set_to_fennel (builtins.mapAttrs
+  in set_to_fennel (builtins.mapAttrs
     (_: x: x.config or {}) lsp_servers);
 in {
   enable = false; # TODO enable
@@ -115,7 +115,7 @@ Show git signs
 {
   plugin = gitsigns-nvim;
   type = "lua";
-  config = ''require"gitsigns".setup()'');
+  config = ''require"gitsigns".setup()'';
 }
 ```
 
@@ -134,7 +134,7 @@ set spelloptions=camel  " Treat parts of camelCase words as separate words
 {
   plugin = project-nvim;
   type = "lua";
-  config = ''require"project_nvim".setup()'');
+  config = ''require"project_nvim".setup()'';
 }
 ```
 
