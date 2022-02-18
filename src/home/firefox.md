@@ -130,6 +130,12 @@ Disable tracking ads in newtab
 "browser.newtabpage.activity-stream.showSponsored" = false;
 ```
 
+Disable search suggestions
+
+```nix "firefox-settings" +=
+"browser.search.suggest.enabled" = false;
+```
+
 #### DuckDuckGo
 
 The search engine must be chosen manually.
