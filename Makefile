@@ -5,9 +5,6 @@ TIMESTAMPS := .timestamps
 BUILD := config
 DOC := book
 
-ELISP = elisp
-EMACS = emacs --batch --no-init-file
-
 all: build install doc
 
 update:
@@ -28,6 +25,7 @@ build: build-system build-home build-installation
 build-%: src/%
 	@mkdir -p $(BUILD)
 	cd $(BUILD) && lmt `find ../$</ -type f -name '*.md'`
+	sed -i "s*\$${PWD}*$$PWD*g" $(BUILD)/*
 
 
 doc:
