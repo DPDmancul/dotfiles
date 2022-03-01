@@ -24,6 +24,10 @@ Login to git remotes using keys, instead of writing the password each time
   user         = "git";
   identityFile = "~/.ssh/dpd-GitHub";
 };
+"bitbucket.org" = {
+  user         = "git";
+  identityFile = "~/.ssh/dpd-BitBucket";
+};
 ```
 
 ### AUR
