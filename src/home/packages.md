@@ -92,7 +92,7 @@ inkscape
 # TODO
 ```
 
-## Multimedia 
+## Multimedia
 
 ```nix "home-packages" +=
 mpv
@@ -165,6 +165,7 @@ ipscan
 
 ```nix "home-packages" +=
 python3
+agda
 ```
 
 ### LSP servers

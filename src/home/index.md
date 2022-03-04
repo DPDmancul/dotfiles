@@ -22,6 +22,17 @@ home.sessionVariables = {
 };
 ```
 
+## Dots utility
+
+Quickly apply dotfiles
+
+```nix "home-packages" +=
+(writeShellScriptBin "dots" ''
+  cd "${PWD}"
+  nix-shell --run "make $*"
+'')
+```
+
 ## State version
 
 **DO NOT TOUCH!**

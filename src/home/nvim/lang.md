@@ -19,6 +19,29 @@ let g:tex_flavor = 'latex'
 }
 ```
 
+## Agda
+
+```nix "nvim-plugins" +=
+{
+  plugin = (buildVimPlugin {
+    name = "agda-nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "Isti115";
+      repo = "agda.nvim";
+      rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
+      sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
+    };
+  });
+  config = ''
+    let g:agda_theme =  'light'
+    digr ZZ 8484
+    digr NN 8469
+    digr RR 8477
+  '';
+}
+```
+
+
 ## *TODO* LSP
 
 Use the power of Language Server Protocol for a better developing experience

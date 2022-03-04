@@ -6,9 +6,6 @@ programs.fish = {
   plugins = [
     <<<fish-plugins>>>
   ];
-  functions = {
-    <<<fish-functions>>>
-  };
   interactiveShellInit = ''
     <<<fish-init>>>
   '';
@@ -101,12 +98,6 @@ Use the ssh wrapper of kitty when using kitty terminal
 if test $TERM = 'xterm-kitty'
   alias ssh 'kitty +kitten ssh'
 end
-```
-
-Quickly apply dotfiles
-
-```fish "fish-functions" +=
-dots = ''cd "${PWD}"; nix-shell --run "make $argv"'';
 ```
 
 ## Prompt
