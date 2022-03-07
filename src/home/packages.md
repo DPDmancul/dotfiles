@@ -48,6 +48,7 @@ libsForQt5.okular
 diffpdf
 pdfmixtool
 xournalpp
+ocrmypdf tesseract
 # masterpdfeditor4
 ```
 
