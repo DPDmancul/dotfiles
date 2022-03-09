@@ -1,5 +1,18 @@
 # User packages
 
+<!--
+```nix "comment-home-config" +=
+nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
+  <<<home-packages-unfree>>>
+'');
+home.packages = with pkgs; ([
+  <<<home-packages>>>
+] ++ [
+  <<<home-packages-unfree>>>
+]);
+```
+-->
+
 ```nix "home-config" +=
 home.packages = with pkgs; [
   <<<home-packages>>>
@@ -22,6 +35,8 @@ gnome.file-roller
 
 ```nix "home-packages" +=
 pcmanfm
+lxmenu-data
+shared_mime_info
 ```
 
 ```nix "xdg-mime" +=
@@ -190,4 +205,15 @@ nodePackages.vscode-json-languageserver
 
 ## *TODO* add:
 - pnpm
+
+
+<!--
+## Unfree
+
+**Warning**: these packages are not FOSS and so it is not guaranteed they don't harm the system.
+
+```nix "home-packages-unfree" +=
+
+```
+ -->
 

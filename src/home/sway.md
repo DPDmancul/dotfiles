@@ -155,6 +155,12 @@ Copy (_yank_) to clipboard
 "${modifier}+x" = "exec pcmanfm";
 ```
 
+## Polkit
+
+```sh "sway-extra-config" +=
+exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+```
+
 ## Fix dbus
 
 Dbus cannot find sway and so GTK+ takes 20 seconds to start

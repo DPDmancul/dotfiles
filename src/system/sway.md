@@ -94,3 +94,9 @@ security.pam.services.swaylock = {
 };
 ```
 
+## Polkit
+
+```nix "sway-packages" +=
+polkit_gnome
+```
+

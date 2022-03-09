@@ -8,10 +8,18 @@ in {
 }
 ```
 
+## Hardware
+
 Include the results of the hardware scan
 
 ```nix "config" +=
 imports = [ /etc/nixos/hardware-configuration.nix ];
+```
+
+Enable pen tablet FOSS drivers
+
+```nix "config" +=
+hardware.opentabletdriver.enable = true;
 ```
 
 ## Timezone
