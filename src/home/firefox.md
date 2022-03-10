@@ -29,18 +29,6 @@ programs.firefox = {
 };
 ```
 
-Force Firefox to use wayland
-
-```nix "home-env" +=
-MOZ_ENABLE_WAYLAND = 1;
-```
-
-Set as default
-
-```nix "home-env" +=
-BROWSER = "firefox";
-```
-
 ## Mime
 
 ```nix "xdg-mime" +=

@@ -14,14 +14,6 @@ home.username = "dpd-";
 home.homeDirectory = "/home/dpd-";
 ```
 
-## Environment
-
-```nix "config" +=
-home.sessionVariables = {
-  <<<home-env>>>
-};
-```
-
 ## Dots utility
 
 Quickly apply dotfiles

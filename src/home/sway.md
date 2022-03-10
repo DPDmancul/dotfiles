@@ -155,45 +155,13 @@ Copy (_yank_) to clipboard
 "${modifier}+x" = "exec pcmanfm";
 ```
 
-## Polkit
+## Import environment variables
 
-```sh "sway-extra-config" +=
-exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+```nix "sway-extraconfig"
+exec dbus-update-activation-environment --systemd DISPLAY \
+  WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP \
+  QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE
 ```
 
-## Fix dbus
-
-Dbus cannot find sway and so GTK+ takes 20 seconds to start
-
-See
-- <https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start>
-- <https://github.com/nix-community/home-manager/pull/2385>
-
-Disable automatic systemd integration:
-
-```nix "home-config" +=
-wayland.windowManager.sway.systemdIntegration = false;
-```
-
-Manual enabling systemd integration:
-
-```sh "sway-extra-config" +=
-exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK && \
-     hash dbus-update-activation-environment 2>/dev/null && \
-     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK && \
-     systemctl --user start sway-session.target
-```
-
-```nix "home-config" +=
-systemd.user.targets.sway-session = {
-  Unit = {
-    Description = "sway compositor session";
-    Documentation = [ "man:systemd.special(7)" ];
-    BindsTo = [ "graphical-session.target" ];
-    Wants = [ "graphical-session-pre.target" ];
-    After = [ "graphical-session-pre.target" ];
-  };
-};
-```
 
 

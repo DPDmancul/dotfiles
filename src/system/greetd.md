@@ -5,7 +5,17 @@ Use greetd as login manager for Sway
 ```nix "config" +=
 services.greetd = {
   enable = true;
-  settings = {
+  settings = let
+    sway-run = pkgs.writeShellScript "sway-run" ''
+      export XDG_SESSION_TYPE=wayland
+      export XDG_SESSION_DESKTOP=sway
+      export XDG_CURRENT_DESKTOP=sway
+
+      source ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+
+      systemd-cat --identifier=sway dbus-run-session sway $@
+    '';
+  in {
     <<<greetd-sessions>>>
   };
 };
@@ -17,7 +27,7 @@ Run agreety as greeter
 
 ```nix "greetd-sessions" +=
 default_session = {
-  command = ''${pkgs.greetd.greetd}/bin/agreety --cmd "dbus-run-session sway"'';
+  command = "${pkgs.greetd.greetd}/bin/agreety --cmd ${sway-run}";
   user = "greeter";
 };
 ```
@@ -28,7 +38,7 @@ Start Sway without login at startup: being the drive encrypted, a password was a
 
 ```nix "greetd-sessions" +=
 initial_session = {
-  command = "dbus-run-session sway";
+  command = sway-run;
   user = "dpd-";
 };
 ```
