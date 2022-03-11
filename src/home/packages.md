@@ -180,6 +180,7 @@ ipscan
 ## Developing
 
 ```nix "home-packages" +=
+cargo rustc clippy
 python3
 agda
 ```
