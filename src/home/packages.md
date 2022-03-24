@@ -36,7 +36,7 @@ gnome.file-roller
 ```nix "home-packages" +=
 pcmanfm
 lxmenu-data
-shared_mime_info
+shared-mime-info
 ```
 
 ```nix "xdg-mime" +=
@@ -180,7 +180,7 @@ ipscan
 ## Developing
 
 ```nix "home-packages" +=
-cargo rustc clippy
+cargo rustc clippy rustfmt
 python3
 agda
 ```
