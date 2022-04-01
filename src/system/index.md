@@ -42,6 +42,17 @@ environment.sessionVariables = {
 boot.supportedFilesystems = [ "ntfs" ];
 ```
 
+## Sway
+
+Sway is configured with home-manager but must be activated also at system level to set the environment (eg. opengl, dconf, ...)
+
+```nix "config" +=
+programs.sway = {
+  enable = true;
+  wrapperFeatures.gtk = true;
+};
+```
+
 ## State version
 
 **DO NOT TOUCH!**

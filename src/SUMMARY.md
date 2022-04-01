@@ -12,10 +12,8 @@
   - [Internationalization](./system/i18n.md)
   - [Services](./system/services.md)
     - [PipeWire](./system/pipewire.md)
-    - [Login manager](./system/greetd.md)
   - [Users](./system/users.md)
   - [Packages](./system/packages.md)
-  - [Sway (window manager)](./system/sway.md)
   - [Fonts](./system/fonts.md)
 
 - [Home](./home/index.md)

@@ -17,6 +17,8 @@ users.users.dpd- = {
   extraGroups = [
     "wheel" # Enable 'sudo' for the user.
     "networkmanager"
+    "input"
+    "video"
   ];
 };
 ```

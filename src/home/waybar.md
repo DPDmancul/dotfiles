@@ -1,5 +1,7 @@
 # Waybar
 
+Use waybar instead of swaybar
+
 ```nix "sway-config" +=
 bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
 ```

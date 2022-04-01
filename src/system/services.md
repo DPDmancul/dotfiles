@@ -96,3 +96,9 @@ Just in case it could be needed remap `caps` from `right ctrl`
 ```
 -->
 
+## Backlight control
+
+```nix "config" +=
+programs.light.enable = true;
+```
+

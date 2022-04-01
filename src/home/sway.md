@@ -3,6 +3,7 @@
 ```nix "home-config" +=
 wayland.windowManager.sway = {
   enable = true;
+  wrapperFeatures.gtk = true;
   config = rec {
     <<<sway-config>>>
     keybindings = lib.mkOptionDefault {
@@ -13,6 +14,20 @@ wayland.windowManager.sway = {
     <<<sway-extra-config>>>
   '';
 };
+```
+
+```nix "env" +=
+XDG_CURRENT_DESKTOP = "sway";
+```
+
+## Auto startup
+
+```nix "home-config" +=
+programs.fish.loginShellInit = lib.mkBefore ''
+  if test (tty) = /dev/tty1
+    exec sway &> /dev/null
+  end
+'';
 ```
 
 ## Modifier key
@@ -39,8 +54,19 @@ terminal = "kitty";
 
 ## Application launcher
 
+```nix "home-packages" +=
+wofi
+```
+
 ```nix "sway-config" +=
 menu = ''wofi --show=drun -i --prompt=""'';
+```
+
+```nix "home-config" +=
+xdg.configFile."wofi/config".text = ''
+  allow_images=true # Enable icons
+  insensitive=true  # Case insensitive search
+'';
 ```
 
 ### Poweroff
@@ -103,6 +129,19 @@ services.kanshi = {
 
 ### Lock
 
+```nix "home-packages" +=
+swaylock-effects
+swayidle
+```
+
+Grant PAM access to swaylock
+
+```nix "config" +=
+security.pam.services.swaylock = {
+  text = "auth include login";
+};
+```
+
 ```nix "sway-keybind" +=
 "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
 ```
@@ -155,12 +194,52 @@ Copy (_yank_) to clipboard
 "${modifier}+x" = "exec pcmanfm";
 ```
 
+## Clipboard
+
+```nix "home-packages" +=
+wl-clipboard
+```
+
+Add clipboard support to X11 programs
+
+```nix "home-config" +=
+nixpkgs.overlays = [
+  (self: super: {
+    wl-clipboard-x11 = super.stdenv.mkDerivation rec {
+      pname = "wl-clipboard-x11";
+      version = "5";
+
+      src = super.fetchFromGitHub {
+        owner = "brunelli";
+        repo = "wl-clipboard-x11";
+        rev = "v${version}";
+        sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
+      };
+
+      dontBuild = true;
+      dontConfigure = true;
+      propagatedBuildInputs = [ super.wl-clipboard ];
+      makeFlags = [ "PREFIX=$(out)" ];
+    };
+
+    xsel = self.wl-clipboard-x11;
+    xclip = self.wl-clipboard-x11;
+  })
+];
+```
+
+## Polkit
+
+```nix "home-packages" +=
+polkit_gnome
+```
+
 ## Import environment variables
 
 ```nix "sway-extraconfig"
-exec dbus-update-activation-environment --systemd DISPLAY \
-  WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP \
-  QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE
+exec dbus-update-activation-environment WAYLAND_DISPLAY
+exec systemctl --user import-environment WAYLAND_DISPLAY
+exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
 ```
 
 
