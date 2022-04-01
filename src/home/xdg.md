@@ -15,6 +15,11 @@ Create standard user directories
 userDirs = {
   enable = true;
   createDirectories = true;
+
+  # do not create useless folders
+  desktop = "$HOME";
+  publicShare = "$HOME/.local/share/Public";
+  templates = "$HOME/.local/share/Templates";
 };
 ```
 
