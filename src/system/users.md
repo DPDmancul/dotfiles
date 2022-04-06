@@ -19,6 +19,7 @@ users.users.dpd- = {
     "networkmanager"
     "input"
     "video"
+    "kvm" # qemu
   ];
 };
 ```

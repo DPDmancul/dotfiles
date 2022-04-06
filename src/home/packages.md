@@ -132,8 +132,22 @@ rhythmbox
 
 ```nix "home-packages" +=
 audacity
-denemo
+frescobaldi
 musescore
+```
+
+Frescobaldi requires a midi synth:
+
+
+```nix "home-config" +=
+services.fluidsynth = {
+  enable = true;
+  soundService = "pipewire-pulse";
+};
+```
+
+```nix "home-packages" +=
+qsynth
 ```
 
 ### Video editing and conversion
@@ -171,6 +185,7 @@ baobab # disk usage
 tdesktop # Telegram
 simplenote
 ipscan
+qemu
 ```
 
 ```nix "xdg-mime" +=
@@ -181,6 +196,7 @@ ipscan
 
 ```nix "home-packages" +=
 cargo rustc clippy rustfmt
+gdb
 python3
 agda
 ```
