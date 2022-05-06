@@ -46,7 +46,7 @@ shared-mime-info
 ### LaTeX
 
 ```nix "home-packages" +=
-texlive.combined.scheme-medium
+texlive.combined.scheme-full
 ```
 
 ### PDF

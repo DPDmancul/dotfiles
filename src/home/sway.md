@@ -46,6 +46,12 @@ Use the European variant of the international keyboard
 input."*".xkb_layout = "eu";
 ```
 
+Enable Num Lock at startup
+
+```nix "sway-config" +=
+input."*".xkb_numlock = "enabled";
+```
+
 ## Terminal
 
 ```nix "sway-config" +=
