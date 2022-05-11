@@ -198,7 +198,7 @@ qemu
 cargo rustc clippy rustfmt
 gdb
 python3
-agda
+(agda.withPackages (p: [ p.standard-library ]))
 ```
 
 ### LSP servers
