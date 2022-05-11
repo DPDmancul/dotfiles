@@ -27,6 +27,28 @@ let g:tex_flavor = 'latex'
 ```nix "nvim-plugins" +=
 {
   plugin = (buildVimPlugin {
+    name = "agda-nvim";
+    -- requires ="nvim-lua/plenary.nvim",
+    src = pkgs.fetchFromGitHub {
+      owner = "Isti115";
+      repo = "agda.nvim";
+      rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
+      sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
+    };
+  });
+  config = ''
+    function! AgdaMapping()
+      noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
+      endfunction
+    autocmd BufWinEnter *.agda call AgdaMapping()
+    autocmd BufWinEnter *.lagda* call AgdaMapping()
+    digr ZZ 8484
+    digr NN 8469
+    digr RR 8477
+  '';
+}
+{
+  plugin = (buildVimPlugin {
     name = "vim-agda";
     src = pkgs.fetchFromGitHub {
       owner = "msuperdock";
@@ -35,21 +57,6 @@ let g:tex_flavor = 'latex'
       sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
     };
   });
-  config = ''
-    function! AgdaMapping()
-      noremap <silent> <buffer> <LocalLeader>l :call agda#load()<cr>
-      noremap <silent> <buffer> <LocalLeader>L :call agda#load()<cr> " To not clash with VimTeX
-      noremap <silent> <buffer> <LocalLeader>a :call agda#abort()<cr>
-      noremap <silent> <buffer> <LocalLeader>f :call agda#next()<cr>
-      noremap <silent> <buffer> <LocalLeader>b :call agda#previous()<cr>
-      noremap <silent> <buffer> <LocalLeader>d :call agda#infer()<cr>
-      noremap <silent> <buffer> <LocalLeader><space> :call agda#give()<cr>
-      noremap <silent> <buffer> <LocalLeader>r :call agda#refine()<cr>
-      noremap <silent> <buffer> <LocalLeader>e :call agda#context()<cr>
-    endfunction
-    autocmd BufWinEnter *.agda call AgdaMapping()
-    autocmd BufWinEnter *.lagda* call AgdaMapping()
-  '';
 }
 ```
 
