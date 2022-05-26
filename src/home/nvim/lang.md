@@ -17,7 +17,6 @@ let g:tex_flavor = 'latex'
   plugin = vimtex;
   config = ''
     let g:vimtex_view_general_viewer =  'okular'
-    let maplocalleader = ' '
   '';
 }
 ```
@@ -28,7 +27,6 @@ let g:tex_flavor = 'latex'
 {
   plugin = (buildVimPlugin {
     name = "agda-nvim";
-    # requires ="nvim-lua/plenary.nvim",
     src = pkgs.fetchFromGitHub {
       owner = "Isti115";
       repo = "agda.nvim";
@@ -37,9 +35,10 @@ let g:tex_flavor = 'latex'
     };
   });
   config = ''
+    let g:agda_theme = "light"
     function! AgdaMapping()
       noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
-      endfunction
+    endfunction
     autocmd BufWinEnter *.agda call AgdaMapping()
     autocmd BufWinEnter *.lagda* call AgdaMapping()
     digr ZZ 8484
