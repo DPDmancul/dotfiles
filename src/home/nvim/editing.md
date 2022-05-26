@@ -50,12 +50,12 @@ Use `f` and `t` across lines
 
 ```nix "nvim-plugins" +=
 (buildVimPlugin {
-  name = "vim-improvedft";
+  name = "vim-fanfingtastic";
   src = pkgs.fetchFromGitHub {
-    owner = "chrisbra";
-    repo = "improvedft";
-    rev = "1f0b78b55ba5fca70db0f584d8b5e56a35fd26f6";
-    sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
+    owner = "dahu";
+    repo = "vim-fanfingtastic";
+    rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+    sha256 = "sha256-wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
   };
 })
 ```
@@ -111,7 +111,7 @@ Do syntax highlighting via treesitter
 nvim-ts-rainbow
 {
   plugin = nvim-treesitter;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<treesitter-config>>>
   '';
@@ -120,18 +120,23 @@ nvim-ts-rainbow
 
 Enable all maintained languages
 
-```lisp "treesitter-config" +=
-((. (require :nvim-treesitter.configs) :setup)
-  {:ensure_installed "maintained"
-   :highlight {:enable true
-               :additional_vim_regex_highlighting true}
-   :incremental_selection {:enable true}
-   :indentation {:enable true}
-   :folding {:enable true}
-   ;; rainbow parenthesis match
-   :rainbow {:enable true
-             :extended_mode true ; Also highlight non-bracket delimiters
-             :max_file_lines nil}})
+```lua "treesitter-config" +=
+require"nvim-treesitter.configs".setup {
+  ensure_installed = "all",
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = true
+  },
+  incremental_selection = { enable = true },
+  indentation = { enable = true },
+  folding = { enable = true },
+  -- rainbow parenthesis match
+  rainbow = {
+    enable = true,
+    extended_mode = true, -- Also highlight non-bracket delimiters
+    max_file_lines = nil
+  }
+}
 ```
 
 Show color of colors

@@ -95,7 +95,7 @@ dconf.settings."org/gnome/desktop/interface" = {
 ## Cursors
 
 ```nix "home-config" +=
-xsession.pointerCursor = {
+home.pointerCursor = {
   name = "Bibata-Modern-Classic";
   package = pkgs.bibata-cursors;
   size = 24;

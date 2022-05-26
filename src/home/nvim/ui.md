@@ -57,29 +57,43 @@ indentation size and type.
 lualine-lsp-progress
 {
   plugin = lualine-nvim;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<lualine-config>>>
   '';
 }
 ```
-```lisp "lualine-config" +=
-((. (require :lualine) :setup)
-  {:options {:section_separators { :left "" :right "" }
-             :component_separators { :left "|" :right "|"}
-             }
-   :sections {:lualine_c ["filename"
-                          "lsp_progress"
-                          ]
-              :lualine_x ["encoding"
-                          "fileformat"
-                          (fn []
-                            (if vim.o.expandtab
-                              (.. vim.o.shiftwidth " ␣")
-                              (.. vim.o.tabstop " ↹")))
-                          "filetype"
-                          ]
-              }})
+```lua "lualine-config" +=
+require"lualine".setup {
+  options = {
+    section_separators = {
+      left = "",
+      right = ""
+    },
+    component_separators = {
+       left = "|",
+       right = "|"
+    },
+  },
+  sections = {
+    lualine_c = {
+      "filename",
+      "lsp_progress"
+    },
+    lualine_x = {
+      "encoding",
+      "fileformat",
+      function ()
+        if vim.o.expandtab then
+          return vim.o.shiftwidth .. " ␣"
+        else
+          return vim.o.tabstop .. " ↹"
+        end
+      end,
+      "filetype"
+    }
+  }
+}
 ```
 
 Hide mode: it is already visible in lualine 
@@ -95,20 +109,26 @@ set noshowmode
 ```nix "nvim-plugins" +=
 {
   plugin = bufferline-nvim;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<bufferline-config>>>
   '';
 }
 ```
-```lisp "bufferline-config" +=
-((. (require :bufferline) :setup)
-  {:options {:right_mouse_command nil
-             :middle_mouse_command "bdelete! %d"
-             :show_close_icon false
-             :offsets [{:filetype "NvimTree"
-                        :text vim.fn.getcwd}
-                       ]}})
+```lua "bufferline-config" +=
+require"bufferline".setup {
+  options = {
+    right_mouse_command = nil,
+    middle_mouse_command = "bdelete! %d",
+    show_close_icon = false,
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = vim.fn.getcwd
+      }
+    }
+  }
+}
 ```
 
 ## Command and search completion
@@ -120,56 +140,40 @@ set noshowmode
 }
 ```
 
-## *TODO* sidebar dir tree
-
-TODO fix: <https://github.com/kyazdani42/nvim-tree.lua/issues/793#issuecomment-985880207>
-
-```nix "nvim-plugins" +=
-{
-  plugin = nvim-tree-lua;
-  type = "fennel";
-  config = ''
-    <<<nvim-tree-config>>>
-  '';
-}
-```
-```lisp "nvim-tree-config" +=
-((. (require :nvim-tree) :setup)
-  {:disable_netrw false ; for scp
-   :hijack_netrw false
-   :view {:auto_resize true
-          :side "left"
-          }})
-```
-
 ## Toggle terminal
 
 ```nix "nvim-plugins" +=
 {
   plugin = toggleterm-nvim;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<toggleterm-config>>>
   '';
 }
 ```
-```lisp "toggleterm-config" +=
-((. (require :toggleterm) :setup)
-  {:open_mapping :<c-\>
-   :shade_terminals false})
+```lua "toggleterm-config" +=
+require"toggleterm".setup {
+  open_mapping = [[<c-\>]],
+  shade_terminals = false
+}
 
-(fn _G.set_terminal_keymaps []
-  (each [from to (pairs {:<esc> :<C-\><C-n>
-                         :<C-w> :<C-\><C-n><C-W>
-                         :<C-h> :<C-\><C-n><C-W>h
-                         :<C-j> :<C-\><C-n><C-W>j
-                         :<C-k> :<C-\><C-n><C-W>k
-                         :<C-l> :<C-\><C-n><C-W>l
-                         })]
-    (vim.api.nvim_buf_set_keymap 0 "t" from to
-                                 {:noremap true :silent true})))
+function _G.set_terminal_keymaps ()
+  for from,to in pairs {
+    ["<esc>"] = [[<C-\><C-n>]],
+    ["<C-w>"] = [[<C-\><C-n><C-W>]],
+    ["<C-h>"] = [[<C-\><C-n><C-W>h]],
+    ["<C-j>"] = [[<C-\><C-n><C-W>j]],
+    ["<C-k>"] = [[<C-\><C-n><C-W>k]],
+    ["<C-l>"] = [[<C-\><C-n><C-W>l]]
+  } do
+    vim.api.nvim_buf_set_keymap(0, "t", from, to, {
+      noremap = true,
+      silent = true
+    })
+  end
+end
 
-(vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()")
+vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 ```
 
 ## Smooth scroll

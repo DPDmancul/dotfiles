@@ -6,23 +6,23 @@ programs.neovim = let
     <<<lsp-servers>>>
   };
   lsp_servers_config = let
-    value_to_fennel = value:
+    value_to_lua = value:
       if builtins.isAttrs value then
-        set_to_fennel value
+        set_to_lua value
       else if builtins.isList value then
-        list_to_fennel value
+        list_to_lua value
       else
         ''"${value}"'';
-    list_to_fennel = list: "[${builtins.toString
-      (builtins.map value_to_fennel list)}]";
-    set_to_fennel = set: "{" +
+    list_to_lua = list: "{" + builtins.toString
+      (builtins.map (e: value_to_lua e + ", ") list) + "}";
+    set_to_lua = set: "{" +
       builtins.toString (builtins.attrValues (builtins.mapAttrs
-        (name: value: ''"${name}" ${value_to_fennel value}'') set
+        (name: value: ''["${name}"] = ${value_to_lua value},'') set
       )) + "}";
-  in set_to_fennel (builtins.mapAttrs
+  in set_to_lua (builtins.mapAttrs
     (_: x: x.config or {}) lsp_servers);
 in {
-  enable = false; # TODO enable
+  enable = true;
   extraConfig = ''
     <<<nvim-config>>>
   '';
@@ -69,22 +69,21 @@ Use telescope as fuzzy finder
 telescope-file-browser-nvim
 telescope-fzf-native-nvim
 telescope-symbols-nvim
-telescope-termfinder
+# telescope-termfinder
 {
   plugin = telescope-nvim;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<telescope-config>>>
   '';
 }
 ```
-```lisp "telescope-config" +=
-(let [telescope (require :telescope)]
-  (each [_ ext (ipairs ["file_browser"
-                        "projects"
-                        "fzf"
-                        "termfinder"])]
-    (telescope.load_extension ext)))
+```lua "telescope-config" +=
+local telescope = require "telescope"
+telescope.load_extension("file_browser")
+telescope.load_extension("projects")
+telescope.load_extension("fzf")
+telescope.load_extension("termfinder")
 ```
 
 ## Git

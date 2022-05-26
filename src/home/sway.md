@@ -137,7 +137,6 @@ services.kanshi = {
 
 ```nix "home-packages" +=
 swaylock-effects
-swayidle
 ```
 
 Grant PAM access to swaylock
@@ -154,9 +153,7 @@ security.pam.services.swaylock = {
 
 ### Idle
 
-TODO
-
-```nix "home-config-TODO" +=
+```nix "home-config" +=
 services.swayidle = {
   enable = true;
   timeouts = [{

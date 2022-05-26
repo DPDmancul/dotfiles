@@ -28,12 +28,12 @@ let g:tex_flavor = 'latex'
 {
   plugin = (buildVimPlugin {
     name = "agda-nvim";
-    -- requires ="nvim-lua/plenary.nvim",
+    # requires ="nvim-lua/plenary.nvim",
     src = pkgs.fetchFromGitHub {
       owner = "Isti115";
       repo = "agda.nvim";
       rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-      sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
+      sha256 = "sha256-c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
     };
   });
   config = ''
@@ -45,6 +45,7 @@ let g:tex_flavor = 'latex'
     digr ZZ 8484
     digr NN 8469
     digr RR 8477
+    digr FF 120125
   '';
 }
 {
@@ -53,15 +54,15 @@ let g:tex_flavor = 'latex'
     src = pkgs.fetchFromGitHub {
       owner = "msuperdock";
       repo = "vim-agda";
-      rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-      sha256 = "10l01a8xaivz6n01x6hzfx7gd0igd0wcf9ril0sllqzbq7yx2bbk";
+      rev = "1695060850b5991e8aded0861fae0c31877950a7";
+      sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
     };
   });
 }
 ```
 
 
-## *TODO* LSP
+## LSP
 
 Use the power of Language Server Protocol for a better developing experience
 
@@ -91,7 +92,7 @@ luasnip
 rust-tools-nvim
 {
   plugin = nvim-lspconfig;
-  type = "fennel";
+  type = "lua";
   config = ''
     <<<lsp-config>>>
   '';
@@ -135,70 +136,81 @@ jsonls = {
 Enable some language servers with the additional completion capabilities
 offered by nvim-cmp
 
-```lisp "lsp-config" +=
-(let [nvim_lsp (require :lspconfig)
-      capabilities (. (require :cmp_nvim_lsp)
-                      :update_capabilities
-                      (vim.lsp.protocol.make_client_capabilities))
-      on_attach (fn [client bufnr]
-                  (let [wk (require :which-key)
-                        map (fn [from to ...]
-                              {1 from
-                               2 to
-                               ...
-                               :buffer bufnr
-                               :noremap true
-                               :silent true})]
-                   (wk.register {
-                     <<<nvim-lsp-keybind>>>
-                     })))
-      servers ${lsp_servers_config}]
-  (each [lsp cfg (pairs servers)]
-    (tset cfg :on_attach on_attach)
-    (tset cfg :capabilities capabilities)
-    ((. nvim_lsp lsp :setup) cfg))
+```lua "lsp-config" +=
+local nvim_lsp = require "lspconfig"
+local capabilities = require"cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local on_attach = function (client, bufnr)
+  local wk = require "which-key"
+  local map = function (from, to, ...)
+    return {
+      from, to, ...,
+      buffer = bufnr,
+      noremap = true,
+      silent = true
+    }
+  end
+  wk.register {
+   <<<nvim-lsp-keybind>>>
+  }
+end
+local servers = ${lsp_servers_config}
+
+for lsp,cfg in pairs(servers) do
+  cfg.on_attach = on_attach
+  cfg.capabilities = capabilities
+  if lsp == "rust-tools" then
+    require"rust-tools".setup { server = cfg }
+  else
+    nvim_lsp[lsp].setup = cfg
+  end
+end
 ```
 
 nvim-cmp setup
 
-```lisp "lsp-config" +=
-(let [cmp (require :cmp)
-      luasnip (require :luasnip)]
-  (cmp.setup 
-    {:snippet {:expand (fn [args]
-                        (luasnip.lsp_expand args.body))}
-     :mapping {:<C-p> (cmp.mapping.select_prev_item)
-               :<C-n> (cmp.mapping.select_next_item)
-               :<C-u> (cmp.mapping.scroll_docs -4)
-               :<C-d> (cmp.mapping.scroll_docs 4)
-               :<C-Space> (cmp.mapping.complete)
-               :<C-e> (cmp.mapping.close)
-               :<CR> (cmp.mapping.confirm
-                      {:behavior cmp.ConfirmBehavior.Replace
-                       :select true})
-               :<Tab> (fn [fallback]
-                        (if (cmp.visible)
-                            (cmp.select_next_item)
-                            ; elseif
-                            (luasnip.expand_or_jumpable)
-                            (vim.fn.feedkeys
-                              (vim.api.nvim_replace_termcodes
-                                "<Plug>luasnip-expand-or-jump"
-                                true true true) "")
-                            ; else
-                            (fallback)))
-               :<S-Tab> (fn [fallback]
-                          (if (cmp.visible)
-                              (cmp.select_prev_item)
-                              ; elseif
-                              (luasnip.jumpable -1)
-                              (vim.fn.feedkeys 
-                                (vim.api.nvim_replace_termcodes 
-                                  "<Plug>luasnip-jump-prev"
-                                  true true true) "")
-                              ; else
-                              (fallback)))}
-     :sources [{:name "nvim_lsp"}
-               {:name "luasnip"}]}))
+```lua "lsp-config" +=
+local cmp = require "cmp"
+local luasnip = require "luasnip"
+cmp.setup {
+  snippet = {
+    expand = function (args)
+      luasnip.lsp_expand(args.body())
+    end
+  },
+  mapping = {
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-e>"] = cmp.mapping.close(),
+    ["<CR>"] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true
+    },
+    ["<Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+      else
+        fallback()
+      end
+    end,
+    ["<S-Tab>"] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+      else
+        fallback()
+      end
+    end
+  },  
+  sources = {
+    { name = "nvim_lsp" },
+    { name = "luasnip" }
+  }
+}
 ```
 
