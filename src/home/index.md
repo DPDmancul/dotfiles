@@ -2,7 +2,9 @@
 
 ```nix home.nix
 { config, pkgs, lib, ... }:
-{
+let
+  <<<home-let>>>
+in {
   <<<home-config>>>
 }
 ```

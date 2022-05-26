@@ -23,20 +23,31 @@ gaps.smartBorders = "on";
 
 Use wpaperd for random backgrounds
 
-```nix "home-packages" +=
-(rustPlatform.buildRustPackage rec {
+```nix "home-let" +=
+wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
   pname = "wpaperd";
   version = "0.1.0";
 
   src = fetchFromGitHub {
-    owner = "DPDmancul";
-    repo = "wpaperd-no-nightly";
-    rev = "81a17ea424c96b1e6b2eba2a12e0396c5b7f7eda";
-    sha256 = "DUMuCWwSECoONeaCCi7u1ubzngFjOpo9gnPLvc00zh0=";
+    owner = "danyspin97";
+    repo = pname;
+    rev = "89f32c907386af58587df46c10784ab4f17ed31e";
+    sha256 = "sha256-n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
   };
 
-  cargoSha256 = "SssN6cFSRDKt6MSyeeOwv31zXQHRdGVbjHf5Bd5d4l4=";
-})
+  nativeBuildInputs = [
+    pkg-config
+  ];
+  buildInputs = [
+    libxkbcommon
+  ];
+
+  cargoSha256 = "sha256-xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
+};
+```
+
+```nix "home-packages" +=
+wpaperd
 ```
 
 ```nix "home-config" +=
@@ -47,16 +58,8 @@ xdg.configFile."wpaperd/output.conf".text = ''
 '';
 ```
 
-TODO: wpaperd cannot find libwayland
-
 ```sh "sway-extra-config" +=
-# exec {pkgs.wpaperd}/bin/wpaperd
-```
-
-Temporary "fix"
-
-```nix "sway-config" +=
-output."*".bg = ''`find ~/Pictures/Wallpapers/ -type f | shuf -n 1` fill'';
+exec ${wpaperd}/bin/wpaperd
 ```
 
 ## Qt as GTK
