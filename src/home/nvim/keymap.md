@@ -81,7 +81,7 @@ g = {
 r = {
   name = "Reload",
   r = map ("<cmd>e<cr>", "File"),
-  c = map ("<cmd>source ~/.config/nvim/init.lua<cr>", "Config"),
+  c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
 },
 ```
 
@@ -114,16 +114,16 @@ k = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
     l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
   },
   D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
-  r =n(map() "<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
+  r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
   c = {
     name = "Code",
     a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
     f = map ("<cmd>lua vim.lsp.buf.formatting()<CR>", "Format buffer")
   },
-  e = map ("<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", "Show line diagnostics"),
-  q = map ("<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", "Set loclist")
+  e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
+  q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
 },
-["[d"] = map ("<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", "Go to previous"),
-["]d"] = map ("<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", "Go to next"),
+["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
+["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
 ```
 
