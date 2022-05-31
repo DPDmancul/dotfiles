@@ -102,3 +102,9 @@ Just in case it could be needed remap `caps` from `right ctrl`
 programs.light.enable = true;
 ```
 
+## ADB
+
+```nix "config" +=
+programs.adb.enable = true;
+```
+

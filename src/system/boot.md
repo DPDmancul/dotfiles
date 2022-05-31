@@ -4,7 +4,12 @@ Use systemd-boot EFI bootloader
 
 ```nix "config" +=
 boot.loader = {
-  systemd-boot.enable = true;
+  systemd-boot = {
+    enable = true;
+    # Remove old generation profiles to avoid
+    # have a full boot partition
+    configurationLimit = 10; 
+  };
   efi.canTouchEfiVariables = true;
 };
 ```

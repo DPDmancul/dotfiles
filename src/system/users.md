@@ -20,6 +20,7 @@ users.users.dpd- = {
     "input"
     "video"
     "kvm" # qemu
+    "adbusers" # adb
   ];
 };
 ```
