@@ -1,5 +1,6 @@
 .PHONY: all update build doc unlock clean
 .PHONY: install install-system install-home
+.PHONY: optimize collect-garbage defrag
 
 TIMESTAMPS := .timestamps
 BUILD := config
@@ -19,13 +20,25 @@ install-system: build-system
 install-home: build-home
 	home-manager switch -f "$(BUILD)/home.nix"
 
+optimise:
+	nix store optimise --extra-experimental-features nix-command
+
+collect-garbage:
+	sudo nix-collect-garbage --delete-older-than 30d
+	$(MAKE) install-system # update the set of boot entries
+
+defrag:
+	sudo mount -o remount rw /nix/store/
+	sudo btrfs fi defrag -v -r /
+	sudo btrfs balance start -dusage=20 /
+	sudo mount -o remount ro /nix/store/
+
 
 build: build-system build-home build-installation
 
 build-%: src/%
 	@mkdir -p $(BUILD)
 	cd $(BUILD) && lmt `find ../$</ -type f -name '*.md'`
-	sed -i "s*\$${PWD}*$$PWD*g" $(BUILD)/*
 
 
 doc:

@@ -16,6 +16,12 @@ Include the results of the hardware scan
 imports = [ /etc/nixos/hardware-configuration.nix ];
 ```
 
+Enable BTRFS compression
+
+```nix "config" +=
+fileSystems."/".options = [ "compress=zstd" "noatime" ];
+```
+
 Enable pen tablet FOSS drivers
 
 ```nix "config" +=
@@ -40,6 +46,14 @@ environment.sessionVariables = {
 
 ```nix "config" +=
 boot.supportedFilesystems = [ "ntfs" ];
+```
+
+## Optimise Nix store
+
+Automatically de-duplicate for newer derivations
+
+```nix "config" +=
+nix.autoOptimiseStore = true;
 ```
 
 ## Sway

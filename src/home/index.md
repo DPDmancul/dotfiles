@@ -22,7 +22,7 @@ Quickly apply dotfiles
 
 ```nix "home-packages" +=
 (writeShellScriptBin "dots" ''
-  cd "${PWD}"
+  cd "${toString ../.}"
   nix-shell --run "make $*"
 '')
 ```

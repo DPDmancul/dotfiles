@@ -38,13 +38,16 @@ set conceallevel=2
 
 ## Theme
 
-Use Gruvbox theme 
+Use Gruvbox light theme 
 
 ```nix "nvim-plugins" +=
 lush-nvim
 {
   plugin = gruvbox-nvim;
-  config = "colorscheme gruvbox";
+  config = ''
+    set background=light
+    colorscheme gruvbox
+  '';
 }
 ```
 

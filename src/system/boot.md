@@ -8,7 +8,7 @@ boot.loader = {
     enable = true;
     # Remove old generation profiles to avoid
     # have a full boot partition
-    configurationLimit = 10; 
+    configurationLimit = 20;
   };
   efi.canTouchEfiVariables = true;
 };
