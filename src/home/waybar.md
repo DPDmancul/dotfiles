@@ -60,9 +60,10 @@ modules-right = [
 
 ```nix "waybar-bar-settings" +=
 clock = {
-  tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+  tooltip-format = "{: %H:%M:%S\n %Y/%m/%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
   format = "{:%H:%M}";
-  format-alt = "{:%Y/%m/%d}";
+  format-alt = "{:%H:%M:%S}";
+  interval = 1;
 };
 ```
 
@@ -137,8 +138,8 @@ battery = {
 idle_inhibitor = {
   format = "{icon}";
   format-icons = {
-    activated = "鈴";
-    deactivated = "零";
+    deactivated = "鈴";
+    activated = "零";
   };
 };
 ```

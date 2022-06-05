@@ -231,6 +231,22 @@ nixpkgs.overlays = [
 ];
 ```
 
+## Floating windows
+
+Enable floating by default for some applications
+
+```nix "sway-config" +=
+floating.criteria = [
+  { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+  { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+  { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+  { app_id = "file-roller"; title = "Extract"; }
+  { app_id = "file-roller"; title = "Compress"; }
+  { class = "Pavucontrol"; }
+  { app_id = "qalculate-gtk"; }
+];
+```
+
 ## Polkit
 
 ```nix "home-packages" +=

@@ -179,6 +179,7 @@ qbittorrent
 ## Utilities
 
 ```nix "home-packages" +=
+qalculate-gtk
 sqlitebrowser
 gnome.gnome-disk-utility
 baobab # disk usage
