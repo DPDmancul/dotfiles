@@ -88,3 +88,12 @@ tab_bar_style       = "powerline";
 tab_powerline_style = "slanted";
 ```
 
+## Ask closing
+
+Ask before closing only if there are at least two **active** tabs opened
+
+```nix "kitty-settings" +=
+confirm_os_window_close = -2;
+```
+
+
