@@ -117,6 +117,10 @@ bashls = nodePackages.bash-language-server;
 ccls = ccls;
 pyright = nodePackages.pyright;
 denols = deno; # JS and TS
+jdtls  = {
+  package = jdt-language-server; # Java
+  config = { cmd = ["jdt-language-server"]; };
+};
 yamlls = nodePackages.yaml-language-server;
 html = {
   package = nodePackages.vscode-html-languageserver-bin;
@@ -160,7 +164,7 @@ for lsp,cfg in pairs(servers) do
   if lsp == "rust-tools" then
     require"rust-tools".setup { server = cfg }
   else
-    nvim_lsp[lsp].setup = cfg
+    nvim_lsp[lsp].setup(cfg)
   end
 end
 ```
