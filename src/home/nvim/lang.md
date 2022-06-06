@@ -119,7 +119,7 @@ pyright = nodePackages.pyright;
 denols = deno; # JS and TS
 jdtls  = {
   package = jdt-language-server; # Java
-  config = { cmd = ["jdt-language-server"]; };
+  config = { cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"]; };
 };
 yamlls = nodePackages.yaml-language-server;
 html = {
