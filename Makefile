@@ -24,7 +24,8 @@ optimise:
 	nix store optimise --extra-experimental-features nix-command
 
 collect-garbage:
-	sudo nix-collect-garbage --delete-older-than 30d
+	home-manager expire-generations "-30 days"
+	sudo nix-collect-garbage --delete-older-than 90d
 	$(MAKE) install-system # update the set of boot entries
 
 defrag:

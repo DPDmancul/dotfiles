@@ -138,7 +138,6 @@ musescore
 
 Frescobaldi requires a midi synth:
 
-
 ```nix "home-config" +=
 services.fluidsynth = {
   enable = true;
