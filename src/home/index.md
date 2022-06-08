@@ -27,6 +27,12 @@ Quickly apply dotfiles
 '')
 ```
 
+## OpenTabletDriver config
+
+```nix "home-config" +=
+xdg.configFile."OpenTabletDriver/settings.json".source = ../src/tablet.json;
+```
+
 ## State version
 
 **DO NOT TOUCH!**

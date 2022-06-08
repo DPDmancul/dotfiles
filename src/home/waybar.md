@@ -215,8 +215,8 @@ tooltip label {
 #network {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 12px;
   margin-bottom: 0px;
   transition: none;
   background: #bd93f9;
@@ -225,8 +225,8 @@ tooltip label {
 #pulseaudio {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 12px;
   margin-bottom: 0px;
   transition: none;
   color: #1A1826;
@@ -236,8 +236,8 @@ tooltip label {
 #battery {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 12px;
   margin-bottom: 0px;
   transition: none;
   background: #B5E8E0;
@@ -266,7 +266,7 @@ tooltip label {
 #temperature {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
+  padding-left: 8px;
   padding-right: 10px;
   margin-bottom: 0px;
   transition: none;
@@ -287,18 +287,18 @@ tooltip label {
 #memory {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
+  padding-left: 8px;
+  padding-right: 12px;
   margin-bottom: 0px;
-  padding-right: 10px;
   transition: none;
   background: #DDB6F2;
 }
 #cpu {
   margin-top: 3px;
   margin-left: 4px;
-  padding-left: 10px;
+  padding-left: 8px;
+  padding-right: 12px;
   margin-bottom: 0px;
-  padding-right: 10px;
   transition: none;
   background: #96CDFB;
 }

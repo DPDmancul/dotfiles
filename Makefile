@@ -18,7 +18,7 @@ install-system: build-system
 	sudo nixos-rebuild switch -I nixos-config="./$(BUILD)/configuration.nix"
 
 install-home: build-home
-	home-manager switch -f "$(BUILD)/home.nix"
+	home-manager switch -b bak -f "$(BUILD)/home.nix"
 
 optimise:
 	nix store optimise --extra-experimental-features nix-command
