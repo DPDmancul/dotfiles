@@ -93,7 +93,7 @@ pulseaudio = {
 
 ```nix "waybar-bar-settings" +=
 cpu = {
-  format = "{}% ";
+  format = "{usage}% ";
 };
 memory = {
   format = "{}% ";
