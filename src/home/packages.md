@@ -79,7 +79,6 @@ jmtpfs # For kindle
 ```nix "home-packages" +=
 pavucontrol # audio
 pamixer
-blueman     # bluetooth
 wdisplays   # screen
 ```
 

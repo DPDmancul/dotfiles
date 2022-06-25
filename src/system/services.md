@@ -8,6 +8,13 @@ Required by many other services (e.g. `xdg-desktop-portal`)
 services.dbus.enable = true;
 ```
 
+## Bluetooth
+
+```nix "config" +=
+hardware.bluetooth.enable = true;
+services.blueman.enable = true;
+```
+
 ## Virtual filesystems
 
 ```nix "config" +=
