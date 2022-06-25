@@ -144,6 +144,8 @@ services.fluidsynth = {
   enable = true;
   soundService = "pipewire-pulse";
 };
+# disable autostart to save RAM
+systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
 ```
 
 ```nix "home-packages" +=

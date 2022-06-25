@@ -20,7 +20,8 @@ Per-interface useDHCP will be mandatory in the future, so this config replicates
 
 ```nix "config" +=
 networking.useDHCP = false;
-networking.interfaces.wlp2s0.useDHCP = true;
+networking.interfaces.enp7s0.useDHCP = true;
+networking.interfaces.wlp6s0.useDHCP = true;
 ```
 
 ## WiFi key drivers
