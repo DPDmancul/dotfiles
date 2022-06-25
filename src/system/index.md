@@ -64,6 +64,7 @@ Sway is configured with home-manager but must be activated also at system level 
 programs.sway = {
   enable = true;
   wrapperFeatures.gtk = true;
+  extraPackages = [];
 };
 ```
 
