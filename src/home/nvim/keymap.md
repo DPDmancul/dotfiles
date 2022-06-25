@@ -60,7 +60,7 @@ f = {
     end, "Sessions"),
   e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
   t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-  ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+  -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
   [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
   a = map ("<cmd>Telescope<cr>", "All telescopes"),
 },
