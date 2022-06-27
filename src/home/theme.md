@@ -53,7 +53,7 @@ wpaperd
 ```nix "home-config" +=
 xdg.configFile."wpaperd/output.conf".text = ''
   [default]
-  path = "/home/dpd-/Pictures/Wallpapers/"
+  path = "${toString ../wallpapers}"
   duration = "1m"
 '';
 ```

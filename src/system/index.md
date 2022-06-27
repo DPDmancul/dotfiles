@@ -14,6 +14,11 @@ Include the results of the hardware scan
 
 ```nix "config" +=
 imports = [ /etc/nixos/hardware-configuration.nix ];
+
+fileSystems."/home/dpd-/datos" = { 
+  device = "/dev/sda2";
+  fsType = "ext4";
+};
 ```
 
 Enable BTRFS compression
