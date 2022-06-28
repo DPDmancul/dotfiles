@@ -97,8 +97,7 @@ imv
 
 ```nix "home-packages" +=
 gimp
-drawing
-# kolourpaint
+kolourpaint
 inkscape
 ```
 
