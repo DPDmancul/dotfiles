@@ -104,7 +104,7 @@ g = {
   i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
   r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
 },
-k = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
+["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
 ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
 ["<leader>"] = {
   w = {

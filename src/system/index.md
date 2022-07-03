@@ -16,7 +16,7 @@ Include the results of the hardware scan
 imports = [ /etc/nixos/hardware-configuration.nix ];
 
 fileSystems."/home/dpd-/datos" = { 
-  device = "/dev/sda2";
+  device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
   fsType = "ext4";
 };
 ```
@@ -25,6 +25,12 @@ Enable BTRFS compression
 
 ```nix "config" +=
 fileSystems."/".options = [ "compress=zstd" "noatime" ];
+```
+
+Disable emergency mode to avoid get stuck if a partition fails to mount
+
+```nix "config" +=
+systemd.enableEmergencyMode = false;
 ```
 
 Enable pen tablet FOSS drivers
