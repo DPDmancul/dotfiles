@@ -23,12 +23,31 @@ home.packages = with pkgs; [
 
 ```nix "home-packages" +=
 libreoffice
-gnome.file-roller
 ```
 
 ```nix "xdg-mime" +=
-(subtypes "application" "org.gnome.FileRoller.desktop"
-  ["zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+(subtypes "application" "libreoffice.desktop"
+  [
+    "vnd.oasis.opendocument.text"
+    "vnd.oasis.opendocument.spreadsheet"
+    "vnd.oasis.opendocument.presentation"
+    "vnd.oasis.opendocument.graphics"
+    "vnd.oasis.opendocument.chart"
+    "vnd.oasis.opendocument.formula"
+    "vnd.oasis.opendocument.image"
+    "vnd.oasis.opendocument.text-master"
+    "vnd.sun.xml.base"
+    "vnd.oasis.opendocument.base"
+    "vnd.oasis.opendocument.database"
+    "vnd.oasis.opendocument.text-template"
+    "vnd.oasis.opendocument.spreadsheet-template"
+    "vnd.oasis.opendocument.presentation-template"
+    "vnd.oasis.opendocument.graphics-template"
+    "vnd.oasis.opendocument.chart-template"
+    "vnd.oasis.opendocument.formula-template"
+    "vnd.oasis.opendocument.image-template"
+    "vnd.oasis.opendocument.text-web"
+  ])
 ```
 
 ### File manager
@@ -41,6 +60,28 @@ shared-mime-info
 
 ```nix "xdg-mime" +=
 { "inode/directory" = "pcmanfm.desktop"; }
+```
+
+### Archive manager
+
+File roller, when needing a terminal, doesn't look for kitty.
+So we trick it wrapping kitty as gnome-terminal.
+
+```nix "home-packages" +=
+(symlinkJoin {
+  name = "file-roller";
+  paths = [ gnome.file-roller ];
+  buildInputs = [ makeWrapper ];
+  postBuild = ''
+    wrapProgram $out/bin/file-roller \
+      --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+  '';
+})
+```
+
+```nix "xdg-mime" +=
+(subtypes "application" "org.gnome.FileRoller.desktop"
+  [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
 ```
 
 ### LaTeX
