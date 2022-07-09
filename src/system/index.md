@@ -8,6 +8,15 @@ in {
 }
 ```
 
+## Enable flakes
+
+```nix "config" +=
+nix.package = pkgs.nixUnstable;
+nix.extraOptions = ''
+  experimental-features = nix-command flakes
+'';
+```
+
 ## Hardware
 
 Include the results of the hardware scan
@@ -64,7 +73,7 @@ boot.supportedFilesystems = [ "ntfs" ];
 Automatically de-duplicate for newer derivations
 
 ```nix "config" +=
-nix.autoOptimiseStore = true;
+nix.settings.auto-optimise-store = true;
 ```
 
 ## Sway

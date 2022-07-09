@@ -154,6 +154,20 @@ Nix expression language highlighting
 vim-nix
 ```
 
+## Undo tree
+
+Better undo exploring the tree of all changes
+
+```nix "nvim-plugins" +=
+undotree
+```
+
+Add keymap
+
+```lua "nvim-keybind" +=
+u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+```
+
 ## *TODO* Format
 
 ### List formatting
