@@ -1,12 +1,8 @@
 { pkgs ? import <nixpkgs> {} }:
 let
-  home-manager = import (
-    builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz"
-  ) { inherit pkgs; };
-in pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [
-    gnumake
-    git-crypt
+  flake-shell = import ./flake/shell.nix { inherit pkgs; };
+in flake-shell.overrideAttrs (oldAttrs: {
+  nativeBuildInputs = with pkgs; oldAttrs.nativeBuildInputs ++ [
     mdbook
     (buildGoPackage rec {
       pname = "lmt";
@@ -25,6 +21,6 @@ in pkgs.mkShell {
         mv $out/bin/main $out/bin/lmt
       '';
     })
-    home-manager.home-manager
   ];
-}
+})
+
