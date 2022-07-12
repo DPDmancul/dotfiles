@@ -1,7 +1,7 @@
 # dotfiles
 
 <center>
-  <img width="200px" src="img/icon.png" />
+  <img width="200px" src="https://gitlab.com/DPDmancul/dotfiles/-/raw/nix/img/icon.png" />
 </center>
 
 My dotfiles for NixOS and the Nix package manager, written as a flake.
