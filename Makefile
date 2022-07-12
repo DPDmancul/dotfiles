@@ -11,8 +11,7 @@ all: build install doc
 	cd $(BUILD) && $(MAKE) $@
 
 $(BUILD):
-	git submodule init
-	git submodule update
+	git submodule update --init --recursive
 
 build: $(BUILD)
 	cd $(BUILD) && lmt `find ../ -type f -name '*.md'`
