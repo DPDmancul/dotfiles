@@ -1,4 +1,4 @@
 [submodule "flake"]
 	path = flake
-	url = https://gitlab.com/DPDmancul/dotfiles.git
+	url = ../dotfiles.git
 	branch = flake

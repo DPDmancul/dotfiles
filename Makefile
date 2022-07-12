@@ -1,16 +1,17 @@
-.PHONY: all build doc clean push
+.PHONY: all build doc clean
 
 TIMESTAMPS := .timestamps
 BUILD := flake
+BUILD_GIT := $(BUILD)/.git
 DOC := book
 
 all: build install doc
 
 # delegate to flake makefile
-.DEFAULT: $(BUILD)
+.DEFAULT: $(BUILD_GIT)
 	cd $(BUILD) && $(MAKE) $@
 
-$(BUILD):
+$(BUILD_GIT):
 	git submodule update --init --recursive
 
 build: $(BUILD)
@@ -22,8 +23,4 @@ doc:
 
 clean:
 	rm -rf $(DOC) $(TIMESTAMPS)
-
-push:
-	git submodule set-url flake "$$(git remote get-url origin)"
-	git push --recurse-submodules=on-demand
 
