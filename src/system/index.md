@@ -2,7 +2,7 @@
 
 ```nix configuration.nix
 { config, pkgs, lib, ... }:
-let secrets = import ../secrets.nix;
+let secrets = import ./secrets.nix;
 in {
   <<<config>>>
 }

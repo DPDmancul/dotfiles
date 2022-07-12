@@ -1,17 +1,7 @@
 image: nixos/nix
 
 stages:
-  - build
   - publish
-
-tangle:
-  stage: build
-  script: [ nix-shell --run "cd $(pwd); make build" ]
-  cache:
-    paths: [ /nix/store ]
-  artifacts:
-    paths: [ config ]
-
 
 .publish: &publish
   stage: publish

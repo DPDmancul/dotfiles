@@ -16,7 +16,7 @@ See [table of contents](./src/SUMMARY.md).
 
 <!-- ANCHOR: content -->
 
-Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/nix/download?job=tangle).
+Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/flake).
 
 # Usage
 
@@ -29,7 +29,7 @@ Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifac
 
 ## Without tangling
 
-Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/jobs/artifacts/nix/download?job=tangle) and copy them.
+Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/flake) and follow the instructions.
 
 <!-- ANCHOR_END: content -->
 
