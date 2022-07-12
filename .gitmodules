@@ -3,5 +3,5 @@
 	url = https://gitlab.com/DPDmancul/dotfiles-wallpapers.git
 [submodule "flake"]
 	path = flake
-	url = ./
+	url = https://gitlab.com/DPDmancul/dotfiles.git
 	branch = flake
