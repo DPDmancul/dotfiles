@@ -8,7 +8,8 @@ DOC := book
 all: build install doc
 
 # delegate to flake makefile
-.DEFAULT: $(BUILD_GIT)
+.DEFAULT:
+	$(MAKE) $(BUILD_GIT)
 	cd $(BUILD) && $(MAKE) $@
 
 $(BUILD_GIT):
