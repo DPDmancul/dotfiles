@@ -1,4 +1,4 @@
-.PHONY: all build doc clean
+.PHONY: all build doc clean push
 
 TIMESTAMPS := .timestamps
 BUILD := flake
@@ -22,4 +22,8 @@ doc:
 
 clean:
 	rm -rf $(DOC) $(TIMESTAMPS)
+
+push:
+	git submodule set-url flake "$$(git remote get-url origin)"
+	git push --recurse-submodules=on-demand
 
