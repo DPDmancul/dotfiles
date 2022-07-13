@@ -1,19 +1,11 @@
 .PHONY: all build doc clean
+.PHONY: install update
 
 TIMESTAMPS := .timestamps
 BUILD := flake
-BUILD_GIT := $(BUILD)/.git
 DOC := book
 
-all: build install doc
-
-# delegate to flake makefile
-.DEFAULT:
-	$(MAKE) $(BUILD_GIT)
-	cd $(BUILD) && $(MAKE) $@
-
-$(BUILD_GIT):
-	git submodule update --init --recursive
+all: install doc ;
 
 build: $(BUILD)
 	cd $(BUILD) && lmt `find ../ -type f -name '*.md'`
@@ -24,4 +16,17 @@ doc:
 
 clean:
 	rm -rf $(DOC) $(TIMESTAMPS)
+
+# delegate to flake makefile
+delegate-%: $(BUILD)/Makefile
+	@cd $(BUILD) && $(MAKE) $*
+
+install update: %: build delegate-% ;
+install-%: build delegate-install-%;
+
+.DEFAULT:
+	@$(MAKE) delegate-$@
+
+$(BUILD)/Makefile:
+	git submodule update --init --recursive
 

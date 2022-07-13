@@ -6,6 +6,8 @@
 
 [Installation](./installation/index.md)
 
+- [Flake](./system/index.md)
+
 - [System](./system/index.md)
   - [Bootloader](./system/boot.md)
   - [Networking](./system/net.md)
