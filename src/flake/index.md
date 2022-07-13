@@ -10,15 +10,15 @@ Managing the config with flakes allows to pin source versions.
     <<<flake-inputs>>>
   };
 
-  outputs = args@{ self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system: {
-      packages.nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [ (import ./configuration.nix) ];
-          specialArgs = { inherit args; };
-        };
+  outputs = args@{ self, nixpkgs, home-manager, flake-utils, ... }:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system: let
+      pkgs = import nixpkgs {
+        inherit system;
       };
+      args.pkgs = pkgs;
+      args.dotfiles = "<<<pwd>>>";
+    in {
+      <<<flake-outputs>>>
     });
 }
 
@@ -36,6 +36,47 @@ nixpkgs.follows = "unstable";
 ### Utilities
 
 ```nix "flake-inputs" +=
+home-manager = {
+  url = "github:nix-community/home-manager";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
 flake-utils.url = "github:numtide/flake-utils";
+```
+
+## Outputs
+
+### System config
+
+```nix "flake-outputs" +=
+packages.nixosConfigurations = {
+  nixos = nixpkgs.lib.nixosSystem {
+    inherit system;
+    modules = [ (import ./configuration.nix) ];
+    specialArgs = args;
+  };
+};
+```
+
+### Home-manager config
+
+```nix "flake-outputs" +=
+packages.homeConfigurations = {
+  "dpd-@nixos" = home-manager.lib.homeManagerConfiguration {
+    inherit pkgs;
+    modules = [ ./home.nix ];
+    extraSpecialArgs = args;
+  };
+};
+```
+
+## Home manager
+
+Use home manager from its flake
+
+```nix "flake-outputs" +=
+apps.home-manager = {
+  type = "app";
+  program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
+};
 ```
 

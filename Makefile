@@ -8,7 +8,8 @@ DOC := book
 all: install doc ;
 
 build: $(BUILD)
-	cd $(BUILD) && lmt `find ../ -type f -name '*.md'`
+	cd $(BUILD) && lmt $$(find ../ -type f -name '*.md')
+	sed -i "s*<<<pwd>>>*$$PWD*" flake/flake.nix
 
 doc:
 	mdbook build

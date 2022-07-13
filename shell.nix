@@ -3,6 +3,7 @@ let
   flake-shell = import ./flake/shell.nix { inherit pkgs; };
 in flake-shell.overrideAttrs (oldAttrs: {
   nativeBuildInputs = with pkgs; oldAttrs.nativeBuildInputs ++ [
+    gnused
     mdbook
     (buildGoPackage rec {
       pname = "lmt";

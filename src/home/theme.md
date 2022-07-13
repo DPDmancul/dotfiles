@@ -53,7 +53,7 @@ wpaperd
 ```nix "home-config" +=
 xdg.configFile."wpaperd/output.conf".text = ''
   [default]
-  path = "${toString ./wallpapers}"
+  path = "${dotfiles}/flake/wallpapers"
   duration = "1m"
 '';
 ```

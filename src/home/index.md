@@ -1,7 +1,7 @@
 # Home
 
 ```nix home.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, dotfiles, ... }:
 let
   <<<home-let>>>
 in {
@@ -22,7 +22,7 @@ Quickly apply dotfiles
 
 ```nix "home-packages" +=
 (writeShellScriptBin "dots" ''
-  cd "${toString ../.}"
+  cd "${dotfiles}"
   nix-shell --run "make $*"
 '')
 ```
