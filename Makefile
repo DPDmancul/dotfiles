@@ -1,21 +1,24 @@
-.PHONY: update unlock
+.PHONY: update unlock git-add
 .PHONY: install install-system install-home
 .PHONY: optimize collect-garbage defrag
 
-install: install-system install-home
+NIX := nix --extra-experimental-features nix-command
+
+install: install-system install-home ;
 
 update:
+	$(NIX) flake update
 	sudo nix-channel --update
 	$(MAKE) all
 
-install-system:
-	sudo nixos-rebuild switch -I nixos-config="./configuration.nix"
+install-system: git-add
+	sudo nixos-rebuild switch --flake '.#'
 
-install-home:
+install-home: git-add
 	home-manager switch -b bak -f "./home.nix"
 
 optimise:
-	nix store optimise --extra-experimental-features nix-command
+	$(NIX) store optimise
 
 collect-garbage:
 	home-manager expire-generations "-30 days"
@@ -30,4 +33,7 @@ defrag:
 
 unlock:
 	git-crypt unlock
+
+git-add:
+	git add .
 
