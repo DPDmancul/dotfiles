@@ -6,7 +6,7 @@
 
 [Installation](./installation/index.md)
 
-- [Flake](./system/index.md)
+- [Flake](./flake/index.md)
 
 - [System](./system/index.md)
   - [Bootloader](./system/boot.md)
