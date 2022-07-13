@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, dotfiles, ... }:
 let
   wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
     pname = "wpaperd";
@@ -870,11 +870,11 @@ in {
     sway-contrib.grimshot
     wl-clipboard
     polkit_gnome
-    wpaperd
     (writeShellScriptBin "dots" ''
-      cd "${toString ../.}"
+      cd "${dotfiles}"
       nix-shell --run "make $*"
     '')
+    wpaperd
   ];
   services.fluidsynth = {
     enable = true;
@@ -954,6 +954,7 @@ in {
         { app_id = "pavucontrol"; }
         { app_id = "qalculate-gtk"; }
       ];
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
       gaps.inner = 5;
       colors.unfocused = let transparent = "#00000000"; in {
         background = "#222222";
@@ -963,7 +964,6 @@ in {
         text = "#888888";
       };
       gaps.smartBorders = "on";
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
       keybindings = lib.mkOptionDefault {
         "${modifier}+Shift+e" = ''
           exec sh -c ' \
@@ -1048,32 +1048,6 @@ in {
       xclip = self.wl-clipboard-x11;
     })
   ];
-  xdg.configFile."wpaperd/output.conf".text = ''
-    [default]
-    path = "${toString ./wallpapers}"
-    duration = "1m"
-  '';
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
-  };
-  gtk.enable = true;
-  gtk.iconTheme = {
-    name = "Tela";
-    package = pkgs.tela-icon-theme;
-  };
-  dconf.settings."org/gnome/desktop/interface" = {
-    icon-theme = config.gtk.iconTheme.name;
-  };
-  home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
-    size = 24;
-  };
   programs.waybar = {
     enable = true;
     settings = [
@@ -1477,4 +1451,30 @@ in {
   home.homeDirectory = "/home/dpd-";
   xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
   home.stateVersion = "22.05";
+  xdg.configFile."wpaperd/output.conf".text = ''
+    [default]
+    path = "${dotfiles}/flake/wallpapers"
+    duration = "1m"
+  '';
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = {
+      name = "adwaita";
+      package = pkgs.adwaita-qt;
+    };
+  };
+  gtk.enable = true;
+  gtk.iconTheme = {
+    name = "Tela";
+    package = pkgs.tela-icon-theme;
+  };
+  dconf.settings."org/gnome/desktop/interface" = {
+    icon-theme = config.gtk.iconTheme.name;
+  };
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
 }

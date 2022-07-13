@@ -32,24 +32,6 @@ in {
   networking.interfaces.wlp6s0.useDHCP = true;
   boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8821cu ];
   boot.kernelModules = [ "8821cu" ];
-  environment.systemPackages = with pkgs; [
-    neovim
-    bottom
-    bat      # cat with syntax highlighting
-    exa      # ls with colors and icosn
-    tldr     # short command examples
-    fd       # faster find
-    ripgrep  # alternative grep
-    usbutils
-    pciutils
-    xdg-utils
-    wget
-    git
-    gnumake
-    gcc
-  ];
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -158,4 +140,22 @@ in {
     extraPackages = [];
   };
   system.stateVersion = "21.11";
+  environment.systemPackages = with pkgs; [
+    neovim
+    bottom
+    bat      # cat with syntax highlighting
+    exa      # ls with colors and icosn
+    tldr     # short command examples
+    fd       # faster find
+    ripgrep  # alternative grep
+    usbutils
+    pciutils
+    xdg-utils
+    wget
+    git
+    gnumake
+    gcc
+  ];
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
 }
