@@ -9,7 +9,8 @@ install: install-system install-home ;
 
 update:
 	$(NIX) flake update
-	$(MAKE) all
+	git add flake.lock
+	$(MAKE)
 
 install-system: .git-add
 	sudo nixos-rebuild switch --flake .#

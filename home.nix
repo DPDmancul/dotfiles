@@ -865,16 +865,16 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
     wpaperd
     wofi
     swaylock-effects
     sway-contrib.grimshot
     wl-clipboard
     polkit_gnome
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
   ];
   services.fluidsynth = {
     enable = true;
@@ -1023,10 +1023,6 @@ in {
       Restart = "always";
     };
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
   xdg.configFile."wpaperd/output.conf".text = ''
     [default]
     path = "${dotfiles}/flake/wallpapers"
@@ -1477,4 +1473,8 @@ in {
         }
     '';
   };
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
 }

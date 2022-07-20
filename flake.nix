@@ -16,21 +16,24 @@
       pkgs = import nixpkgs {
         inherit system;
       };
-      args.pkgs = pkgs;
-      args.dotfiles = "/home/dpd-/.dotfiles";
     in {
       packages.nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           inherit system;
-          modules = [ (import ./configuration.nix) ];
-          specialArgs = args;
+          modules = [ ./configuration.nix ];
+          specialArgs = {
+            inherit args;
+          };
         };
       };
       packages.homeConfigurations = {
         "dpd-@nixos" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home.nix ];
-          extraSpecialArgs = args;
+          extraSpecialArgs = {
+            inherit args;
+            dotfiles = "/home/dpd-/.dotfiles";
+          };
         };
       };
       apps.home-manager = {

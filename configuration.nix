@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, args, lib, ... }:
 let secrets = import ./secrets.nix;
 in {
   security.pam.services.swaylock = {
@@ -113,10 +113,31 @@ in {
       "adbusers" # adb
     ];
   };
-  nix.package = pkgs.nixUnstable;
+  environment.systemPackages = with pkgs; [
+    neovim
+    bottom
+    bat      # cat with syntax highlighting
+    exa      # ls with colors and icosn
+    tldr     # short command examples
+    fd       # faster find
+    ripgrep  # alternative grep
+    usbutils
+    pciutils
+    xdg-utils
+    wget
+    git
+    gnumake
+    gcc
+  ];
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
+  nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
+  nix.nixPath = [
+    "nixpkgs=${args.nixpkgs.outPath}"
+  ];
   imports = [ ./hardware-configuration.nix ];
 
   fileSystems."/home/dpd-/datos" = { 
@@ -140,22 +161,4 @@ in {
     extraPackages = [];
   };
   system.stateVersion = "21.11";
-  environment.systemPackages = with pkgs; [
-    neovim
-    bottom
-    bat      # cat with syntax highlighting
-    exa      # ls with colors and icosn
-    tldr     # short command examples
-    fd       # faster find
-    ripgrep  # alternative grep
-    usbutils
-    pciutils
-    xdg-utils
-    wget
-    git
-    gnumake
-    gcc
-  ];
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
 }
