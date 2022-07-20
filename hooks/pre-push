@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BUILD=flake
+
+cd "$BUILD"
+git push "$1" "HEAD:$BUILD"
+

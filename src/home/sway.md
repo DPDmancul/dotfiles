@@ -111,8 +111,8 @@ programs.mako = {
 ### Brightness
 
 ```nix "sway-keybind" +=
-"--locked XF86MonBrightnessDown" = "exec light -U 10";
-"--locked XF86MonBrightnessUp" = "exec light -A 10";
+"--locked XF86MonBrightnessDown" = "exec light -U 5";
+"--locked XF86MonBrightnessUp" = "exec light -A 5";
 ```
 
 #### Red light

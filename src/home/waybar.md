@@ -133,8 +133,8 @@ battery = {
   format-plugged = "{capacity}% ";
   format-alt = "{time} {icon}";
   format-icons = ["" "" "" "" ""];
-  on-scroll-up = "light -A 5";
-  on-scroll-down = "light -U 5";
+  on-scroll-up = "light -A 1";
+  on-scroll-down = "light -U 1";
 };
 idle_inhibitor = {
   format = "{icon}";

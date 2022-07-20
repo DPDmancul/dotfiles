@@ -19,15 +19,17 @@ clean:
 	rm -rf $(DOC) $(TIMESTAMPS)
 
 # delegate to flake makefile
-delegate-%: $(BUILD)/Makefile
+.delegate-%: $(BUILD)/Makefile
 	@cd $(BUILD) && $(MAKE) $*
 
-install update: %: build delegate-% ;
-install-%: build delegate-install-%;
+install update: %: build .delegate-% ;
+install-%: build .delegate-install-%;
 
 .DEFAULT:
-	@$(MAKE) delegate-$@
+	@$(MAKE) .delegate-$@
 
-$(BUILD)/Makefile:
+$(BUILD)/%:
 	git submodule update --init --recursive
+	chmod +x -R hooks
+	ln -srf hooks/* "$$(git rev-parse --git-path hooks)"
 
