@@ -865,16 +865,16 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
     '')
     wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
   ];
   services.fluidsynth = {
     enable = true;
@@ -936,10 +936,136 @@ in {
       };
     };
   };
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+
+      # do not create useless folders
+      desktop = "$HOME";
+      publicShare = "$HOME/.local/share/Public";
+      templates = "$HOME/.local/share/Templates";
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = lib.zipAttrsWith
+        (_: values: values)
+        (let
+          subtypes = type: program: subt:
+            builtins.listToAttrs (builtins.map
+              (x: {name = type + "/" + x; value = program; })
+              subt);
+        in [
+          { "text/plain" = "nvim.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
+          (subtypes "application" "libreoffice.desktop"
+            [
+              "vnd.oasis.opendocument.text"
+              "vnd.oasis.opendocument.spreadsheet"
+              "vnd.oasis.opendocument.presentation"
+              "vnd.oasis.opendocument.graphics"
+              "vnd.oasis.opendocument.chart"
+              "vnd.oasis.opendocument.formula"
+              "vnd.oasis.opendocument.image"
+              "vnd.oasis.opendocument.text-master"
+              "vnd.sun.xml.base"
+              "vnd.oasis.opendocument.base"
+              "vnd.oasis.opendocument.database"
+              "vnd.oasis.opendocument.text-template"
+              "vnd.oasis.opendocument.spreadsheet-template"
+              "vnd.oasis.opendocument.presentation-template"
+              "vnd.oasis.opendocument.graphics-template"
+              "vnd.oasis.opendocument.chart-template"
+              "vnd.oasis.opendocument.formula-template"
+              "vnd.oasis.opendocument.image-template"
+              "vnd.oasis.opendocument.text-web"
+            ])
+          { "inode/directory" = "pcmanfm.desktop"; }
+          (subtypes "application" "org.gnome.FileRoller.desktop"
+            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+          { "application/pdf" = "okularApplication_pdf.desktop"; }
+          (subtypes "image" "imv-folder.desktop"
+            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+          (subtypes "video" "umpv.desktop"
+            [
+              "avi" "msvideo" "x-msvideo"
+              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+              "ogg"
+              "quicktime"
+              "webm"
+            ])
+          (subtypes "audio" "rhythmbox.desktop"
+            [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
+          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+        ]);
+    };
+  };
+  systemd.user.services.polkit-agent = {
+    Unit = {
+      Description = "Runs polkit authentication agent";
+      PartOf = "graphical-session.target";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      RestartSec = 5;
+      Restart = "always";
+    };
+  };
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
+  xdg.configFile."wpaperd/output.conf".text = ''
+    [default]
+    path = "${dotfiles}/flake/wallpapers"
+    duration = "1m"
+  '';
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = {
+      name = "adwaita";
+      package = pkgs.adwaita-qt;
+    };
+  };
+  gtk.enable = true;
+  gtk.iconTheme = {
+    name = "Tela";
+    package = pkgs.tela-icon-theme;
+  };
+  dconf.settings."org/gnome/desktop/interface" = {
+    icon-theme = config.gtk.iconTheme.name;
+  };
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
     config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
       modifier = "Mod4";
       input."*".xkb_layout = "eu";
       input."*".xkb_numlock = "enabled";
@@ -955,15 +1081,6 @@ in {
         { app_id = "qalculate-gtk"; }
       ];
       bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
       keybindings = lib.mkOptionDefault {
         "${modifier}+Shift+e" = ''
           exec sh -c ' \
@@ -978,8 +1095,8 @@ in {
         "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
         "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
         "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 10";
-        "--locked XF86MonBrightnessUp" = "exec light -A 10";
+        "--locked XF86MonBrightnessDown" = "exec light -U 5";
+        "--locked XF86MonBrightnessUp" = "exec light -A 5";
         "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
         "${modifier}+p" = "exec grimshot save active";       # Active window
         "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
@@ -1131,8 +1248,8 @@ in {
           format-plugged = "{capacity}% ";
           format-alt = "{time} {icon}";
           format-icons = ["" "" "" "" ""];
-          on-scroll-up = "light -A 5";
-          on-scroll-down = "light -U 5";
+          on-scroll-up = "light -A 1";
+          on-scroll-down = "light -U 1";
         };
         idle_inhibitor = {
           format = "{icon}";
@@ -1359,122 +1476,5 @@ in {
           background: #F2CDCD;
         }
     '';
-  };
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-
-      # do not create useless folders
-      desktop = "$HOME";
-      publicShare = "$HOME/.local/share/Public";
-      templates = "$HOME/.local/share/Templates";
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = lib.zipAttrsWith
-        (_: values: values)
-        (let
-          subtypes = type: program: subt:
-            builtins.listToAttrs (builtins.map
-              (x: {name = type + "/" + x; value = program; })
-              subt);
-        in [
-          { "text/plain" = "nvim.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
-          (subtypes "application" "libreoffice.desktop"
-            [
-              "vnd.oasis.opendocument.text"
-              "vnd.oasis.opendocument.spreadsheet"
-              "vnd.oasis.opendocument.presentation"
-              "vnd.oasis.opendocument.graphics"
-              "vnd.oasis.opendocument.chart"
-              "vnd.oasis.opendocument.formula"
-              "vnd.oasis.opendocument.image"
-              "vnd.oasis.opendocument.text-master"
-              "vnd.sun.xml.base"
-              "vnd.oasis.opendocument.base"
-              "vnd.oasis.opendocument.database"
-              "vnd.oasis.opendocument.text-template"
-              "vnd.oasis.opendocument.spreadsheet-template"
-              "vnd.oasis.opendocument.presentation-template"
-              "vnd.oasis.opendocument.graphics-template"
-              "vnd.oasis.opendocument.chart-template"
-              "vnd.oasis.opendocument.formula-template"
-              "vnd.oasis.opendocument.image-template"
-              "vnd.oasis.opendocument.text-web"
-            ])
-          { "inode/directory" = "pcmanfm.desktop"; }
-          (subtypes "application" "org.gnome.FileRoller.desktop"
-            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
-          { "application/pdf" = "okularApplication_pdf.desktop"; }
-          (subtypes "image" "imv-folder.desktop"
-            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-          (subtypes "video" "umpv.desktop"
-            [
-              "avi" "msvideo" "x-msvideo"
-              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-              "ogg"
-              "quicktime"
-              "webm"
-            ])
-          (subtypes "audio" "rhythmbox.desktop"
-            [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
-          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-        ]);
-    };
-  };
-  systemd.user.services.polkit-agent = {
-    Unit = {
-      Description = "Runs polkit authentication agent";
-      PartOf = "graphical-session.target";
-    };
-
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
-  xdg.configFile."wpaperd/output.conf".text = ''
-    [default]
-    path = "${dotfiles}/flake/wallpapers"
-    duration = "1m"
-  '';
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
-  };
-  gtk.enable = true;
-  gtk.iconTheme = {
-    name = "Tela";
-    package = pkgs.tela-icon-theme;
-  };
-  dconf.settings."org/gnome/desktop/interface" = {
-    icon-theme = config.gtk.iconTheme.name;
-  };
-  home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
-    size = 24;
   };
 }

@@ -11,10 +11,10 @@ update:
 	$(NIX) flake update
 	$(MAKE) all
 
-install-system: git-add
+install-system: .git-add
 	sudo nixos-rebuild switch --flake .#
 
-install-home: git-add
+install-home: .git-add
 	$(HOME-MANAGER) switch -b bak --flake .#$$USER@$$(hostname)
 
 optimise:
@@ -34,6 +34,6 @@ defrag:
 unlock:
 	git-crypt unlock
 
-git-add:
+.git-add:
 	git add .
 
