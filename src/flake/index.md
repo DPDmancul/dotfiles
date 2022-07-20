@@ -15,8 +15,6 @@ Managing the config with flakes allows to pin source versions.
       pkgs = import nixpkgs {
         inherit system;
       };
-      args.pkgs = pkgs;
-      args.dotfiles = "<<<pwd>>>";
     in {
       <<<flake-outputs>>>
     });
@@ -51,8 +49,10 @@ flake-utils.url = "github:numtide/flake-utils";
 packages.nixosConfigurations = {
   nixos = nixpkgs.lib.nixosSystem {
     inherit system;
-    modules = [ (import ./configuration.nix) ];
-    specialArgs = args;
+    modules = [ ./configuration.nix ];
+    specialArgs = {
+      inherit args;
+    };
   };
 };
 ```
@@ -64,7 +64,10 @@ packages.homeConfigurations = {
   "dpd-@nixos" = home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
     modules = [ ./home.nix ];
-    extraSpecialArgs = args;
+    extraSpecialArgs = {
+      inherit args;
+      dotfiles = "<<<pwd>>>";
+    };
   };
 };
 ```

@@ -1,7 +1,7 @@
 # System
 
 ```nix configuration.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, args, lib, ... }:
 let secrets = import ./secrets.nix;
 in {
   <<<config>>>
@@ -11,10 +11,20 @@ in {
 ## Enable flakes
 
 ```nix "config" +=
-nix.package = pkgs.nixUnstable;
+nix.package = pkgs.nixFlakes;
 nix.extraOptions = ''
   experimental-features = nix-command flakes
 '';
+```
+
+## Channels
+
+Use the same channel as the main of this flake for the system (e.g. legacy nix-shell)
+
+```nix "config" +=
+nix.nixPath = [
+  "nixpkgs=${args.nixpkgs.outPath}"
+];
 ```
 
 ## Hardware
