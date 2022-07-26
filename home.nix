@@ -881,118 +881,6 @@ in {
     package = pkgs.bibata-cursors;
     size = 24;
   };
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-      ];
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 5";
-        "--locked XF86MonBrightnessUp" = "exec light -A 5";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec pcmanfm";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''swaymsg "output * dpms off"'';
-      resumeCommand = ''swaymsg "output * dpms on"'';
-    }];
-  };
-  nixpkgs.overlays = [
-    (self: super: {
-      wl-clipboard-x11 = super.stdenv.mkDerivation rec {
-        pname = "wl-clipboard-x11";
-        version = "5";
-
-        src = super.fetchFromGitHub {
-          owner = "brunelli";
-          repo = "wl-clipboard-x11";
-          rev = "v${version}";
-          sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
-        };
-
-        dontBuild = true;
-        dontConfigure = true;
-        propagatedBuildInputs = [ super.wl-clipboard ];
-        makeFlags = [ "PREFIX=$(out)" ];
-      };
-
-      xsel = self.wl-clipboard-x11;
-      xclip = self.wl-clipboard-x11;
-    })
-  ];
   programs.waybar = {
     enable = true;
     settings = [
@@ -1405,11 +1293,6 @@ in {
   };
   home.packages = with pkgs; [
     wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
@@ -1473,6 +1356,11 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
   ];
   services.fluidsynth = {
     enable = true;
@@ -1480,4 +1368,116 @@ in {
   };
   # disable autostart to save RAM
   systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+      ];
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Shift+e" = ''
+          exec sh -c ' \
+            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+              "Shutdown") systemctl poweroff;; \
+              "Suspend") systemctl suspend;; \
+              "Reboot") systemctl reboot;; \
+              "Logout") swaymsg exit;; \
+            esac \
+          '
+        '';
+        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+        "--locked XF86AudioMute" = "exec pamixer -t";
+        "--locked XF86MonBrightnessDown" = "exec light -U 5";
+        "--locked XF86MonBrightnessUp" = "exec light -A 5";
+        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+        "${modifier}+p" = "exec grimshot save active";       # Active window
+        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+        "${modifier}+y" = "exec grimshot copy active";       # Active window
+        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+        "${modifier}+z" = "exec firefox";
+        "${modifier}+x" = "exec pcmanfm";
+      };
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
+  };
+  nixpkgs.overlays = [
+    (self: super: {
+      wl-clipboard-x11 = super.stdenv.mkDerivation rec {
+        pname = "wl-clipboard-x11";
+        version = "5";
+
+        src = super.fetchFromGitHub {
+          owner = "brunelli";
+          repo = "wl-clipboard-x11";
+          rev = "v${version}";
+          sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
+        };
+
+        dontBuild = true;
+        dontConfigure = true;
+        propagatedBuildInputs = [ super.wl-clipboard ];
+        makeFlags = [ "PREFIX=$(out)" ];
+      };
+
+      xsel = self.wl-clipboard-x11;
+      xclip = self.wl-clipboard-x11;
+    })
+  ];
 }
