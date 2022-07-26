@@ -21,99 +21,6 @@ let
     cargoSha256 = "sha256-xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
   };
 in {
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      forceWayland = true;
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
-  };
   programs.fish = {
     enable = true;
     plugins = [
@@ -805,83 +712,6 @@ in {
       }
     ];
   };
-  home.packages = with pkgs; [
-    libreoffice
-    pcmanfm
-    lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    # TODO
-    mpv
-    rhythmbox
-    audacity
-    frescobaldi
-    musescore
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-  ];
-  services.fluidsynth = {
-    enable = true;
-    soundService = "pipewire-pulse";
-  };
-  # disable autostart to save RAM
-  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
   programs.ssh = {
     enable = true;
     matchBlocks = {
@@ -991,6 +821,8 @@ in {
           (subtypes "application" "org.gnome.FileRoller.desktop"
             [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
           { "application/pdf" = "okularApplication_pdf.desktop"; }
+          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
+          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
           (subtypes "image" "imv-folder.desktop"
             [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
           (subtypes "video" "umpv.desktop"
@@ -1477,4 +1309,175 @@ in {
   home.homeDirectory = "/home/dpd-";
   xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
   home.stateVersion = "22.05";
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      forceWayland = true;
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          "*" = {
+            installation_mode = "blocked";
+            blocked_install_message = "Extensions managed by home-manager.";
+          };
+          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+          # "vim-vixen@i-beam.org" = ext "vim-vixen";
+          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+          "proxydocile@unipd.it"= {
+            installation_mode = "force_installed";
+            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+          };
+          "{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
+          "uBlock0@raymondhill.net" = ext "ublock-origin";
+          "@testpilot-containers" = ext "multi-account-containers";
+          "@contain-facebook" = ext "facebook-container";
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        };
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+      };
+    };
+    profiles.default = {
+      settings = {
+        "browser.download.useDownloadDir" = false;
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "devtools.debugger.remote-enabled" = true;
+        "devtools.chrome.enabled" = true;
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+        "privacy.trackingprotection.enabled" = true;
+        "privacy.trackingprotection.socialtracking.enabled" = true;
+        "privacy.partition.network_state.ocsp_cache" = true;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "";
+        "browser.uidensity" = 1;
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+      userChrome = ''
+        #main-window {
+          background: #f9f9faa5 !important;
+        }
+        .tab-background:is([selected], [multiselected]),
+        .browser-toolbar:not(.titlebar-color) {
+          background-color: #f9f9fa65 !important;
+        }
+      '';
+    };
+
+  };
+  home.packages = with pkgs; [
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    libreoffice
+    pcmanfm
+    lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    rhythmbox
+    audacity
+    frescobaldi
+    musescore
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  services.fluidsynth = {
+    enable = true;
+    soundService = "pipewire-pulse";
+  };
+  # disable autostart to save RAM
+  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
 }

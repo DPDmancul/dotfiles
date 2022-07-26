@@ -65,12 +65,26 @@ in {
       };
     }
   ];
+  users.mutableUsers = false;
+  users.users.dpd- = {
+    isNormalUser = true;
+    hashedPassword = secrets.dpd-.hashedPasswords;
+    extraGroups = [
+      "wheel" # Enable 'sudo' for the user.
+      "networkmanager"
+      "input"
+      "video"
+      #"kvm"
+      "adbusers"
+      "scanner"
+      "lp"
+    ];
+  };
   services.dbus.enable = true;
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
-  services.printing.enable = true;
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   environment.etc."dual-function-keys.yaml".text = ''
@@ -100,37 +114,6 @@ in {
   # };
   programs.light.enable = true;
   programs.adb.enable = true;
-  users.mutableUsers = false;
-  users.users.dpd- = {
-    isNormalUser = true;
-    hashedPassword = secrets.dpd-.hashedPasswords;
-    extraGroups = [
-      "wheel" # Enable 'sudo' for the user.
-      "networkmanager"
-      "input"
-      "video"
-      "kvm" # qemu
-      "adbusers" # adb
-    ];
-  };
-  environment.systemPackages = with pkgs; [
-    neovim
-    bottom
-    bat      # cat with syntax highlighting
-    exa      # ls with colors and icosn
-    tldr     # short command examples
-    fd       # faster find
-    ripgrep  # alternative grep
-    usbutils
-    pciutils
-    xdg-utils
-    wget
-    git
-    gnumake
-    gcc
-  ];
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -138,7 +121,10 @@ in {
   nix.nixPath = [
     "nixpkgs=${args.nixpkgs.outPath}"
   ];
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ 
+    (args.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
+    ./hardware-configuration.nix 
+  ];
 
   fileSystems."/home/dpd-/datos" = { 
     device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
@@ -161,4 +147,58 @@ in {
     extraPackages = [];
   };
   system.stateVersion = "21.11";
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
+    #<<<packages-unfree>>>
+    brscan4
+    brscan4-etc-files
+    brother-udev-rule-type1
+  '');
+
+  environment.systemPackages = with pkgs; ([
+    neovim
+    bottom
+    bat      # cat with syntax highlighting
+    exa      # ls with colors and icosn
+    tldr     # short command examples
+    fd       # faster find
+    ripgrep  # alternative grep
+    usbutils
+    pciutils
+    xdg-utils
+    wget
+    git
+    gnumake
+    gcc
+  ] ++ [
+    #<<<packages-unfree>>>
+  ]);
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ 
+      brlaser 
+    ];
+  };
+  programs.system-config-printer.enable = true;
+  hardware.printers = {
+    ensureDefaultPrinter = "Brother";
+    ensurePrinters = [{
+      name = "Brother";
+      location = "cjase";
+      description = "Brother DCP 1612W";
+      deviceUri = "ipp://192.168.1.4/ipp";
+      model = "drv:///brlaser.drv/br1600.ppd";
+      ppdOptions = {
+        PageSize = "A4";
+      };
+    }];
+  };
+  hardware.sane.enable = true;
+  hardware.sane.brscan4 = {
+    enable = true;
+    netDevices = {
+      cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
+    };
+  };
 }
