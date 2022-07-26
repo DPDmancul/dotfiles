@@ -27,14 +27,6 @@ services.gvfs.enable = true;
 services.udisks2.enable = true;
 ```
 
-## CUPS
-
-Enable printing
-
-```nix "config" +=
-services.printing.enable = true;
-```
-
 ## SSH
 
 Enable OpenSSH daemon
@@ -113,5 +105,11 @@ programs.light.enable = true;
 
 ```nix "config" +=
 programs.adb.enable = true;
+```
+
+Add user to the adb group
+
+```nix "user-groups" +=
+"adbusers"
 ```
 

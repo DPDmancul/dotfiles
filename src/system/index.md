@@ -32,7 +32,10 @@ nix.nixPath = [
 Include the results of the hardware scan
 
 ```nix "config" +=
-imports = [ ./hardware-configuration.nix ];
+imports = [ 
+  <<<system-imports>>>
+  ./hardware-configuration.nix 
+];
 
 fileSystems."/home/dpd-/datos" = { 
   device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";

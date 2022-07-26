@@ -14,6 +14,7 @@
   - [Internationalization](./system/i18n.md)
   - [Services](./system/services.md)
     - [PipeWire](./system/pipewire.md)
+    - [Print and scan](./system/print_scan.md)
   - [Users](./system/users.md)
   - [Packages](./system/packages.md)
   - [Fonts](./system/fonts.md)

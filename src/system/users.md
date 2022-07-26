@@ -19,8 +19,7 @@ users.users.dpd- = {
     "networkmanager"
     "input"
     "video"
-    "kvm" # qemu
-    "adbusers" # adb
+    <<<user-groups>>>
   ];
 };
 ```

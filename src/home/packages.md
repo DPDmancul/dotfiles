@@ -98,6 +98,8 @@ libsForQt5.okular
 
 ```nix "xdg-mime" +=
 { "application/pdf" = "okularApplication_pdf.desktop"; }
+{ "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
+{ "image/x.djvu" = "okularApplication_pdf.desktop"; }
 ```
 
 ```nix "home-packages" +=
@@ -145,7 +147,7 @@ inkscape
 ### Scan
 
 ```nix "home-packages" +=
-# TODO
+gnome.simple-scan
 ```
 
 ## Multimedia
@@ -227,11 +229,22 @@ baobab # disk usage
 tdesktop # Telegram
 simplenote
 ipscan
-qemu
 ```
 
 ```nix "xdg-mime" +=
 { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+```
+
+### Qemu
+
+```nix "home-packages" +=
+# qemu
+```
+
+Add user to the kvm group
+
+```nix "user-groups" +=
+#"kvm"
 ```
 
 ## Developing
