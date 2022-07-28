@@ -683,7 +683,8 @@ in {
         config = ''
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
-            shade_terminals = false
+            shade_terminals = false,
+            persist_mode = false -- Return always to terminal mode
           }
 
           function _G.set_terminal_keymaps ()
@@ -703,6 +704,25 @@ in {
           end
 
           vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+        '';
+      }
+      {
+        plugin = (buildVimPlugin {
+          name = "stickybuf-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "stevearc";
+            repo = "stickybuf.nvim";
+            rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
+            sha256 = "sha256-J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
+          };
+        });
+        type = "lua";
+        config = ''
+          require("stickybuf").setup({
+             filetype = {
+               toggleterm = "filetype",
+             }
+          })
         '';
       }
       {
