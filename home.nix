@@ -85,71 +85,6 @@ in {
       };
     };
   };
-  programs.git = {
-    enable = true;
-    userName = "DPDmancul";
-    userEmail = "davide.peressoni@tuta.io";
-    delta = {
-      enable = true;
-      options = {
-        features = "interactive";
-        wrap-max-lines = "unlimited";
-        max-line-length = 2048;
-        syntax-theme = "gruvbox-light";
-      };
-    };
-    lfs.enable = true;
-    ignores = [
-      ".ccls-cache/"
-      ".directory"
-      "__pycache__"
-      ".pytest_cache"
-      ".owncloudsync.log"
-      "._sync_*.db*"
-    ];
-    attributes = [
-      "*.c     diff=cpp"
-      "*.h     diff=cpp"
-      "*.c++   diff=cpp"
-      "*.h++   diff=cpp"
-      "*.cpp   diff=cpp"
-      "*.hpp   diff=cpp"
-      "*.cc    diff=cpp"
-      "*.hh    diff=cpp"
-      "*.cs    diff=csharp"
-      "*.css   diff=css"
-      "*.html  diff=html"
-      "*.xhtml diff=html"
-      "*.ex    diff=elixir"
-      "*.exs   diff=elixir"
-      "*.go    diff=golang"
-      "*.php   diff=php"
-      "*.pl    diff=perl"
-      "*.py    diff=python"
-      "*.md    diff=markdown"
-      "*.rb    diff=ruby"
-      "*.rake  diff=ruby"
-      "*.rs    diff=rust"
-      "*.lisp  diff=lisp"
-      "*.el    diff=lisp"
-    ];
-    extraConfig = {
-      core.autoclrf = "input";
-      init.defaultBranch = "main";
-      status = {
-        showUntrackedFiles = "all";
-        submoduleSummary = true;
-      };
-      fetch = {
-        prune = true;
-        pruneTags = true;
-      };
-      pull = {
-        ff = "only";
-      };
-      protocol.version = 2;
-    };
-  };
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
   programs.kitty = {
@@ -683,18 +618,18 @@ in {
         config = ''
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
-            shade_terminals = false,
-            persist_mode = false -- Return always to terminal mode
+            shade_terminals = false
           }
 
           function _G.set_terminal_keymaps ()
             for from,to in pairs {
               ["<esc>"] = [[<C-\><C-n>]],
-              ["<C-w>"] = [[<C-\><C-n><C-W>]],
-              ["<C-h>"] = [[<C-\><C-n><C-W>h]],
-              ["<C-j>"] = [[<C-\><C-n><C-W>j]],
-              ["<C-k>"] = [[<C-\><C-n><C-W>k]],
-              ["<C-l>"] = [[<C-\><C-n><C-W>l]]
+              ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
+              ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
+              ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
+              ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
             } do
               vim.api.nvim_buf_set_keymap(0, "t", from, to, {
                 noremap = true,
@@ -818,8 +753,15 @@ in {
           (subtypes "application" "libreoffice.desktop"
             [
               "vnd.oasis.opendocument.text"
+              "msword"
+              "vnd.ms-word"
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
               "vnd.oasis.opendocument.spreadsheet"
+              "vnd.ms-excel"
+              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               "vnd.oasis.opendocument.presentation"
+              "vnd.ms-powerpoint"
+              "vnd.openxmlformats-officedocument.presentationml.presentation"
               "vnd.oasis.opendocument.graphics"
               "vnd.oasis.opendocument.chart"
               "vnd.oasis.opendocument.formula"
@@ -1311,83 +1253,6 @@ in {
     };
 
   };
-  home.packages = with pkgs; [
-    wpaperd
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    libreoffice
-    pcmanfm
-    lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    rhythmbox
-    audacity
-    frescobaldi
-    musescore
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
-  ];
-  services.fluidsynth = {
-    enable = true;
-    soundService = "pipewire-pulse";
-  };
-  # disable autostart to save RAM
-  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -1500,4 +1365,149 @@ in {
       xclip = self.wl-clipboard-x11;
     })
   ];
+  home.packages = with pkgs; [
+    wpaperd
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
+    libreoffice
+    pcmanfm
+    lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    rhythmbox
+    audacity
+    frescobaldi
+    musescore
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  services.fluidsynth = {
+    enable = true;
+    soundService = "pipewire-pulse";
+  };
+  # disable autostart to save RAM
+  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
+  programs.git = {
+    enable = true;
+    userName = "DPDmancul";
+    userEmail = "davide.peressoni@tuta.io";
+    delta = {
+      enable = true;
+      options = {
+        features = "interactive";
+        wrap-max-lines = "unlimited";
+        max-line-length = 2048;
+        syntax-theme = "gruvbox-light";
+      };
+    };
+    lfs.enable = true;
+    ignores = [
+      ".ccls-cache/"
+      ".directory"
+      "__pycache__"
+      ".pytest_cache"
+      ".owncloudsync.log"
+      "._sync_*.db*"
+    ];
+    attributes = [
+      "*.c     diff=cpp"
+      "*.h     diff=cpp"
+      "*.c++   diff=cpp"
+      "*.h++   diff=cpp"
+      "*.cpp   diff=cpp"
+      "*.hpp   diff=cpp"
+      "*.cc    diff=cpp"
+      "*.hh    diff=cpp"
+      "*.cs    diff=csharp"
+      "*.css   diff=css"
+      "*.html  diff=html"
+      "*.xhtml diff=html"
+      "*.ex    diff=elixir"
+      "*.exs   diff=elixir"
+      "*.go    diff=golang"
+      "*.php   diff=php"
+      "*.pl    diff=perl"
+      "*.py    diff=python"
+      "*.md    diff=markdown"
+      "*.rb    diff=ruby"
+      "*.rake  diff=ruby"
+      "*.rs    diff=rust"
+      "*.lisp  diff=lisp"
+      "*.el    diff=lisp"
+    ];
+    extraConfig = {
+      core.autoclrf = "input";
+      init.defaultBranch = "main";
+      status = {
+        showUntrackedFiles = "all";
+        submoduleSummary = true;
+      };
+      fetch = {
+        prune = true;
+        pruneTags = true;
+      };
+      pull = {
+        ff = "only";
+      };
+      push = {
+        autoSetupRemote = true;
+      };
+      protocol.version = 2;
+    };
+  };
 }
