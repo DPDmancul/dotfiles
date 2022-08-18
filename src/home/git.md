@@ -53,7 +53,6 @@ showUntrackedFiles = "all";
 
 Enable submodule summary showing the summary of commits for modified submodules
 
-
 ```nix "git-status" +=
 submoduleSummary = true;
 ```
@@ -76,6 +75,16 @@ When pulling only update the current branch by fast-forwarding
 ```nix "git-settings" +=
 pull = {
   ff = "only";
+};
+```
+
+## Push
+
+Automatic set default remote when pushing.
+
+```nix "git-settings" +=
+push = {
+  autoSetupRemote = true;
 };
 ```
 

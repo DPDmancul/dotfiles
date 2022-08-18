@@ -157,18 +157,18 @@ require"bufferline".setup {
 ```lua "toggleterm-config" +=
 require"toggleterm".setup {
   open_mapping = [[<c-\>]],
-  shade_terminals = false,
-  persist_mode = false -- Return always to terminal mode
+  shade_terminals = false
 }
 
 function _G.set_terminal_keymaps ()
   for from,to in pairs {
     ["<esc>"] = [[<C-\><C-n>]],
-    ["<C-w>"] = [[<C-\><C-n><C-W>]],
-    ["<C-h>"] = [[<C-\><C-n><C-W>h]],
-    ["<C-j>"] = [[<C-\><C-n><C-W>j]],
-    ["<C-k>"] = [[<C-\><C-n><C-W>k]],
-    ["<C-l>"] = [[<C-\><C-n><C-W>l]]
+    ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
+    ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
+    ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
+    ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
+    ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
+    ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
   } do
     vim.api.nvim_buf_set_keymap(0, "t", from, to, {
       noremap = true,
