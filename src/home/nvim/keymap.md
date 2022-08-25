@@ -38,15 +38,18 @@ local map = function (from, to, ...)
 end
 wk.register ( 
   {
-    <<<nvim-keybind>>>
+    <<<nvim-keybind-leader>>>
   },
   { prefix = "<leader>" }
 )
+wk.register {
+  <<<nvim-keybind>>>
+}
 ```
 
 ## Find
 
-```lua "nvim-keybind" +=
+```lua "nvim-keybind-leader" +=
 f = {
   name = "Find",
   r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
@@ -66,9 +69,15 @@ f = {
 },
 ```
 
-## Git
+End search (remove highlighting)
 
 ```lua "nvim-keybind" +=
+["<f3>"] = map ("<cmd>noh<cr>", "End search"),
+```
+
+## Git
+
+```lua "nvim-keybind-leader" +=
 g = {
   name = "Git",
   g = map ("<cmd>Neogit<cr>", "Neo git"),
@@ -77,7 +86,7 @@ g = {
 
 ## Reload
 
-```lua "nvim-keybind" +=
+```lua "nvim-keybind-leader" +=
 r = {
   name = "Reload",
   r = map ("<cmd>e<cr>", "File"),
@@ -87,12 +96,23 @@ r = {
 
 ## Table
 
-```lua "nvim-keybind" +=
+```lua "nvim-keybind-leader" +=
 t = {
   name = "Table",
   m = "Toggle table mode",
   t = "To table"
 },
+```
+
+## Bufferline
+
+```lua "nvim-keybind" +=
+["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
 ```
 
 ## LSP

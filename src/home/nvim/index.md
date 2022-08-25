@@ -44,6 +44,13 @@ Set space as leader
 let g:mapleader = ' '
 ```
 
+Use return to enter command mode: it's easier to press than _:_
+
+```vim "nvim-config" +=
+nnoremap <cr> :
+vnoremap <cr> :
+```
+
 ## General
 
 ```vim "nvim-config" +=

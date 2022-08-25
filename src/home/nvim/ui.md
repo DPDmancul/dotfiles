@@ -118,12 +118,24 @@ set noshowmode
   '';
 }
 ```
+
+Go to alternate buffer before close buffer in order to retain window
+
+```lua "bufferline-config" +=
+local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
+```
+
 ```lua "bufferline-config" +=
 require"bufferline".setup {
   options = {
-    right_mouse_command = nil,
-    middle_mouse_command = "bdelete! %d",
+    right_mouse_command = "vertical sbuffer %d",
+    middle_mouse_command = close_cmd,
+    close_command = close_cmd,
     show_close_icon = false,
+    custom_filter = function(buf, buf_nums)
+      -- Hide quickfix lists from bufferline
+      return vim.bo[buf].buftype ~= "quickfix"
+    end,
     offsets = {
       {
         filetype = "NvimTree",
@@ -182,7 +194,7 @@ vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 
 ## Sticky buffers
 
-Do not permit normal buffers to open in terminal, filetre, ... windows
+Do not permit normal buffers to open in terminal, filetree, ... windows
 
 ```nix "nvim-plugins" +=
 {
@@ -198,9 +210,12 @@ Do not permit normal buffers to open in terminal, filetre, ... windows
   type = "lua";
   config = ''
     require("stickybuf").setup({
-       filetype = {
-         toggleterm = "filetype",
-       }
+      buftype = {
+        quickfix = "buftype", -- VimTeX
+      },
+      filetype = {
+        toggleterm = "filetype",
+      }
     })
   '';
 }

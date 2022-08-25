@@ -164,7 +164,7 @@ undotree
 
 Add keymap
 
-```lua "nvim-keybind" +=
+```lua "nvim-keybind-leader" +=
 u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
 ```
 
