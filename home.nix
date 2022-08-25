@@ -184,6 +184,22 @@ in {
   in {
     enable = true;
     extraConfig = ''
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
+      let g:mapleader = ' '
+      nnoremap <cr> :
+      vnoremap <cr> :
+      set mouse=a     " Enable mouse
+      set lazyredraw  " Use lazy redraw
+      set undofile    " Enable persistent undo
+      set hidden      " Allow buffers in background
+      set ignorecase " Enable case insensitive search
+      set smartcase  " when using uppercase make case sensitive
+      set incsearch  " Show search results while typing
+      set spell
+      set spelllang=en,it     " Define spelling dictionaries
+      set complete+=kspell    " Add spellcheck options for autocomplete
+      set spelloptions=camel  " Treat parts of camelCase words as separate words
       set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
       set clipboard=unnamedplus     " Sync yank register with system clipboard
       set expandtab     " Convert tabs to spaces
@@ -196,20 +212,6 @@ in {
       set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
       set foldmethod=indent  " Set 'indent' folding method
       set nofoldenable       " Start with folds opened
-      let g:mapleader = ' '
-      set mouse=a     " Enable mouse
-      set lazyredraw  " Use lazy redraw
-      set undofile    " Enable persistent undo
-      set hidden      " Allow buffers in background
-      set ignorecase " Enable case insensitive search
-      set smartcase  " when using uppercase make case sensitive
-      set incsearch  " Show search results while typing
-      set spell
-      set spelllang=en,it     " Define spelling dictionaries
-      set complete+=kspell    " Add spellcheck options for autocomplete
-      set spelloptions=camel  " Treat parts of camelCase words as separate words
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
       set termguicolors     " Enable gui colors
       set cursorline        " Enable highlighting of the current line
       set signcolumn=yes  " Always show signcolumn or it would frequently shift
@@ -232,164 +234,6 @@ in {
     in [
       plenary-nvim
       nvim-web-devicons
-      editorconfig-nvim
-      vim-sleuth
-      {
-        plugin = camelcasemotion;
-        config = "let g:camelcasemotion_key = '\\'";
-      }
-      (buildVimPlugin {
-        name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
-          owner = "dahu";
-          repo = "vim-fanfingtastic";
-          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "sha256-wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
-        };
-      })
-      kommentary
-      {
-        plugin = suda-vim;
-        config = "let g:suda_smart_edit = 1";
-      }
-      {
-        plugin = nvim-autopairs;
-        type = "lua";
-        config = ''require"nvim-autopairs".setup{}'';
-      }
-      {
-        plugin = surround-nvim;
-        type = "lua";
-        config = ''require"surround".setup{ mappings_style = "sandwich" }'';
-      }
-      vim-table-mode
-      nvim-ts-rainbow
-      {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              additional_vim_regex_highlighting = true
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
-      }
-      {
-        plugin = nvim-colorizer-lua;
-        type = "lua";
-        config = ''require"colorizer".setup{}'';
-      }
-      vim-nix
-      undotree
-      telescope-file-browser-nvim
-      telescope-fzf-native-nvim
-      telescope-symbols-nvim
-      # telescope-termfinder
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require "telescope"
-          telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
-          telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
-        '';
-      }
-      diffview-nvim
-      {
-        plugin = neogit;
-        type = "lua";
-        config = ''
-          require"neogit".setup{
-            integrations = {
-              diffview = true
-            }
-          }
-        '';
-      }
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
-      }
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                s = map (function () 
-                    require"session-lens".search_session()
-                  end, "Sessions"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Neogit<cr>", "Neo git"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-            },
-            { prefix = "<leader>" }
-          )
-        '';
-      }
       {
         plugin = vimtex;
         config = ''
@@ -543,6 +387,173 @@ in {
           }
         '';
       }
+      telescope-file-browser-nvim
+      telescope-fzf-native-nvim
+      telescope-symbols-nvim
+      # telescope-termfinder
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local telescope = require "telescope"
+          telescope.load_extension("file_browser")
+          telescope.load_extension("projects")
+          telescope.load_extension("fzf")
+          -- telescope.load_extension("termfinder")
+        '';
+      }
+      diffview-nvim
+      {
+        plugin = neogit;
+        type = "lua";
+        config = ''
+          require"neogit".setup{
+            integrations = {
+              diffview = true
+            }
+          }
+        '';
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''require"gitsigns".setup()'';
+      }
+      {
+        plugin = project-nvim;
+        type = "lua";
+        config = ''require"project_nvim".setup()'';
+      }
+      editorconfig-nvim
+      vim-sleuth
+      {
+        plugin = camelcasemotion;
+        config = "let g:camelcasemotion_key = '\\'";
+      }
+      (buildVimPlugin {
+        name = "vim-fanfingtastic";
+        src = pkgs.fetchFromGitHub {
+          owner = "dahu";
+          repo = "vim-fanfingtastic";
+          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+          sha256 = "sha256-wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+        };
+      })
+      kommentary
+      {
+        plugin = suda-vim;
+        config = "let g:suda_smart_edit = 1";
+      }
+      {
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = ''require"nvim-autopairs".setup{}'';
+      }
+      {
+        plugin = surround-nvim;
+        type = "lua";
+        config = ''require"surround".setup{ mappings_style = "sandwich" }'';
+      }
+      vim-table-mode
+      nvim-ts-rainbow
+      {
+        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+        type = "lua";
+        config = ''
+          require"nvim-treesitter.configs".setup {
+            highlight = {
+              enable = true,
+              additional_vim_regex_highlighting = true
+            },
+            incremental_selection = { enable = true },
+            indentation = { enable = true },
+            folding = { enable = true },
+            -- rainbow parenthesis match
+            rainbow = {
+              enable = true,
+              extended_mode = true, -- Also highlight non-bracket delimiters
+              max_file_lines = nil
+            }
+          }
+        '';
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = ''require"colorizer".setup{}'';
+      }
+      vim-nix
+      undotree
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                s = map (function () 
+                    require"session-lens".search_session()
+                  end, "Sessions"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Neogit<cr>", "Neo git"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["<f3>"] = map ("<cmd>noh<cr>", "End search"),
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
       vim-numbertoggle
       lush-nvim
       {
@@ -593,11 +604,17 @@ in {
         plugin = bufferline-nvim;
         type = "lua";
         config = ''
+          local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
           require"bufferline".setup {
             options = {
-              right_mouse_command = nil,
-              middle_mouse_command = "bdelete! %d",
+              right_mouse_command = "vertical sbuffer %d",
+              middle_mouse_command = close_cmd,
+              close_command = close_cmd,
               show_close_icon = false,
+              custom_filter = function(buf, buf_nums)
+                -- Hide quickfix lists from bufferline
+                return vim.bo[buf].buftype ~= "quickfix"
+              end,
               offsets = {
                 {
                   filetype = "NvimTree",
@@ -654,9 +671,12 @@ in {
         type = "lua";
         config = ''
           require("stickybuf").setup({
-             filetype = {
-               toggleterm = "filetype",
-             }
+            buftype = {
+              quickfix = "buftype", -- VimTeX
+            },
+            filetype = {
+              toggleterm = "filetype",
+            }
           })
         '';
       }
