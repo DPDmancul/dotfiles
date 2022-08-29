@@ -27,6 +27,14 @@ Quickly apply dotfiles
 '')
 ```
 
+## Bluetooth headset battery
+
+```nix "home-packages" +=
+(writeShellScriptBin "batt" ''
+  ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+'')
+```
+
 ## OpenTabletDriver config
 
 ```nix "home-config" +=
