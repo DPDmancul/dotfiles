@@ -1175,10 +1175,6 @@ in {
         }
     '';
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
@@ -1387,10 +1383,6 @@ in {
   ];
   home.packages = with pkgs; [
     wpaperd
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
     wofi
     swaylock-effects
     sway-contrib.grimshot
@@ -1455,6 +1447,13 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
   ];
   services.fluidsynth = {
     enable = true;
@@ -1530,4 +1529,8 @@ in {
       protocol.version = 2;
     };
   };
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
 }
