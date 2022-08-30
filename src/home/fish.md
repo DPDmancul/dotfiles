@@ -86,8 +86,9 @@ programs.fish.shellAliases = {
   nv = "nvim";
   mk = "make";
   nix-fish = "nix-shell --run fish";
-  cat = "bat";
-  ls = "exa -G  --color auto --icons -a -s type";
+  mkcd = ''mkdir -p "$argv"; and cd'';
+  # cat = "bat";
+  exa = "exa -G  --color auto --icons -a -s type";
   ll = "exa -l --color always --icons -a -s type";
 };
 ```
