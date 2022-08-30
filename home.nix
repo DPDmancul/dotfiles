@@ -21,70 +21,6 @@ let
     cargoSha256 = "sha256-xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
   };
 in {
-  programs.fish = {
-    enable = true;
-    plugins = [
-      {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
-        name = "fish-colored-man";
-        src = pkgs.fetchFromGitHub {
-          owner = "decors";
-          repo = "fish-colored-man";
-          rev = "1ad8fff";
-          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
-        };
-      }
-    ];
-    interactiveShellInit = ''
-      fish_vi_key_bindings
-      set fish_cursor_default block blink
-      set fish_cursor_insert line blink
-      set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
-      set -g man_blink -o red
-      set -g man_bold -o green
-      set -g man_standout -b cyan black
-      set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh'
-      end
-      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
-      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-    '';
-  };
-  programs.fish.shellAliases = {
-  # environment.shellAliases = {
-    df = "df -h"; # Human-readable sizes
-    free = "free -m"; # Show sizes in MB
-    gitu = "git add . && git commit && git push";
-    nv = "nvim";
-    mk = "make";
-    nix-fish = "nix-shell --run fish";
-    cat = "bat";
-    ls = "exa -G  --color auto --icons -a -s type";
-    ll = "exa -l --color always --icons -a -s type";
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      format = "╭─$all╰─$jobs$character";
-      right_format = "$status";
-      directory.home_symbol = "🏠"; # Nerd font variant: 
-      status = {
-        disabled = false;
-        map_symbol = true;
-      };
-    };
-  };
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
   programs.kitty = {
@@ -1381,86 +1317,6 @@ in {
       xclip = self.wl-clipboard-x11;
     })
   ];
-  home.packages = with pkgs; [
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
-    libreoffice
-    pcmanfm
-    lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    rhythmbox
-    audacity
-    frescobaldi
-    musescore
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-  ];
-  services.fluidsynth = {
-    enable = true;
-    soundService = "pipewire-pulse";
-  };
-  # disable autostart to save RAM
-  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
   programs.git = {
     enable = true;
     userName = "DPDmancul";
@@ -1533,4 +1389,149 @@ in {
   home.homeDirectory = "/home/dpd-";
   xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
   home.stateVersion = "22.05";
+  home.packages = with pkgs; [
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    libreoffice
+    pcmanfm
+    lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    rhythmbox
+    audacity
+    frescobaldi
+    musescore
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  services.fluidsynth = {
+    enable = true;
+    soundService = "pipewire-pulse";
+  };
+  # disable autostart to save RAM
+  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {
+        name = "base16-fish";
+        src = pkgs.fetchFromGitHub {
+          owner = "tomyun";
+          repo = "base16-fish";
+          rev = "2f6dd97";
+          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
+        };
+      }
+      {
+        name = "fish-colored-man";
+        src = pkgs.fetchFromGitHub {
+          owner = "decors";
+          repo = "fish-colored-man";
+          rev = "1ad8fff";
+          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
+        };
+      }
+    ];
+    interactiveShellInit = ''
+      fish_vi_key_bindings
+      set fish_cursor_default block blink
+      set fish_cursor_insert line blink
+      set fish_cursor_replace_one underscore blink
+      base16-gruvbox-light-medium
+      set -x BAT_THEME gruvbox-light
+      set -g man_blink -o red
+      set -g man_bold -o green
+      set -g man_standout -b cyan black
+      set -g man_underline -o yellow
+      if test $TERM = 'xterm-kitty'
+        alias ssh 'kitty +kitten ssh'
+      end
+      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
+      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
+    '';
+  };
+  programs.fish.shellAliases = {
+  # environment.shellAliases = {
+    df = "df -h"; # Human-readable sizes
+    free = "free -m"; # Show sizes in MB
+    gitu = "git add . && git commit && git push";
+    nv = "nvim";
+    mk = "make";
+    nix-fish = "nix-shell --run fish";
+    mkcd = ''mkdir -p "$argv"; and cd'';
+    # cat = "bat";
+    exa = "exa -G  --color auto --icons -a -s type";
+    ll = "exa -l --color always --icons -a -s type";
+  };
+  programs.starship = {
+    enable = true;
+    settings = {
+      format = "╭─$all╰─$jobs$character";
+      right_format = "$status";
+      directory.home_symbol = "🏠"; # Nerd font variant: 
+      status = {
+        disabled = false;
+        map_symbol = true;
+      };
+    };
+  };
 }
