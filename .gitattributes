@@ -1,1 +1,2 @@
 *.md linguist-detectable=true
+theme/*.js linguist-vendored=true
