@@ -21,6 +21,23 @@ let g:tex_flavor = 'latex'
 }
 ```
 
+### Lilypond
+
+```nix "nvim-plugins" +=
+nui-nvim
+{
+  plugin = (buildVimPlugin rec {
+    name = "nvim-lilypond-suite";
+    src = pkgs.fetchFromGitHub {
+      owner = "martineausimon";
+      repo = name;
+      rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
+      sha256 = "sha256-nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
+    };
+  });
+}
+```
+
 ## Agda
 
 ```nix "nvim-plugins" +=
@@ -48,11 +65,11 @@ let g:tex_flavor = 'latex'
   '';
 }
 {
-  plugin = (buildVimPlugin {
+  plugin = (buildVimPlugin rec {
     name = "vim-agda";
     src = pkgs.fetchFromGitHub {
       owner = "msuperdock";
-      repo = "vim-agda";
+      repo = name;
       rev = "1695060850b5991e8aded0861fae0c31877950a7";
       sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
     };

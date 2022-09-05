@@ -162,6 +162,7 @@ gnome.simple-scan
 ```nix "home-packages" +=
 mpv
 rhythmbox
+ffmpeg
 ```
 
 ```nix "xdg-mime" +=
@@ -181,13 +182,14 @@ rhythmbox
 
 ```nix "home-packages" +=
 audacity
-frescobaldi
+lilypond frescobaldi
 musescore
 ```
 
-Frescobaldi requires a midi synth:
+Lilypond requires a midi synth:
 
-```nix "home-config" +=
+<!--
+```nix "home-config-comment" +=
 services.fluidsynth = {
   enable = true;
   soundService = "pipewire-pulse";
@@ -195,8 +197,18 @@ services.fluidsynth = {
 # disable autostart to save RAM
 systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
 ```
+-->
 
 ```nix "home-packages" +=
+(symlinkJoin {
+  name = "fluidsynth";
+  paths = [ fluidsynth ];
+  buildInputs = [ makeWrapper ];
+  postBuild = ''
+    wrapProgram $out/bin/fluidsynth \
+      --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+  '';
+})
 qsynth
 ```
 
