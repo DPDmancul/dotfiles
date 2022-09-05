@@ -120,8 +120,6 @@ in {
   in {
     enable = true;
     extraConfig = ''
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
       let g:mapleader = ' '
       nnoremap <cr> :
       vnoremap <cr> :
@@ -162,6 +160,8 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -170,159 +170,6 @@ in {
     in [
       plenary-nvim
       nvim-web-devicons
-      {
-        plugin = vimtex;
-        config = ''
-          let g:vimtex_view_general_viewer =  'okular'
-        '';
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "agda-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "Isti115";
-            repo = "agda.nvim";
-            rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-            sha256 = "sha256-c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
-          };
-        });
-        config = ''
-          let g:agda_theme = "light"
-          function! AgdaMapping()
-            noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
-          endfunction
-          autocmd BufWinEnter *.agda call AgdaMapping()
-          autocmd BufWinEnter *.lagda* call AgdaMapping()
-          digr ZZ 8484
-          digr NN 8469
-          digr RR 8477
-          digr FF 120125
-        '';
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "vim-agda";
-          src = pkgs.fetchFromGitHub {
-            owner = "msuperdock";
-            repo = "vim-agda";
-            rev = "1695060850b5991e8aded0861fae0c31877950a7";
-            sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
-          };
-        });
-      }
-      symbols-outline-nvim
-      {
-        plugin = lspsaga-nvim;
-        type = "lua";
-        config = ''require"lspsaga".init_lsp_saga()'';
-      }
-      nvim-cmp
-      cmp-nvim-lsp
-      cmp_luasnip
-      luasnip
-      rust-tools-nvim
-      {
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = ''
-          local nvim_lsp = require "lspconfig"
-          local capabilities = require"cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
-          local on_attach = function (client, bufnr)
-            local wk = require "which-key"
-            local map = function (from, to, ...)
-              return {
-                from, to, ...,
-                buffer = bufnr,
-                noremap = true,
-                silent = true
-              }
-            end
-            wk.register {
-             g = {
-               D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
-               d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-               i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
-               r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
-             },
-             ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
-             ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
-             ["<leader>"] = {
-               w = {
-                 name = "Workspace",
-                 a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
-                 r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
-                 l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
-               },
-               D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
-               r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
-               c = {
-                 name = "Code",
-                 a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-                 f = map ("<cmd>lua vim.lsp.buf.formatting()<CR>", "Format buffer")
-               },
-               e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
-               q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
-             },
-             ["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
-             ["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
-            }
-          end
-          local servers = ${lsp_servers_config}
-
-          for lsp,cfg in pairs(servers) do
-            cfg.on_attach = on_attach
-            cfg.capabilities = capabilities
-            if lsp == "rust-tools" then
-              require"rust-tools".setup { server = cfg }
-            else
-              nvim_lsp[lsp].setup(cfg)
-            end
-          end
-          local cmp = require "cmp"
-          local luasnip = require "luasnip"
-          cmp.setup {
-            snippet = {
-              expand = function (args)
-                luasnip.lsp_expand(args.body())
-              end
-            },
-            mapping = {
-              ["<C-p>"] = cmp.mapping.select_prev_item(),
-              ["<C-n>"] = cmp.mapping.select_next_item(),
-              ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-              ["<C-d>"] = cmp.mapping.scroll_docs(4),
-              ["<C-Space>"] = cmp.mapping.complete(),
-              ["<C-e>"] = cmp.mapping.close(),
-              ["<CR>"] = cmp.mapping.confirm {
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true
-              },
-              ["<Tab>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-                else
-                  fallback()
-                end
-              end,
-              ["<S-Tab>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-                else
-                  fallback()
-                end
-              end
-            },  
-            sources = {
-              { name = "nvim_lsp" },
-              { name = "luasnip" }
-            }
-          }
-        '';
-      }
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       telescope-symbols-nvim
@@ -620,6 +467,171 @@ in {
         plugin = neoscroll-nvim;
         type = "lua";
         config = ''require"neoscroll".setup{}'';
+      }
+      {
+        plugin = vimtex;
+        config = ''
+          let g:vimtex_view_general_viewer =  'okular'
+        '';
+      }
+      nui-nvim
+      {
+        plugin = (buildVimPlugin rec {
+          name = "nvim-lilypond-suite";
+          src = pkgs.fetchFromGitHub {
+            owner = "martineausimon";
+            repo = name;
+            rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
+            sha256 = "sha256-nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
+          };
+        });
+      }
+      {
+        plugin = (buildVimPlugin {
+          name = "agda-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "Isti115";
+            repo = "agda.nvim";
+            rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
+            sha256 = "sha256-c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
+          };
+        });
+        config = ''
+          let g:agda_theme = "light"
+          function! AgdaMapping()
+            noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
+          endfunction
+          autocmd BufWinEnter *.agda call AgdaMapping()
+          autocmd BufWinEnter *.lagda* call AgdaMapping()
+          digr ZZ 8484
+          digr NN 8469
+          digr RR 8477
+          digr FF 120125
+        '';
+      }
+      {
+        plugin = (buildVimPlugin rec {
+          name = "vim-agda";
+          src = pkgs.fetchFromGitHub {
+            owner = "msuperdock";
+            repo = name;
+            rev = "1695060850b5991e8aded0861fae0c31877950a7";
+            sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
+          };
+        });
+      }
+      symbols-outline-nvim
+      {
+        plugin = lspsaga-nvim;
+        type = "lua";
+        config = ''require"lspsaga".init_lsp_saga()'';
+      }
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp_luasnip
+      luasnip
+      rust-tools-nvim
+      {
+        plugin = nvim-lspconfig;
+        type = "lua";
+        config = ''
+          local nvim_lsp = require "lspconfig"
+          local capabilities = require"cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
+          local on_attach = function (client, bufnr)
+            local wk = require "which-key"
+            local map = function (from, to, ...)
+              return {
+                from, to, ...,
+                buffer = bufnr,
+                noremap = true,
+                silent = true
+              }
+            end
+            wk.register {
+             g = {
+               D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
+               d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
+               i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
+               r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
+             },
+             ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
+             ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
+             ["<leader>"] = {
+               w = {
+                 name = "Workspace",
+                 a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
+                 r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
+                 l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
+               },
+               D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
+               r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
+               c = {
+                 name = "Code",
+                 a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
+                 f = map ("<cmd>lua vim.lsp.buf.formatting()<CR>", "Format buffer")
+               },
+               e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
+               q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
+             },
+             ["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
+             ["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
+            }
+          end
+          local servers = ${lsp_servers_config}
+
+          for lsp,cfg in pairs(servers) do
+            cfg.on_attach = on_attach
+            cfg.capabilities = capabilities
+            if lsp == "rust-tools" then
+              require"rust-tools".setup { server = cfg }
+            else
+              nvim_lsp[lsp].setup(cfg)
+            end
+          end
+          local cmp = require "cmp"
+          local luasnip = require "luasnip"
+          cmp.setup {
+            snippet = {
+              expand = function (args)
+                luasnip.lsp_expand(args.body())
+              end
+            },
+            mapping = {
+              ["<C-p>"] = cmp.mapping.select_prev_item(),
+              ["<C-n>"] = cmp.mapping.select_next_item(),
+              ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+              ["<C-d>"] = cmp.mapping.scroll_docs(4),
+              ["<C-Space>"] = cmp.mapping.complete(),
+              ["<C-e>"] = cmp.mapping.close(),
+              ["<CR>"] = cmp.mapping.confirm {
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true
+              },
+              ["<Tab>"] = function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+                else
+                  fallback()
+                end
+              end,
+              ["<S-Tab>"] = function(fallback)
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif luasnip.jumpable(-1) then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+                else
+                  fallback()
+                end
+              end
+            },  
+            sources = {
+              { name = "nvim_lsp" },
+              { name = "luasnip" }
+            }
+          }
+        '';
       }
     ];
   };
@@ -1389,86 +1401,6 @@ in {
   home.homeDirectory = "/home/dpd-";
   xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
   home.stateVersion = "22.05";
-  home.packages = with pkgs; [
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-    libreoffice
-    pcmanfm
-    lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    rhythmbox
-    audacity
-    frescobaldi
-    musescore
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-  ];
-  services.fluidsynth = {
-    enable = true;
-    soundService = "pipewire-pulse";
-  };
-  # disable autostart to save RAM
-  systemd.user.services.fluidsynth.Install.WantedBy = pkgs.lib.mkForce [];
   programs.fish = {
     enable = true;
     plugins = [
@@ -1534,4 +1466,88 @@ in {
       };
     };
   };
+  home.packages = with pkgs; [
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    libreoffice
+    pcmanfm
+    lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    rhythmbox
+    ffmpeg
+    audacity
+    lilypond frescobaldi
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
 }
