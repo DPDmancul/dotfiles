@@ -689,102 +689,6 @@ in {
       };
     };
   };
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-
-      # do not create useless folders
-      desktop = "$HOME";
-      publicShare = "$HOME/.local/share/Public";
-      templates = "$HOME/.local/share/Templates";
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = lib.zipAttrsWith
-        (_: values: values)
-        (let
-          subtypes = type: program: subt:
-            builtins.listToAttrs (builtins.map
-              (x: {name = type + "/" + x; value = program; })
-              subt);
-        in [
-          { "text/plain" = "nvim.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
-          (subtypes "application" "libreoffice.desktop"
-            [
-              "vnd.oasis.opendocument.text"
-              "msword"
-              "vnd.ms-word"
-              "vnd.openxmlformats-officedocument.wordprocessingml.document"
-              "vnd.oasis.opendocument.spreadsheet"
-              "vnd.ms-excel"
-              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              "vnd.oasis.opendocument.presentation"
-              "vnd.ms-powerpoint"
-              "vnd.openxmlformats-officedocument.presentationml.presentation"
-              "vnd.oasis.opendocument.graphics"
-              "vnd.oasis.opendocument.chart"
-              "vnd.oasis.opendocument.formula"
-              "vnd.oasis.opendocument.image"
-              "vnd.oasis.opendocument.text-master"
-              "vnd.sun.xml.base"
-              "vnd.oasis.opendocument.base"
-              "vnd.oasis.opendocument.database"
-              "vnd.oasis.opendocument.text-template"
-              "vnd.oasis.opendocument.spreadsheet-template"
-              "vnd.oasis.opendocument.presentation-template"
-              "vnd.oasis.opendocument.graphics-template"
-              "vnd.oasis.opendocument.chart-template"
-              "vnd.oasis.opendocument.formula-template"
-              "vnd.oasis.opendocument.image-template"
-              "vnd.oasis.opendocument.text-web"
-            ])
-          { "inode/directory" = "pcmanfm.desktop"; }
-          (subtypes "application" "org.gnome.FileRoller.desktop"
-            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
-          { "application/pdf" = "okularApplication_pdf.desktop"; }
-          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
-          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
-          (subtypes "image" "imv-folder.desktop"
-            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-          (subtypes "video" "umpv.desktop"
-            [
-              "avi" "msvideo" "x-msvideo"
-              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-              "ogg"
-              "quicktime"
-              "webm"
-            ])
-          (subtypes "audio" "rhythmbox.desktop"
-            [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
-          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-        ]);
-    };
-  };
-  systemd.user.services.polkit-agent = {
-    Unit = {
-      Description = "Runs polkit authentication agent";
-      PartOf = "graphical-session.target";
-    };
-
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
   xdg.configFile."wpaperd/output.conf".text = ''
     [default]
     path = "${dotfiles}/flake/wallpapers"
@@ -1217,118 +1121,6 @@ in {
     };
 
   };
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-      ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 5";
-        "--locked XF86MonBrightnessUp" = "exec light -A 5";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec pcmanfm";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-    }];
-  };
-  nixpkgs.overlays = [
-    (self: super: {
-      wl-clipboard-x11 = super.stdenv.mkDerivation rec {
-        pname = "wl-clipboard-x11";
-        version = "5";
-
-        src = super.fetchFromGitHub {
-          owner = "brunelli";
-          repo = "wl-clipboard-x11";
-          rev = "v${version}";
-          sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
-        };
-
-        dontBuild = true;
-        dontConfigure = true;
-        propagatedBuildInputs = [ super.wl-clipboard ];
-        makeFlags = [ "PREFIX=$(out)" ];
-      };
-
-      xsel = self.wl-clipboard-x11;
-      xclip = self.wl-clipboard-x11;
-    })
-  ];
   programs.git = {
     enable = true;
     userName = "DPDmancul";
@@ -1466,13 +1258,122 @@ in {
       };
     };
   };
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "nemo"; title = "Properties"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+      ];
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Shift+e" = ''
+          exec sh -c ' \
+            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+              "Shutdown") systemctl poweroff;; \
+              "Suspend") systemctl suspend;; \
+              "Reboot") systemctl reboot;; \
+              "Logout") swaymsg exit;; \
+            esac \
+          '
+        '';
+        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+        "--locked XF86AudioMute" = "exec pamixer -t";
+        "--locked XF86MonBrightnessDown" = "exec light -U 5";
+        "--locked XF86MonBrightnessUp" = "exec light -A 5";
+        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+        "${modifier}+p" = "exec grimshot save active";       # Active window
+        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+        "${modifier}+y" = "exec grimshot copy active";       # Active window
+        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+        "${modifier}+z" = "exec firefox";
+        "${modifier}+x" = "exec nemo";
+        "${modifier}+v" = "exec kitty nvim";
+      };
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
+  };
+  nixpkgs.overlays = [
+    (self: super: {
+      wl-clipboard-x11 = super.stdenv.mkDerivation rec {
+        pname = "wl-clipboard-x11";
+        version = "5";
+
+        src = super.fetchFromGitHub {
+          owner = "brunelli";
+          repo = "wl-clipboard-x11";
+          rev = "v${version}";
+          sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
+        };
+
+        dontBuild = true;
+        dontConfigure = true;
+        propagatedBuildInputs = [ super.wl-clipboard ];
+        makeFlags = [ "PREFIX=$(out)" ];
+      };
+
+      xsel = self.wl-clipboard-x11;
+      xclip = self.wl-clipboard-x11;
+    })
+  ];
   home.packages = with pkgs; [
     wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    polkit_gnome
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
@@ -1480,9 +1381,14 @@ in {
     (writeShellScriptBin "batt" ''
       ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
     '')
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    polkit_gnome
     libreoffice
-    pcmanfm
-    lxmenu-data
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
     shared-mime-info
     (symlinkJoin {
       name = "file-roller";
@@ -1511,10 +1417,10 @@ in {
     inkscape
     gnome.simple-scan
     mpv
-    rhythmbox
     ffmpeg
     audacity
-    lilypond frescobaldi
+    lilypond # frescobaldi
+    # denemo
     musescore
     (symlinkJoin {
       name = "fluidsynth";
@@ -1550,4 +1456,125 @@ in {
     python3
     (agda.withPackages (p: [ p.standard-library ]))
   ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+
+      # do not create useless folders
+      desktop = "$HOME";
+      publicShare = "$HOME/.local/share/Public";
+      templates = "$HOME/.local/share/Templates";
+    };
+    desktopEntries.nvim = {
+      name = "NeoVim";
+      genericName = "Text Editor";
+      icon = "nvim";
+      exec = "kitty nvim %F";
+      terminal = false;
+      categories = [ "Utility" "TextEditor" ];
+      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = lib.zipAttrsWith
+        (_: values: values)
+        (let
+          subtypes = type: program: subt:
+            builtins.listToAttrs (builtins.map
+              (x: {name = type + "/" + x; value = program; })
+              subt);
+        in [
+          { "text/plain" = "nvim.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
+          (subtypes "application" "writer.desktop"
+            [
+              "vnd.oasis.opendocument.text"
+              "msword"
+              "vnd.ms-word"
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
+              "vnd.oasis.opendocument.text-template"
+            ])
+          (subtypes "application" "calc.desktop"
+            [
+              "vnd.oasis.opendocument.spreadsheet"
+              "vnd.ms-excel"
+              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              "vnd.oasis.opendocument.spreadsheet-template"
+            ])
+          (subtypes "application" "impress.desktop"
+            [
+              "vnd.oasis.opendocument.presentation"
+              "vnd.ms-powerpoint"
+              "vnd.openxmlformats-officedocument.presentationml.presentation"
+              "vnd.oasis.opendocument.presentation-template"
+            ])
+          (subtypes "application" "libreoffice.desktop"
+            [
+              "vnd.oasis.opendocument.graphics"
+              "vnd.oasis.opendocument.chart"
+              "vnd.oasis.opendocument.formula"
+              "vnd.oasis.opendocument.image"
+              "vnd.oasis.opendocument.text-master"
+              "vnd.sun.xml.base"
+              "vnd.oasis.opendocument.base"
+              "vnd.oasis.opendocument.database"
+              "vnd.oasis.opendocument.graphics-template"
+              "vnd.oasis.opendocument.chart-template"
+              "vnd.oasis.opendocument.formula-template"
+              "vnd.oasis.opendocument.image-template"
+              "vnd.oasis.opendocument.text-web"
+            ])
+          { "inode/directory" = "nemo.desktop"; }
+          (subtypes "application" "org.gnome.FileRoller.desktop"
+            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+          { "application/pdf" = "okularApplication_pdf.desktop"; }
+          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
+          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
+          (subtypes "image" "imv-folder.desktop"
+            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+          (subtypes "video" "umpv.desktop"
+            [
+              "avi" "msvideo" "x-msvideo"
+              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+              "ogg"
+              "quicktime"
+              "webm"
+            ])
+          (subtypes "audio" "umpv.desktop"
+            [
+              "aac" "flac"
+              "mpeg" "mpeg3" # mp3
+              "ogg" "vorbis" "opus" "x-opus+ogg"
+              "wav" "x-wav"
+              "audio/x-ms-wma"
+            ])
+          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+        ]);
+    };
+  };
+  systemd.user.services.polkit-agent = {
+    Unit = {
+      Description = "Runs polkit authentication agent";
+      PartOf = "graphical-session.target";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      RestartSec = 5;
+      Restart = "always";
+    };
+  };
 }
