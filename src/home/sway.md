@@ -194,7 +194,8 @@ Copy (_yank_) to clipboard
 
 ```nix "sway-keybind" +=
 "${modifier}+z" = "exec firefox";
-"${modifier}+x" = "exec pcmanfm";
+"${modifier}+x" = "exec nemo";
+"${modifier}+v" = "exec kitty nvim";
 ```
 
 ## Clipboard
@@ -242,6 +243,7 @@ floating.criteria = [
   { app_id = "firefox"; title = "^Developer Tools [-—]"; }
   { app_id = "file-roller"; title = "Extract"; }
   { app_id = "file-roller"; title = "Compress"; }
+  { app_id = "nemo"; title = "Properties"; }
   { app_id = "pavucontrol"; }
   { app_id = "qalculate-gtk"; }
 ];

@@ -26,18 +26,30 @@ libreoffice
 ```
 
 ```nix "xdg-mime" +=
-(subtypes "application" "libreoffice.desktop"
+(subtypes "application" "writer.desktop"
   [
     "vnd.oasis.opendocument.text"
     "msword"
     "vnd.ms-word"
     "vnd.openxmlformats-officedocument.wordprocessingml.document"
+    "vnd.oasis.opendocument.text-template"
+  ])
+(subtypes "application" "calc.desktop"
+  [
     "vnd.oasis.opendocument.spreadsheet"
     "vnd.ms-excel"
     "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    "vnd.oasis.opendocument.spreadsheet-template"
+  ])
+(subtypes "application" "impress.desktop"
+  [
     "vnd.oasis.opendocument.presentation"
     "vnd.ms-powerpoint"
     "vnd.openxmlformats-officedocument.presentationml.presentation"
+    "vnd.oasis.opendocument.presentation-template"
+  ])
+(subtypes "application" "libreoffice.desktop"
+  [
     "vnd.oasis.opendocument.graphics"
     "vnd.oasis.opendocument.chart"
     "vnd.oasis.opendocument.formula"
@@ -46,9 +58,6 @@ libreoffice
     "vnd.sun.xml.base"
     "vnd.oasis.opendocument.base"
     "vnd.oasis.opendocument.database"
-    "vnd.oasis.opendocument.text-template"
-    "vnd.oasis.opendocument.spreadsheet-template"
-    "vnd.oasis.opendocument.presentation-template"
     "vnd.oasis.opendocument.graphics-template"
     "vnd.oasis.opendocument.chart-template"
     "vnd.oasis.opendocument.formula-template"
@@ -60,13 +69,19 @@ libreoffice
 ### File manager
 
 ```nix "home-packages" +=
-pcmanfm
-lxmenu-data
+cinnamon.nemo
+#pcmanfm lxmenu-data
 shared-mime-info
 ```
 
 ```nix "xdg-mime" +=
-{ "inode/directory" = "pcmanfm.desktop"; }
+{ "inode/directory" = "nemo.desktop"; }
+```
+
+Tell nemo to use kitty as terminal emulator
+
+```nix "home-config" +=
+dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
 ```
 
 ### Archive manager
@@ -161,7 +176,6 @@ gnome.simple-scan
 
 ```nix "home-packages" +=
 mpv
-rhythmbox
 ffmpeg
 ```
 
@@ -174,15 +188,22 @@ ffmpeg
     "quicktime"
     "webm"
   ])
-(subtypes "audio" "rhythmbox.desktop"
-  [ "aac" "flac" "mpeg" "mpeg3" "ogg" "opus" "vorbis" "wav" ])
+(subtypes "audio" "umpv.desktop"
+  [
+    "aac" "flac"
+    "mpeg" "mpeg3" # mp3
+    "ogg" "vorbis" "opus" "x-opus+ogg"
+    "wav" "x-wav"
+    "audio/x-ms-wma"
+  ])
 ```
 
 ### Audio and music production
 
 ```nix "home-packages" +=
 audacity
-lilypond frescobaldi
+lilypond # frescobaldi
+# denemo
 musescore
 ```
 
