@@ -8,7 +8,7 @@ let
       owner = "danyspin97";
       repo = pname;
       rev = "89f32c907386af58587df46c10784ab4f17ed31e";
-      sha256 = "sha256-n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
+      sha256 = "n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
     };
 
     nativeBuildInputs = [
@@ -18,7 +18,7 @@ let
       libxkbcommon
     ];
 
-    cargoSha256 = "sha256-xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
+    cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
   };
 in {
   programs.gpg.enable = true;
@@ -146,6 +146,8 @@ in {
       set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
       set foldmethod=indent  " Set 'indent' folding method
       set nofoldenable       " Start with folds opened
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
       set termguicolors     " Enable gui colors
       set cursorline        " Enable highlighting of the current line
       set signcolumn=yes  " Always show signcolumn or it would frequently shift
@@ -160,8 +162,6 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -207,6 +207,76 @@ in {
         type = "lua";
         config = ''require"project_nvim".setup()'';
       }
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                s = map (function () 
+                    require"session-lens".search_session()
+                  end, "Sessions"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Neogit<cr>", "Neo git"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["<f3>"] = map ("<cmd>noh<cr>", "End search"),
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
       editorconfig-nvim
       vim-sleuth
       {
@@ -219,7 +289,7 @@ in {
           owner = "dahu";
           repo = "vim-fanfingtastic";
           rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "sha256-wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
         };
       })
       kommentary
@@ -267,207 +337,15 @@ in {
       }
       vim-nix
       undotree
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                s = map (function () 
-                    require"session-lens".search_session()
-                  end, "Sessions"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Neogit<cr>", "Neo git"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["<f3>"] = map ("<cmd>noh<cr>", "End search"),
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
-        '';
-      }
-      vim-numbertoggle
-      lush-nvim
-      {
-        plugin = gruvbox-nvim;
-        config = ''
-          set background=light
-          colorscheme gruvbox
-        '';
-      }
-      lualine-lsp-progress
-      {
-        plugin = lualine-nvim;
-        type = "lua";
-        config = ''
-          require"lualine".setup {
-            options = {
-              section_separators = {
-                left = "",
-                right = ""
-              },
-              component_separators = {
-                 left = "|",
-                 right = "|"
-              },
-            },
-            sections = {
-              lualine_c = {
-                "filename",
-                "lsp_progress"
-              },
-              lualine_x = {
-                "encoding",
-                "fileformat",
-                function ()
-                  if vim.o.expandtab then
-                    return vim.o.shiftwidth .. " ␣"
-                  else
-                    return vim.o.tabstop .. " ↹"
-                  end
-                end,
-                "filetype"
-              }
-            }
-          }
-        '';
-      }
-      {
-        plugin = bufferline-nvim;
-        type = "lua";
-        config = ''
-          local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
-          require"bufferline".setup {
-            options = {
-              right_mouse_command = "vertical sbuffer %d",
-              middle_mouse_command = close_cmd,
-              close_command = close_cmd,
-              show_close_icon = false,
-              custom_filter = function(buf, buf_nums)
-                -- Hide quickfix lists from bufferline
-                return vim.bo[buf].buftype ~= "quickfix"
-              end,
-              offsets = {
-                {
-                  filetype = "NvimTree",
-                  text = vim.fn.getcwd
-                }
-              }
-            }
-          }
-        '';
-      }
-      {
-        plugin = wilder-nvim;
-        config = "call wilder#setup({'modes': [':', '/', '?']})";
-      }
-      {
-        plugin = toggleterm-nvim;
-        type = "lua";
-        config = ''
-          require"toggleterm".setup {
-            open_mapping = [[<c-\>]],
-            shade_terminals = false
-          }
-
-          function _G.set_terminal_keymaps ()
-            for from,to in pairs {
-              ["<esc>"] = [[<C-\><C-n>]],
-              ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
-              ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
-              ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
-              ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
-              ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
-              ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
-            } do
-              vim.api.nvim_buf_set_keymap(0, "t", from, to, {
-                noremap = true,
-                silent = true
-              })
-            end
-          end
-
-          vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-        '';
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "stickybuf-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "stevearc";
-            repo = "stickybuf.nvim";
-            rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
-            sha256 = "sha256-J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
-          };
-        });
-        type = "lua";
-        config = ''
-          require("stickybuf").setup({
-            buftype = {
-              quickfix = "buftype", -- VimTeX
-            },
-            filetype = {
-              toggleterm = "filetype",
-            }
-          })
-        '';
-      }
-      {
-        plugin = neoscroll-nvim;
-        type = "lua";
-        config = ''require"neoscroll".setup{}'';
-      }
+      (buildVimPlugin rec {
+        name = "vim-xsami";
+        src = pkgs.fetchFromGitHub {
+          owner = "tckmn";
+          repo = name;
+          rev = "16ef1d2b9c422532e9eedbc5a8be4080a87126f1";
+          sha256 = "8xT7d0oCQbDkf7dIK/9Eyu+EG6O5iazbmwbJQpou29Y=";
+        };
+      })
       {
         plugin = vimtex;
         config = ''
@@ -482,7 +360,7 @@ in {
             owner = "martineausimon";
             repo = name;
             rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-            sha256 = "sha256-nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
+            sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
           };
         });
       }
@@ -493,7 +371,7 @@ in {
             owner = "Isti115";
             repo = "agda.nvim";
             rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-            sha256 = "sha256-c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
+            sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
           };
         });
         config = ''
@@ -516,7 +394,7 @@ in {
             owner = "msuperdock";
             repo = name;
             rev = "1695060850b5991e8aded0861fae0c31877950a7";
-            sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
+            sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
           };
         });
       }
@@ -633,87 +511,138 @@ in {
           }
         '';
       }
+      vim-numbertoggle
+      lush-nvim
+      {
+        plugin = gruvbox-nvim;
+        config = ''
+          set background=light
+          colorscheme gruvbox
+        '';
+      }
+      lualine-lsp-progress
+      {
+        plugin = lualine-nvim;
+        type = "lua";
+        config = ''
+          require"lualine".setup {
+            options = {
+              section_separators = {
+                left = "",
+                right = ""
+              },
+              component_separators = {
+                 left = "|",
+                 right = "|"
+              },
+            },
+            sections = {
+              lualine_c = {
+                "filename",
+                "lsp_progress"
+              },
+              lualine_x = {
+                "encoding",
+                "fileformat",
+                function ()
+                  if vim.o.expandtab then
+                    return vim.o.shiftwidth .. " ␣"
+                  else
+                    return vim.o.tabstop .. " ↹"
+                  end
+                end,
+                "filetype"
+              }
+            }
+          }
+        '';
+      }
+      {
+        plugin = bufferline-nvim;
+        type = "lua";
+        config = ''
+          local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
+          require"bufferline".setup {
+            options = {
+              right_mouse_command = "vertical sbuffer %d",
+              middle_mouse_command = close_cmd,
+              close_command = close_cmd,
+              show_close_icon = false,
+              custom_filter = function(buf, buf_nums)
+                -- Hide quickfix lists from bufferline
+                return vim.bo[buf].buftype ~= "quickfix"
+              end,
+              offsets = {
+                {
+                  filetype = "NvimTree",
+                  text = vim.fn.getcwd
+                }
+              }
+            }
+          }
+        '';
+      }
+      {
+        plugin = wilder-nvim;
+        config = "call wilder#setup({'modes': [':', '/', '?']})";
+      }
+      {
+        plugin = toggleterm-nvim;
+        type = "lua";
+        config = ''
+          require"toggleterm".setup {
+            open_mapping = [[<c-\>]],
+            shade_terminals = false
+          }
+
+          function _G.set_terminal_keymaps ()
+            for from,to in pairs {
+              ["<esc>"] = [[<C-\><C-n>]],
+              ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
+              ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
+              ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
+              ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
+            } do
+              vim.api.nvim_buf_set_keymap(0, "t", from, to, {
+                noremap = true,
+                silent = true
+              })
+            end
+          end
+
+          vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+        '';
+      }
+      {
+        plugin = (buildVimPlugin {
+          name = "stickybuf-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "stevearc";
+            repo = "stickybuf.nvim";
+            rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
+            sha256 = "J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
+          };
+        });
+        type = "lua";
+        config = ''
+          require("stickybuf").setup({
+            buftype = {
+              quickfix = "buftype", -- VimTeX
+            },
+            filetype = {
+              toggleterm = "filetype",
+            }
+          })
+        '';
+      }
+      {
+        plugin = neoscroll-nvim;
+        type = "lua";
+        config = ''require"neoscroll".setup{}'';
+      }
     ];
-  };
-  programs.ssh = {
-    enable = true;
-    matchBlocks = {
-      "gitlab.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitLab";
-      };
-      "github.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitHub";
-      };
-      "bitbucket.org" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-BitBucket";
-      };
-      "aur.archlinux.org" = {
-        user         = "aur";
-        identityFile = "~/.ssh/aur";
-      };
-      dei = {
-        hostname     = "login.dei.unipd.it";
-        user         = "peressonid";
-        identityFile = "~/.ssh/DEI";
-      };
-      capri = {
-        proxyJump    = "dei";
-        hostname     = "capri.dei.unipd.it";
-        user         = "p1045u27";
-        identityFile = "~/.ssh/DEI";
-      };
-      cloudveneto = {
-        proxyJump    = "dei";
-        hostname     = "147.162.226.106";
-        port         = 2222;
-        user         = "group11";
-        identityFile = "~/.ssh/DEI";
-      };
-      nassuz = {
-        hostname     = "10.10.10.10";
-        user         = "admin";
-        identityFile = "~/.ssh/nassuz";
-      };
-      pc3 = {
-        hostname     = "10.10.10.10";
-        port         = 822;
-        user         = "cominfo";
-      };
-      nassuz_web = {
-        hostname     = "lon1.tmate.io";
-        user         = "cominfo/nassuz";
-        identityFile = "~/.ssh/nassuz";
-      };
-    };
-  };
-  xdg.configFile."wpaperd/output.conf".text = ''
-    [default]
-    path = "${dotfiles}/flake/wallpapers"
-    duration = "1m"
-  '';
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
-  };
-  gtk.enable = true;
-  gtk.iconTheme = {
-    name = "Tela";
-    package = pkgs.tela-icon-theme;
-  };
-  dconf.settings."org/gnome/desktop/interface" = {
-    icon-theme = config.gtk.iconTheme.name;
-  };
-  home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
-    size = 24;
   };
   programs.waybar = {
     enable = true;
@@ -1262,15 +1191,6 @@ in {
     enable = true;
     wrapperFeatures.gtk = true;
     config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
       bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
       modifier = "Mod4";
       input."*".xkb_layout = "eu";
@@ -1287,6 +1207,15 @@ in {
         { app_id = "pavucontrol"; }
         { app_id = "qalculate-gtk"; }
       ];
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
       keybindings = lib.mkOptionDefault {
         "${modifier}+Shift+e" = ''
           exec sh -c ' \
@@ -1373,7 +1302,6 @@ in {
     })
   ];
   home.packages = with pkgs; [
-    wpaperd
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
@@ -1455,6 +1383,7 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
+    wpaperd
   ];
   dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
   xdg = {
@@ -1576,5 +1505,85 @@ in {
       RestartSec = 5;
       Restart = "always";
     };
+  };
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "gitlab.com" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-GitLab";
+      };
+      "github.com" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-GitHub";
+      };
+      "bitbucket.org" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-BitBucket";
+      };
+      "aur.archlinux.org" = {
+        user         = "aur";
+        identityFile = "~/.ssh/aur";
+      };
+      dei = {
+        hostname     = "login.dei.unipd.it";
+        user         = "peressonid";
+        identityFile = "~/.ssh/DEI";
+      };
+      capri = {
+        proxyJump    = "dei";
+        hostname     = "capri.dei.unipd.it";
+        user         = "p1045u27";
+        identityFile = "~/.ssh/DEI";
+      };
+      cloudveneto = {
+        proxyJump    = "dei";
+        hostname     = "147.162.226.106";
+        port         = 2222;
+        user         = "group11";
+        identityFile = "~/.ssh/DEI";
+      };
+      nassuz = {
+        hostname     = "10.10.10.10";
+        user         = "admin";
+        identityFile = "~/.ssh/nassuz";
+      };
+      pc3 = {
+        hostname     = "10.10.10.10";
+        port         = 822;
+        user         = "cominfo";
+      };
+      nassuz_web = {
+        hostname     = "lon1.tmate.io";
+        user         = "cominfo/nassuz";
+        identityFile = "~/.ssh/nassuz";
+      };
+    };
+  };
+  xdg.configFile."wpaperd/output.conf".text = ''
+    [default]
+    path = "${dotfiles}/flake/wallpapers"
+    duration = "1m"
+  '';
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = {
+      name = "adwaita";
+      package = pkgs.adwaita-qt;
+    };
+  };
+  gtk.enable = true;
+  gtk.iconTheme = {
+    name = "Tela";
+    package = pkgs.tela-icon-theme;
+  };
+  dconf.settings."org/gnome/desktop/interface" = {
+    icon-theme = config.gtk.iconTheme.name;
+  };
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
   };
 }
