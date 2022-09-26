@@ -32,7 +32,7 @@ nui-nvim
       owner = "martineausimon";
       repo = name;
       rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-      sha256 = "sha256-nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
+      sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
     };
   });
 }
@@ -48,7 +48,7 @@ nui-nvim
       owner = "Isti115";
       repo = "agda.nvim";
       rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-      sha256 = "sha256-c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
+      sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
     };
   });
   config = ''
@@ -71,7 +71,7 @@ nui-nvim
       owner = "msuperdock";
       repo = name;
       rev = "1695060850b5991e8aded0861fae0c31877950a7";
-      sha256 = "sha256-xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
+      sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
     };
   });
 }

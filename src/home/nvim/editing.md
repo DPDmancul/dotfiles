@@ -55,7 +55,7 @@ Use `f` and `t` across lines
     owner = "dahu";
     repo = "vim-fanfingtastic";
     rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-    sha256 = "sha256-wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+    sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
   };
 })
 ```
@@ -192,3 +192,18 @@ set foldmethod=indent  " Set 'indent' folding method
 set nofoldenable       " Start with folds opened
 ```
 
+## IPA input
+
+Allow easy writing in international phonetics alphabet
+
+```nix "nvim-plugins" +=
+(buildVimPlugin rec {
+  name = "vim-xsami";
+  src = pkgs.fetchFromGitHub {
+    owner = "tckmn";
+    repo = name;
+    rev = "16ef1d2b9c422532e9eedbc5a8be4080a87126f1";
+    sha256 = "8xT7d0oCQbDkf7dIK/9Eyu+EG6O5iazbmwbJQpou29Y=";
+  };
+})
+```

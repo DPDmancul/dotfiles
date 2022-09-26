@@ -32,7 +32,7 @@ wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
     owner = "danyspin97";
     repo = pname;
     rev = "89f32c907386af58587df46c10784ab4f17ed31e";
-    sha256 = "sha256-n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
+    sha256 = "n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
   };
 
   nativeBuildInputs = [
@@ -42,7 +42,7 @@ wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
     libxkbcommon
   ];
 
-  cargoSha256 = "sha256-xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
+  cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
 };
 ```
 
