@@ -198,12 +198,12 @@ Allow easy writing in international phonetics alphabet
 
 ```nix "nvim-plugins" +=
 (buildVimPlugin rec {
-  name = "vim-xsami";
+  name = "vim-xsampa";
   src = pkgs.fetchFromGitHub {
-    owner = "tckmn";
+    owner = "DPDmancul";
     repo = name;
-    rev = "16ef1d2b9c422532e9eedbc5a8be4080a87126f1";
-    sha256 = "8xT7d0oCQbDkf7dIK/9Eyu+EG6O5iazbmwbJQpou29Y=";
+    rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
+    sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
   };
 })
 ```

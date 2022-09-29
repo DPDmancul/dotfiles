@@ -202,34 +202,21 @@ Copy (_yank_) to clipboard
 
 ```nix "home-packages" +=
 wl-clipboard
+wl-clipboard-x11
+clipman
 ```
 
-Add clipboard support to X11 programs
+Share clipboard across programs, either for clipboard and selection (primary)
 
-```nix "home-config" +=
-nixpkgs.overlays = [
-  (self: super: {
-    wl-clipboard-x11 = super.stdenv.mkDerivation rec {
-      pname = "wl-clipboard-x11";
-      version = "5";
+```sh "sway-extra-config" +=
+exec wl-paste -n -t text --watch clipman store >> /tmp/clipman-log.txt 2>&1 &
+exec wl-paste -n -p -t text --watch clipman store -P --histpath="~/.cache/clipman-primary.json" >> /tmp/clipman-log.txt 2>&1 &
+```
+ 
+ Clipboard history picker
 
-      src = super.fetchFromGitHub {
-        owner = "brunelli";
-        repo = "wl-clipboard-x11";
-        rev = "v${version}";
-        sha256 = "1y7jv7rps0sdzmm859wn2l8q4pg2x35smcrm7mbfxn5vrga0bslb";
-      };
-
-      dontBuild = true;
-      dontConfigure = true;
-      propagatedBuildInputs = [ super.wl-clipboard ];
-      makeFlags = [ "PREFIX=$(out)" ];
-    };
-
-    xsel = self.wl-clipboard-x11;
-    xclip = self.wl-clipboard-x11;
-  })
-];
+```nix "sway-keybind" +=
+"${modifier}+q" = "exec clipman pick -t wofi";
 ```
 
 ## Floating windows
@@ -254,14 +241,4 @@ floating.criteria = [
 ```nix "home-packages" +=
 polkit_gnome
 ```
-
-## Import environment variables
-
-```nix "sway-extraconfig"
-exec dbus-update-activation-environment WAYLAND_DISPLAY
-exec systemctl --user import-environment WAYLAND_DISPLAY
-exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
-```
-
-
 
