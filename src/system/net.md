@@ -31,3 +31,21 @@ boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8821cu ];
 boot.kernelModules = [ "8821cu" ];
 ```
 
+## VPN
+
+Disable IPv6 since it is not supported
+
+```nix "config" +=
+networking.enableIPv6 = false;
+```
+
+```nix "config" +=
+services.openvpn.servers = {
+  vpn  = {
+    config = "config ${./it238.nordvpn.com.udp.ovpn}";
+    updateResolvConf = true;
+    authUserPass = secrets.vpn;
+  };
+};
+```
+
