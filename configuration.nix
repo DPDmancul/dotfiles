@@ -107,39 +107,6 @@ in {
   # };
   programs.light.enable = true;
   programs.adb.enable = true;
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.nixPath = [
-    "nixpkgs=${args.nixpkgs.outPath}"
-  ];
-  imports = [ 
-    (args.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
-    ./hardware-configuration.nix 
-  ];
-
-  fileSystems."/home/dpd-/datos" = { 
-    device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
-    fsType = "ext4";
-  };
-  fileSystems."/".options = [ "compress=zstd" "noatime" ];
-  systemd.enableEmergencyMode = false;
-  hardware.opentabletdriver.enable = true;
-  time.timeZone = "Europe/Rome";
-  environment.sessionVariables = {
-    XDG_CURRENT_DESKTOP = "sway";
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
-  boot.supportedFilesystems = [ "ntfs" ];
-  nix.settings.auto-optimise-store = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraPackages = [];
-  };
-  system.stateVersion = "21.11";
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
     #<<<packages-unfree>>>
     brscan4
@@ -209,4 +176,46 @@ in {
       authUserPass = secrets.vpn;
     };
   };
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+  nix.nixPath = [
+    "nixpkgs=${args.nixpkgs.outPath}"
+  ];
+  imports = [ 
+    (args.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
+    ./hardware-configuration.nix 
+  ];
+
+  fileSystems."/home/dpd-/datos" = { 
+    device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
+    fsType = "ext4";
+  };
+  fileSystems."/".options = [ "compress=zstd" "noatime" ];
+  systemd.enableEmergencyMode = false;
+  hardware.opentabletdriver.enable = true;
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  time.timeZone = "Europe/Rome";
+  environment.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "sway";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+  boot.supportedFilesystems = [ "ntfs" ];
+  nix.settings.auto-optimise-store = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    extraPackages = [];
+  };
+  system.stateVersion = "21.11";
 }
