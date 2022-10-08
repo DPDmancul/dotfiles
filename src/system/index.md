@@ -61,6 +61,20 @@ Enable pen tablet FOSS drivers
 hardware.opentabletdriver.enable = true;
 ```
 
+Enable hardware video acceleration for Intel
+
+```nix "config" +=
+hardware.opengl = {
+  enable = true;
+  extraPackages = with pkgs; [
+    intel-media-driver # LIBVA_DRIVER_NAME=iHD
+    vaapiIntel         # LIBVA_DRIVER_NAME=i965
+    vaapiVdpau
+    libvdpau-va-gl
+  ];
+};
+```
+
 ## Timezone
 
 ```nix "config" +=

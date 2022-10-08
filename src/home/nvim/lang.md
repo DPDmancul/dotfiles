@@ -38,6 +38,23 @@ nui-nvim
 }
 ```
 
+## Quarto Pandoc
+
+```nix "nvim-plugins" +=
+vim-pandoc-syntax
+{
+  plugin = (buildVimPlugin rec {
+    name = "quarto-vim";
+    src = pkgs.fetchFromGitHub {
+      owner = "quarto-dev";
+      repo = name;
+      rev = "216247339470794e74a5fda5e5515008d6dc1057";
+      sha256 = "HTqvZQY6TmVOWzI5N4LEaYfLg1AxWJZ6IjHhwuYQwI8=";
+    };
+  });
+}
+```
+
 ## Agda
 
 ```nix "nvim-plugins" +=
