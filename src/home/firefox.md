@@ -63,6 +63,12 @@ Disable password manager
 PasswordManagerEnabled = false;
 ```
 
+Enable hardware video acceleration
+
+```nix "firefox-settings" +=
+"media.ffmpeg.vaapi.enabled" = true;
+```
+
 ### Privacy
 
 Enable HTTPS everywhere

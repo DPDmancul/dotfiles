@@ -60,7 +60,7 @@ modules-right = [
 
 ```nix "waybar-bar-settings" +=
 clock = {
-  tooltip-format = "{: %H:%M:%S\n %Y/%m/%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
+  tooltip-format = "{: %H:%M:%S\n %Y-%m-%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
   format = "{:%H:%M}";
   format-alt = "{:%H:%M:%S}";
   interval = 1;

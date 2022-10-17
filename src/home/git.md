@@ -160,6 +160,23 @@ For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 "._sync_*.db*"
 ```
 
+## Private keys
+
+Could save from accidental upload of private keys, but better to keep always an eye open!
+
+```nix "git-ignore" +=
+"id_rsa"
+"id_rsa_*"
+"id_dsa"
+"id_dsa_*"
+"id_ed25519"
+"id_ed25519_*"
+"*.key"
+"*.pem"
+"*.pk"
+"*.ppk"
+```
+
 # Git attributes
 
 Improve diff output for various file types.
