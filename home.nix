@@ -614,7 +614,7 @@ in {
           cmp.setup {
             snippet = {
               expand = function (args)
-                luasnip.lsp_expand(args.body())
+                luasnip.lsp_expand(args.body)
               end
             },
             mapping = {
@@ -656,6 +656,553 @@ in {
       }
     ];
   };
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {
+        name = "base16-fish";
+        src = pkgs.fetchFromGitHub {
+          owner = "tomyun";
+          repo = "base16-fish";
+          rev = "2f6dd97";
+          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
+        };
+      }
+      {
+        name = "fish-colored-man";
+        src = pkgs.fetchFromGitHub {
+          owner = "decors";
+          repo = "fish-colored-man";
+          rev = "1ad8fff";
+          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
+        };
+      }
+    ];
+    interactiveShellInit = ''
+      fish_vi_key_bindings
+      set fish_cursor_default block blink
+      set fish_cursor_insert line blink
+      set fish_cursor_replace_one underscore blink
+      base16-gruvbox-light-medium
+      set -x BAT_THEME gruvbox-light
+      set -g man_blink -o red
+      set -g man_bold -o green
+      set -g man_standout -b cyan black
+      set -g man_underline -o yellow
+      if test $TERM = 'xterm-kitty'
+        alias ssh 'kitty +kitten ssh'
+      end
+      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
+      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
+    '';
+  };
+  programs.fish.shellAliases = {
+  # environment.shellAliases = {
+    df = "df -h"; # Human-readable sizes
+    free = "free -m"; # Show sizes in MB
+    gitu = "git add . && git commit && git push";
+    nv = "nvim";
+    mk = "make";
+    nix-fish = "nix-shell --run fish";
+    mkcd = ''mkdir -p "$argv"; and cd'';
+    # cat = "bat";
+    exa = "exa -G --color auto --icons -a -s type";
+    ll = "exa -l --color always --icons -a -s type";
+  };
+  programs.starship = {
+    enable = true;
+    settings = {
+      format = "╭─$all╰─$jobs$character";
+      right_format = "$status";
+      directory.home_symbol = "🏠"; # Nerd font variant: 
+      status = {
+        disabled = false;
+        map_symbol = true;
+      };
+    };
+  };
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+
+      # do not create useless folders
+      desktop = "$HOME";
+      publicShare = "$HOME/.local/share/Public";
+      templates = "$HOME/.local/share/Templates";
+    };
+    desktopEntries.nvim = {
+      name = "NeoVim";
+      genericName = "Text Editor";
+      icon = "nvim";
+      exec = "kitty nvim %F";
+      terminal = false;
+      categories = [ "Utility" "TextEditor" ];
+      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = lib.zipAttrsWith
+        (_: values: values)
+        (let
+          subtypes = type: program: subt:
+            builtins.listToAttrs (builtins.map
+              (x: {name = type + "/" + x; value = program; })
+              subt);
+        in [
+          { "text/plain" = "nvim.desktop"; }
+          (subtypes "application" "writer.desktop"
+            [
+              "vnd.oasis.opendocument.text"
+              "msword"
+              "vnd.ms-word"
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
+              "vnd.oasis.opendocument.text-template"
+            ])
+          (subtypes "application" "calc.desktop"
+            [
+              "vnd.oasis.opendocument.spreadsheet"
+              "vnd.ms-excel"
+              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              "vnd.oasis.opendocument.spreadsheet-template"
+            ])
+          (subtypes "application" "impress.desktop"
+            [
+              "vnd.oasis.opendocument.presentation"
+              "vnd.ms-powerpoint"
+              "vnd.openxmlformats-officedocument.presentationml.presentation"
+              "vnd.oasis.opendocument.presentation-template"
+            ])
+          (subtypes "application" "libreoffice.desktop"
+            [
+              "vnd.oasis.opendocument.graphics"
+              "vnd.oasis.opendocument.chart"
+              "vnd.oasis.opendocument.formula"
+              "vnd.oasis.opendocument.image"
+              "vnd.oasis.opendocument.text-master"
+              "vnd.sun.xml.base"
+              "vnd.oasis.opendocument.base"
+              "vnd.oasis.opendocument.database"
+              "vnd.oasis.opendocument.graphics-template"
+              "vnd.oasis.opendocument.chart-template"
+              "vnd.oasis.opendocument.formula-template"
+              "vnd.oasis.opendocument.image-template"
+              "vnd.oasis.opendocument.text-web"
+            ])
+          { "inode/directory" = "nemo.desktop"; }
+          (subtypes "application" "org.gnome.FileRoller.desktop"
+            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+          { "application/pdf" = "okularApplication_pdf.desktop"; }
+          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
+          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
+          (subtypes "image" "imv-folder.desktop"
+            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+          (subtypes "video" "umpv.desktop"
+            [
+              "avi" "msvideo" "x-msvideo"
+              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+              "ogg"
+              "quicktime"
+              "webm"
+            ])
+          (subtypes "audio" "umpv.desktop"
+            [
+              "aac" "flac"
+              "mpeg" "mpeg3" # mp3
+              "ogg" "vorbis" "opus" "x-opus+ogg"
+              "wav" "x-wav"
+              "audio/x-ms-wma"
+            ])
+          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
+        ]);
+    };
+  };
+  systemd.user.services.polkit-agent = {
+    Unit = {
+      Description = "Runs polkit authentication agent";
+      PartOf = "graphical-session.target";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      RestartSec = 5;
+      Restart = "always";
+    };
+  };
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "gitlab.com" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-GitLab";
+      };
+      "github.com" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-GitHub";
+      };
+      "bitbucket.org" = {
+        user         = "git";
+        identityFile = "~/.ssh/dpd-BitBucket";
+      };
+      "aur.archlinux.org" = {
+        user         = "aur";
+        identityFile = "~/.ssh/aur";
+      };
+      dei = {
+        hostname     = "login.dei.unipd.it";
+        user         = "peressonid";
+        identityFile = "~/.ssh/DEI";
+      };
+      capri = {
+        proxyJump    = "dei";
+        hostname     = "capri.dei.unipd.it";
+        user         = "p1045u27";
+        identityFile = "~/.ssh/DEI";
+      };
+      cloudveneto = {
+        proxyJump    = "dei";
+        hostname     = "147.162.226.106";
+        port         = 2222;
+        user         = "group11";
+        identityFile = "~/.ssh/DEI";
+      };
+      nassuz = {
+        hostname     = "10.10.10.10";
+        user         = "admin";
+        identityFile = "~/.ssh/nassuz";
+      };
+      pc3 = {
+        hostname     = "10.10.10.10";
+        port         = 822;
+        user         = "cominfo";
+      };
+      nassuz_web = {
+        hostname     = "lon1.tmate.io";
+        user         = "cominfo/nassuz";
+        identityFile = "~/.ssh/nassuz";
+      };
+    };
+  };
+  xdg.configFile."wpaperd/output.conf".text = ''
+    [default]
+    path = "${dotfiles}/flake/wallpapers"
+    duration = "1m"
+  '';
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = {
+      name = "adwaita";
+      package = pkgs.adwaita-qt;
+    };
+  };
+  gtk.enable = true;
+  gtk.iconTheme = {
+    name = "Tela";
+    package = pkgs.tela-icon-theme;
+  };
+  dconf.settings."org/gnome/desktop/interface" = {
+    icon-theme = config.gtk.iconTheme.name;
+  };
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
+  };
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "nemo"; title = "Properties"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+      ];
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Shift+e" = ''
+          exec sh -c ' \
+            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+              "Shutdown") systemctl poweroff;; \
+              "Suspend") systemctl suspend;; \
+              "Reboot") systemctl reboot;; \
+              "Logout") swaymsg exit;; \
+            esac \
+          '
+        '';
+        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+        "--locked XF86AudioMute" = "exec pamixer -t";
+        "--locked XF86MonBrightnessDown" = "exec light -U 5";
+        "--locked XF86MonBrightnessUp" = "exec light -A 5";
+        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+        "${modifier}+p" = "exec grimshot save active";       # Active window
+        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+        "${modifier}+y" = "exec grimshot copy active";       # Active window
+        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+        "${modifier}+z" = "exec firefox";
+        "${modifier}+x" = "exec nemo";
+        "${modifier}+v" = "exec kitty nvim";
+        "${modifier}+q" = "exec clipman pick -t wofi";
+      };
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+      exec wl-paste -n -t text --watch clipman store >> /tmp/clipman-log.txt 2>&1 &
+      exec wl-paste -n -p -t text --watch clipman store -P --histpath="~/.cache/clipman-primary.json" >> /tmp/clipman-log.txt 2>&1 &
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
+  };
+  home.packages = with pkgs; [
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    clipman
+    polkit_gnome
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      forceWayland = true;
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          "*" = {
+            installation_mode = "blocked";
+            blocked_install_message = "Extensions managed by home-manager.";
+          };
+          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+          # "vim-vixen@i-beam.org" = ext "vim-vixen";
+          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+          "proxydocile@unipd.it"= {
+            installation_mode = "force_installed";
+            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+          };
+          "{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
+          "uBlock0@raymondhill.net" = ext "ublock-origin";
+          "@testpilot-containers" = ext "multi-account-containers";
+          "@contain-facebook" = ext "facebook-container";
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        };
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+      };
+    };
+    profiles.default = {
+      settings = {
+        "browser.download.useDownloadDir" = false;
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "devtools.debugger.remote-enabled" = true;
+        "devtools.chrome.enabled" = true;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+        "privacy.trackingprotection.enabled" = true;
+        "privacy.trackingprotection.socialtracking.enabled" = true;
+        "privacy.partition.network_state.ocsp_cache" = true;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "";
+        "browser.uidensity" = 1;
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+      userChrome = ''
+        #main-window {
+          background: #f9f9faa5 !important;
+        }
+        .tab-background:is([selected], [multiselected]),
+        .browser-toolbar:not(.titlebar-color) {
+          background-color: #f9f9fa65 !important;
+        }
+      '';
+    };
+
+  };
   programs.waybar = {
     enable = true;
     settings = [
@@ -686,7 +1233,7 @@ in {
           "tray"
         ];
         clock = {
-          tooltip-format = "{: %H:%M:%S\n %Y/%m/%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
+          tooltip-format = "{: %H:%M:%S\n %Y-%m-%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
           format = "{:%H:%M}";
           format-alt = "{:%H:%M:%S}";
           interval = 1;
@@ -968,100 +1515,6 @@ in {
         }
     '';
   };
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      forceWayland = true;
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "browser.download.always_ask_before_handling_new_types" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
-  };
   programs.git = {
     enable = true;
     userName = "DPDmancul";
@@ -1083,6 +1536,16 @@ in {
       ".pytest_cache"
       ".owncloudsync.log"
       "._sync_*.db*"
+      "id_rsa"
+      "id_rsa_*"
+      "id_dsa"
+      "id_dsa_*"
+      "id_ed25519"
+      "id_ed25519_*"
+      "*.key"
+      "*.pem"
+      "*.pk"
+      "*.ppk"
     ];
     attributes = [
       "*.c     diff=cpp"
@@ -1130,456 +1593,4 @@ in {
       protocol.version = 2;
     };
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
-  programs.fish = {
-    enable = true;
-    plugins = [
-      {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
-        name = "fish-colored-man";
-        src = pkgs.fetchFromGitHub {
-          owner = "decors";
-          repo = "fish-colored-man";
-          rev = "1ad8fff";
-          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
-        };
-      }
-    ];
-    interactiveShellInit = ''
-      fish_vi_key_bindings
-      set fish_cursor_default block blink
-      set fish_cursor_insert line blink
-      set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
-      set -g man_blink -o red
-      set -g man_bold -o green
-      set -g man_standout -b cyan black
-      set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh'
-      end
-      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
-      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-    '';
-  };
-  programs.fish.shellAliases = {
-  # environment.shellAliases = {
-    df = "df -h"; # Human-readable sizes
-    free = "free -m"; # Show sizes in MB
-    gitu = "git add . && git commit && git push";
-    nv = "nvim";
-    mk = "make";
-    nix-fish = "nix-shell --run fish";
-    mkcd = ''mkdir -p "$argv"; and cd'';
-    # cat = "bat";
-    exa = "exa -G --color auto --icons -a -s type";
-    ll = "exa -l --color always --icons -a -s type";
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      format = "╭─$all╰─$jobs$character";
-      right_format = "$status";
-      directory.home_symbol = "🏠"; # Nerd font variant: 
-      status = {
-        disabled = false;
-        map_symbol = true;
-      };
-    };
-  };
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-
-      # do not create useless folders
-      desktop = "$HOME";
-      publicShare = "$HOME/.local/share/Public";
-      templates = "$HOME/.local/share/Templates";
-    };
-    desktopEntries.nvim = {
-      name = "NeoVim";
-      genericName = "Text Editor";
-      icon = "nvim";
-      exec = "kitty nvim %F";
-      terminal = false;
-      categories = [ "Utility" "TextEditor" ];
-      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = lib.zipAttrsWith
-        (_: values: values)
-        (let
-          subtypes = type: program: subt:
-            builtins.listToAttrs (builtins.map
-              (x: {name = type + "/" + x; value = program; })
-              subt);
-        in [
-          { "text/plain" = "nvim.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
-          (subtypes "application" "writer.desktop"
-            [
-              "vnd.oasis.opendocument.text"
-              "msword"
-              "vnd.ms-word"
-              "vnd.openxmlformats-officedocument.wordprocessingml.document"
-              "vnd.oasis.opendocument.text-template"
-            ])
-          (subtypes "application" "calc.desktop"
-            [
-              "vnd.oasis.opendocument.spreadsheet"
-              "vnd.ms-excel"
-              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              "vnd.oasis.opendocument.spreadsheet-template"
-            ])
-          (subtypes "application" "impress.desktop"
-            [
-              "vnd.oasis.opendocument.presentation"
-              "vnd.ms-powerpoint"
-              "vnd.openxmlformats-officedocument.presentationml.presentation"
-              "vnd.oasis.opendocument.presentation-template"
-            ])
-          (subtypes "application" "libreoffice.desktop"
-            [
-              "vnd.oasis.opendocument.graphics"
-              "vnd.oasis.opendocument.chart"
-              "vnd.oasis.opendocument.formula"
-              "vnd.oasis.opendocument.image"
-              "vnd.oasis.opendocument.text-master"
-              "vnd.sun.xml.base"
-              "vnd.oasis.opendocument.base"
-              "vnd.oasis.opendocument.database"
-              "vnd.oasis.opendocument.graphics-template"
-              "vnd.oasis.opendocument.chart-template"
-              "vnd.oasis.opendocument.formula-template"
-              "vnd.oasis.opendocument.image-template"
-              "vnd.oasis.opendocument.text-web"
-            ])
-          { "inode/directory" = "nemo.desktop"; }
-          (subtypes "application" "org.gnome.FileRoller.desktop"
-            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
-          { "application/pdf" = "okularApplication_pdf.desktop"; }
-          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
-          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
-          (subtypes "image" "imv-folder.desktop"
-            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-          (subtypes "video" "umpv.desktop"
-            [
-              "avi" "msvideo" "x-msvideo"
-              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-              "ogg"
-              "quicktime"
-              "webm"
-            ])
-          (subtypes "audio" "umpv.desktop"
-            [
-              "aac" "flac"
-              "mpeg" "mpeg3" # mp3
-              "ogg" "vorbis" "opus" "x-opus+ogg"
-              "wav" "x-wav"
-              "audio/x-ms-wma"
-            ])
-          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-        ]);
-    };
-  };
-  systemd.user.services.polkit-agent = {
-    Unit = {
-      Description = "Runs polkit authentication agent";
-      PartOf = "graphical-session.target";
-    };
-
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
-  programs.ssh = {
-    enable = true;
-    matchBlocks = {
-      "gitlab.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitLab";
-      };
-      "github.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitHub";
-      };
-      "bitbucket.org" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-BitBucket";
-      };
-      "aur.archlinux.org" = {
-        user         = "aur";
-        identityFile = "~/.ssh/aur";
-      };
-      dei = {
-        hostname     = "login.dei.unipd.it";
-        user         = "peressonid";
-        identityFile = "~/.ssh/DEI";
-      };
-      capri = {
-        proxyJump    = "dei";
-        hostname     = "capri.dei.unipd.it";
-        user         = "p1045u27";
-        identityFile = "~/.ssh/DEI";
-      };
-      cloudveneto = {
-        proxyJump    = "dei";
-        hostname     = "147.162.226.106";
-        port         = 2222;
-        user         = "group11";
-        identityFile = "~/.ssh/DEI";
-      };
-      nassuz = {
-        hostname     = "10.10.10.10";
-        user         = "admin";
-        identityFile = "~/.ssh/nassuz";
-      };
-      pc3 = {
-        hostname     = "10.10.10.10";
-        port         = 822;
-        user         = "cominfo";
-      };
-      nassuz_web = {
-        hostname     = "lon1.tmate.io";
-        user         = "cominfo/nassuz";
-        identityFile = "~/.ssh/nassuz";
-      };
-    };
-  };
-  xdg.configFile."wpaperd/output.conf".text = ''
-    [default]
-    path = "${dotfiles}/flake/wallpapers"
-    duration = "1m"
-  '';
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
-  };
-  gtk.enable = true;
-  gtk.iconTheme = {
-    name = "Tela";
-    package = pkgs.tela-icon-theme;
-  };
-  dconf.settings."org/gnome/desktop/interface" = {
-    icon-theme = config.gtk.iconTheme.name;
-  };
-  home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
-    size = 24;
-  };
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "nemo"; title = "Properties"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-      ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 5";
-        "--locked XF86MonBrightnessUp" = "exec light -A 5";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec nemo";
-        "${modifier}+v" = "exec kitty nvim";
-        "${modifier}+q" = "exec clipman pick -t wofi";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-      exec wl-paste -n -t text --watch clipman store >> /tmp/clipman-log.txt 2>&1 &
-      exec wl-paste -n -p -t text --watch clipman store -P --histpath="~/.cache/clipman-primary.json" >> /tmp/clipman-log.txt 2>&1 &
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-    }];
-  };
-  home.packages = with pkgs; [
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    clipman
-    polkit_gnome
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
 }
