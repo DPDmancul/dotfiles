@@ -3,9 +3,10 @@
 ```vim "nvim-config" +=
 set termguicolors     " Enable gui colors
 set cursorline        " Enable highlighting of the current line
-set signcolumn=yes  " Always show signcolumn or it would frequently shift
+set signcolumn=yes    " Always show signcolumn or it would frequently shift
 set pumheight=10      " Make popup menu smaller
-set colorcolumn=+1  " Draw colored column one step to the right of desired maximum width
+set cmdheight=0       " Automatically hide command line
+set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
 set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
 set scrolloff=2       " Show more lines on top and bottom
 set title             " Enable window title
@@ -26,6 +27,14 @@ Show relative numbers only when needed
 
 ```nix "nvim-plugins" +=
 vim-numbertoggle
+```
+
+## Indentation
+
+Show indentation level guide
+
+```lua "mini-nvim" +=
+require"mini.indentscope".setup()
 ```
 
 ## *TODO* Conceal
@@ -119,18 +128,12 @@ set noshowmode
 }
 ```
 
-Go to alternate buffer before close buffer in order to retain window
-
-```lua "bufferline-config" +=
-local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
-```
-
 ```lua "bufferline-config" +=
 require"bufferline".setup {
   options = {
     right_mouse_command = "vertical sbuffer %d",
-    middle_mouse_command = close_cmd,
-    close_command = close_cmd,
+    middle_mouse_command = "Bdelete! %d",
+    close_command = "Bdelete! %d",
     show_close_icon = false,
     custom_filter = function(buf, buf_nums)
       -- Hide quickfix lists from bufferline
@@ -192,7 +195,7 @@ end
 vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 ```
 
-## Sticky buffers
+## Sticky buffers and windows
 
 Do not permit normal buffers to open in terminal, filetree, ... windows
 
@@ -219,6 +222,16 @@ Do not permit normal buffers to open in terminal, filetree, ... windows
     })
   '';
 }
+```
+
+Do not alter window disposition on buffer close
+
+```lua "mini-nvim" +=
+require"mini.bufremove".setup()
+vim.api.nvim_create_user_command('Bdelete', function(args)
+  MiniBufremove.delete(args.fargs[1], args.bang)
+end, { bang = true, count = true, addr = 'buffers', nargs = '?' })
+vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
 ```
 
 ## Smooth scroll

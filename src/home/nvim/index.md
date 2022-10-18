@@ -144,5 +144,16 @@ set spelloptions=camel  " Treat parts of camelCase words as separate words
 }
 ```
 
+## Mini.nvim
 
+A collection of small useful plugins
+```nix "nvim-plugins" +=
+{
+  plugin = mini-nvim;
+  type = "lua";
+  config = ''
+    <<<mini-nvim>>>
+  '';
+}
+```
 

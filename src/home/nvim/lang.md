@@ -99,20 +99,41 @@ vim-pandoc-syntax
 
 Use the power of Language Server Protocol for a better developing experience
 
-### Symbols outline
+### LSP utils
+
+Better UI for LSP
 
 ```nix "nvim-plugins" +=
-symbols-outline-nvim
+# popfix
+# {
+#   plugin = nvim-lsputils;
+#   type = "lua";
+#   config = ''
+#     vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+#     vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+#     vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+#     vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+#     vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+#     vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+#     vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+#     vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+#   '';
+# }
 ```
 
-### LSP UI
+### LSP hints
 
 ```nix "nvim-plugins" +=
 {
-  plugin = lspsaga-nvim;
+  plugin = lsp_signature-nvim;
   type = "lua";
-  config = ''require"lspsaga".init_lsp_saga()'';
+  config = ''require"lsp_signature".setup{}'';
 }
+# {
+#   plugin = virtual-types-nvim;
+#   type = "lua";
+#   config = '''';
+# }
 ```
 
 ### Config LSP and completion
@@ -175,7 +196,7 @@ offered by nvim-cmp
 
 ```lua "lsp-config" +=
 local nvim_lsp = require "lspconfig"
-local capabilities = require"cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function (client, bufnr)
   local wk = require "which-key"
   local map = function (from, to, ...)

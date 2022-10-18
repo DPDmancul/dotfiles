@@ -124,6 +124,14 @@ delta = {
 lfs.enable = true;
 ```
 
+## GitUI
+
+```nix "home-config" +=
+programs.gitui = {
+  enable = true;
+};
+```
+
 # Global gitignore
 
 ```nix "git-config" +=

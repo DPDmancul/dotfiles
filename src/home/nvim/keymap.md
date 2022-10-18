@@ -58,21 +58,12 @@ f = {
   b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
   h = map ("<cmd>Telescope help_tags<cr>", "Help"),
   p = map ("<cmd>Telescope projects<cr>", "Projects"),
-  s = map (function () 
-      require"session-lens".search_session()
-    end, "Sessions"),
   e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
   t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
   -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
   [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
   a = map ("<cmd>Telescope<cr>", "All telescopes"),
 },
-```
-
-End search (remove highlighting)
-
-```lua "nvim-keybind" +=
-["<f3>"] = map ("<cmd>noh<cr>", "End search"),
 ```
 
 ## Git

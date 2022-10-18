@@ -44,6 +44,12 @@ Move into CamelCase and snake\_case words
 }
 ```
 
+### Around and inner text objects
+
+```lua "mini-nvim" +=
+require"mini.ai".setup()
+```
+
 ### Goto char across lines
 
 Use `f` and `t` across lines
@@ -62,8 +68,8 @@ Use `f` and `t` across lines
 
 ## Comments
 
-```nix "nvim-plugins" +=
-kommentary
+```lua "mini-nvim" +=
+require"mini.comment".setup()
 ```
 
 ## Edit with sudo
@@ -79,22 +85,14 @@ kommentary
 
 Autoclose parenthesis and quotes 
 
-```nix "nvim-plugins" +=
-{
-  plugin = nvim-autopairs;
-  type = "lua";
-  config = ''require"nvim-autopairs".setup{}'';
-}
+```lua "mini-nvim" +=
+require"mini.pairs".setup()
 ```
 
 Easy add, remove and change parenthesis and quotes 
 
-```nix "nvim-plugins" +=
-{
-  plugin = surround-nvim;
-  type = "lua";
-  config = ''require"surround".setup{ mappings_style = "sandwich" }'';
-}
+```lua "mini-nvim" +=
+require"mini.surround".setup()
 ```
 
 ## Table edit
