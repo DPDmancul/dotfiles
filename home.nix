@@ -136,9 +136,10 @@ in {
       set spelloptions=camel  " Treat parts of camelCase words as separate words
       set termguicolors     " Enable gui colors
       set cursorline        " Enable highlighting of the current line
-      set signcolumn=yes  " Always show signcolumn or it would frequently shift
+      set signcolumn=yes    " Always show signcolumn or it would frequently shift
       set pumheight=10      " Make popup menu smaller
-      set colorcolumn=+1  " Draw colored column one step to the right of desired maximum width
+      set cmdheight=0       " Automatically hide command line
+      set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
       set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
       set scrolloff=2       " Show more lines on top and bottom
       set title             " Enable window title
@@ -208,73 +209,19 @@ in {
         config = ''require"project_nvim".setup()'';
       }
       {
-        plugin = which-key-nvim;
+        plugin = mini-nvim;
         type = "lua";
         config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                s = map (function () 
-                    require"session-lens".search_session()
-                  end, "Sessions"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Neogit<cr>", "Neo git"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["<f3>"] = map ("<cmd>noh<cr>", "End search"),
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
+          require"mini.indentscope".setup()
+          require"mini.bufremove".setup()
+          vim.api.nvim_create_user_command('Bdelete', function(args)
+            MiniBufremove.delete(args.fargs[1], args.bang)
+          end, { bang = true, count = true, addr = 'buffers', nargs = '?' })
+          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
         '';
       }
       vim-numbertoggle
@@ -327,12 +274,11 @@ in {
         plugin = bufferline-nvim;
         type = "lua";
         config = ''
-          local close_cmd = "let s:close = %d | if bufnr('%%') == s:close | b# | endif | execute 'bd! '.s:close"
           require"bufferline".setup {
             options = {
               right_mouse_command = "vertical sbuffer %d",
-              middle_mouse_command = close_cmd,
-              close_command = close_cmd,
+              middle_mouse_command = "Bdelete! %d",
+              close_command = "Bdelete! %d",
               show_close_icon = false,
               custom_filter = function(buf, buf_nums)
                 -- Hide quickfix lists from bufferline
@@ -408,6 +354,72 @@ in {
         type = "lua";
         config = ''require"neoscroll".setup{}'';
       }
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Neogit<cr>", "Neo git"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
       editorconfig-nvim
       vim-sleuth
       {
@@ -423,20 +435,9 @@ in {
           sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
         };
       })
-      kommentary
       {
         plugin = suda-vim;
         config = "let g:suda_smart_edit = 1";
-      }
-      {
-        plugin = nvim-autopairs;
-        type = "lua";
-        config = ''require"nvim-autopairs".setup{}'';
-      }
-      {
-        plugin = surround-nvim;
-        type = "lua";
-        config = ''require"surround".setup{ mappings_style = "sandwich" }'';
       }
       vim-table-mode
       nvim-ts-rainbow
@@ -541,12 +542,31 @@ in {
           };
         });
       }
-      symbols-outline-nvim
+      # popfix
+      # {
+      #   plugin = nvim-lsputils;
+      #   type = "lua";
+      #   config = ''
+      #     vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+      #     vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+      #     vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+      #     vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+      #     vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+      #     vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+      #     vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+      #     vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+      #   '';
+      # }
       {
-        plugin = lspsaga-nvim;
+        plugin = lsp_signature-nvim;
         type = "lua";
-        config = ''require"lspsaga".init_lsp_saga()'';
+        config = ''require"lsp_signature".setup{}'';
       }
+      # {
+      #   plugin = virtual-types-nvim;
+      #   type = "lua";
+      #   config = '''';
+      # }
       nvim-cmp
       cmp-nvim-lsp
       cmp_luasnip
@@ -557,7 +577,7 @@ in {
         type = "lua";
         config = ''
           local nvim_lsp = require "lspconfig"
-          local capabilities = require"cmp_nvim_lsp".update_capabilities(vim.lsp.protocol.make_client_capabilities())
+          local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
           local on_attach = function (client, bufnr)
             local wk = require "which-key"
             local map = function (from, to, ...)
@@ -1592,5 +1612,8 @@ in {
       };
       protocol.version = 2;
     };
+  };
+  programs.gitui = {
+    enable = true;
   };
 }
