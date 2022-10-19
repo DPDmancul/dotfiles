@@ -120,10 +120,7 @@ Enable all maintained languages
 
 ```lua "treesitter-config" +=
 require"nvim-treesitter.configs".setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = true
-  },
+  highlight = { enable = true },
   incremental_selection = { enable = true },
   indentation = { enable = true },
   folding = { enable = true },
@@ -144,12 +141,6 @@ Show color of colors
   type = "lua";
   config = ''require"colorizer".setup{}'';
 }
-```
-
-Nix expression language highlighting 
-
-```nix "nvim-plugins" +=
-vim-nix
 ```
 
 ## Undo tree

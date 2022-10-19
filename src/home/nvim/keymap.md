@@ -71,7 +71,7 @@ f = {
 ```lua "nvim-keybind-leader" +=
 g = {
   name = "Git",
-  g = map ("<cmd>Neogit<cr>", "Neo git"),
+  g = map ("<cmd>Lazygit<cr>", "Lazygit"),
 },
 ```
 

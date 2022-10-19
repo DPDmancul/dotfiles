@@ -229,8 +229,8 @@ Do not alter window disposition on buffer close
 ```lua "mini-nvim" +=
 require"mini.bufremove".setup()
 vim.api.nvim_create_user_command('Bdelete', function(args)
-  MiniBufremove.delete(args.fargs[1], args.bang)
-end, { bang = true, count = true, addr = 'buffers', nargs = '?' })
+  MiniBufremove.delete(tonumber(args.args), args.bang)
+end, { bang = true, addr = 'buffers', nargs = '?' })
 vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
 ```
 

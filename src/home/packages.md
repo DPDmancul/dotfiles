@@ -276,6 +276,7 @@ baobab # disk usage
 tdesktop # Telegram
 simplenote
 ipscan
+libfaketime
 ```
 
 ```nix "xdg-mime" +=

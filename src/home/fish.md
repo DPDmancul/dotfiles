@@ -32,7 +32,6 @@ set fish_cursor_replace_one underscore blink
 
 ### Color theme
 
-
 ```nix "fish-plugins" +=
 {
   name = "base16-fish";
@@ -85,6 +84,7 @@ programs.fish.shellAliases = {
   gitu = "git add . && git commit && git push";
   nv = "nvim";
   mk = "make";
+  lg = "lazygit";
   nix-fish = "nix-shell --run fish";
   mkcd = ''mkdir -p "$argv"; and cd'';
   # cat = "bat";

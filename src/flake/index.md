@@ -19,7 +19,6 @@ Managing the config with flakes allows to pin source versions.
       <<<flake-outputs>>>
     });
 }
-
 ```
 
 ## Inputs

@@ -95,24 +95,26 @@ telescope.load_extension("fzf")
 
 ## Git
 
-Git easy with ~~Magit~~ Neogit
+Git easy with ~~Magit~~ Lazygit
 
-```nix "nvim-plugins" +=
-diffview-nvim
-{
-  plugin = neogit;
-  type = "lua";
-  config = ''
-    <<<neogit-config>>>
-  '';
+```lua "toggleterm-config" +=
+local lazygit = require"toggleterm.terminal".Terminal:new {
+  cmd = "lazygit",
+  hidden = true,
+  direction = "tab",
+  on_open = function(term)
+    term.old_laststatus = vim.opt_local.laststatus
+    vim.opt_local.laststatus = 0
+    vim.api.nvim_buf_del_keymap(term.bufnr, "t", "<esc>")
+  end,
+  on_close = function(term)
+    vim.opt_local.laststatus = term.old_laststatus
+  end
 }
-```
-```lua "neogit-config" +=
-require"neogit".setup{
-  integrations = {
-    diffview = true
-  }
-}
+function lazygit_toggle()
+  lazygit:toggle()
+end
+vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
 ```
 
 Show git signs
