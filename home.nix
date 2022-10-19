@@ -134,20 +134,6 @@ in {
       set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
       set foldmethod=indent  " Set 'indent' folding method
       set nofoldenable       " Start with folds opened
-      let g:mapleader = ' '
-      nnoremap <cr> :
-      vnoremap <cr> :
-      set mouse=a     " Enable mouse
-      set lazyredraw  " Use lazy redraw
-      set undofile    " Enable persistent undo
-      set hidden      " Allow buffers in background
-      set ignorecase " Enable case insensitive search
-      set smartcase  " when using uppercase make case sensitive
-      set incsearch  " Show search results while typing
-      set spell
-      set spelllang=en,it     " Define spelling dictionaries
-      set complete+=kspell    " Add spellcheck options for autocomplete
-      set spelloptions=camel  " Treat parts of camelCase words as separate words
       set termguicolors     " Enable gui colors
       set cursorline        " Enable highlighting of the current line
       set signcolumn=yes    " Always show signcolumn or it would frequently shift
@@ -163,6 +149,22 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
+      let g:mapleader = ' '
+      nnoremap <cr> :
+      vnoremap <cr> :
+      set mouse=a     " Enable mouse
+      set lazyredraw  " Use lazy redraw
+      set undofile    " Enable persistent undo
+      set hidden      " Allow buffers in background
+      set ignorecase " Enable case insensitive search
+      set smartcase  " when using uppercase make case sensitive
+      set incsearch  " Show search results while typing
+      let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+      autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+      set spell
+      set spelllang=en,it     " Define spelling dictionaries
+      set complete+=kspell    " Add spellcheck options for autocomplete
+      set spelloptions=camel  " Treat parts of camelCase words as separate words
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -487,47 +489,6 @@ in {
           }
         '';
       }
-      telescope-file-browser-nvim
-      telescope-fzf-native-nvim
-      telescope-symbols-nvim
-      # telescope-termfinder
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require "telescope"
-          telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
-          telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
-        '';
-      }
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
-      }
-      {
-        plugin = mini-nvim;
-        type = "lua";
-        config = ''
-          require"mini.ai".setup()
-          require"mini.comment".setup()
-          require"mini.pairs".setup()
-          require"mini.surround".setup()
-          require"mini.indentscope".setup()
-          require"mini.bufremove".setup()
-          vim.api.nvim_create_user_command('Bdelete', function(args)
-            MiniBufremove.delete(tonumber(args.args), args.bang)
-          end, { bang = true, addr = 'buffers', nargs = '?' })
-          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-        '';
-      }
       vim-numbertoggle
       lush-nvim
       {
@@ -606,23 +567,6 @@ in {
         plugin = toggleterm-nvim;
         type = "lua";
         config = ''
-          local lazygit = require"toggleterm.terminal".Terminal:new {
-            cmd = "lazygit",
-            hidden = true,
-            direction = "tab",
-            on_open = function(term)
-              term.old_laststatus = vim.opt_local.laststatus
-              vim.opt_local.laststatus = 0
-              vim.api.nvim_buf_del_keymap(term.bufnr, "t", "<esc>")
-            end,
-            on_close = function(term)
-              vim.opt_local.laststatus = term.old_laststatus
-            end
-          }
-          function lazygit_toggle()
-            lazygit:toggle()
-          end
-          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
             shade_terminals = false
@@ -646,6 +590,23 @@ in {
           end
 
           vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+          local lazygit = require"toggleterm.terminal".Terminal:new {
+            cmd = "lazygit",
+            hidden = true,
+            direction = "tab",
+            on_open = function(term)
+              term.old_laststatus = vim.opt_local.laststatus
+              vim.opt_local.laststatus = 0
+              vim.api.nvim_buf_del_keymap(term.bufnr, "t", "<esc>")
+            end,
+            on_close = function(term)
+              vim.opt_local.laststatus = term.old_laststatus
+            end
+          }
+          function lazygit_toggle()
+            lazygit:toggle()
+          end
+          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
         '';
       }
       {
@@ -674,6 +635,47 @@ in {
         plugin = neoscroll-nvim;
         type = "lua";
         config = ''require"neoscroll".setup{}'';
+      }
+      telescope-file-browser-nvim
+      telescope-fzf-native-nvim
+      telescope-symbols-nvim
+      # telescope-termfinder
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local telescope = require "telescope"
+          telescope.load_extension("file_browser")
+          telescope.load_extension("projects")
+          telescope.load_extension("fzf")
+          -- telescope.load_extension("termfinder")
+        '';
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''require"gitsigns".setup()'';
+      }
+      {
+        plugin = project-nvim;
+        type = "lua";
+        config = ''require"project_nvim".setup()'';
+      }
+      {
+        plugin = mini-nvim;
+        type = "lua";
+        config = ''
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
+          require"mini.indentscope".setup()
+          require"mini.bufremove".setup()
+          vim.api.nvim_create_user_command('Bdelete', function(args)
+            MiniBufremove.delete(tonumber(args.args), args.bang)
+          end, { bang = true, addr = 'buffers', nargs = '?' })
+          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+        '';
       }
     ];
   };
@@ -1383,6 +1385,7 @@ in {
     '';
   };
   home.packages = with pkgs; [
+    neovim-remote
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
