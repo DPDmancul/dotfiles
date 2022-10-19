@@ -120,6 +120,20 @@ in {
   in {
     enable = true;
     extraConfig = ''
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
+      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
+      set clipboard=unnamedplus     " Sync yank register with system clipboard
+      set expandtab     " Convert tabs to spaces
+      set tabstop=2     " Display 2 spaces for a tab
+      set shiftwidth=2  " Use this number of spaces for indentation
+      set smartindent   " Make indenting smart
+      set autoindent    " Use auto indent
+      set breakindent   " Indent wrapped lines to match line start
+      set virtualedit=block
+      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
+      set foldmethod=indent  " Set 'indent' folding method
+      set nofoldenable       " Start with folds opened
       let g:mapleader = ' '
       nnoremap <cr> :
       vnoremap <cr> :
@@ -149,20 +163,6 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
-      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
-      set clipboard=unnamedplus     " Sync yank register with system clipboard
-      set expandtab     " Convert tabs to spaces
-      set tabstop=2     " Display 2 spaces for a tab
-      set shiftwidth=2  " Use this number of spaces for indentation
-      set smartindent   " Make indenting smart
-      set autoindent    " Use auto indent
-      set breakindent   " Indent wrapped lines to match line start
-      set virtualedit=block
-      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
-      set foldmethod=indent  " Set 'indent' folding method
-      set nofoldenable       " Start with folds opened
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -171,313 +171,6 @@ in {
     in [
       plenary-nvim
       nvim-web-devicons
-      telescope-file-browser-nvim
-      telescope-fzf-native-nvim
-      telescope-symbols-nvim
-      # telescope-termfinder
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require "telescope"
-          telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
-          telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
-        '';
-      }
-      diffview-nvim
-      {
-        plugin = neogit;
-        type = "lua";
-        config = ''
-          require"neogit".setup{
-            integrations = {
-              diffview = true
-            }
-          }
-        '';
-      }
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
-      }
-      {
-        plugin = mini-nvim;
-        type = "lua";
-        config = ''
-          require"mini.indentscope".setup()
-          require"mini.bufremove".setup()
-          vim.api.nvim_create_user_command('Bdelete', function(args)
-            MiniBufremove.delete(args.fargs[1], args.bang)
-          end, { bang = true, count = true, addr = 'buffers', nargs = '?' })
-          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-          require"mini.ai".setup()
-          require"mini.comment".setup()
-          require"mini.pairs".setup()
-          require"mini.surround".setup()
-        '';
-      }
-      vim-numbertoggle
-      lush-nvim
-      {
-        plugin = gruvbox-nvim;
-        config = ''
-          set background=light
-          colorscheme gruvbox
-        '';
-      }
-      lualine-lsp-progress
-      {
-        plugin = lualine-nvim;
-        type = "lua";
-        config = ''
-          require"lualine".setup {
-            options = {
-              section_separators = {
-                left = "",
-                right = ""
-              },
-              component_separators = {
-                 left = "|",
-                 right = "|"
-              },
-            },
-            sections = {
-              lualine_c = {
-                "filename",
-                "lsp_progress"
-              },
-              lualine_x = {
-                "encoding",
-                "fileformat",
-                function ()
-                  if vim.o.expandtab then
-                    return vim.o.shiftwidth .. " ␣"
-                  else
-                    return vim.o.tabstop .. " ↹"
-                  end
-                end,
-                "filetype"
-              }
-            }
-          }
-        '';
-      }
-      {
-        plugin = bufferline-nvim;
-        type = "lua";
-        config = ''
-          require"bufferline".setup {
-            options = {
-              right_mouse_command = "vertical sbuffer %d",
-              middle_mouse_command = "Bdelete! %d",
-              close_command = "Bdelete! %d",
-              show_close_icon = false,
-              custom_filter = function(buf, buf_nums)
-                -- Hide quickfix lists from bufferline
-                return vim.bo[buf].buftype ~= "quickfix"
-              end,
-              offsets = {
-                {
-                  filetype = "NvimTree",
-                  text = vim.fn.getcwd
-                }
-              }
-            }
-          }
-        '';
-      }
-      {
-        plugin = wilder-nvim;
-        config = "call wilder#setup({'modes': [':', '/', '?']})";
-      }
-      {
-        plugin = toggleterm-nvim;
-        type = "lua";
-        config = ''
-          require"toggleterm".setup {
-            open_mapping = [[<c-\>]],
-            shade_terminals = false
-          }
-
-          function _G.set_terminal_keymaps ()
-            for from,to in pairs {
-              ["<esc>"] = [[<C-\><C-n>]],
-              ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
-              ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
-              ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
-              ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
-              ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
-              ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
-            } do
-              vim.api.nvim_buf_set_keymap(0, "t", from, to, {
-                noremap = true,
-                silent = true
-              })
-            end
-          end
-
-          vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-        '';
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "stickybuf-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "stevearc";
-            repo = "stickybuf.nvim";
-            rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
-            sha256 = "J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
-          };
-        });
-        type = "lua";
-        config = ''
-          require("stickybuf").setup({
-            buftype = {
-              quickfix = "buftype", -- VimTeX
-            },
-            filetype = {
-              toggleterm = "filetype",
-            }
-          })
-        '';
-      }
-      {
-        plugin = neoscroll-nvim;
-        type = "lua";
-        config = ''require"neoscroll".setup{}'';
-      }
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Neogit<cr>", "Neo git"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
-        '';
-      }
-      editorconfig-nvim
-      vim-sleuth
-      {
-        plugin = camelcasemotion;
-        config = "let g:camelcasemotion_key = '\\'";
-      }
-      (buildVimPlugin {
-        name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
-          owner = "dahu";
-          repo = "vim-fanfingtastic";
-          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
-        };
-      })
-      {
-        plugin = suda-vim;
-        config = "let g:suda_smart_edit = 1";
-      }
-      vim-table-mode
-      nvim-ts-rainbow
-      {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              additional_vim_regex_highlighting = true
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
-      }
-      {
-        plugin = nvim-colorizer-lua;
-        type = "lua";
-        config = ''require"colorizer".setup{}'';
-      }
-      vim-nix
-      undotree
-      (buildVimPlugin rec {
-        name = "vim-xsampa";
-        src = pkgs.fetchFromGitHub {
-          owner = "DPDmancul";
-          repo = name;
-          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
-          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
-        };
-      })
       {
         plugin = vimtex;
         config = ''
@@ -674,77 +367,320 @@ in {
           }
         '';
       }
+      editorconfig-nvim
+      vim-sleuth
+      {
+        plugin = camelcasemotion;
+        config = "let g:camelcasemotion_key = '\\'";
+      }
+      (buildVimPlugin {
+        name = "vim-fanfingtastic";
+        src = pkgs.fetchFromGitHub {
+          owner = "dahu";
+          repo = "vim-fanfingtastic";
+          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+        };
+      })
+      {
+        plugin = suda-vim;
+        config = "let g:suda_smart_edit = 1";
+      }
+      vim-table-mode
+      nvim-ts-rainbow
+      {
+        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+        type = "lua";
+        config = ''
+          require"nvim-treesitter.configs".setup {
+            highlight = { enable = true },
+            incremental_selection = { enable = true },
+            indentation = { enable = true },
+            folding = { enable = true },
+            -- rainbow parenthesis match
+            rainbow = {
+              enable = true,
+              extended_mode = true, -- Also highlight non-bracket delimiters
+              max_file_lines = nil
+            }
+          }
+        '';
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = ''require"colorizer".setup{}'';
+      }
+      undotree
+      (buildVimPlugin rec {
+        name = "vim-xsampa";
+        src = pkgs.fetchFromGitHub {
+          owner = "DPDmancul";
+          repo = name;
+          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
+          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
+        };
+      })
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
+      telescope-file-browser-nvim
+      telescope-fzf-native-nvim
+      telescope-symbols-nvim
+      # telescope-termfinder
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local telescope = require "telescope"
+          telescope.load_extension("file_browser")
+          telescope.load_extension("projects")
+          telescope.load_extension("fzf")
+          -- telescope.load_extension("termfinder")
+        '';
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''require"gitsigns".setup()'';
+      }
+      {
+        plugin = project-nvim;
+        type = "lua";
+        config = ''require"project_nvim".setup()'';
+      }
+      {
+        plugin = mini-nvim;
+        type = "lua";
+        config = ''
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
+          require"mini.indentscope".setup()
+          require"mini.bufremove".setup()
+          vim.api.nvim_create_user_command('Bdelete', function(args)
+            MiniBufremove.delete(tonumber(args.args), args.bang)
+          end, { bang = true, addr = 'buffers', nargs = '?' })
+          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+        '';
+      }
+      vim-numbertoggle
+      lush-nvim
+      {
+        plugin = gruvbox-nvim;
+        config = ''
+          set background=light
+          colorscheme gruvbox
+        '';
+      }
+      lualine-lsp-progress
+      {
+        plugin = lualine-nvim;
+        type = "lua";
+        config = ''
+          require"lualine".setup {
+            options = {
+              section_separators = {
+                left = "",
+                right = ""
+              },
+              component_separators = {
+                 left = "|",
+                 right = "|"
+              },
+            },
+            sections = {
+              lualine_c = {
+                "filename",
+                "lsp_progress"
+              },
+              lualine_x = {
+                "encoding",
+                "fileformat",
+                function ()
+                  if vim.o.expandtab then
+                    return vim.o.shiftwidth .. " ␣"
+                  else
+                    return vim.o.tabstop .. " ↹"
+                  end
+                end,
+                "filetype"
+              }
+            }
+          }
+        '';
+      }
+      {
+        plugin = bufferline-nvim;
+        type = "lua";
+        config = ''
+          require"bufferline".setup {
+            options = {
+              right_mouse_command = "vertical sbuffer %d",
+              middle_mouse_command = "Bdelete! %d",
+              close_command = "Bdelete! %d",
+              show_close_icon = false,
+              custom_filter = function(buf, buf_nums)
+                -- Hide quickfix lists from bufferline
+                return vim.bo[buf].buftype ~= "quickfix"
+              end,
+              offsets = {
+                {
+                  filetype = "NvimTree",
+                  text = vim.fn.getcwd
+                }
+              }
+            }
+          }
+        '';
+      }
+      {
+        plugin = wilder-nvim;
+        config = "call wilder#setup({'modes': [':', '/', '?']})";
+      }
+      {
+        plugin = toggleterm-nvim;
+        type = "lua";
+        config = ''
+          local lazygit = require"toggleterm.terminal".Terminal:new {
+            cmd = "lazygit",
+            hidden = true,
+            direction = "tab",
+            on_open = function(term)
+              term.old_laststatus = vim.opt_local.laststatus
+              vim.opt_local.laststatus = 0
+              vim.api.nvim_buf_del_keymap(term.bufnr, "t", "<esc>")
+            end,
+            on_close = function(term)
+              vim.opt_local.laststatus = term.old_laststatus
+            end
+          }
+          function lazygit_toggle()
+            lazygit:toggle()
+          end
+          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
+          require"toggleterm".setup {
+            open_mapping = [[<c-\>]],
+            shade_terminals = false
+          }
+
+          function _G.set_terminal_keymaps ()
+            for from,to in pairs {
+              ["<esc>"] = [[<C-\><C-n>]],
+              ["<C-w><C-w>"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>w"] = [[<cmd>wincmd w<cr>]],
+              ["<C-w>h"] = [[<cmd>wincmd h<cr>]],
+              ["<C-w>j"] = [[<cmd>wincmd j<cr>]],
+              ["<C-w>k"] = [[<cmd>wincmd k<cr>]],
+              ["<C-w>l"] = [[<cmd>wincmd l<cr>]],
+            } do
+              vim.api.nvim_buf_set_keymap(0, "t", from, to, {
+                noremap = true,
+                silent = true
+              })
+            end
+          end
+
+          vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
+        '';
+      }
+      {
+        plugin = (buildVimPlugin {
+          name = "stickybuf-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "stevearc";
+            repo = "stickybuf.nvim";
+            rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
+            sha256 = "J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
+          };
+        });
+        type = "lua";
+        config = ''
+          require("stickybuf").setup({
+            buftype = {
+              quickfix = "buftype", -- VimTeX
+            },
+            filetype = {
+              toggleterm = "filetype",
+            }
+          })
+        '';
+      }
+      {
+        plugin = neoscroll-nvim;
+        type = "lua";
+        config = ''require"neoscroll".setup{}'';
+      }
     ];
   };
   home.username = "dpd-";
   home.homeDirectory = "/home/dpd-";
   xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
   home.stateVersion = "22.05";
-  programs.fish = {
-    enable = true;
-    plugins = [
-      {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
-        name = "fish-colored-man";
-        src = pkgs.fetchFromGitHub {
-          owner = "decors";
-          repo = "fish-colored-man";
-          rev = "1ad8fff";
-          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
-        };
-      }
-    ];
-    interactiveShellInit = ''
-      fish_vi_key_bindings
-      set fish_cursor_default block blink
-      set fish_cursor_insert line blink
-      set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
-      set -g man_blink -o red
-      set -g man_bold -o green
-      set -g man_standout -b cyan black
-      set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh'
-      end
-      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
-      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-    '';
-  };
-  programs.fish.shellAliases = {
-  # environment.shellAliases = {
-    df = "df -h"; # Human-readable sizes
-    free = "free -m"; # Show sizes in MB
-    gitu = "git add . && git commit && git push";
-    nv = "nvim";
-    mk = "make";
-    nix-fish = "nix-shell --run fish";
-    mkcd = ''mkdir -p "$argv"; and cd'';
-    # cat = "bat";
-    exa = "exa -G --color auto --icons -a -s type";
-    ll = "exa -l --color always --icons -a -s type";
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      format = "╭─$all╰─$jobs$character";
-      right_format = "$status";
-      directory.home_symbol = "🏠"; # Nerd font variant: 
-      status = {
-        disabled = false;
-        map_symbol = true;
-      };
-    };
-  };
   xdg = {
     enable = true;
     userDirs = {
@@ -776,6 +712,13 @@ in {
               subt);
         in [
           { "text/plain" = "nvim.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
           (subtypes "application" "writer.desktop"
             [
               "vnd.oasis.opendocument.text"
@@ -839,13 +782,6 @@ in {
               "audio/x-ms-wma"
             ])
           { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
         ]);
     };
   };
@@ -1039,95 +975,6 @@ in {
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
   };
-  home.packages = with pkgs; [
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    clipman
-    polkit_gnome
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
@@ -1535,6 +1382,162 @@ in {
         }
     '';
   };
+  home.packages = with pkgs; [
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    clipman
+    polkit_gnome
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    libfaketime
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {
+        name = "base16-fish";
+        src = pkgs.fetchFromGitHub {
+          owner = "tomyun";
+          repo = "base16-fish";
+          rev = "2f6dd97";
+          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
+        };
+      }
+      {
+        name = "fish-colored-man";
+        src = pkgs.fetchFromGitHub {
+          owner = "decors";
+          repo = "fish-colored-man";
+          rev = "1ad8fff";
+          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
+        };
+      }
+    ];
+    interactiveShellInit = ''
+      fish_vi_key_bindings
+      set fish_cursor_default block blink
+      set fish_cursor_insert line blink
+      set fish_cursor_replace_one underscore blink
+      base16-gruvbox-light-medium
+      set -x BAT_THEME gruvbox-light
+      set -g man_blink -o red
+      set -g man_bold -o green
+      set -g man_standout -b cyan black
+      set -g man_underline -o yellow
+      if test $TERM = 'xterm-kitty'
+        alias ssh 'kitty +kitten ssh'
+      end
+      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
+      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
+    '';
+  };
+  programs.fish.shellAliases = {
+  # environment.shellAliases = {
+    df = "df -h"; # Human-readable sizes
+    free = "free -m"; # Show sizes in MB
+    gitu = "git add . && git commit && git push";
+    nv = "nvim";
+    mk = "make";
+    lg = "lazygit";
+    nix-fish = "nix-shell --run fish";
+    mkcd = ''mkdir -p "$argv"; and cd'';
+    # cat = "bat";
+    exa = "exa -G --color auto --icons -a -s type";
+    ll = "exa -l --color always --icons -a -s type";
+  };
+  programs.starship = {
+    enable = true;
+    settings = {
+      format = "╭─$all╰─$jobs$character";
+      right_format = "$status";
+      directory.home_symbol = "🏠"; # Nerd font variant: 
+      status = {
+        disabled = false;
+        map_symbol = true;
+      };
+    };
+  };
   programs.git = {
     enable = true;
     userName = "DPDmancul";
@@ -1613,7 +1616,17 @@ in {
       protocol.version = 2;
     };
   };
-  programs.gitui = {
+  programs.lazygit = {
     enable = true;
+    settings = {
+      gui = {
+        theme = {
+          selectedLineBgColor = [ "#d5c4a1" ];
+          selectedRangeBgColor = [ "#d5c4a1" ];
+        };
+        showIcons = true;
+      };
+      git.paging.pager = "delta --paging=never";
+    };
   };
 }
