@@ -117,6 +117,17 @@ end
 vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
 ```
 
+Use NeoVim remote to open git message edit
+
+```nix "home-packages" +=
+neovim-remote
+```
+
+```vim "nvim-config" +=
+let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+```
+
 Show git signs
 
 ```nix "nvim-plugins" +=
