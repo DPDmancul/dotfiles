@@ -593,11 +593,13 @@ in {
           local lazygit = require"toggleterm.terminal".Terminal:new {
             cmd = "lazygit",
             hidden = true,
+            count = 0,
             direction = "tab",
             on_open = function(term)
               term.old_laststatus = vim.opt_local.laststatus
               vim.opt_local.laststatus = 0
-              vim.api.nvim_buf_del_keymap(term.bufnr, "t", "<esc>")
+              vim.opt_local.signcolumn = "no"
+              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
             end,
             on_close = function(term)
               vim.opt_local.laststatus = term.old_laststatus
