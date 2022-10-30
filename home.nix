@@ -82,23 +82,30 @@ in {
       bashls = nodePackages.bash-language-server;
       ccls = ccls;
       pyright = nodePackages.pyright;
-      denols = deno; # JS and TS
       jdtls  = {
         package = jdt-language-server; # Java
-        config = { cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"]; };
+        config.cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"];
       };
       yamlls = nodePackages.yaml-language-server;
-      html = {
-        package = nodePackages.vscode-html-languageserver-bin;
-        config = { cmd = ["html-languageserver" "--stdio"]; };
+      html = rec {
+        package = nodePackages.vscode-langservers-extracted;
+        config.cmd = ["${package}/bin/vscode-html-language-server" "--stdio"];
+
       };
-      cssls = {
-        package = nodePackages.vscode-css-languageserver-bin;
-        config = { cmd = ["css-languageserver" "--stdio"]; };
+      cssls = rec {
+        package = nodePackages.vscode-langservers-extracted;
+        config.cmd = ["${package}/bin/vscode-css-language-server" "--stdio"];
       };
-      jsonls = {
-        package = nodePackages.vscode-json-languageserver;
-        config = { cmd = ["vscode-json-languageserver" "--stdio"]; };
+      jsonls = rec {
+        package = nodePackages.vscode-langservers-extracted;
+        config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
+      };
+      eslint = rec { # JS (EcmaScript) and TS
+        package = nodePackages.vscode-langservers-extracted;
+        config = {
+          cmd = ["${package}/bin/vscode-eslint-language-server" "--stdio"];
+          settings = { packageManager = "pnpm"; };
+        };
       };
     };
     lsp_servers_config = let
@@ -120,8 +127,6 @@ in {
   in {
     enable = true;
     extraConfig = ''
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
       set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
       set clipboard=unnamedplus     " Sync yank register with system clipboard
       set expandtab     " Convert tabs to spaces
@@ -165,6 +170,8 @@ in {
       set spelllang=en,it     " Define spelling dictionaries
       set complete+=kspell    " Add spellcheck options for autocomplete
       set spelloptions=camel  " Treat parts of camelCase words as separate words
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -173,202 +180,6 @@ in {
     in [
       plenary-nvim
       nvim-web-devicons
-      {
-        plugin = vimtex;
-        config = ''
-          let g:vimtex_view_general_viewer =  'okular'
-        '';
-      }
-      nui-nvim
-      {
-        plugin = (buildVimPlugin rec {
-          name = "nvim-lilypond-suite";
-          src = pkgs.fetchFromGitHub {
-            owner = "martineausimon";
-            repo = name;
-            rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-            sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
-          };
-        });
-      }
-      vim-pandoc-syntax
-      {
-        plugin = (buildVimPlugin rec {
-          name = "quarto-vim";
-          src = pkgs.fetchFromGitHub {
-            owner = "quarto-dev";
-            repo = name;
-            rev = "216247339470794e74a5fda5e5515008d6dc1057";
-            sha256 = "HTqvZQY6TmVOWzI5N4LEaYfLg1AxWJZ6IjHhwuYQwI8=";
-          };
-        });
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "agda-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "Isti115";
-            repo = "agda.nvim";
-            rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-            sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
-          };
-        });
-        config = ''
-          let g:agda_theme = "light"
-          function! AgdaMapping()
-            noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
-          endfunction
-          autocmd BufWinEnter *.agda call AgdaMapping()
-          autocmd BufWinEnter *.lagda* call AgdaMapping()
-          digr ZZ 8484
-          digr NN 8469
-          digr RR 8477
-          digr FF 120125
-        '';
-      }
-      {
-        plugin = (buildVimPlugin rec {
-          name = "vim-agda";
-          src = pkgs.fetchFromGitHub {
-            owner = "msuperdock";
-            repo = name;
-            rev = "1695060850b5991e8aded0861fae0c31877950a7";
-            sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
-          };
-        });
-      }
-      # popfix
-      # {
-      #   plugin = nvim-lsputils;
-      #   type = "lua";
-      #   config = ''
-      #     vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
-      #     vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
-      #     vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
-      #     vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
-      #     vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
-      #     vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
-      #     vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
-      #     vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
-      #   '';
-      # }
-      {
-        plugin = lsp_signature-nvim;
-        type = "lua";
-        config = ''require"lsp_signature".setup{}'';
-      }
-      # {
-      #   plugin = virtual-types-nvim;
-      #   type = "lua";
-      #   config = '''';
-      # }
-      nvim-cmp
-      cmp-nvim-lsp
-      cmp_luasnip
-      luasnip
-      rust-tools-nvim
-      {
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = ''
-          local nvim_lsp = require "lspconfig"
-          local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
-          local on_attach = function (client, bufnr)
-            local wk = require "which-key"
-            local map = function (from, to, ...)
-              return {
-                from, to, ...,
-                buffer = bufnr,
-                noremap = true,
-                silent = true
-              }
-            end
-            wk.register {
-             g = {
-               D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
-               d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-               i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
-               r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
-             },
-             ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
-             ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
-             ["<leader>"] = {
-               w = {
-                 name = "Workspace",
-                 a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
-                 r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
-                 l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
-               },
-               D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
-               r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
-               c = {
-                 name = "Code",
-                 a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-                 f = map ("<cmd>lua vim.lsp.buf.formatting()<CR>", "Format buffer")
-               },
-               e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
-               q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
-             },
-             ["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
-             ["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
-            }
-          end
-          local servers = ${lsp_servers_config}
-
-          for lsp,cfg in pairs(servers) do
-            cfg.on_attach = on_attach
-            cfg.capabilities = capabilities
-            if lsp == "rust-tools" then
-              require"rust-tools".setup { server = cfg }
-            else
-              nvim_lsp[lsp].setup(cfg)
-            end
-          end
-          local cmp = require "cmp"
-          local luasnip = require "luasnip"
-          cmp.setup {
-            snippet = {
-              expand = function (args)
-                luasnip.lsp_expand(args.body)
-              end
-            },
-            mapping = {
-              ["<C-p>"] = cmp.mapping.select_prev_item(),
-              ["<C-n>"] = cmp.mapping.select_next_item(),
-              ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-              ["<C-d>"] = cmp.mapping.scroll_docs(4),
-              ["<C-Space>"] = cmp.mapping.complete(),
-              ["<C-e>"] = cmp.mapping.close(),
-              ["<CR>"] = cmp.mapping.confirm {
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true
-              },
-              ["<Tab>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-                else
-                  fallback()
-                end
-              end,
-              ["<S-Tab>"] = function(fallback)
-                if cmp.visible() then
-                  cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-                else
-                  fallback()
-                end
-              end
-            },  
-            sources = {
-              { name = "nvim_lsp" },
-              { name = "luasnip" }
-            }
-          }
-        '';
-      }
       editorconfig-nvim
       vim-sleuth
       {
@@ -423,72 +234,6 @@ in {
           sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
         };
       })
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
-        '';
-      }
       vim-numbertoggle
       lush-nvim
       {
@@ -679,12 +424,270 @@ in {
           vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
         '';
       }
+      {
+        plugin = vimtex;
+        config = ''
+          let g:vimtex_view_general_viewer =  'okular'
+        '';
+      }
+      nui-nvim
+      {
+        plugin = (buildVimPlugin rec {
+          name = "nvim-lilypond-suite";
+          src = pkgs.fetchFromGitHub {
+            owner = "martineausimon";
+            repo = name;
+            rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
+            sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
+          };
+        });
+      }
+      vim-pandoc-syntax
+      {
+        plugin = (buildVimPlugin rec {
+          name = "quarto-vim";
+          src = pkgs.fetchFromGitHub {
+            owner = "quarto-dev";
+            repo = name;
+            rev = "216247339470794e74a5fda5e5515008d6dc1057";
+            sha256 = "HTqvZQY6TmVOWzI5N4LEaYfLg1AxWJZ6IjHhwuYQwI8=";
+          };
+        });
+      }
+      {
+        plugin = (buildVimPlugin {
+          name = "agda-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "Isti115";
+            repo = "agda.nvim";
+            rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
+            sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
+          };
+        });
+        config = ''
+          let g:agda_theme = "light"
+          function! AgdaMapping()
+            noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
+          endfunction
+          autocmd BufWinEnter *.agda call AgdaMapping()
+          autocmd BufWinEnter *.lagda* call AgdaMapping()
+          digr ZZ 8484
+          digr NN 8469
+          digr RR 8477
+          digr FF 120125
+        '';
+      }
+      {
+        plugin = (buildVimPlugin rec {
+          name = "vim-agda";
+          src = pkgs.fetchFromGitHub {
+            owner = "msuperdock";
+            repo = name;
+            rev = "1695060850b5991e8aded0861fae0c31877950a7";
+            sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
+          };
+        });
+      }
+      # popfix
+      # {
+      #   plugin = nvim-lsputils;
+      #   type = "lua";
+      #   config = ''
+      #     vim.lsp.handlers['textDocument/codeAction'] = require'lsputil.codeAction'.code_action_handler
+      #     vim.lsp.handlers['textDocument/references'] = require'lsputil.locations'.references_handler
+      #     vim.lsp.handlers['textDocument/definition'] = require'lsputil.locations'.definition_handler
+      #     vim.lsp.handlers['textDocument/declaration'] = require'lsputil.locations'.declaration_handler
+      #     vim.lsp.handlers['textDocument/typeDefinition'] = require'lsputil.locations'.typeDefinition_handler
+      #     vim.lsp.handlers['textDocument/implementation'] = require'lsputil.locations'.implementation_handler
+      #     vim.lsp.handlers['textDocument/documentSymbol'] = require'lsputil.symbols'.document_handler
+      #     vim.lsp.handlers['workspace/symbol'] = require'lsputil.symbols'.workspace_handler
+      #   '';
+      # }
+      {
+        plugin = lsp_signature-nvim;
+        type = "lua";
+        config = ''require"lsp_signature".setup{}'';
+      }
+      # {
+      #   plugin = virtual-types-nvim;
+      #   type = "lua";
+      #   config = '''';
+      # }
+      nvim-cmp
+      cmp-nvim-lsp
+      cmp_luasnip
+      luasnip
+      rust-tools-nvim
+      {
+        plugin = nvim-lspconfig;
+        type = "lua";
+        config = ''
+          local nvim_lsp = require "lspconfig"
+          local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
+          local on_attach = function (client, bufnr)
+            local wk = require "which-key"
+            local map = function (from, to, ...)
+              return {
+                from, to, ...,
+                buffer = bufnr,
+                noremap = true,
+                silent = true
+              }
+            end
+            wk.register {
+             g = {
+               D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
+               d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
+               i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
+               r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
+             },
+             ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
+             ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
+             ["<leader>"] = {
+               w = {
+                 name = "Workspace",
+                 a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
+                 r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
+                 l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
+               },
+               D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
+               r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
+               c = {
+                 name = "Code",
+                 a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
+                 f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer")
+               },
+               e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
+               q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
+             },
+             ["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
+             ["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
+            }
+          end
+          local servers = ${lsp_servers_config}
+
+          for lsp,cfg in pairs(servers) do
+            cfg.on_attach = on_attach
+            cfg.capabilities = capabilities
+            if lsp == "rust-tools" then
+              require"rust-tools".setup { server = cfg }
+            else
+              nvim_lsp[lsp].setup(cfg)
+            end
+          end
+          local cmp = require "cmp"
+          local luasnip = require "luasnip"
+          cmp.setup {
+            snippet = {
+              expand = function (args)
+                luasnip.lsp_expand(args.body)
+              end
+            },
+            mapping = {
+              ["<C-p>"] = cmp.mapping.select_prev_item(),
+              ["<C-n>"] = cmp.mapping.select_next_item(),
+              ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+              ["<C-d>"] = cmp.mapping.scroll_docs(4),
+              ["<C-Space>"] = cmp.mapping.complete(),
+              ["<C-e>"] = cmp.mapping.close(),
+              ["<CR>"] = cmp.mapping.confirm {
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true
+              },
+              ["<Tab>"] = function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif luasnip.expand_or_jumpable() then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+                else
+                  fallback()
+                end
+              end,
+              ["<S-Tab>"] = function(fallback)
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif luasnip.jumpable(-1) then
+                  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+                else
+                  fallback()
+                end
+              end
+            },  
+            sources = {
+              { name = "nvim_lsp" },
+              { name = "luasnip" }
+            }
+          }
+        '';
+      }
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
     ];
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
   xdg = {
     enable = true;
     userDirs = {
@@ -884,195 +887,6 @@ in {
     name = "Bibata-Modern-Classic";
     package = pkgs.bibata-cursors;
     size = 24;
-  };
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "nemo"; title = "Properties"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-      ];
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 5";
-        "--locked XF86MonBrightnessUp" = "exec light -A 5";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec nemo";
-        "${modifier}+v" = "exec kitty nvim";
-        "${modifier}+q" = "exec clipman pick -t wofi";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-      exec wl-paste -n -t text --watch clipman store >> /tmp/clipman-log.txt 2>&1 &
-      exec wl-paste -n -p -t text --watch clipman store -P --histpath="~/.cache/clipman-primary.json" >> /tmp/clipman-log.txt 2>&1 &
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-    }];
-  };
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      forceWayland = true;
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "browser.download.always_ask_before_handling_new_types" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
   };
   programs.waybar = {
     enable = true;
@@ -1386,97 +1200,6 @@ in {
         }
     '';
   };
-  home.packages = with pkgs; [
-    neovim-remote
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    clipman
-    polkit_gnome
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    libfaketime
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
   programs.fish = {
     enable = true;
     plugins = [
@@ -1633,5 +1356,297 @@ in {
       };
       git.paging.pager = "delta --paging=never";
     };
+  };
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      forceWayland = true;
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          "*" = {
+            installation_mode = "blocked";
+            blocked_install_message = "Extensions managed by home-manager.";
+          };
+          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+          # "vim-vixen@i-beam.org" = ext "vim-vixen";
+          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+          "proxydocile@unipd.it"= {
+            installation_mode = "force_installed";
+            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+          };
+          "uBlock0@raymondhill.net" = ext "ublock-origin";
+          "@testpilot-containers" = ext "multi-account-containers";
+          "@contain-facebook" = ext "facebook-container";
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        };
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+      };
+    };
+    profiles.default = {
+      settings = {
+        "browser.download.useDownloadDir" = false;
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "devtools.debugger.remote-enabled" = true;
+        "devtools.chrome.enabled" = true;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+        "privacy.trackingprotection.enabled" = true;
+        "privacy.trackingprotection.socialtracking.enabled" = true;
+        "privacy.partition.network_state.ocsp_cache" = true;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "";
+        "browser.uidensity" = 1;
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+      userChrome = ''
+        #main-window {
+          background: #f9f9faa5 !important;
+        }
+        .tab-background:is([selected], [multiselected]),
+        .browser-toolbar:not(.titlebar-color) {
+          background-color: #f9f9fa65 !important;
+        }
+      '';
+    };
+
+  };
+  home.packages = with pkgs; [
+    neovim-remote
+    nodePackages.pnpm
+    # You must manually install `pnpm i -g eslint`
+    # and run `pnpx eslint --init` in all projects
+    wpaperd
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    shotcut
+    # kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    libfaketime
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    copyq
+    polkit_gnome
+  ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  home.sessionVariables = {
+    PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
+  };
+  home.sessionPath = [
+    config.home.sessionVariables.PNPM_HOME
+  ];
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "nemo"; title = "Properties"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+        { app_id = "copyq"; }
+      ];
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Shift+e" = ''
+          exec sh -c ' \
+            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+              "Shutdown") systemctl poweroff;; \
+              "Suspend") systemctl suspend;; \
+              "Reboot") systemctl reboot;; \
+              "Logout") swaymsg exit;; \
+            esac \
+          '
+        '';
+        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+        "--locked XF86AudioMute" = "exec pamixer -t";
+        "--locked XF86MonBrightnessDown" = "exec light -U 5";
+        "--locked XF86MonBrightnessUp" = "exec light -A 5";
+        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+        "${modifier}+p" = "exec grimshot save active";       # Active window
+        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+        "${modifier}+y" = "exec grimshot copy active";       # Active window
+        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+        "${modifier}+z" = "exec firefox";
+        "${modifier}+x" = "exec nemo";
+        "${modifier}+v" = "exec kitty nvim";
+        "${modifier}+q" = "exec copyq toggle";
+      };
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+      exec ${pkgs.copyq}/bin/copyq
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
   };
 }
