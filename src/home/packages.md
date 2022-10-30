@@ -304,10 +304,6 @@ python3
 (agda.withPackages (p: [ p.standard-library ]))
 ```
 
-## *TODO* add:
-- pnpm
-
-
 <!--
 ## Unfree
 

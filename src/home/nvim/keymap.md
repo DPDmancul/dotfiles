@@ -129,7 +129,7 @@ g = {
   c = {
     name = "Code",
     a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-    f = map ("<cmd>lua vim.lsp.buf.formatting()<CR>", "Format buffer")
+    f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer")
   },
   e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
   q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")

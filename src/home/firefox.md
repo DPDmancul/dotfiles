@@ -174,7 +174,6 @@ Manage all extensions via home-manager
   installation_mode = "force_installed";
   install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
 };
-"{69856097-6e10-42e9-acc7-0c063550c7b8}" = ext "musescore-downloader";
 ```
 
 ### Privacy

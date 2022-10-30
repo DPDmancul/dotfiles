@@ -27,6 +27,17 @@ Quickly apply dotfiles
 '')
 ```
 
+## Environment
+
+```nix "home-config" +=
+home.sessionVariables = {
+  <<<home-env>>>
+};
+home.sessionPath = [
+  <<<home-path>>>
+];
+```
+
 ## Bluetooth headset battery
 
 ```nix "home-packages" +=

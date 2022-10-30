@@ -203,20 +203,19 @@ Copy (_yank_) to clipboard
 ```nix "home-packages" +=
 wl-clipboard
 wl-clipboard-x11
-clipman
+copyq
 ```
 
-Share clipboard across programs, either for clipboard and selection (primary)
+Start clipboard manager
 
 ```sh "sway-extra-config" +=
-exec wl-paste -n -t text --watch clipman store >> /tmp/clipman-log.txt 2>&1 &
-exec wl-paste -n -p -t text --watch clipman store -P --histpath="~/.cache/clipman-primary.json" >> /tmp/clipman-log.txt 2>&1 &
+exec ${pkgs.copyq}/bin/copyq
 ```
- 
- Clipboard history picker
+
+Clipboard history picker
 
 ```nix "sway-keybind" +=
-"${modifier}+q" = "exec clipman pick -t wofi";
+"${modifier}+q" = "exec copyq toggle";
 ```
 
 ## Floating windows
@@ -233,6 +232,7 @@ floating.criteria = [
   { app_id = "nemo"; title = "Properties"; }
   { app_id = "pavucontrol"; }
   { app_id = "qalculate-gtk"; }
+  { app_id = "copyq"; }
 ];
 ```
 

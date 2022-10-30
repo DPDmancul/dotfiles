@@ -171,25 +171,49 @@ texlab = texlab;
 bashls = nodePackages.bash-language-server;
 ccls = ccls;
 pyright = nodePackages.pyright;
-denols = deno; # JS and TS
 jdtls  = {
   package = jdt-language-server; # Java
-  config = { cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"]; };
+  config.cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"];
 };
 yamlls = nodePackages.yaml-language-server;
-html = {
-  package = nodePackages.vscode-html-languageserver-bin;
-  config = { cmd = ["html-languageserver" "--stdio"]; };
+html = rec {
+  package = nodePackages.vscode-langservers-extracted;
+  config.cmd = ["${package}/bin/vscode-html-language-server" "--stdio"];
+
 };
-cssls = {
-  package = nodePackages.vscode-css-languageserver-bin;
-  config = { cmd = ["css-languageserver" "--stdio"]; };
+cssls = rec {
+  package = nodePackages.vscode-langservers-extracted;
+  config.cmd = ["${package}/bin/vscode-css-language-server" "--stdio"];
 };
-jsonls = {
-  package = nodePackages.vscode-json-languageserver;
-  config = { cmd = ["vscode-json-languageserver" "--stdio"]; };
+jsonls = rec {
+  package = nodePackages.vscode-langservers-extracted;
+  config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
+};
+eslint = rec { # JS (EcmaScript) and TS
+  package = nodePackages.vscode-langservers-extracted;
+  config = {
+    cmd = ["${package}/bin/vscode-eslint-language-server" "--stdio"];
+    settings = { packageManager = "pnpm"; };
+  };
 };
 ```
+
+vscode-eslint requires some addendum:
+
+```nix "home-packages" +=
+nodePackages.pnpm
+# You must manually install `pnpm i -g eslint`
+# and run `pnpx eslint --init` in all projects
+```
+
+```nix "home-env" +=
+PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
+```
+
+```nix "home-path" +=
+config.home.sessionVariables.PNPM_HOME
+```
+
 
 Enable some language servers with the additional completion capabilities
 offered by nvim-cmp
