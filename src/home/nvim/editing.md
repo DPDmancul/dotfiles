@@ -116,11 +116,14 @@ nvim-ts-rainbow
 }
 ```
 
-Enable all maintained languages
+Enable all maintained languages, except LaTeX (highlighted and concealed via VimTeX)
 
 ```lua "treesitter-config" +=
 require"nvim-treesitter.configs".setup {
-  highlight = { enable = true },
+  highlight = {
+    enable = true,
+    disable = { "latex" },
+  },
   incremental_selection = { enable = true },
   indentation = { enable = true },
   folding = { enable = true },

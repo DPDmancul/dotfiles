@@ -47,6 +47,7 @@ Ask if to download (and where) or to open a file
 
 ```nix "firefox-settings" +=
 "browser.download.useDownloadDir" = false;
+"browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
 "browser.download.always_ask_before_handling_new_types" = true;
 ```
 
