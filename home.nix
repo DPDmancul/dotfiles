@@ -127,18 +127,6 @@ in {
   in {
     enable = true;
     extraConfig = ''
-      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
-      set clipboard=unnamedplus     " Sync yank register with system clipboard
-      set expandtab     " Convert tabs to spaces
-      set tabstop=2     " Display 2 spaces for a tab
-      set shiftwidth=2  " Use this number of spaces for indentation
-      set smartindent   " Make indenting smart
-      set autoindent    " Use auto indent
-      set breakindent   " Indent wrapped lines to match line start
-      set virtualedit=block
-      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
-      set foldmethod=indent  " Set 'indent' folding method
-      set nofoldenable       " Start with folds opened
       set termguicolors     " Enable gui colors
       set cursorline        " Enable highlighting of the current line
       set signcolumn=yes    " Always show signcolumn or it would frequently shift
@@ -172,6 +160,18 @@ in {
       set spelloptions=camel  " Treat parts of camelCase words as separate words
       let g:tex_flavor = 'latex'
       set completeopt=menuone,noselect
+      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
+      set clipboard=unnamedplus     " Sync yank register with system clipboard
+      set expandtab     " Convert tabs to spaces
+      set tabstop=2     " Display 2 spaces for a tab
+      set shiftwidth=2  " Use this number of spaces for indentation
+      set smartindent   " Make indenting smart
+      set autoindent    " Use auto indent
+      set breakindent   " Indent wrapped lines to match line start
+      set virtualedit=block
+      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
+      set foldmethod=indent  " Set 'indent' folding method
+      set nofoldenable       " Start with folds opened
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -180,60 +180,6 @@ in {
     in [
       plenary-nvim
       nvim-web-devicons
-      editorconfig-nvim
-      vim-sleuth
-      {
-        plugin = camelcasemotion;
-        config = "let g:camelcasemotion_key = '\\'";
-      }
-      (buildVimPlugin {
-        name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
-          owner = "dahu";
-          repo = "vim-fanfingtastic";
-          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
-        };
-      })
-      {
-        plugin = suda-vim;
-        config = "let g:suda_smart_edit = 1";
-      }
-      vim-table-mode
-      nvim-ts-rainbow
-      {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = { enable = true },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
-      }
-      {
-        plugin = nvim-colorizer-lua;
-        type = "lua";
-        config = ''require"colorizer".setup{}'';
-      }
-      undotree
-      (buildVimPlugin rec {
-        name = "vim-xsampa";
-        src = pkgs.fetchFromGitHub {
-          owner = "DPDmancul";
-          repo = name;
-          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
-          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
-        };
-      })
       vim-numbertoggle
       lush-nvim
       {
@@ -412,16 +358,82 @@ in {
         plugin = mini-nvim;
         type = "lua";
         config = ''
-          require"mini.ai".setup()
-          require"mini.comment".setup()
-          require"mini.pairs".setup()
-          require"mini.surround".setup()
           require"mini.indentscope".setup()
           require"mini.bufremove".setup()
           vim.api.nvim_create_user_command('Bdelete', function(args)
             MiniBufremove.delete(tonumber(args.args), args.bang)
           end, { bang = true, addr = 'buffers', nargs = '?' })
           vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
+        '';
+      }
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
         '';
       }
       {
@@ -620,72 +632,63 @@ in {
           }
         '';
       }
+      editorconfig-nvim
+      vim-sleuth
       {
-        plugin = which-key-nvim;
+        plugin = camelcasemotion;
+        config = "let g:camelcasemotion_key = '\\'";
+      }
+      (buildVimPlugin {
+        name = "vim-fanfingtastic";
+        src = pkgs.fetchFromGitHub {
+          owner = "dahu";
+          repo = "vim-fanfingtastic";
+          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+        };
+      })
+      {
+        plugin = suda-vim;
+        config = "let g:suda_smart_edit = 1";
+      }
+      vim-table-mode
+      nvim-ts-rainbow
+      {
+        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
         type = "lua";
         config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
+          require"nvim-treesitter.configs".setup {
+            highlight = {
+              enable = true,
+              disable = { "latex" },
             },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
+            incremental_selection = { enable = true },
+            indentation = { enable = true },
+            folding = { enable = true },
+            -- rainbow parenthesis match
+            rainbow = {
+              enable = true,
+              extended_mode = true, -- Also highlight non-bracket delimiters
+              max_file_lines = nil
             }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
           }
         '';
       }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = ''require"colorizer".setup{}'';
+      }
+      undotree
+      (buildVimPlugin rec {
+        name = "vim-xsampa";
+        src = pkgs.fetchFromGitHub {
+          owner = "DPDmancul";
+          repo = name;
+          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
+          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
+        };
+      })
     ];
   };
   xdg = {
@@ -719,13 +722,6 @@ in {
               subt);
         in [
           { "text/plain" = "nvim.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
           (subtypes "application" "writer.desktop"
             [
               "vnd.oasis.opendocument.text"
@@ -789,6 +785,13 @@ in {
               "audio/x-ms-wma"
             ])
           { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
         ]);
     };
   };
@@ -1357,100 +1360,6 @@ in {
       git.paging.pager = "delta --paging=never";
     };
   };
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      forceWayland = true;
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "browser.download.always_ask_before_handling_new_types" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
-  };
   home.packages = with pkgs; [
     neovim-remote
     nodePackages.pnpm
@@ -1648,5 +1557,100 @@ in {
       command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
+  };
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      forceWayland = true;
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          "*" = {
+            installation_mode = "blocked";
+            blocked_install_message = "Extensions managed by home-manager.";
+          };
+          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+          # "vim-vixen@i-beam.org" = ext "vim-vixen";
+          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+          "proxydocile@unipd.it"= {
+            installation_mode = "force_installed";
+            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+          };
+          "uBlock0@raymondhill.net" = ext "ublock-origin";
+          "@testpilot-containers" = ext "multi-account-containers";
+          "@contain-facebook" = ext "facebook-container";
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        };
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+      };
+    };
+    profiles.default = {
+      settings = {
+        "browser.download.useDownloadDir" = false;
+        "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "devtools.debugger.remote-enabled" = true;
+        "devtools.chrome.enabled" = true;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+        "privacy.trackingprotection.enabled" = true;
+        "privacy.trackingprotection.socialtracking.enabled" = true;
+        "privacy.partition.network_state.ocsp_cache" = true;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "";
+        "browser.uidensity" = 1;
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+      userChrome = ''
+        #main-window {
+          background: #f9f9faa5 !important;
+        }
+        .tab-background:is([selected], [multiselected]),
+        .browser-toolbar:not(.titlebar-color) {
+          background-color: #f9f9fa65 !important;
+        }
+      '';
+    };
+
   };
 }
