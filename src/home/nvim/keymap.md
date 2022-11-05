@@ -112,7 +112,7 @@ gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
 g = {
   D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
   d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-  i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
+  I = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
   r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
 },
 ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),

@@ -245,8 +245,8 @@ qsynth
 ```nix "home-packages" +=
 handbrake
 mkvtoolnix
-shotcut
-# kdenlive
+# shotcut
+kdenlive
 losslesscut-bin
 obs-studio
 ```
