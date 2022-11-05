@@ -371,72 +371,6 @@ in {
         '';
       }
       {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
-        '';
-      }
-      {
         plugin = vimtex;
         config = ''
           let g:vimtex_view_general_viewer =  'okular'
@@ -550,7 +484,7 @@ in {
              g = {
                D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
                d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-               i = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
+               I = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
                r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
              },
              ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
@@ -689,6 +623,72 @@ in {
           sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
         };
       })
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
     ];
   };
   xdg = {
@@ -722,6 +722,13 @@ in {
               subt);
         in [
           { "text/plain" = "nvim.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
           (subtypes "application" "writer.desktop"
             [
               "vnd.oasis.opendocument.text"
@@ -785,13 +792,6 @@ in {
               "audio/x-ms-wma"
             ])
           { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
         ]);
     };
   };
@@ -1360,100 +1360,6 @@ in {
       git.paging.pager = "delta --paging=never";
     };
   };
-  home.packages = with pkgs; [
-    neovim-remote
-    nodePackages.pnpm
-    # You must manually install `pnpm i -g eslint`
-    # and run `pnpx eslint --init` in all projects
-    wpaperd
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    # masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    shotcut
-    # kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    libfaketime
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    copyq
-    polkit_gnome
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
   home.username = "dpd-";
   home.homeDirectory = "/home/dpd-";
   home.sessionVariables = {
@@ -1653,4 +1559,98 @@ in {
     };
 
   };
+  home.packages = with pkgs; [
+    neovim-remote
+    nodePackages.pnpm
+    # You must manually install `pnpm i -g eslint`
+    # and run `pnpx eslint --init` in all projects
+    wpaperd
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    copyq
+    polkit_gnome
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    # masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    # shotcut
+    kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    libfaketime
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+  ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
 }

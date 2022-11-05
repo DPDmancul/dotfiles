@@ -154,21 +154,6 @@ in {
       cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
     };
   };
-  networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
-  networking.useDHCP = false;
-  networking.interfaces.enp7s0.useDHCP = true;
-  networking.interfaces.wlp6s0.useDHCP = true;
-  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8821cu ];
-  boot.kernelModules = [ "8821cu" ];
-  networking.enableIPv6 = false;
-  services.openvpn.servers = {
-    vpn  = {
-      config = "config ${./it238.nordvpn.com.udp.ovpn}";
-      updateResolvConf = true;
-      authUserPass = secrets.vpn;
-    };
-  };
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -220,4 +205,23 @@ in {
     };
   };
   # i18n.inputMethod.enabled = "fcitx5";
+  networking.hostName = "nixos";
+  networking.networkmanager.enable = true;
+  networking = {
+    useDHCP = false;
+    interfaces.enp7s0.useDHCP = true;
+    interfaces.wlp6s0.useDHCP = true;
+  };
+  boot = {
+    extraModulePackages = with config.boot.kernelPackages; [ rtl8821cu ];
+    kernelModules = [ "8821cu" ];
+  };
+  networking.enableIPv6 = false;
+  services.openvpn.servers = {
+    vpn  = {
+      config = "config ${./it238.nordvpn.com.udp.ovpn}";
+      updateResolvConf = true;
+      authUserPass = secrets.vpn;
+    };
+  };
 }
