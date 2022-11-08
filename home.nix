@@ -79,7 +79,6 @@ in {
           { checkOnSave = { command = "clippy"; }; }; }; };
       };
       texlab = texlab;
-      bashls = nodePackages.bash-language-server;
       ccls = ccls;
       pyright = nodePackages.pyright;
       jdtls  = {
@@ -107,6 +106,39 @@ in {
           settings = { packageManager = "pnpm"; };
         };
       };
+      efm = let
+        languages = {
+          sh = [
+            {
+              lintCommand = "${shellcheck}/bin/shellcheck -f gcc -x";
+              lintSource = "shellcheck";
+              lintFormats = [
+                "%f:%l:%c: %trror: %m"
+                "%f:%l:%c: %tarning: %m"
+                "%f:%l:%c: %tote: %m"
+              ];
+            }
+            {
+              formatCommand = "${shfmt}/bin/shfmt -ci -s -bn";
+              formatStdin = true;
+            }
+          ];
+          make = [
+            {
+              lintCommand = "${checkmake}/bin/checkmake";
+              lintStdin = true;
+            }
+          ];
+        };
+      in {
+        package = efm-langserver;
+        config = {
+          settings = {
+            inherit languages;
+          };
+          filetypes = builtins.attrNames languages;
+        };
+      };
     };
     lsp_servers_config = let
       value_to_lua = value:
@@ -114,8 +146,12 @@ in {
           set_to_lua value
         else if builtins.isList value then
           list_to_lua value
+        else if builtins.isBool value then
+          if value then "true" else "false"
+        else if builtins.isString value then
+          ''"${value}"''
         else
-          ''"${value}"'';
+          ''${value}'';
       list_to_lua = list: "{" + builtins.toString
         (builtins.map (e: value_to_lua e + ", ") list) + "}";
       set_to_lua = set: "{" +
@@ -142,6 +178,18 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
+      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
+      set clipboard=unnamedplus     " Sync yank register with system clipboard
+      set expandtab     " Convert tabs to spaces
+      set tabstop=2     " Display 2 spaces for a tab
+      set shiftwidth=2  " Use this number of spaces for indentation
+      set smartindent   " Make indenting smart
+      set autoindent    " Use auto indent
+      set breakindent   " Indent wrapped lines to match line start
+      set virtualedit=block
+      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
+      set foldmethod=indent  " Set 'indent' folding method
+      set nofoldenable       " Start with folds opened
       let g:mapleader = ' '
       nnoremap <cr> :
       vnoremap <cr> :
@@ -160,18 +208,6 @@ in {
       set spelloptions=camel  " Treat parts of camelCase words as separate words
       let g:tex_flavor = 'latex'
       set completeopt=menuone,noselect
-      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
-      set clipboard=unnamedplus     " Sync yank register with system clipboard
-      set expandtab     " Convert tabs to spaces
-      set tabstop=2     " Display 2 spaces for a tab
-      set shiftwidth=2  " Use this number of spaces for indentation
-      set smartindent   " Make indenting smart
-      set autoindent    " Use auto indent
-      set breakindent   " Indent wrapped lines to match line start
-      set virtualedit=block
-      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
-      set foldmethod=indent  " Set 'indent' folding method
-      set nofoldenable       " Start with folds opened
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
@@ -328,6 +364,129 @@ in {
         plugin = neoscroll-nvim;
         type = "lua";
         config = ''require"neoscroll".setup{}'';
+      }
+      editorconfig-nvim
+      vim-sleuth
+      {
+        plugin = camelcasemotion;
+        config = "let g:camelcasemotion_key = '\\'";
+      }
+      (buildVimPlugin {
+        name = "vim-fanfingtastic";
+        src = pkgs.fetchFromGitHub {
+          owner = "dahu";
+          repo = "vim-fanfingtastic";
+          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+        };
+      })
+      {
+        plugin = suda-vim;
+        config = "let g:suda_smart_edit = 1";
+      }
+      vim-table-mode
+      nvim-ts-rainbow
+      {
+        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+        type = "lua";
+        config = ''
+          require"nvim-treesitter.configs".setup {
+            highlight = {
+              enable = true,
+              disable = { "latex" },
+            },
+            incremental_selection = { enable = true },
+            indentation = { enable = true },
+            folding = { enable = true },
+            -- rainbow parenthesis match
+            rainbow = {
+              enable = true,
+              extended_mode = true, -- Also highlight non-bracket delimiters
+              max_file_lines = nil
+            }
+          }
+        '';
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = ''require"colorizer".setup{}'';
+      }
+      undotree
+      (buildVimPlugin rec {
+        name = "vim-xsampa";
+        src = pkgs.fetchFromGitHub {
+          owner = "DPDmancul";
+          repo = name;
+          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
+          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
+        };
+      })
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
       }
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
@@ -563,129 +722,6 @@ in {
               { name = "nvim_lsp" },
               { name = "luasnip" }
             }
-          }
-        '';
-      }
-      editorconfig-nvim
-      vim-sleuth
-      {
-        plugin = camelcasemotion;
-        config = "let g:camelcasemotion_key = '\\'";
-      }
-      (buildVimPlugin {
-        name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
-          owner = "dahu";
-          repo = "vim-fanfingtastic";
-          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
-        };
-      })
-      {
-        plugin = suda-vim;
-        config = "let g:suda_smart_edit = 1";
-      }
-      vim-table-mode
-      nvim-ts-rainbow
-      {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              disable = { "latex" },
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
-      }
-      {
-        plugin = nvim-colorizer-lua;
-        type = "lua";
-        config = ''require"colorizer".setup{}'';
-      }
-      undotree
-      (buildVimPlugin rec {
-        name = "vim-xsampa";
-        src = pkgs.fetchFromGitHub {
-          owner = "DPDmancul";
-          repo = name;
-          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
-          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
-        };
-      })
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
           }
         '';
       }
