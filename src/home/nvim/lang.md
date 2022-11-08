@@ -168,7 +168,6 @@ rust-tools = {
     { checkOnSave = { command = "clippy"; }; }; }; };
 };
 texlab = texlab;
-bashls = nodePackages.bash-language-server;
 ccls = ccls;
 pyright = nodePackages.pyright;
 jdtls  = {
@@ -194,6 +193,39 @@ eslint = rec { # JS (EcmaScript) and TS
   config = {
     cmd = ["${package}/bin/vscode-eslint-language-server" "--stdio"];
     settings = { packageManager = "pnpm"; };
+  };
+};
+efm = let
+  languages = {
+    sh = [
+      {
+        lintCommand = "${shellcheck}/bin/shellcheck -f gcc -x";
+        lintSource = "shellcheck";
+        lintFormats = [
+          "%f:%l:%c: %trror: %m"
+          "%f:%l:%c: %tarning: %m"
+          "%f:%l:%c: %tote: %m"
+        ];
+      }
+      {
+        formatCommand = "${shfmt}/bin/shfmt -ci -s -bn";
+        formatStdin = true;
+      }
+    ];
+    make = [
+      {
+        lintCommand = "${checkmake}/bin/checkmake";
+        lintStdin = true;
+      }
+    ];
+  };
+in {
+  package = efm-langserver;
+  config = {
+    settings = {
+      inherit languages;
+    };
+    filetypes = builtins.attrNames languages;
   };
 };
 ```

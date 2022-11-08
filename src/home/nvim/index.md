@@ -11,8 +11,12 @@ programs.neovim = let
         set_to_lua value
       else if builtins.isList value then
         list_to_lua value
+      else if builtins.isBool value then
+        if value then "true" else "false"
+      else if builtins.isString value then
+        ''"${value}"''
       else
-        ''"${value}"'';
+        ''${value}'';
     list_to_lua = list: "{" + builtins.toString
       (builtins.map (e: value_to_lua e + ", ") list) + "}";
     set_to_lua = set: "{" +

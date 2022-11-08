@@ -2,7 +2,7 @@
 
 <!--
 ```sh installation.sh +=
-#!/bin/sh
+#!/bin/bash
 
 if ! nc -zxw1 nixos.org 443 2> /dev/null; then
   echo "Please connect to internet"
@@ -10,7 +10,7 @@ if ! nc -zxw1 nixos.org 443 2> /dev/null; then
 fi
 
 if [ "$EUID" -ne 0 ]; then
-  echo "Start this script a root"
+  echo "Start this script as root"
   exit
 fi
 ```
