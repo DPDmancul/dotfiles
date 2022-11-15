@@ -6,7 +6,7 @@ stages:
 .publish: &publish
   stage: publish
   script:
-    - nix-shell -p gnumake mdbook --run "cd $(pwd); make doc"
+    - nix-shell -p gnumake mdbook jq --run "cd $(pwd); make doc"
     - mv book public
   cache:
     paths: [ /nix/store ]
