@@ -168,6 +168,7 @@ rust-tools = {
     { checkOnSave = { command = "clippy"; }; }; }; };
 };
 texlab = texlab;
+rnix = rnix-lsp;
 ccls = ccls;
 pyright = nodePackages.pyright;
 jdtls  = {
@@ -320,7 +321,7 @@ cmp.setup {
         fallback()
       end
     end
-  },  
+  },
   sources = {
     { name = "nvim_lsp" },
     { name = "luasnip" }

@@ -8,6 +8,8 @@
 
 - [Flake](./flake/index.md)
 
+# Common
+
 - [System](./system/index.md)
   - [Bootloader](./system/boot.md)
   - [Networking](./system/net.md)
@@ -36,4 +38,14 @@
   - [SSH](./home/ssh.md)
   - [GnuPG](./home/gpg.md)
   - [Packages](./home/packages.md)
+
+# Personal
+
+- [System]()
+- [Home]()
+
+# Work
+
+- [System]()
+- [Home]()
 

@@ -32,7 +32,7 @@ in {
   '';
   extraPackages = builtins.map (x: x.package or x)
     (builtins.attrValues lsp_servers);
-  plugins = with pkgs.vimPlugins; let
+  plugins = with pkgs; with vimPlugins; let
     inherit (pkgs.vimUtils) buildVimPlugin;
   in [
     plenary-nvim

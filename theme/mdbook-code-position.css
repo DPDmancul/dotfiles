@@ -1,0 +1,8 @@
+.code-title {
+  display: block !important;
+  border-radius: 0 !important;
+  margin-bottom: -15px;
+}
+.code-lang {
+  float: right;
+}

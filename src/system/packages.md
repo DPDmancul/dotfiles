@@ -1,16 +1,9 @@
 # Packages
 
 ```nix "config" +=
-nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
-  #<<<packages-unfree>>>
-  <<<extra-packages-unfree>>>
-'');
-
-environment.systemPackages = with pkgs; ([
+environment.systemPackages = with pkgs; [
   <<<packages>>>
-] ++ [
-  #<<<packages-unfree>>>
-]);
+];
 ```
 
 ## Essentials

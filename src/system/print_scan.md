@@ -52,15 +52,15 @@ Add user to the required groups
 Import the driver
 
 ```nix "system-imports" +=
-(args.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
+# "${args.nixpkgs}/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix"
 ```
 
 The driver is unfortunately unfree
 
-```nix "extra-packages-unfree" +=
-brscan4
-brscan4-etc-files
-brother-udev-rule-type1
+```nix "unfree-extra" +=
+"brscan4"
+"brscan4-etc-files"
+"brother-udev-rule-type1"
 ```
 
 ```nix "config" +=

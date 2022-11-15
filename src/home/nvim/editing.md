@@ -146,6 +146,18 @@ Show color of colors
 }
 ```
 
+### Edit inside Markdown
+
+Open temporary buffer to edit code in Markdown
+
+```nix "nvim-plugins" +=
+{
+  plugin = nur.repos.m15a.vimExtraPlugins.nvim-FeMaco-lua;
+  type = "lua";
+  config = ''require"femaco".setup()'';
+}
+```
+
 ## Undo tree
 
 Better undo exploring the tree of all changes

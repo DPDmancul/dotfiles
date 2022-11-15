@@ -1,7 +1,7 @@
 # System
 
 ```nix configuration.nix
-{ config, pkgs, args, lib, ... }:
+{ config, pkgs, inputs, lib, ... }:
 let secrets = import ./secrets.nix;
 in {
   <<<config>>>
@@ -23,7 +23,7 @@ Use the same channel as the main of this flake for the system (e.g. legacy nix-s
 
 ```nix "config" +=
 nix.nixPath = [
-  "nixpkgs=${args.nixpkgs.outPath}"
+  "nixpkgs=${inputs.nixpkgs.outPath}"
 ];
 ```
 
@@ -43,10 +43,11 @@ fileSystems."/home/dpd-/datos" = {
 };
 ```
 
-Enable BTRFS compression
+Enable BTRFS compression, disable storing file last access time and enable trim for SSD
 
 ```nix "config" +=
 fileSystems."/".options = [ "compress=zstd" "noatime" ];
+services.fstrim.enable = true;
 ```
 
 Disable emergency mode to avoid get stuck if a partition fails to mount

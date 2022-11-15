@@ -66,6 +66,15 @@ f = {
 },
 ```
 
+## Code
+
+```lua "nvim-keybind-leader" +=
+c = {
+  name = "Code",
+  e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
+},
+```
+
 ## Git
 
 ```lua "nvim-keybind-leader" +=
@@ -127,7 +136,6 @@ g = {
   D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
   r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
   c = {
-    name = "Code",
     a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
     f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer")
   },

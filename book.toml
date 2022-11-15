@@ -5,11 +5,13 @@ description = "My literate dotfiles for Nix"
 language = "en"
 src = "src"
 
-
 [output.html]
 curly-quotes = true
 git-repository-url = "https://gitlab.com/DPDmancul/dotfiles"
 git-repository-icon = "fa-gitlab"
 edit-url-template = "https://gitlab.com/DPDmancul/dotfiles/blob/nix/{path}"
+additional-css = [ "theme/mdbook-code-position.css" ]
 
+[preprocessor.code-position]
+command = "./mdbook-code-position"
 

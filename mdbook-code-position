@@ -1,0 +1,7 @@
+#! /bin/sh
+
+[ "$1" = "supports" ] && exit 0
+
+jq .[1] \
+  | sed -E 's/(```[^\\ ]+) ([^\\ ]+)/\1 \\"File: \2\\"/g' \
+  | sed -E 's|```([^\\ ]+) \\"([^\\]+)\\"[^\\]*\\n|\\n<p class=\\"hljs code-title\\"><span class=\\"code-name\\">\2</span><span class=\\"code-lang\\">\1</span></p>\\n\\n```\1\\n|g'

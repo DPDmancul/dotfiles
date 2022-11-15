@@ -110,9 +110,11 @@ programs.mako = {
 
 ### Brightness
 
+Don't know why the following are triggered twice, so a step of 2 is indeed a step of 4.
+
 ```nix "sway-keybind" +=
-"--locked XF86MonBrightnessDown" = "exec light -U 5";
-"--locked XF86MonBrightnessUp" = "exec light -A 5";
+"--locked XF86MonBrightnessDown" = "exec light -U 2";
+"--locked XF86MonBrightnessUp" = "exec light -A 2";
 ```
 
 #### Red light

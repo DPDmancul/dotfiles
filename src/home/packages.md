@@ -1,18 +1,5 @@
 # User packages
 
-<!--
-```nix "comment-home-config" +=
-nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
-  <<<home-packages-unfree>>>
-'');
-home.packages = with pkgs; ([
-  <<<home-packages>>>
-] ++ [
-  <<<home-packages-unfree>>>
-]);
-```
--->
-
 ```nix "home-config" +=
 home.packages = with pkgs; [
   <<<home-packages>>>
@@ -136,7 +123,7 @@ diffpdf
 pdfmixtool
 xournalpp
 ocrmypdf tesseract
-# masterpdfeditor4
+unfree.masterpdfeditor4
 ```
 
 ### E-books
@@ -303,14 +290,4 @@ gdb
 python3
 (agda.withPackages (p: [ p.standard-library ]))
 ```
-
-<!--
-## Unfree
-
-**Warning**: these packages are not FOSS and so it is not guaranteed they don't harm the system.
-
-```nix "home-packages-unfree" +=
-
-```
- -->
 
