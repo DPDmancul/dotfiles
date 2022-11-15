@@ -146,12 +146,39 @@ in {
   ];
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ 
+      brlaser 
+    ];
+  };
+  programs.system-config-printer.enable = true;
+  hardware.printers = {
+    ensureDefaultPrinter = "Brother";
+    ensurePrinters = [{
+      name = "Brother";
+      location = "cjase";
+      description = "Brother DCP 1612W";
+      deviceUri = "ipp://192.168.1.4/ipp";
+      model = "drv:///brlaser.drv/br1600.ppd";
+      ppdOptions = {
+        PageSize = "A4";
+      };
+    }];
+  };
+  hardware.sane.enable = true;
+  hardware.sane.brscan4 = {
+    enable = true;
+    netDevices = {
+      cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
+    };
+  };
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
   nix.nixPath = [
-    "nixpkgs=${inputs.nixpkgs.outPath}"
+    "nixpkgs=${pkgs.outPath}"
   ];
   imports = [ 
     # "${args.nixpkgs}/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix"
@@ -189,31 +216,4 @@ in {
     extraPackages = [];
   };
   system.stateVersion = "21.11";
-  services.printing = {
-    enable = true;
-    drivers = with pkgs; [ 
-      brlaser 
-    ];
-  };
-  programs.system-config-printer.enable = true;
-  hardware.printers = {
-    ensureDefaultPrinter = "Brother";
-    ensurePrinters = [{
-      name = "Brother";
-      location = "cjase";
-      description = "Brother DCP 1612W";
-      deviceUri = "ipp://192.168.1.4/ipp";
-      model = "drv:///brlaser.drv/br1600.ppd";
-      ppdOptions = {
-        PageSize = "A4";
-      };
-    }];
-  };
-  hardware.sane.enable = true;
-  hardware.sane.brscan4 = {
-    enable = true;
-    netDevices = {
-      cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
-    };
-  };
 }
