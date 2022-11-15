@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if ! nc -zxw1 nixos.org 443 2> /dev/null; then
   echo "Please connect to internet"

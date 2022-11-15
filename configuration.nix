@@ -1,4 +1,4 @@
-{ config, pkgs, args, lib, ... }:
+{ config, pkgs, inputs, lib, ... }:
 let secrets = import ./secrets.nix;
 in {
   security.pam.services.swaylock = {
@@ -100,102 +100,6 @@ in {
   # };
   programs.light.enable = true;
   programs.adb.enable = true;
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (builtins.split "[ \n]" ''
-    #<<<packages-unfree>>>
-    brscan4
-    brscan4-etc-files
-    brother-udev-rule-type1
-  '');
-
-  environment.systemPackages = with pkgs; ([
-    neovim
-    bottom
-    bat      # cat with syntax highlighting
-    exa      # ls with colors and icosn
-    tldr     # short command examples
-    fd       # faster find
-    ripgrep  # alternative grep
-    usbutils
-    pciutils
-    xdg-utils
-    wget
-    git
-    gnumake
-    gcc
-  ] ++ [
-    #<<<packages-unfree>>>
-  ]);
-  programs.fish.enable = true;
-  users.defaultUserShell = pkgs.fish;
-  services.printing = {
-    enable = true;
-    drivers = with pkgs; [ 
-      brlaser 
-    ];
-  };
-  programs.system-config-printer.enable = true;
-  hardware.printers = {
-    ensureDefaultPrinter = "Brother";
-    ensurePrinters = [{
-      name = "Brother";
-      location = "cjase";
-      description = "Brother DCP 1612W";
-      deviceUri = "ipp://192.168.1.4/ipp";
-      model = "drv:///brlaser.drv/br1600.ppd";
-      ppdOptions = {
-        PageSize = "A4";
-      };
-    }];
-  };
-  hardware.sane.enable = true;
-  hardware.sane.brscan4 = {
-    enable = true;
-    netDevices = {
-      cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
-    };
-  };
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-  nix.nixPath = [
-    "nixpkgs=${args.nixpkgs.outPath}"
-  ];
-  imports = [ 
-    (args.nixpkgs + "/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix")
-    ./hardware-configuration.nix 
-  ];
-
-  fileSystems."/home/dpd-/datos" = { 
-    device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
-    fsType = "ext4";
-  };
-  fileSystems."/".options = [ "compress=zstd" "noatime" ];
-  systemd.enableEmergencyMode = false;
-  hardware.opentabletdriver.enable = true;
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
-  time.timeZone = "Europe/Rome";
-  environment.sessionVariables = {
-    XDG_CURRENT_DESKTOP = "sway";
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
-  boot.supportedFilesystems = [ "ntfs" ];
-  nix.settings.auto-optimise-store = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraPackages = [];
-  };
-  system.stateVersion = "21.11";
   i18n = {
     defaultLocale = "C.UTF-8";
     extraLocaleSettings = {
@@ -222,6 +126,94 @@ in {
       config = "config ${./it238.nordvpn.com.udp.ovpn}";
       updateResolvConf = true;
       authUserPass = secrets.vpn;
+    };
+  };
+  environment.systemPackages = with pkgs; [
+    neovim
+    bottom
+    bat      # cat with syntax highlighting
+    exa      # ls with colors and icosn
+    tldr     # short command examples
+    fd       # faster find
+    ripgrep  # alternative grep
+    usbutils
+    pciutils
+    xdg-utils
+    wget
+    git
+    gnumake
+    gcc
+  ];
+  programs.fish.enable = true;
+  users.defaultUserShell = pkgs.fish;
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+  nix.nixPath = [
+    "nixpkgs=${inputs.nixpkgs.outPath}"
+  ];
+  imports = [ 
+    # "${args.nixpkgs}/nixos/modules/services/hardware/sane_extra_backends/brscan4.nix"
+    ./hardware-configuration.nix 
+  ];
+
+  fileSystems."/home/dpd-/datos" = { 
+    device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
+    fsType = "ext4";
+  };
+  fileSystems."/".options = [ "compress=zstd" "noatime" ];
+  services.fstrim.enable = true;
+  systemd.enableEmergencyMode = false;
+  hardware.opentabletdriver.enable = true;
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+  time.timeZone = "Europe/Rome";
+  environment.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "sway";
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+  };
+  boot.supportedFilesystems = [ "ntfs" ];
+  nix.settings.auto-optimise-store = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    extraPackages = [];
+  };
+  system.stateVersion = "21.11";
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ 
+      brlaser 
+    ];
+  };
+  programs.system-config-printer.enable = true;
+  hardware.printers = {
+    ensureDefaultPrinter = "Brother";
+    ensurePrinters = [{
+      name = "Brother";
+      location = "cjase";
+      description = "Brother DCP 1612W";
+      deviceUri = "ipp://192.168.1.4/ipp";
+      model = "drv:///brlaser.drv/br1600.ppd";
+      ppdOptions = {
+        PageSize = "A4";
+      };
+    }];
+  };
+  hardware.sane.enable = true;
+  hardware.sane.brscan4 = {
+    enable = true;
+    netDevices = {
+      cjase = { model = "DCP-1612W"; ip = "192.168.1.4"; };
     };
   };
 }

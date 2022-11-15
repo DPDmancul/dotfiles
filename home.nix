@@ -79,6 +79,7 @@ in {
           { checkOnSave = { command = "clippy"; }; }; }; };
       };
       texlab = texlab;
+      rnix = rnix-lsp;
       ccls = ccls;
       pyright = nodePackages.pyright;
       jdtls  = {
@@ -178,6 +179,8 @@ in {
       set numberwidth=1   " Minimum number width
       set conceallevel=2
       set noshowmode
+      let g:tex_flavor = 'latex'
+      set completeopt=menuone,noselect
       set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
       set clipboard=unnamedplus     " Sync yank register with system clipboard
       set expandtab     " Convert tabs to spaces
@@ -206,12 +209,10 @@ in {
       set spelllang=en,it     " Define spelling dictionaries
       set complete+=kspell    " Add spellcheck options for autocomplete
       set spelloptions=camel  " Treat parts of camelCase words as separate words
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
-    plugins = with pkgs.vimPlugins; let
+    plugins = with pkgs; with vimPlugins; let
       inherit (pkgs.vimUtils) buildVimPlugin;
     in [
       plenary-nvim
@@ -365,63 +366,6 @@ in {
         type = "lua";
         config = ''require"neoscroll".setup{}'';
       }
-      editorconfig-nvim
-      vim-sleuth
-      {
-        plugin = camelcasemotion;
-        config = "let g:camelcasemotion_key = '\\'";
-      }
-      (buildVimPlugin {
-        name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
-          owner = "dahu";
-          repo = "vim-fanfingtastic";
-          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
-          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
-        };
-      })
-      {
-        plugin = suda-vim;
-        config = "let g:suda_smart_edit = 1";
-      }
-      vim-table-mode
-      nvim-ts-rainbow
-      {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              disable = { "latex" },
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
-      }
-      {
-        plugin = nvim-colorizer-lua;
-        type = "lua";
-        config = ''require"colorizer".setup{}'';
-      }
-      undotree
-      (buildVimPlugin rec {
-        name = "vim-xsampa";
-        src = pkgs.fetchFromGitHub {
-          owner = "DPDmancul";
-          repo = name;
-          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
-          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
-        };
-      })
       {
         plugin = which-key-nvim;
         type = "lua";
@@ -446,7 +390,6 @@ in {
           end
           wk.register ( 
             {
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
               f = {
                 name = "Find",
                 r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
@@ -460,6 +403,10 @@ in {
                 -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
                 [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
                 a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              c = {
+                name = "Code",
+                e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
               },
               g = {
                 name = "Git",
@@ -475,6 +422,7 @@ in {
                 m = "Toggle table mode",
                 t = "To table"
               },
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
             },
             { prefix = "<leader>" }
           )
@@ -486,47 +434,6 @@ in {
             gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
             gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
           }
-        '';
-      }
-      telescope-file-browser-nvim
-      telescope-fzf-native-nvim
-      telescope-symbols-nvim
-      # telescope-termfinder
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require "telescope"
-          telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
-          telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
-        '';
-      }
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
-      }
-      {
-        plugin = mini-nvim;
-        type = "lua";
-        config = ''
-          require"mini.indentscope".setup()
-          require"mini.bufremove".setup()
-          vim.api.nvim_create_user_command('Bdelete', function(args)
-            MiniBufremove.delete(tonumber(args.args), args.bang)
-          end, { bang = true, addr = 'buffers', nargs = '?' })
-          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-          require"mini.ai".setup()
-          require"mini.comment".setup()
-          require"mini.pairs".setup()
-          require"mini.surround".setup()
         '';
       }
       {
@@ -658,7 +565,6 @@ in {
                D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
                r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
                c = {
-                 name = "Code",
                  a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
                  f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer")
                },
@@ -717,12 +623,115 @@ in {
                   fallback()
                 end
               end
-            },  
+            },
             sources = {
               { name = "nvim_lsp" },
               { name = "luasnip" }
             }
           }
+        '';
+      }
+      editorconfig-nvim
+      vim-sleuth
+      {
+        plugin = camelcasemotion;
+        config = "let g:camelcasemotion_key = '\\'";
+      }
+      (buildVimPlugin {
+        name = "vim-fanfingtastic";
+        src = pkgs.fetchFromGitHub {
+          owner = "dahu";
+          repo = "vim-fanfingtastic";
+          rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
+          sha256 = "wmiKxuNjazkOWFcuMvDJzdPp2HhDu8CNL0rxu+8hrKs=";
+        };
+      })
+      {
+        plugin = suda-vim;
+        config = "let g:suda_smart_edit = 1";
+      }
+      vim-table-mode
+      nvim-ts-rainbow
+      {
+        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+        type = "lua";
+        config = ''
+          require"nvim-treesitter.configs".setup {
+            highlight = {
+              enable = true,
+              disable = { "latex" },
+            },
+            incremental_selection = { enable = true },
+            indentation = { enable = true },
+            folding = { enable = true },
+            -- rainbow parenthesis match
+            rainbow = {
+              enable = true,
+              extended_mode = true, -- Also highlight non-bracket delimiters
+              max_file_lines = nil
+            }
+          }
+        '';
+      }
+      {
+        plugin = nvim-colorizer-lua;
+        type = "lua";
+        config = ''require"colorizer".setup{}'';
+      }
+      {
+        plugin = nur.repos.m15a.vimExtraPlugins.nvim-FeMaco-lua;
+        type = "lua";
+        config = ''require"femaco".setup()'';
+      }
+      undotree
+      (buildVimPlugin rec {
+        name = "vim-xsampa";
+        src = pkgs.fetchFromGitHub {
+          owner = "DPDmancul";
+          repo = name;
+          rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
+          sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
+        };
+      })
+      telescope-file-browser-nvim
+      telescope-fzf-native-nvim
+      telescope-symbols-nvim
+      # telescope-termfinder
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local telescope = require "telescope"
+          telescope.load_extension("file_browser")
+          telescope.load_extension("projects")
+          telescope.load_extension("fzf")
+          -- telescope.load_extension("termfinder")
+        '';
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''require"gitsigns".setup()'';
+      }
+      {
+        plugin = project-nvim;
+        type = "lua";
+        config = ''require"project_nvim".setup()'';
+      }
+      {
+        plugin = mini-nvim;
+        type = "lua";
+        config = ''
+          require"mini.indentscope".setup()
+          require"mini.bufremove".setup()
+          vim.api.nvim_create_user_command('Bdelete', function(args)
+            MiniBufremove.delete(tonumber(args.args), args.bang)
+          end, { bang = true, addr = 'buffers', nargs = '?' })
+          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
         '';
       }
     ];
@@ -1396,110 +1405,6 @@ in {
       git.paging.pager = "delta --paging=never";
     };
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
-  home.sessionVariables = {
-    PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
-  };
-  home.sessionPath = [
-    config.home.sessionVariables.PNPM_HOME
-  ];
-  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
-  home.stateVersion = "22.05";
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "nemo"; title = "Properties"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-        { app_id = "copyq"; }
-      ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 5";
-        "--locked XF86MonBrightnessUp" = "exec light -A 5";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec nemo";
-        "${modifier}+v" = "exec kitty nvim";
-        "${modifier}+q" = "exec copyq toggle";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-      exec ${pkgs.copyq}/bin/copyq
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-    }];
-  };
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
@@ -1595,19 +1500,116 @@ in {
     };
 
   };
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
+        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "nemo"; title = "Properties"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+        { app_id = "copyq"; }
+      ];
+      keybindings = lib.mkOptionDefault {
+        "${modifier}+Shift+e" = ''
+          exec sh -c ' \
+            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+              "Shutdown") systemctl poweroff;; \
+              "Suspend") systemctl suspend;; \
+              "Reboot") systemctl reboot;; \
+              "Logout") swaymsg exit;; \
+            esac \
+          '
+        '';
+        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+        "--locked XF86AudioMute" = "exec pamixer -t";
+        "--locked XF86MonBrightnessDown" = "exec light -U 2";
+        "--locked XF86MonBrightnessUp" = "exec light -A 2";
+        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+        "${modifier}+p" = "exec grimshot save active";       # Active window
+        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+        "${modifier}+y" = "exec grimshot copy active";       # Active window
+        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+        "${modifier}+z" = "exec firefox";
+        "${modifier}+x" = "exec nemo";
+        "${modifier}+v" = "exec kitty nvim";
+        "${modifier}+q" = "exec copyq toggle";
+      };
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+      exec ${pkgs.copyq}/bin/copyq
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
+  };
+  home.username = "dpd-";
+  home.homeDirectory = "/home/dpd-";
+  home.sessionVariables = {
+    PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
+  };
+  home.sessionPath = [
+    config.home.sessionVariables.PNPM_HOME
+  ];
+  xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+  home.stateVersion = "22.05";
   home.packages = with pkgs; [
-    neovim-remote
     nodePackages.pnpm
     # You must manually install `pnpm i -g eslint`
     # and run `pnpx eslint --init` in all projects
+    neovim-remote
     wpaperd
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
     wofi
     swaylock-effects
     sway-contrib.grimshot
@@ -1615,6 +1617,13 @@ in {
     wl-clipboard-x11
     copyq
     polkit_gnome
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
     libreoffice
     cinnamon.nemo
     #pcmanfm lxmenu-data
@@ -1634,7 +1643,7 @@ in {
     pdfmixtool
     xournalpp
     ocrmypdf tesseract
-    # masterpdfeditor4
+    unfree.masterpdfeditor4
     calibre
     jmtpfs # For kindle
     pavucontrol # audio
