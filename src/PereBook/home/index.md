@@ -1,7 +1,7 @@
 # Home
 
-```nix home.nix
-{ config, pkgs, lib, dotfiles, ... }:
+```nix PereBook/home/default.nix
+{ config, pkgs, lib, dotfiles, assets, ... }:
 let
   <<<home-let>>>
 in {
@@ -49,7 +49,7 @@ home.sessionPath = [
 ## OpenTabletDriver config
 
 ```nix "home-config" +=
-xdg.configFile."OpenTabletDriver/settings.json".source = ./tablet.json;
+xdg.configFile."OpenTabletDriver/settings.json".source = /${assets}/tablet.json;
 ```
 
 ## State version

@@ -16,8 +16,8 @@ wayland.windowManager.sway = {
 };
 ```
 
-```nix "env" +=
-XDG_CURRENT_DESKTOP = "sway";
+```nix "PereBook/system" +=
+environment.sessionVariables.XDG_CURRENT_DESKTOP = "sway";
 ```
 
 ## Auto startup

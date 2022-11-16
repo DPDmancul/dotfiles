@@ -2,21 +2,30 @@
 .PHONY: install update
 
 TIMESTAMPS := .timestamps
+SRC := src
 BUILD := flake
 DOC := book
 
 all: install doc ;
 
-build: $(BUILD)
+build: $(BUILD) remove-tangled
 	cd $(BUILD) && lmt $$(find ../ -type f -name '*.md')
-	sed -i "s*<<<pwd>>>*$$PWD*" flake/flake.nix
+	cd "$(SRC)" && find . -type f -not -name '*.md' -exec cp {} ../$(BUILD)/{} \;
+	cp -r assets $(BUILD)/
+	sed -i "s*<<<pwd>>>*$$PWD*" $(BUILD)/flake.nix
 
 doc:
 	mdbook build
 	@cp -r img $(DOC)/
 
-clean:
+clean: remove-tangled
 	rm -rf $(DOC) $(TIMESTAMPS)
+
+.PHONY: remove-tangled
+remove-tangled:
+	rm -rf $(BUILD)/assets
+	rm -rf $(BUILD)/installation.sh
+	cd "$(SRC)" && find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf ../$(BUILD)/{} ../$(BUILD)/{}.nix \;
 
 # delegate to flake makefile
 .delegate-%: $(BUILD)/Makefile

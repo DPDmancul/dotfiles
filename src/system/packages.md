@@ -16,9 +16,11 @@ neovim
 
 Set as default
 
-```nix "env" +=
-EDITOR = "nvim";
-VISUAL = "nvim";
+```nix "PereBook/system" +=
+environment.sessionVariables = {
+  EDITOR = "nvim";
+  VISUAL = "nvim";
+};
 ```
 
 ### Shell

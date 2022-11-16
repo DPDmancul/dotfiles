@@ -11,17 +11,26 @@ Managing the config with flakes allows to pin source versions.
   };
 
   outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      let
-        args = {
-          inherit inputs;
-          dotfiles = "<<<pwd>>>";
-        };
-      in
-      rec {
-        <<<flake-outputs>>>
-      }
-    );
+    let
+      machines = [
+        {
+          host = "PereBook";
+          system = "x86_64-linux";
+          users = [ "dpd-" ];
+        }
+      ];
+      args = {
+        inherit inputs;
+        dotfiles = "<<<pwd>>>";
+        secrets = import ./secrets.nix;
+        assets = ./assets;
+        modules = ./modules;
+      };
+      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.doubles.all;
+    in
+    rec {
+      <<<flake-outputs>>>
+    };
 }
 ```
 
@@ -52,9 +61,8 @@ home-manager = {
   url = "github:nix-community/home-manager";
   inputs.nixpkgs.follows = "nixpkgs";
 };
-flake-utils.url = "github:numtide/flake-utils";
 hardware.url = "github:nixos/nixos-hardware";
-nix-colors.url = "github:misterio77/nix-colors";
+stylix-colors.url = "github:danth/stylix";
 ```
 
 ## Outputs
@@ -67,63 +75,90 @@ Moreover generate an unfree overlay which is identical to nixpkgs, but allows un
 **Warning**: such packages are not FOSS and so it is not guaranteed they don't harm the system.
 
 ```nix "flake-outputs" +=
-legacyPackages = let
-  overlays = [
-    inputs.nur.overlay
-    (self: super: {
-      unstable = inputs.unstable.legacyPackages.${system};
-      master = inputs.master.legacyPackages.${system};
-      fallback = import inputs.fallback {
-        inherit system;
-        config = {
-          allowBroken = true;
-          allowInsecure = true;
+legacyPackages = forAllSystems (system:
+  let
+    overlays = [
+      inputs.nur.overlay
+      (self: super: {
+        unstable = inputs.unstable.legacyPackages.${system};
+        master = inputs.master.legacyPackages.${system};
+        fallback = import inputs.fallback {
+          inherit system;
+          config = {
+            allowBroken = true;
+            allowInsecure = true;
+          };
         };
-      };
-    })
-    # <<<pkgs-overlays>>>
-  ];
-in
-import nixpkgs {
-  inherit system;
-  overlays = overlays ++ [
-    (self: super: {
-      unfree = import nixpkgs {
-        inherit system overlays;
-        config.allowUnfree = true;
-      };
-    })
-  ];
-  config.allowUnfreePredicate = pkg:
-    builtins.elem (nixpkgs.lib.getName pkg) [
-      <<<unfree-extra>>>
+      })
     ];
-};
+  in
+  import nixpkgs {
+    inherit system;
+    overlays = overlays ++ [
+      (self: super: {
+        unfree = import nixpkgs {
+          inherit system overlays;
+          config.allowUnfree = true;
+        };
+      })
+    ];
+    # TODO move to print module
+    config.allowUnfreePredicate = pkg:
+      builtins.elem (nixpkgs.lib.getName pkg) [
+        <<<unfree-extra>>>
+      ];
+  }
+);
 ```
 
 ### System config
 
 ```nix "flake-outputs" +=
-packages.nixosConfigurations = {
-  nixos = nixpkgs.lib.nixosSystem {
-    inherit system;
-    pkgs = legacyPackages;
-    modules = [ ./configuration.nix ];
-    specialArgs = args;
-  };
-};
+nixosConfigurations = builtins.listToAttrs (map
+  (machine: {
+    name = machine.host;
+    value = nixpkgs.lib.nixosSystem
+      {
+        inherit (machine) system;
+        pkgs = legacyPackages.${machine.system};
+        modules = [
+          { networking.hostName = machine.host; }
+          ./modules/system
+          ./${machine.host}/system/hardware-configuration.nix
+          ./${machine.host}/system
+        ];
+        specialArgs = args;
+      };
+  })
+  machines);
 ```
 
 ### Home-manager config
 
 ```nix "flake-outputs" +=
-packages.homeConfigurations = {
-  "dpd-@nixos" = home-manager.lib.homeManagerConfiguration {
-    pkgs = legacyPackages;
-    modules = [ ./home.nix ];
-    extraSpecialArgs = args;
-  };
-};
+homeConfigurations = builtins.listToAttrs (builtins.concatMap
+  (machine: map
+    (user: {
+      name = "${user}@${machine.host}";
+      value = home-manager.lib.homeManagerConfiguration
+        {
+          pkgs = legacyPackages.${machine.system};
+          modules =
+            let
+              cfg-path = ./${machine.host}/${user};
+            in
+            [
+              (
+                if builtins.pathExists cfg-path then
+                  cfg-path
+                else ./${machine.host}/home
+              )
+            ];
+          extraSpecialArgs = args;
+        };
+    })
+    machine.users)
+  machines);
 ```
 
 ## Home manager
@@ -131,9 +166,9 @@ packages.homeConfigurations = {
 Use home manager from its flake
 
 ```nix "flake-outputs" +=
-apps.home-manager = {
+apps.home-manager = forAllSystems (system: {
   type = "app";
   program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
-};
+});
 ```
 
