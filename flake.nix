@@ -12,21 +12,31 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
     hardware.url = "github:nixos/nixos-hardware";
-    nix-colors.url = "github:misterio77/nix-colors";
+    stylix-colors.url = "github:danth/stylix";
   };
 
   outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
-      let
-        args = {
-          inherit inputs;
-          dotfiles = "/home/dpd-/.dotfiles";
-        };
-      in
-      rec {
-        legacyPackages = let
+    let
+      machines = [
+        {
+          host = "PereBook";
+          system = "x86_64-linux";
+          users = [ "dpd-" ];
+        }
+      ];
+      args = {
+        inherit inputs;
+        dotfiles = "/home/dpd-/.dotfiles";
+        secrets = import ./secrets.nix;
+        assets = ./assets;
+        modules = ./modules;
+      };
+      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.doubles.all;
+    in
+    rec {
+      legacyPackages = forAllSystems (system:
+        let
           overlays = [
             inputs.nur.overlay
             (self: super: {
@@ -40,7 +50,6 @@
                 };
               };
             })
-            # <<<pkgs-overlays>>>
           ];
         in
         import nixpkgs {
@@ -53,32 +62,58 @@
               };
             })
           ];
+          # TODO move to print module
           config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
               "brscan4"
               "brscan4-etc-files"
               "brother-udev-rule-type1"
             ];
-        };
-        packages.nixosConfigurations = {
-          nixos = nixpkgs.lib.nixosSystem {
-            inherit system;
-            pkgs = legacyPackages;
-            modules = [ ./configuration.nix ];
-            specialArgs = args;
-          };
-        };
-        packages.homeConfigurations = {
-          "dpd-@nixos" = home-manager.lib.homeManagerConfiguration {
-            pkgs = legacyPackages;
-            modules = [ ./home.nix ];
-            extraSpecialArgs = args;
-          };
-        };
-        apps.home-manager = {
-          type = "app";
-          program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
-        };
-      }
-    );
+        }
+      );
+      nixosConfigurations = builtins.listToAttrs (map
+        (machine: {
+          name = machine.host;
+          value = nixpkgs.lib.nixosSystem
+            {
+              inherit (machine) system;
+              pkgs = legacyPackages.${machine.system};
+              modules = [
+                { networking.hostName = machine.host; }
+                ./modules/system
+                ./${machine.host}/system/hardware-configuration.nix
+                ./${machine.host}/system
+              ];
+              specialArgs = args;
+            };
+        })
+        machines);
+      homeConfigurations = builtins.listToAttrs (builtins.concatMap
+        (machine: map
+          (user: {
+            name = "${user}@${machine.host}";
+            value = home-manager.lib.homeManagerConfiguration
+              {
+                pkgs = legacyPackages.${machine.system};
+                modules =
+                  let
+                    cfg-path = ./${machine.host}/${user};
+                  in
+                  [
+                    (
+                      if builtins.pathExists cfg-path then
+                        cfg-path
+                      else ./${machine.host}/home
+                    )
+                  ];
+                extraSpecialArgs = args;
+              };
+          })
+          machine.users)
+        machines);
+      apps.home-manager = forAllSystems (system: {
+        type = "app";
+        program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
+      });
+    };
 }
