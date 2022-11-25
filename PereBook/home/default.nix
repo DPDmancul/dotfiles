@@ -1128,72 +1128,6 @@ in {
         }
     '';
   };
-  programs.fish = {
-    enable = true;
-    plugins = [
-      {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
-        name = "fish-colored-man";
-        src = pkgs.fetchFromGitHub {
-          owner = "decors";
-          repo = "fish-colored-man";
-          rev = "1ad8fff";
-          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
-        };
-      }
-    ];
-    interactiveShellInit = ''
-      fish_vi_key_bindings
-      set fish_cursor_default block blink
-      set fish_cursor_insert line blink
-      set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
-      set -g man_blink -o red
-      set -g man_bold -o green
-      set -g man_standout -b cyan black
-      set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh'
-      end
-      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
-      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-    '';
-  };
-  programs.fish.shellAliases = {
-  # environment.shellAliases = {
-    df = "df -h"; # Human-readable sizes
-    free = "free -m"; # Show sizes in MB
-    gitu = "git add . && git commit && git push";
-    nv = "nvim";
-    mk = "make";
-    lg = "lazygit";
-    nix-fish = "nix-shell --run fish";
-    mkcd = ''mkdir -p "$argv"; and cd'';
-    # cat = "bat";
-    exa = "exa -G --color auto --icons -a -s type";
-    ll = "exa -l --color always --icons -a -s type";
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      format = "╭─$all╰─$jobs$character";
-      right_format = "$status";
-      directory.home_symbol = "🏠"; # Nerd font variant: 
-      status = {
-        disabled = false;
-        map_symbol = true;
-      };
-    };
-  };
   programs.git = {
     enable = true;
     userName = "DPDmancul";
@@ -1380,100 +1314,6 @@ in {
     };
 
   };
-  home.packages = with pkgs; [
-    nodePackages.pnpm
-    # You must manually install `pnpm i -g eslint`
-    # and run `pnpx eslint --init` in all projects
-    neovim-remote
-    wpaperd
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    unfree.masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    # shotcut
-    kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    libfaketime
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    copyq
-    polkit_gnome
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
   xdg = {
     enable = true;
     userDirs = {
@@ -1687,6 +1527,188 @@ in {
       command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
+  };
+  home.packages = with pkgs; [
+    nodePackages.pnpm
+    # You must manually install `pnpm i -g eslint`
+    # and run `pnpx eslint --init` in all projects
+    neovim-remote
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    copyq
+    polkit_gnome
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    python3Packages.pygments
+    (pkgs.stdenvNoCC.mkDerivation rec {
+      preferLocalBuild = true;
+      pname = "textidote";
+      version = "0.8.3";
+      dontUnpack = true;
+      dontConfigure = true;
+
+      src = fetchurl {
+        url = "https://github.com/sylvainhalle/${pname}/releases/download/v${version}/${pname}.jar";
+        sha256 = "BIYswDrVqNEB+J9TwB0Fop+AC8qvPo53KGU7iupC7tk=";
+      };
+
+      buildPhase = ''
+        cat > ${pname} << EOF
+        #!/bin/sh
+        exec ${openjdk_headless}/bin/java -jar $src \$@
+      '';
+
+      installPhase = ''
+        install -Dm555 -t $out/bin ${pname}
+      '';
+    })
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    unfree.masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    # shotcut
+    kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    libfaketime
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+    (writeShellScriptBin "dots" ''
+      cd "${dotfiles}"
+      nix-shell --run "make $*"
+    '')
+    (writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+  ];
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
+  programs.fish = {
+    enable = true;
+    plugins = [
+      {
+        name = "base16-fish";
+        src = pkgs.fetchFromGitHub {
+          owner = "tomyun";
+          repo = "base16-fish";
+          rev = "2f6dd97";
+          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
+        };
+      }
+      {
+        name = "fish-colored-man";
+        src = pkgs.fetchFromGitHub {
+          owner = "decors";
+          repo = "fish-colored-man";
+          rev = "1ad8fff";
+          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
+        };
+      }
+    ];
+    interactiveShellInit = ''
+      fish_vi_key_bindings
+      set fish_cursor_default block blink
+      set fish_cursor_insert line blink
+      set fish_cursor_replace_one underscore blink
+      base16-gruvbox-light-medium
+      set -x BAT_THEME gruvbox-light
+      set -g man_blink -o red
+      set -g man_bold -o green
+      set -g man_standout -b cyan black
+      set -g man_underline -o yellow
+      if test $TERM = 'xterm-kitty'
+        alias ssh 'kitty +kitten ssh'
+      end
+      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
+      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
+    '';
+  };
+  programs.fish.shellAliases = {
+  # environment.shellAliases = {
+    df = "df -h"; # Human-readable sizes
+    free = "free -m"; # Show sizes in MB
+    gitu = "git add . && git commit && git push";
+    nv = "nvim";
+    mk = "make";
+    lg = "lazygit";
+    nix-fish = "nix-shell --run fish";
+    mkcd = ''mkdir -p "$argv"; and cd'';
+    # cat = "bat";
+    ll = "lsd -l";
+  };
+  programs.starship = {
+    enable = true;
+    settings = {
+      format = "╭─$all╰─$jobs$character";
+      right_format = "$status";
+      directory.home_symbol = "🏠"; # Nerd font variant: 
+      status = {
+        disabled = false;
+        map_symbol = true;
+      };
+    };
   };
   home.username = "dpd-";
   home.homeDirectory = "/home/dpd-";

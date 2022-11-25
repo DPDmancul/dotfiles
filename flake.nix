@@ -9,7 +9,7 @@
     nixpkgs.follows = "unstable"; # TODO: stable
     nur.url = "github:nix-community/NUR";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager"; # TODO: stable
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hardware.url = "github:nixos/nixos-hardware";
@@ -62,7 +62,6 @@
               };
             })
           ];
-          # TODO move to print module
           config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
               "brscan4"
@@ -84,7 +83,7 @@
                 ./${machine.host}/system/hardware-configuration.nix
                 ./${machine.host}/system
               ];
-              specialArgs = args;
+              specialArgs = args // { inherit (machine) users; };
             };
         })
         machines);
@@ -106,7 +105,7 @@
                       else ./${machine.host}/home
                     )
                   ];
-                extraSpecialArgs = args;
+                extraSpecialArgs = args // { inherit user; };
               };
           })
           machine.users)
