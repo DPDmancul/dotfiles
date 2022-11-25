@@ -2,24 +2,24 @@
 
 Users must follow this config and cannot be modified outside it
 
-```nix "config" +=
-users.mutableUsers = false;
+```nix PereBook/system/users.nix
+{ config, pkgs, secrets, lib, ... }:
+{
+  users.mutableUsers = false;
+  <<<PereBook/system/users>>>
+}
 ```
 
 ## Users
 
 ### dpd-
 
-```nix "config" +=
+```nix "PereBook/system/users" +=
 users.users.dpd- = {
   isNormalUser = true;
   hashedPassword = secrets.dpd-.hashedPasswords;
   extraGroups = [
     "wheel" # Enable 'sudo' for the user.
-    "networkmanager"
-    "input"
-    "video"
-    <<<user-groups>>>
   ];
 };
 ```

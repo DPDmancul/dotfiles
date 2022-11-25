@@ -88,8 +88,7 @@ programs.fish.shellAliases = {
   nix-fish = "nix-shell --run fish";
   mkcd = ''mkdir -p "$argv"; and cd'';
   # cat = "bat";
-  exa = "exa -G --color auto --icons -a -s type";
-  ll = "exa -l --color always --icons -a -s type";
+  ll = "lsd -l";
 };
 ```
 

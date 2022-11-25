@@ -58,7 +58,7 @@ Home manager, flake utils, hardware config and color schemes
 
 ```nix "flake-inputs" +=
 home-manager = {
-  url = "github:nix-community/home-manager";
+  url = "github:nix-community/home-manager"; # TODO: stable
   inputs.nixpkgs.follows = "nixpkgs";
 };
 hardware.url = "github:nixos/nixos-hardware";
@@ -102,7 +102,6 @@ legacyPackages = forAllSystems (system:
         };
       })
     ];
-    # TODO move to print module
     config.allowUnfreePredicate = pkg:
       builtins.elem (nixpkgs.lib.getName pkg) [
         <<<unfree-extra>>>
@@ -127,7 +126,7 @@ nixosConfigurations = builtins.listToAttrs (map
           ./${machine.host}/system/hardware-configuration.nix
           ./${machine.host}/system
         ];
-        specialArgs = args;
+        specialArgs = args // { inherit (machine) users; };
       };
   })
   machines);
@@ -154,7 +153,7 @@ homeConfigurations = builtins.listToAttrs (builtins.concatMap
                 else ./${machine.host}/home
               )
             ];
-          extraSpecialArgs = args;
+          extraSpecialArgs = args // { inherit user; };
         };
     })
     machine.users)

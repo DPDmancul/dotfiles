@@ -141,14 +141,6 @@ services.kanshi = {
 swaylock-effects
 ```
 
-Grant PAM access to swaylock
-
-```nix "config" +=
-security.pam.services.swaylock = {
-  text = "auth include login";
-};
-```
-
 ```nix "sway-keybind" +=
 "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
 ```

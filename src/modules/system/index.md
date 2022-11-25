@@ -5,13 +5,25 @@ Here is collected the common config for all systems.
 In this folder there are also some useful modules used only by some system configs.
 
 ```nix modules/system/default.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, users, lib, ... }:
 {
   imports = [
     ./flakes.nix
     ./boot.nix
     ./i18n.nix
+    ./services.nix
+    ./services/pipewire.nix
+    ./services/print_scan.nix
+    ./packages.nix
   ];
+
+  users.users = lib.genAttrs users (user: {
+    extraGroups = [
+      "input"
+      "video"
+      <<<modules/system-user-groups>>>
+    ];
+  });
 
   <<<modules/system>>>
 }
@@ -43,8 +55,20 @@ boot.supportedFilesystems = [ "ntfs" ];
 
 Enable NetworkManager
 
-```nix "config" +=
+```nix "modules/system" +=
 networking.networkmanager.enable = true;
+```
+
+```nix "modules/system-user-groups" +=
+"networkmanager"
+```
+
+## Fonts
+
+```nix "modules/system" +=
+fonts.fonts = with pkgs; [
+  (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+];
 ```
 
 ## Optimise Nix store

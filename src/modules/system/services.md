@@ -1,29 +1,36 @@
 # Services
 
+```nix modules/system/services.nix
+{ config, pkgs, lib, ... }:
+{
+  <<<modules/system/services>>>
+}
+```
+
 ## D-Bus
 
 Required by many other services (e.g. `xdg-desktop-portal`)
 
-```nix "config" +=
+```nix "modules/system/services" +=
 services.dbus.enable = true;
 ```
 
 ## Bluetooth
 
-```nix "config" +=
+```nix "modules/system/services" +=
 hardware.bluetooth.enable = true;
 services.blueman.enable = true;
 ```
 
 ## Virtual filesystems
 
-```nix "config" +=
+```nix "modules/system/services" +=
 services.gvfs.enable = true;
 ```
 
 ### Mount removable devices
 
-```nix "config" +=
+```nix "modules/system/services" +=
 services.udisks2.enable = true;
 ```
 
@@ -31,7 +38,7 @@ services.udisks2.enable = true;
 
 Enable OpenSSH daemon
 
-```nix "config" +=
+```nix "modules/system/services" +=
 services.openssh.enable = true;
 programs.ssh.startAgent = true;
 ```
@@ -40,7 +47,7 @@ programs.ssh.startAgent = true;
 
 Manage key mapping config at system level (for tty, X11 and Wayland).
 
-```nix "config" +=
+```nix "modules/system/services" +=
 environment.etc."dual-function-keys.yaml".text = ''
   MAPPINGS:
     <<<dual-function-keys-mappings>>>
@@ -87,7 +94,7 @@ Just in case it could be needed remap `caps` from `right ctrl`
 <!--
 ## Antivirus
 
-```nix "config" +=
+```nix "modules/system/services" +=
 # services.clamav = {
 #   daemon.enable = true;
 #   updater.enable = true;
@@ -97,19 +104,7 @@ Just in case it could be needed remap `caps` from `right ctrl`
 
 ## Backlight control
 
-```nix "config" +=
+```nix "modules/system/services" +=
 programs.light.enable = true;
-```
-
-## ADB
-
-```nix "config" +=
-programs.adb.enable = true;
-```
-
-Add user to the adb group
-
-```nix "user-groups" +=
-"adbusers"
 ```
 

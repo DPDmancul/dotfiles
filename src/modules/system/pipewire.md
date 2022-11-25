@@ -2,19 +2,23 @@
 
 Use PipeWire as multimedia framework
 
-```nix "config" +=
-services.pipewire = {
-  enable = true;
-  alsa.enable = true;
-  alsa.support32Bit = true;
-  pulse.enable = true;
-  #jack.enable = true;
-};
+```nix modules/system/services/pipewire.nix
+{ config, pkgs, lib, ... }:
+{
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    #jack.enable = true;
+  };
+  <<<modules/system/services/pipewire>>>
+}
 ```
 
 Use RealtimeKit to permit PipeWire acquiring realtime priority
 
-```nix "config" +=
+```nix "modules/system/services/pipewire" +=
 security.rtkit.enable = true;
 ```
 
@@ -22,7 +26,7 @@ security.rtkit.enable = true;
 
 Enable xdg portal, required by pipewire to share screen:
 
-```nix "config" +=
+```nix "modules/system/services/pipewire" +=
 xdg.portal.wlr.enable = true;
 ```
 
@@ -31,7 +35,7 @@ xdg.portal.wlr.enable = true;
 
 Use mSBC and SBC-XQ codes for better quality
 
-```nix "config" +=
+```nix "modules/system/services/pipewire" +=
 services.pipewire.media-session.config.bluez-monitor.rules = [
   {
     # Matches all cards

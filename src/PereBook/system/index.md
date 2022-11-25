@@ -1,7 +1,7 @@
 # System
 
 ```nix PereBook/system/default.nix
-{ config, pkgs, inputs, secrets, lib, ... }:
+{ config, pkgs, inputs, secrets, modules, lib, ... }:
 {
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
@@ -11,11 +11,12 @@
     common-gpu-intel
   ] ++ [
     ./net.nix
+    ./services.nix
+    /${modules}/system/services/print_scan/brotherDCP1612W.nix
+    ./users.nix
   ];
 
   <<<PereBook/system>>>
-  # TODO remove in favour of PereBook/system
-  <<<config>>>
 }
 ```
 
@@ -61,3 +62,10 @@ programs.sway = {
 };
 ```
 
+Grant PAM access to swaylock
+
+```nix "PereBook/system" +=
+security.pam.services.swaylock = {
+  text = "auth include login";
+};
+```
