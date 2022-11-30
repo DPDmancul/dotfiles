@@ -27,7 +27,6 @@
     wrapperFeatures.gtk = true;
     extraPackages = [ ];
   };
-  # TODO remove in favour of PereBook/system
   security.pam.services.swaylock = {
     text = "auth include login";
   };

@@ -1219,101 +1219,6 @@ in {
       git.paging.pager = "delta --paging=never";
     };
   };
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      forceWayland = true;
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
-        "browser.download.always_ask_before_handling_new_types" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
-  };
   xdg = {
     enable = true;
     userDirs = {
@@ -1345,13 +1250,6 @@ in {
               subt);
         in [
           { "text/plain" = "nvim.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
           (subtypes "application" "writer.desktop"
             [
               "vnd.oasis.opendocument.text"
@@ -1415,6 +1313,13 @@ in {
               "audio/x-ms-wma"
             ])
           { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
         ]);
     };
   };
@@ -1434,113 +1339,12 @@ in {
       Restart = "always";
     };
   };
-  wayland.windowManager.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
-      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-      modifier = "Mod4";
-      input."*".xkb_layout = "eu";
-      input."*".xkb_numlock = "enabled";
-      terminal = "kitty";
-      menu = ''wofi --show=drun -i --prompt=""'';
-      floating.criteria = [
-        { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-        { app_id = "firefox"; title = "^Picture-in-Picture$"; }
-        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
-        { app_id = "file-roller"; title = "Extract"; }
-        { app_id = "file-roller"; title = "Compress"; }
-        { app_id = "nemo"; title = "Properties"; }
-        { app_id = "pavucontrol"; }
-        { app_id = "qalculate-gtk"; }
-        { app_id = "copyq"; }
-      ];
-      keybindings = lib.mkOptionDefault {
-        "${modifier}+Shift+e" = ''
-          exec sh -c ' \
-            case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
-              "Shutdown") systemctl poweroff;; \
-              "Suspend") systemctl suspend;; \
-              "Reboot") systemctl reboot;; \
-              "Logout") swaymsg exit;; \
-            esac \
-          '
-        '';
-        "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
-        "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
-        "--locked XF86AudioMute" = "exec pamixer -t";
-        "--locked XF86MonBrightnessDown" = "exec light -U 2";
-        "--locked XF86MonBrightnessUp" = "exec light -A 2";
-        "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
-        "${modifier}+p" = "exec grimshot save active";       # Active window
-        "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
-        "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
-        "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
-        "${modifier}+y" = "exec grimshot copy active";       # Active window
-        "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
-        "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
-        "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
-        "${modifier}+z" = "exec firefox";
-        "${modifier}+x" = "exec nemo";
-        "${modifier}+v" = "exec kitty nvim";
-        "${modifier}+q" = "exec copyq toggle";
-      };
-    };
-    extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
-      exec ${pkgs.copyq}/bin/copyq
-    '';
-  };
-  programs.fish.loginShellInit = lib.mkBefore ''
-    if test (tty) = /dev/tty1
-      exec sway &> /dev/null
-    end
-  '';
-  xdg.configFile."wofi/config".text = ''
-    allow_images=true # Enable icons
-    insensitive=true  # Case insensitive search
-  '';
-  programs.mako = {
-    enable = true;
-  };
-  services.wlsunset = {
-    enable = true;
-    latitude = "46"; # North
-    longitude = "13"; # East
-  };
-  services.kanshi = {
-    enable = true;
-  };
-  services.swayidle = {
-    enable = true;
-    timeouts = [{
-      timeout = 300;
-      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-    }];
-  };
   home.packages = with pkgs; [
     nodePackages.pnpm
     # You must manually install `pnpm i -g eslint`
     # and run `pnpx eslint --init` in all projects
     neovim-remote
     wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    copyq
-    polkit_gnome
     libreoffice
     cinnamon.nemo
     #pcmanfm lxmenu-data
@@ -1634,6 +1438,13 @@ in {
     gdb
     python3
     (agda.withPackages (p: [ p.standard-library ]))
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    copyq
+    polkit_gnome
     (writeShellScriptBin "dots" ''
       cd "${dotfiles}"
       nix-shell --run "make $*"
@@ -1709,6 +1520,226 @@ in {
         map_symbol = true;
       };
     };
+  };
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          "*" = {
+            installation_mode = "blocked";
+            blocked_install_message = "Extensions managed by home-manager.";
+          };
+          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+          # "vim-vixen@i-beam.org" = ext "vim-vixen";
+          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
+          "proxydocile@unipd.it"= {
+            installation_mode = "force_installed";
+            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
+          };
+          "uBlock0@raymondhill.net" = ext "ublock-origin";
+          "@testpilot-containers" = ext "multi-account-containers";
+          "@contain-facebook" = ext "facebook-container";
+          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        };
+        PasswordManagerEnabled = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = true;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+        DisableTelemetry = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+      };
+    };
+    profiles.default = {
+      settings = {
+        "browser.download.useDownloadDir" = false;
+        "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
+        "browser.download.always_ask_before_handling_new_types" = true;
+        "devtools.debugger.remote-enabled" = true;
+        "devtools.chrome.enabled" = true;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "dom.security.https_only_mode" = true;
+        "dom.security.https_only_mode_ever_enabled" = true;
+        "privacy.donottrackheader.enabled" = true;
+        "privacy.trackingprotection.enabled" = true;
+        "privacy.trackingprotection.socialtracking.enabled" = true;
+        "privacy.partition.network_state.ocsp_cache" = true;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+        "browser.ping-centre.telemetry" = false;
+        "toolkit.telemetry.archive.enabled" = false;
+        "toolkit.telemetry.bhrPing.enabled" = false;
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.firstShutdownPing.enabled" = false;
+        "toolkit.telemetry.hybridContent.enabled" = false;
+        "toolkit.telemetry.newProfilePing.enabled" = false;
+        "toolkit.telemetry.reportingpolicy.firstRun" = false;
+        "toolkit.telemetry.shutdownPingSender.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "toolkit.telemetry.updatePing.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
+        "browser.newtabpage.activity-stream.showSponsored" = false;
+        "browser.search.suggest.enabled" = false;
+        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+        "extensions.pocket.enabled" = false;
+        "extensions.pocket.api" = "";
+        "extensions.pocket.oAuthConsumerKey" = "";
+        "extensions.pocket.showHome" = false;
+        "extensions.pocket.site" = "";
+        "browser.uidensity" = 1;
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+      };
+      userChrome = ''
+        #main-window {
+          background: #f9f9faa5 !important;
+        }
+        .tab-background:is([selected], [multiselected]),
+        .browser-toolbar:not(.titlebar-color) {
+          background-color: #f9f9fa65 !important;
+        }
+      '';
+    };
+
+  };
+  wayland.windowManager.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    config = rec {
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
+      bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
+      modifier = "Mod4";
+      input."*".xkb_layout = "eu";
+      input."*".xkb_numlock = "enabled";
+      terminal = "kitty";
+      menu = ''wofi --show=drun -i --prompt=""'';
+      floating.criteria = [
+        { app_id = "firefox"; title = "^Developer Tools [-—]"; }
+        { app_id = "file-roller"; title = "Extract"; }
+        { app_id = "file-roller"; title = "Compress"; }
+        { app_id = "nemo"; title = "Properties"; }
+        { app_id = "pavucontrol"; }
+        { app_id = "qalculate-gtk"; }
+        { app_id = "copyq"; }
+      ];
+      window.commands = [
+        { criteria = { app_id = "firefox"; title = ".*[Ss]haring (Indicator|your screen)"; }; command = "floating enable, move to scratchpad"; }
+        { criteria = { app_id = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
+        { criteria = { shell = "xwayland"; }; command = ''title_format "%title (%shell)"''; }
+      ];
+      keybindings = lib.mkOptionDefault
+        (with config.wayland.windowManager.sway.config; {
+          "${modifier}+Shift+e" = ''
+            exec sh -c ' \
+              case $(echo -e "Shutdown\nSuspend\nReboot\nLogout" | wofi --dmenu -i --prompt="Logout menu") in \
+                "Shutdown") systemctl poweroff;; \
+                "Suspend") systemctl suspend;; \
+                "Reboot") systemctl reboot;; \
+                "Logout") swaymsg exit;; \
+              esac \
+            '
+          '';
+          "--locked XF86AudioRaiseVolume" = "exec pamixer -u -i 5";
+          "--locked XF86AudioLowerVolume" = "exec pamixer -d 5";
+          "--locked XF86AudioMute" = "exec pamixer -t";
+          "--locked XF86MonBrightnessDown" = "exec light -U 2";
+          "--locked XF86MonBrightnessUp" = "exec light -A 2";
+          "${modifier}+Ctrl+Shift+${left}" = "move workspace to output left";
+          "${modifier}+Ctrl+Shift+${down}" = "move workspace to output down";
+          "${modifier}+Ctrl+Shift+${up}" = "move workspace to output up";
+          "${modifier}+Ctrl+Shift+${right}" = "move workspace to output right";
+          "${modifier}+Ctrl+Shift+Left" = "move workspace to output left";
+          "${modifier}+Ctrl+Shift+Down" = "move workspace to output down";
+          "${modifier}+Ctrl+Shift+Up" = "move workspace to output up";
+          "${modifier}+Ctrl+Shift+Right" = "move workspace to output right";
+          "Ctrl+Alt+l" = "exec swaylock --screenshots --clock --indicator --effect-blur 7x5 --fade-in 0.2";
+          "${modifier}+p" = "exec grimshot save active";       # Active window
+          "${modifier}+Shift+p" = "exec grimshot save area";   # Select area
+          "${modifier}+Mod1+p" = "exec grimshot save output";  # Whole screen
+          "${modifier}+Ctrl+p" = "exec grimshot save window";  # Choose window
+          "${modifier}+y" = "exec grimshot copy active";       # Active window
+          "${modifier}+Shift+y" = "exec grimshot copy area";   # Select area
+          "${modifier}+Mod1+y" = "exec grimshot copy output";  # Whole screen
+          "${modifier}+Ctrl+y" = "exec grimshot copy window";  # Choose window
+          "${modifier}+z" = "exec firefox";
+          "${modifier}+x" = "exec nemo";
+          "${modifier}+v" = "exec kitty nvim";
+          "${modifier}+q" = "exec copyq toggle";
+        } // builtins.listToAttrs (builtins.concatMap
+          ({ name, value }:
+            let
+              ws = builtins.toString value;
+            in
+            [
+              { name = "${modifier}+${name}"; value = "workspace number ${ws}"; }
+              { name = "${modifier}+Shift+${name}"; value = "move container to workspace number ${ws}"; }
+              { name = "${modifier}+Ctrl+${name}"; value = "move container to workspace number ${ws}, workspace number ${ws}"; }
+            ])
+          ([
+            { name = "grave"; value = 0; }
+            { name = "Escape"; value = 10; }
+          ] ++ (map
+            (n: { name = builtins.toString n; value = n; })
+            [ 1 2 3 4 5 6 7 8 9 ])
+          ++ map
+            (n: { name = "F${builtins.toString n}"; value = 10 + n; })
+            [ 1 2 3 4 5 6 7 8 9 10 11 12 ]
+          )
+        ));
+    };
+    extraConfig = ''
+      exec ${wpaperd}/bin/wpaperd
+      exec ${pkgs.copyq}/bin/copyq
+    '';
+  };
+  programs.fish.loginShellInit = lib.mkBefore ''
+    if test (tty) = /dev/tty1
+      exec sway &> /dev/null
+    end
+  '';
+  xdg.configFile."wofi/config".text = ''
+    allow_images=true # Enable icons
+    insensitive=true  # Case insensitive search
+  '';
+  programs.mako = {
+    enable = true;
+  };
+  services.wlsunset = {
+    enable = true;
+    latitude = "46"; # North
+    longitude = "13"; # East
+  };
+  services.kanshi = {
+    enable = true;
+  };
+  services.swayidle = {
+    enable = true;
+    timeouts = [{
+      timeout = 300;
+      command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
+      resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
+    }];
   };
   home.username = "dpd-";
   home.homeDirectory = "/home/dpd-";
