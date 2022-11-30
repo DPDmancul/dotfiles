@@ -6,9 +6,30 @@ wayland.windowManager.sway = {
   wrapperFeatures.gtk = true;
   config = rec {
     <<<sway-config>>>
-    keybindings = lib.mkOptionDefault {
-      <<<sway-keybind>>>
-    };
+    keybindings = lib.mkOptionDefault
+      (with config.wayland.windowManager.sway.config; {
+        <<<sway-keybind>>>
+      } // builtins.listToAttrs (builtins.concatMap
+        ({ name, value }:
+          let
+            ws = builtins.toString value;
+          in
+          [
+            { name = "${modifier}+${name}"; value = "workspace number ${ws}"; }
+            { name = "${modifier}+Shift+${name}"; value = "move container to workspace number ${ws}"; }
+            { name = "${modifier}+Ctrl+${name}"; value = "move container to workspace number ${ws}, workspace number ${ws}"; }
+          ])
+        ([
+          { name = "grave"; value = 0; }
+          { name = "Escape"; value = 10; }
+        ] ++ (map
+          (n: { name = builtins.toString n; value = n; })
+          [ 1 2 3 4 5 6 7 8 9 ])
+        ++ map
+          (n: { name = "F${builtins.toString n}"; value = 10 + n; })
+          [ 1 2 3 4 5 6 7 8 9 10 11 12 ]
+        )
+      ));
   };
   extraConfig = ''
     <<<sway-extra-config>>>
@@ -135,6 +156,19 @@ services.kanshi = {
 };
 ```
 
+### Move to another screen
+
+```nix "sway-keybind" +=
+"${modifier}+Ctrl+Shift+${left}" = "move workspace to output left";
+"${modifier}+Ctrl+Shift+${down}" = "move workspace to output down";
+"${modifier}+Ctrl+Shift+${up}" = "move workspace to output up";
+"${modifier}+Ctrl+Shift+${right}" = "move workspace to output right";
+"${modifier}+Ctrl+Shift+Left" = "move workspace to output left";
+"${modifier}+Ctrl+Shift+Down" = "move workspace to output down";
+"${modifier}+Ctrl+Shift+Up" = "move workspace to output up";
+"${modifier}+Ctrl+Shift+Right" = "move workspace to output right";
+```
+
 ### Lock
 
 ```nix "home-packages" +=
@@ -218,8 +252,6 @@ Enable floating by default for some applications
 
 ```nix "sway-config" +=
 floating.criteria = [
-  { app_id = "firefox"; title = "^Firefox [-—] Sharing Indicator$"; }
-  { app_id = "firefox"; title = "^Picture-in-Picture$"; }
   { app_id = "firefox"; title = "^Developer Tools [-—]"; }
   { app_id = "file-roller"; title = "Extract"; }
   { app_id = "file-roller"; title = "Compress"; }
@@ -227,6 +259,11 @@ floating.criteria = [
   { app_id = "pavucontrol"; }
   { app_id = "qalculate-gtk"; }
   { app_id = "copyq"; }
+];
+window.commands = [
+  { criteria = { app_id = "firefox"; title = ".*[Ss]haring (Indicator|your screen)"; }; command = "floating enable, move to scratchpad"; }
+  { criteria = { app_id = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
+  { criteria = { shell = "xwayland"; }; command = ''title_format "%title [%shell]"''; } # TODO: does not work for waybar
 ];
 ```
 
