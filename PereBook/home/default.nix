@@ -1,5 +1,6 @@
-{ config, pkgs, lib, dotfiles, assets, ... }:
+{ config, pkgs, lib, modules, dotfiles, assets, ... }: # TODO remove dotfiles
 let
+  # TODO remove
   wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
     pname = "wpaperd";
     version = "0.1.0";
@@ -21,56 +22,12 @@ let
     cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
   };
 in {
+  imports = [
+    /${modules}/home
+  ];
+
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "jetbrainsmono nerd font";
-      size = 10;
-    };
-    settings = {
-      url_style = "single";
-      cursor                  = "#928374";
-      background              = "#fbf1c7";
-      foreground              = "#282828";
-      selection_foreground    = "#665c54";
-      selection_background    = "#d5c4a1";
-      # white
-      color0                  = "#fbf1c7";
-      color8                  = "#9d8374";
-      # red
-      color1                  = "#cc241d";
-      color9                  = "#9d0006";
-      # green
-      color2                  = "#98971a";
-      color10                 = "#79740e";
-      # yellow
-      color3                  = "#d79921";
-      color11                 = "#b57614";
-      # blue
-      color4                  = "#458588";
-      color12                 = "#076678";
-      # purple
-      color5                  = "#b16286";
-      color13                 = "#8f3f71";
-      # aqua
-      color6                  = "#689d6a";
-      color14                 = "#427b58";
-      # black
-      color7                  = "#7c6f64";
-      color15                 = "#3c3836";
-      active_tab_background   = "#fbf1c7";
-      inactive_tab_background = "#d5c4a1";
-      tab_bar_background      = "none";
-
-      wayland_titlebar_color = "background";
-      tab_bar_edge        = "top";
-      tab_bar_style       = "powerline";
-      tab_powerline_style = "slanted";
-      confirm_os_window_close = -2;
-    };
-  };
   programs.neovim = let
     lsp_servers = with pkgs; {
       rust-tools = {
@@ -1219,126 +1176,6 @@ in {
       git.paging.pager = "delta --paging=never";
     };
   };
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-
-      # do not create useless folders
-      desktop = "$HOME";
-      publicShare = "$HOME/.local/share/Public";
-      templates = "$HOME/.local/share/Templates";
-    };
-    desktopEntries.nvim = {
-      name = "NeoVim";
-      genericName = "Text Editor";
-      icon = "nvim";
-      exec = "kitty nvim %F";
-      terminal = false;
-      categories = [ "Utility" "TextEditor" ];
-      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = lib.zipAttrsWith
-        (_: values: values)
-        (let#
-          subtypes = type: program: subt:
-            builtins.listToAttrs (builtins.map
-              (x: {name = type + "/" + x; value = program; })
-              subt);
-        in [
-          { "text/plain" = "nvim.desktop"; }
-          (subtypes "application" "writer.desktop"
-            [
-              "vnd.oasis.opendocument.text"
-              "msword"
-              "vnd.ms-word"
-              "vnd.openxmlformats-officedocument.wordprocessingml.document"
-              "vnd.oasis.opendocument.text-template"
-            ])
-          (subtypes "application" "calc.desktop"
-            [
-              "vnd.oasis.opendocument.spreadsheet"
-              "vnd.ms-excel"
-              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              "vnd.oasis.opendocument.spreadsheet-template"
-            ])
-          (subtypes "application" "impress.desktop"
-            [
-              "vnd.oasis.opendocument.presentation"
-              "vnd.ms-powerpoint"
-              "vnd.openxmlformats-officedocument.presentationml.presentation"
-              "vnd.oasis.opendocument.presentation-template"
-            ])
-          (subtypes "application" "libreoffice.desktop"
-            [
-              "vnd.oasis.opendocument.graphics"
-              "vnd.oasis.opendocument.chart"
-              "vnd.oasis.opendocument.formula"
-              "vnd.oasis.opendocument.image"
-              "vnd.oasis.opendocument.text-master"
-              "vnd.sun.xml.base"
-              "vnd.oasis.opendocument.base"
-              "vnd.oasis.opendocument.database"
-              "vnd.oasis.opendocument.graphics-template"
-              "vnd.oasis.opendocument.chart-template"
-              "vnd.oasis.opendocument.formula-template"
-              "vnd.oasis.opendocument.image-template"
-              "vnd.oasis.opendocument.text-web"
-            ])
-          { "inode/directory" = "nemo.desktop"; }
-          (subtypes "application" "org.gnome.FileRoller.desktop"
-            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
-          { "application/pdf" = "okularApplication_pdf.desktop"; }
-          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
-          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
-          (subtypes "image" "imv-folder.desktop"
-            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-          (subtypes "video" "umpv.desktop"
-            [
-              "avi" "msvideo" "x-msvideo"
-              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-              "ogg"
-              "quicktime"
-              "webm"
-            ])
-          (subtypes "audio" "umpv.desktop"
-            [
-              "aac" "flac"
-              "mpeg" "mpeg3" # mp3
-              "ogg" "vorbis" "opus" "x-opus+ogg"
-              "wav" "x-wav"
-              "audio/x-ms-wma"
-            ])
-          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
-        ]);
-    };
-  };
-  systemd.user.services.polkit-agent = {
-    Unit = {
-      Description = "Runs polkit authentication agent";
-      PartOf = "graphical-session.target";
-    };
-
-    Install = {
-      WantedBy = ["graphical-session.target"];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
   home.packages = with pkgs; [
     nodePackages.pnpm
     # You must manually install `pnpm i -g eslint`
@@ -1445,176 +1282,13 @@ in {
     wl-clipboard-x11
     copyq
     polkit_gnome
-    (writeShellScriptBin "dots" ''
-      cd "${dotfiles}"
-      nix-shell --run "make $*"
-    '')
-    (writeShellScriptBin "batt" ''
-      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-    '')
+      (pkgs.writeShellScriptBin "batt" ''
+        ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+      '')
   ];
   dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
   dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
   dconf.settings."org/nemo/desktop".show-desktop-icons = false;
-  programs.fish = {
-    enable = true;
-    plugins = [
-      {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
-        name = "fish-colored-man";
-        src = pkgs.fetchFromGitHub {
-          owner = "decors";
-          repo = "fish-colored-man";
-          rev = "1ad8fff";
-          sha256 = "uoZ4eSFbZlsRfISIkJQp24qPUNqxeD0JbRb/gVdRYlA=";
-        };
-      }
-    ];
-    interactiveShellInit = ''
-      fish_vi_key_bindings
-      set fish_cursor_default block blink
-      set fish_cursor_insert line blink
-      set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
-      set -g man_blink -o red
-      set -g man_bold -o green
-      set -g man_standout -b cyan black
-      set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh'
-      end
-      set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
-      set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-    '';
-  };
-  programs.fish.shellAliases = {
-  # environment.shellAliases = {
-    df = "df -h"; # Human-readable sizes
-    free = "free -m"; # Show sizes in MB
-    gitu = "git add . && git commit && git push";
-    nv = "nvim";
-    mk = "make";
-    lg = "lazygit";
-    nix-fish = "nix-shell --run fish";
-    mkcd = ''mkdir -p "$argv"; and cd'';
-    # cat = "bat";
-    ll = "lsd -l";
-  };
-  programs.starship = {
-    enable = true;
-    settings = {
-      format = "╭─$all╰─$jobs$character";
-      right_format = "$status";
-      directory.home_symbol = "🏠"; # Nerd font variant: 
-      status = {
-        disabled = false;
-        map_symbol = true;
-      };
-    };
-  };
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          "*" = {
-            installation_mode = "blocked";
-            blocked_install_message = "Extensions managed by home-manager.";
-          };
-          "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-          # "vim-vixen@i-beam.org" = ext "vim-vixen";
-          "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "proxydocile@unipd.it"= {
-            installation_mode = "force_installed";
-            install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-          };
-          "uBlock0@raymondhill.net" = ext "ublock-origin";
-          "@testpilot-containers" = ext "multi-account-containers";
-          "@contain-facebook" = ext "facebook-container";
-          "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-          "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
-          "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-          # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-        };
-        PasswordManagerEnabled = false;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-      };
-    };
-    profiles.default = {
-      settings = {
-        "browser.download.useDownloadDir" = false;
-        "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
-        "browser.download.always_ask_before_handling_new_types" = true;
-        "devtools.debugger.remote-enabled" = true;
-        "devtools.chrome.enabled" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
-        "browser.uidensity" = 1;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-      };
-      userChrome = ''
-        #main-window {
-          background: #f9f9faa5 !important;
-        }
-        .tab-background:is([selected], [multiselected]),
-        .browser-toolbar:not(.titlebar-color) {
-          background-color: #f9f9fa65 !important;
-        }
-      '';
-    };
-
-  };
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -1646,7 +1320,7 @@ in {
       window.commands = [
         { criteria = { app_id = "firefox"; title = ".*[Ss]haring (Indicator|your screen)"; }; command = "floating enable, move to scratchpad"; }
         { criteria = { app_id = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
-        { criteria = { shell = "xwayland"; }; command = ''title_format "%title (%shell)"''; }
+        { criteria = { shell = "xwayland"; }; command = ''title_format "%title [%shell]"''; } # TODO: does not work for waybar
       ];
       keybindings = lib.mkOptionDefault
         (with config.wayland.windowManager.sway.config; {
@@ -1741,14 +1415,133 @@ in {
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
   };
-  home.username = "dpd-";
-  home.homeDirectory = "/home/dpd-";
+  xdg = {
+    enable = true;
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+
+      # do not create useless folders
+      desktop = "$HOME";
+      publicShare = "$HOME/.local/share/Public";
+      templates = "$HOME/.local/share/Templates";
+    };
+    desktopEntries.nvim = {
+      name = "NeoVim";
+      genericName = "Text Editor";
+      icon = "nvim";
+      exec = "kitty nvim %F";
+      terminal = false;
+      categories = [ "Utility" "TextEditor" ];
+      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
+    };
+    mimeApps = {
+      enable = true;
+      defaultApplications = lib.zipAttrsWith
+        (_: values: values)
+        (let
+          subtypes = type: program: subt:
+            builtins.listToAttrs (builtins.map
+              (x: {name = type + "/" + x; value = program; })
+              subt);
+        in [
+          { "text/plain" = "nvim.desktop"; }
+          (subtypes "application" "writer.desktop"
+            [
+              "vnd.oasis.opendocument.text"
+              "msword"
+              "vnd.ms-word"
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
+              "vnd.oasis.opendocument.text-template"
+            ])
+          (subtypes "application" "calc.desktop"
+            [
+              "vnd.oasis.opendocument.spreadsheet"
+              "vnd.ms-excel"
+              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              "vnd.oasis.opendocument.spreadsheet-template"
+            ])
+          (subtypes "application" "impress.desktop"
+            [
+              "vnd.oasis.opendocument.presentation"
+              "vnd.ms-powerpoint"
+              "vnd.openxmlformats-officedocument.presentationml.presentation"
+              "vnd.oasis.opendocument.presentation-template"
+            ])
+          (subtypes "application" "libreoffice.desktop"
+            [
+              "vnd.oasis.opendocument.graphics"
+              "vnd.oasis.opendocument.chart"
+              "vnd.oasis.opendocument.formula"
+              "vnd.oasis.opendocument.image"
+              "vnd.oasis.opendocument.text-master"
+              "vnd.sun.xml.base"
+              "vnd.oasis.opendocument.base"
+              "vnd.oasis.opendocument.database"
+              "vnd.oasis.opendocument.graphics-template"
+              "vnd.oasis.opendocument.chart-template"
+              "vnd.oasis.opendocument.formula-template"
+              "vnd.oasis.opendocument.image-template"
+              "vnd.oasis.opendocument.text-web"
+            ])
+          { "inode/directory" = "nemo.desktop"; }
+          (subtypes "application" "org.gnome.FileRoller.desktop"
+            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+          { "application/pdf" = "okularApplication_pdf.desktop"; }
+          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
+          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
+          (subtypes "image" "imv-folder.desktop"
+            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+          (subtypes "video" "umpv.desktop"
+            [
+              "avi" "msvideo" "x-msvideo"
+              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+              "ogg"
+              "quicktime"
+              "webm"
+            ])
+          (subtypes "audio" "umpv.desktop"
+            [
+              "aac" "flac"
+              "mpeg" "mpeg3" # mp3
+              "ogg" "vorbis" "opus" "x-opus+ogg"
+              "wav" "x-wav"
+              "audio/x-ms-wma"
+            ])
+          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+          { "text/html" = "firefox.desktop"; }
+          (subtypes "x-scheme-handler" "firefox.desktop"
+            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
+          (subtypes "aplication" "firefox.desktop"
+            (map (ext: "x-extension-" + ext)
+              [ "htm" "html" "shtml" "xhtml" "xht" ]
+            ++ [ "xhtml+xml" ]))
+        ]);
+    };
+  };
+  systemd.user.services.polkit-agent = {
+    Unit = {
+      Description = "Runs polkit authentication agent";
+      PartOf = "graphical-session.target";
+    };
+
+    Install = {
+      WantedBy = ["graphical-session.target"];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      RestartSec = 5;
+      Restart = "always";
+    };
+  };
   home.sessionVariables = {
     PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
   };
   home.sessionPath = [
     config.home.sessionVariables.PNPM_HOME
   ];
+  # TODO remove previous in favour of
   xdg.configFile."OpenTabletDriver/settings.json".source = /${assets}/tablet.json;
-  home.stateVersion = "22.05";
 }
+
