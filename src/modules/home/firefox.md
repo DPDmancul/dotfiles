@@ -1,34 +1,40 @@
 # Firefox
 
-```nix "home-config" +=
-programs.firefox = {
-  enable = true;
-  package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    extraPolicies = {
-      ExtensionSettings = let
-        ext = name: {
-          installation_mode = "force_installed";
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-        };
-      in {
-        <<<firefox-ext>>>
-      };
-      <<<firefox-policies>>>
-    };
-  };
-  profiles.default = {
-    settings = {
-      <<<firefox-settings>>>
-    };
-    userChrome = ''
-      <<<firefox-css>>>
-    '';
-  };
+<!-- TODO: better organization -->
 
-};
+```nix modules/home/firefox.nix
+{ config, pkgs, lib, ... }:
+{
+  programs.firefox = {
+    enable = true;
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+      extraPolicies = {
+        ExtensionSettings = let
+          ext = name: {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+          };
+        in {
+          <<<modules/home/fiefox-ext>>>
+        };
+        <<<modules/home/fiefox-policies>>>
+      };
+    };
+    profiles.default = {
+      settings = {
+        <<<modules/home/fiefox-settings>>>
+      };
+      userChrome = ''
+        <<<modules/home/fiefox-css>>>
+      '';
+    };
+  };
+}
 ```
 
 ## Mime
+
+<!-- TODO -->
 
 ```nix "xdg-mime" +=
 { "text/html" = "firefox.desktop"; }
@@ -44,7 +50,7 @@ programs.firefox = {
 
 Ask if to download (and where) or to open a file
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.download.useDownloadDir" = false;
 "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
 "browser.download.always_ask_before_handling_new_types" = true;
@@ -52,20 +58,20 @@ Ask if to download (and where) or to open a file
 
 Developer tools to inspect Firefox UI
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "devtools.debugger.remote-enabled" = true;
 "devtools.chrome.enabled" = true;
 ```
 
 Disable password manager
 
-```nix "firefox-policies" +=
+```nix "modules/home/fiefox-policies" +=
 PasswordManagerEnabled = false;
 ```
 
 Enable hardware video acceleration
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "media.ffmpeg.vaapi.enabled" = true;
 ```
 
@@ -73,14 +79,14 @@ Enable hardware video acceleration
 
 Enable HTTPS everywhere
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "dom.security.https_only_mode" = true;
 "dom.security.https_only_mode_ever_enabled" = true;
 ```
 
 Block some trackers
 
-```nix "firefox-policies" +=
+```nix "modules/home/fiefox-policies" +=
 EnableTrackingProtection = {
   Value = true;
   Locked = true;
@@ -89,7 +95,7 @@ EnableTrackingProtection = {
 };
 ```
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "privacy.donottrackheader.enabled" = true;
 "privacy.trackingprotection.enabled" = true;
 "privacy.trackingprotection.socialtracking.enabled" = true;
@@ -98,12 +104,12 @@ EnableTrackingProtection = {
 
 Disable telemetry
 
-```nix "firefox-policies" +=
+```nix "modules/home/fiefox-policies" +=
 DisableTelemetry = true;
 DisableFirefoxStudies = true;
 ```
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.newtabpage.activity-stream.feeds.telemetry" = false;
 "browser.newtabpage.activity-stream.telemetry" = false;
 "browser.ping-centre.telemetry" = false;
@@ -121,7 +127,7 @@ DisableFirefoxStudies = true;
 
 Disable tracking ads in newtab
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
 "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
 "browser.newtabpage.activity-stream.showSponsored" = false;
@@ -129,7 +135,7 @@ Disable tracking ads in newtab
 
 Disable search suggestions
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.search.suggest.enabled" = false;
 ```
 
@@ -141,11 +147,11 @@ The search engine must be chosen manually.
 
 Disable unused Pocket
 
-```nix "firefox-policies" +=
+```nix "modules/home/fiefox-policies" +=
 DisablePocket = true;
 ```
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
 "extensions.pocket.enabled" = false;
 "extensions.pocket.api" = "";
@@ -158,14 +164,14 @@ DisablePocket = true;
 
 Manage all extensions via home-manager
 
-```nix "firefox-ext" +=
+```nix "modules/home/fiefox-ext" +=
 "*" = {
   installation_mode = "blocked";
   blocked_install_message = "Extensions managed by home-manager.";
 };
 ```
 
-```nix "firefox-ext" +=
+```nix "modules/home/fiefox-ext" +=
 "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
 "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
 # "vim-vixen@i-beam.org" = ext "vim-vixen";
@@ -180,7 +186,7 @@ Manage all extensions via home-manager
 
 Block many trackers
 
-```nix "firefox-ext" +=
+```nix "modules/home/fiefox-ext" +=
 "uBlock0@raymondhill.net" = ext "ublock-origin";
 "@testpilot-containers" = ext "multi-account-containers";
 "@contain-facebook" = ext "facebook-container";
@@ -192,7 +198,7 @@ Block many trackers
 <!--
 Block scripts
 
-```nix "firefox-ext" +=
+```nix "modules/home/fiefox-ext" +=
 # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
 ```
 -->
@@ -201,19 +207,19 @@ Block scripts
 
 Compact mode
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "browser.uidensity" = 1;
 ```
 
 Enable custom stylesheet
 
-```nix "firefox-settings" +=
+```nix "modules/home/fiefox-settings" +=
 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 ```
 
 Transparent bar
 
-```css "firefox-css" +=
+```css "modules/home/fiefox-css" +=
 #main-window {
   background: #f9f9faa5 !important;
 }
@@ -222,6 +228,4 @@ Transparent bar
   background-color: #f9f9fa65 !important;
 }
 ```
-
-
 

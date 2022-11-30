@@ -56,7 +56,7 @@ I will write a list of sets, the following will flat it in a set
 I use an helper function (`subtypes`) to avoid rewriting the same rule multiple times, changing only the subtype.
 
 ```nix "xdg-config" +=
-    (let#
+    (let
       subtypes = type: program: subt:
         builtins.listToAttrs (builtins.map
           (x: {name = type + "/" + x; value = program; })

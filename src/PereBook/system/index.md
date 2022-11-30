@@ -10,6 +10,8 @@
     common-cpu-intel
     common-gpu-intel
   ] ++ [
+    /${modules}/system
+    ./hardware-configuration.nix
     ./net.nix
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix

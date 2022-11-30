@@ -122,8 +122,6 @@ nixosConfigurations = builtins.listToAttrs (map
         pkgs = legacyPackages.${machine.system};
         modules = [
           { networking.hostName = machine.host; }
-          ./modules/system
-          ./${machine.host}/system/hardware-configuration.nix
           ./${machine.host}/system
         ];
         specialArgs = args // { inherit (machine) users; };

@@ -1,28 +1,36 @@
 # Fish
 
-```nix "home-config" +=
-programs.fish = {
-  enable = true;
-  plugins = [
-    <<<fish-plugins>>>
+```nix modules/home/fish.nix
+{ config, pkgs, lib, ... }:
+{
+  imports = [
+    ./starship.nix
   ];
-  interactiveShellInit = ''
-    <<<fish-init>>>
-  '';
-};
+
+  programs.fish = {
+    enable = true;
+    plugins = [
+      <<<modules/home/fish-plugins>>>
+    ];
+    interactiveShellInit = ''
+      <<<modules/home/fish-init>>>
+    '';
+    <<<modules/home/fish>>>
+  };
+}
 ```
 
 ## Vi mode
 
 Use the same movements of vi, vim and neovim
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 fish_vi_key_bindings
 ```
 
 Change the cursor based on the mode
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 set fish_cursor_default block blink
 set fish_cursor_insert line blink
 set fish_cursor_replace_one underscore blink
@@ -32,7 +40,7 @@ set fish_cursor_replace_one underscore blink
 
 ### Color theme
 
-```nix "fish-plugins" +=
+```nix "modules/home/fish-plugins" +=
 {
   name = "base16-fish";
   src = pkgs.fetchFromGitHub {
@@ -46,14 +54,14 @@ set fish_cursor_replace_one underscore blink
 
 Use Gruvbox Light theme
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 base16-gruvbox-light-medium
 set -x BAT_THEME gruvbox-light
 ```
 
 #### Colored manpages
 
-```nix "fish-plugins" +=
+```nix "modules/home/fish-plugins" +=
 {
   name = "fish-colored-man";
   src = pkgs.fetchFromGitHub {
@@ -67,7 +75,7 @@ set -x BAT_THEME gruvbox-light
 
 Color scheme
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 set -g man_blink -o red
 set -g man_bold -o green
 set -g man_standout -b cyan black
@@ -76,9 +84,8 @@ set -g man_underline -o yellow
 
 ## Aliases
 
-```nix "home-config" +=
-programs.fish.shellAliases = {
-# environment.shellAliases = {
+```nix "modules/home/fish" +=
+shellAliases = {
   df = "df -h"; # Human-readable sizes
   free = "free -m"; # Show sizes in MB
   gitu = "git add . && git commit && git push";
@@ -94,7 +101,7 @@ programs.fish.shellAliases = {
 
 Use the ssh wrapper of kitty when using kitty terminal
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 if test $TERM = 'xterm-kitty'
   alias ssh 'kitty +kitten ssh'
 end
@@ -110,49 +117,8 @@ Print a greeting message when shell is started, reporting
 - Kernel version
 - OS and distribution
 
-```fish "fish-init" +=
+```fish "modules/home/fish-init" +=
 set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
 set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
-```
-
-### Starship
-
-Use starship to manage the prompt
-
-```nix "home-config" +=
-programs.starship = {
-  enable = true;
-  settings = {
-    <<<starship-config>>>
-  };
-};
-```
-
-#### Configuration
-
-##### Prompt format
-
-```nix "starship-config" +=
-format = "╭─$all╰─$jobs$character";
-right_format = "$status";
-```
-
-##### Directory
-
-Replace `~` with an emoji.
-
-```nix "starship-config" +=
-directory.home_symbol = "🏠"; # Nerd font variant: 
-```
-
-##### Show status
-
-Display status of previous failed command with a symbol and a small description
-
-```nix "starship-config" +=
-status = {
-  disabled = false;
-  map_symbol = true;
-};
 ```
 
