@@ -15,7 +15,7 @@
     interactiveShellInit = ''
       <<<modules/home/fish-init>>>
     '';
-    <<<modules/home/fish>>>
+    <<<modules/home/fish-config>>>
   };
 }
 ```
@@ -84,7 +84,7 @@ set -g man_underline -o yellow
 
 ## Aliases
 
-```nix "modules/home/fish" +=
+```nix "modules/home/fish-config" +=
 shellAliases = {
   df = "df -h"; # Human-readable sizes
   free = "free -m"; # Show sizes in MB

@@ -5,8 +5,9 @@
 {
   programs.kitty = {
     enable = true;
-    <<<modules/home/kitty>>>
+    <<<modules/home/kitty-config>>>
   };
+  <<<modules/home/kitty>>>
 }
 ```
 
@@ -14,7 +15,7 @@
 
 ### Font
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 font = {
   name = "jetbrainsmono nerd font";
   size = 10;
@@ -23,7 +24,7 @@ font = {
 
 Do not use curly style for urls
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings.url_style = "single";
 ```
 
@@ -31,7 +32,7 @@ settings.url_style = "single";
 
 Gruvbox light
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings = {
   cursor                  = "#928374";
   background              = "#fbf1c7";
@@ -67,7 +68,7 @@ settings = {
 
 #### Tabs
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings = {
   active_tab_background   = "#fbf1c7";
   inactive_tab_background = "#d5c4a1";
@@ -79,13 +80,13 @@ settings = {
 
 Automatically match title bar color on Wayland
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings.wayland_titlebar_color = "background";
 ```
 
 ### Tabs style
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings = {
   tab_bar_edge        = "top";
   tab_bar_style       = "powerline";
@@ -97,6 +98,23 @@ settings = {
 
 Ask before closing only if there are at least two **active** tabs opened
 
-```nix "modules/home/kitty" +=
+```nix "modules/home/kitty-config" +=
 settings.confirm_os_window_close = -2;
 ```
+
+# Default terminal
+
+Force the usage of kitty as neovim terminal
+
+```nix "modules/home/kitty" +=
+xdg.desktopEntries.nvim = lib.mkIf config.programs.neovim.enable {
+  name = "NeoVim";
+  genericName = "Text Editor";
+  icon = "nvim";
+  exec = "kitty nvim %F";
+  terminal = false;
+  categories = [ "Utility" "TextEditor" ];
+  mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
+};
+```
+

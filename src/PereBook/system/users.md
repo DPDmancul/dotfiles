@@ -17,7 +17,7 @@ Users must follow this config and cannot be modified outside it
 ```nix "PereBook/system/users" +=
 users.users.dpd- = {
   isNormalUser = true;
-  hashedPassword = secrets.dpd-.hashedPasswords;
+  hashedPassword = secrets."dpd-@${config.networking.hostName}".hashedPassword;
   extraGroups = [
     "wheel" # Enable 'sudo' for the user.
   ];

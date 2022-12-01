@@ -13,6 +13,10 @@ In this folder there are also some useful modules used only by some user configs
     # Nvim
     # Sway
     ./firefox.nix
+    ./xdg.nix
+    ./git.nix
+    ./ssh.nix
+    ./gpg.nix
   ];
 
   <<<modules/home>>>

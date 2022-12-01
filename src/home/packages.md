@@ -12,31 +12,28 @@ home.packages = with pkgs; [
 libreoffice
 ```
 
-```nix "xdg-mime" +=
-(subtypes "application" "writer.desktop"
-  [
+```nix "home-config" +=
+appDefaultForMimes = {
+  "writer.desktop".application = [
     "vnd.oasis.opendocument.text"
     "msword"
     "vnd.ms-word"
     "vnd.openxmlformats-officedocument.wordprocessingml.document"
     "vnd.oasis.opendocument.text-template"
-  ])
-(subtypes "application" "calc.desktop"
-  [
+  ];
+  "calc.desktop".application = [
     "vnd.oasis.opendocument.spreadsheet"
     "vnd.ms-excel"
     "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     "vnd.oasis.opendocument.spreadsheet-template"
-  ])
-(subtypes "application" "impress.desktop"
-  [
+  ];
+  "impress.desktop".application = [
     "vnd.oasis.opendocument.presentation"
     "vnd.ms-powerpoint"
     "vnd.openxmlformats-officedocument.presentationml.presentation"
     "vnd.oasis.opendocument.presentation-template"
-  ])
-(subtypes "application" "libreoffice.desktop"
-  [
+  ];
+  "libreoffice.desktop".application = [
     "vnd.oasis.opendocument.graphics"
     "vnd.oasis.opendocument.chart"
     "vnd.oasis.opendocument.formula"
@@ -50,7 +47,8 @@ libreoffice
     "vnd.oasis.opendocument.formula-template"
     "vnd.oasis.opendocument.image-template"
     "vnd.oasis.opendocument.text-web"
-  ])
+  ];
+};
 ```
 
 ### File manager
@@ -61,8 +59,8 @@ cinnamon.nemo
 shared-mime-info
 ```
 
-```nix "xdg-mime" +=
-{ "inode/directory" = "nemo.desktop"; }
+```nix "homeconfig" +=
+appDefaultForMimes."nemo.desktop" = "inode/directory";
 ```
 
 Tell nemo to use kitty as terminal emulator
@@ -95,9 +93,8 @@ So we trick it wrapping kitty as gnome-terminal.
 })
 ```
 
-```nix "xdg-mime" +=
-(subtypes "application" "org.gnome.FileRoller.desktop"
-  [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
+```nix "home-config" +=
+appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
 ```
 
 ### LaTeX
@@ -135,10 +132,11 @@ python3Packages.pygments
 libsForQt5.okular
 ```
 
-```nix "xdg-mime" +=
-{ "application/pdf" = "okularApplication_pdf.desktop"; }
-{ "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
-{ "image/x.djvu" = "okularApplication_pdf.desktop"; }
+```nix "home-config" +=
+appDefaultForMimes."okularApplication_pdf.desktop" = {
+  application = "pdf";
+  image = [ "vnd.djvu" "x.djvu" ];
+};
 ```
 
 ```nix "home-packages" +=
@@ -170,9 +168,8 @@ wdisplays   # screen
 imv
 ```
 
-```nix "xdg-mime" +=
-(subtypes "image" "imv-folder.desktop"
-  [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
+```nix "home-config" +=
+appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
 ```
 
 ### Drawing
@@ -196,23 +193,23 @@ mpv
 ffmpeg
 ```
 
-```nix "xdg-mime" +=
-(subtypes "video" "umpv.desktop"
-  [
+```nix "home-config" +=
+appDefaultForMimes."umpv.desktop" = {
+  video = [
     "avi" "msvideo" "x-msvideo"
     "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
     "ogg"
     "quicktime"
     "webm"
-  ])
-(subtypes "audio" "umpv.desktop"
-  [
+  ];
+  audio = [
     "aac" "flac"
     "mpeg" "mpeg3" # mp3
     "ogg" "vorbis" "opus" "x-opus+ogg"
     "wav" "x-wav"
     "audio/x-ms-wma"
-  ])
+  ];
+};
 ```
 
 ### Audio and music production
@@ -289,8 +286,8 @@ ipscan
 libfaketime
 ```
 
-```nix "xdg-mime" +=
-{ "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
+```nix "home-config" +=
+appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
 ```
 
 ### Qemu

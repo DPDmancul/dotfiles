@@ -25,6 +25,10 @@
     - [Neovim]()
     - [Sway]()
     - [Firefox](./modules/home/firefox.md)
+    - [freedesktop.org](./modules/home/xdg.md)
+    - [git](./modules/home/git.md)
+    - [SSH](./modules/home/ssh.md)
+    - [GnuPG](./modules/home/gpg.md)
 
 - [PereBook]()
   - [System](./PereBook/system/index.md)
@@ -40,10 +44,6 @@
     - [Sway (window manager)](./home/sway.md)
       - [Waybar](./home/waybar.md)
       - [Theme](./home/theme.md)
-    - [freedesktop.org](./home/xdg.md)
-    - [git](./home/git.md)
-    - [SSH](./home/ssh.md)
-    - [GnuPG](./home/gpg.md)
     - [Packages](./home/packages.md)
 
 - [PereWork]()

@@ -40,6 +40,8 @@ in {
     <<<nvim-plugins>>>
   ];
 };
+
+appDefaultForMimes."nvim.desktop" = "text/plain";
 ```
 
 Set space as leader

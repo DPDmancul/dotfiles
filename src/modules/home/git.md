@@ -1,18 +1,20 @@
 # git config
 
-```nix "home-config" +=
-programs.git = {
-  enable = true;
-  <<<git-config>>>
-  extraConfig = {
-    <<<git-settings>>>
+```nix modules/home/git.nix
+{ config, pkgs, lib, ... }:
+{
+  programs.git = {
+    enable = true;
+    <<<modules/home/git-config>>>
   };
-};
+
+  <<<modules/home/git>>>
+}
 ```
 
 ## User config
 
-```nix "git-config" +=
+```nix "modules/home/git-config" +=
 userName = "DPDmancul";
 userEmail = "davide.peressoni@tuta.io";
 ```
@@ -21,48 +23,38 @@ userEmail = "davide.peressoni@tuta.io";
 
 Fix EOL for files written under Windows
 
-```nix "git-settings" +=
-core.autoclrf = "input";
+```nix "modules/home/git-config" +=
+extraConfig.core.autoclrf = "input";
 ```
 
 ## Default branch
 
 When creating a new repo, set the default branch to `main`
 
-```nix "git-settings" +=
-init.defaultBranch = "main";
+```nix "modules/home/git-config" +=
+extraConfig.init.defaultBranch = "main";
 ```
 
 ## Status
 
-```nix "git-settings" +=
-status = {
-  <<<git-status>>>
-};
-```
-
-### Untracked files
-
 Show also individual files in untracked directories
 
-```nix "git-status" +=
-showUntrackedFiles = "all";
+```nix "modules/home/git-config" +=
+extraConfig.status.showUntrackedFiles = "all";
 ```
-
-### Submodule summary
 
 Enable submodule summary showing the summary of commits for modified submodules
 
-```nix "git-status" +=
-submoduleSummary = true;
+```nix "modules/home/git-config" +=
+extraConfig.status.submoduleSummary = true;
 ```
 
 ## Fetch
 
 Prune the local tracking branches and tags when fetching from remote
 
-```nix "git-settings" +=
-fetch = {
+```nix "modules/home/git-config" +=
+extraConfig.fetch = {
   prune = true;
   pruneTags = true;
 };
@@ -72,8 +64,8 @@ fetch = {
 
 When pulling only update the current branch by fast-forwarding
 
-```nix "git-settings" +=
-pull = {
+```nix "modules/home/git-config" +=
+extraConfig.pull = {
   ff = "only";
 };
 ```
@@ -82,20 +74,20 @@ pull = {
 
 Automatic set default remote when pushing.
 
-```nix "git-settings" +=
-push = {
+```nix "modules/home/git-config" +=
+extraConfig.push = {
   autoSetupRemote = true;
 };
 ```
 
 ## Protocol
 
- Enable git protocol version 2.
+Enable git protocol version 2.
 
 Read [about it](https://about.gitlab.com/2018/12/10/git-protocol-v2-enabled-for-ssh-on-gitlab-dot-com/).
 
-```nix "git-settings" +=
-protocol.version = 2;
+```nix "modules/home/git-config" +=
+extraConfig.protocol.version = 2;
 ```
 
 ## Credential helper
@@ -106,7 +98,7 @@ TODO
 
 Delta enhance your git diff output by adding some cool features like syntax highlighting, line numbering, and side-by-side view.
 
-```nix "git-config" +=
+```nix "modules/home/git-config" +=
 delta = {
   enable = true;
   options = {
@@ -120,13 +112,13 @@ delta = {
 
 ## LFS
 
-```nix "git-config" +=
+```nix "modules/home/git-config" +=
 lfs.enable = true;
 ```
 
 ## Lazy git
 
-```nix "home-config" +=
+```nix "modules/home/git" +=
 programs.lazygit = {
   enable = true;
   settings = {
@@ -144,9 +136,9 @@ programs.lazygit = {
 
 # Global gitignore
 
-```nix "git-config" +=
+```nix "modules/home/git-config" +=
 ignores = [
-  <<<git-ignore>>>
+  <<<modules/home/git-ignore>>>
 ];
 ```
 
@@ -154,26 +146,26 @@ ignores = [
 
 For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 
-```nix "git-ignore" +=
+```nix "modules/home/git-ignore" +=
 ".ccls-cache/"
 ```
 
 ## Directory file
 
-```nix "git-ignore" +=
+```nix "modules/home/git-ignore" +=
 ".directory"
 ```
 
 ## Python cache
 
-```nix "git-ignore" +=
+```nix "modules/home/git-ignore" +=
 "__pycache__"
 ".pytest_cache"
 ```
 
 ## NextCloud
 
-```nix "git-ignore" +=
+```nix "modules/home/git-ignore" +=
 ".owncloudsync.log"
 "._sync_*.db*"
 ```
@@ -182,7 +174,7 @@ For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 
 Could save from accidental upload of private keys, but better to keep always an eye open!
 
-```nix "git-ignore" +=
+```nix "modules/home/git-ignore" +=
 "id_rsa"
 "id_rsa_*"
 "id_dsa"
@@ -201,7 +193,7 @@ Improve diff output for various file types.
 
 From: <https://tekin.co.uk/2020/10/better-git-diff-output-for-ruby-python-elixir-and-more>
 
-```nix "git-config" +=
+```nix "modules/home/git-config" +=
 attributes = [
   "*.c     diff=cpp"
   "*.h     diff=cpp"

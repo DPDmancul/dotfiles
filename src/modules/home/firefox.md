@@ -5,6 +5,10 @@
 ```nix modules/home/firefox.nix
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ./xdg.nix
+  ];
+
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
@@ -29,21 +33,19 @@
       '';
     };
   };
+  <<<modules/home/fiefox>>>
 }
 ```
 
 ## Mime
 
-<!-- TODO -->
-
-```nix "xdg-mime" +=
-{ "text/html" = "firefox.desktop"; }
-(subtypes "x-scheme-handler" "firefox.desktop"
-  [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-(subtypes "aplication" "firefox.desktop"
-  (map (ext: "x-extension-" + ext)
-    [ "htm" "html" "shtml" "xhtml" "xht" ]
-  ++ [ "xhtml+xml" ]))
+```nix "modules/home/fiefox" +=
+appDefaultForMimes."firefox.desktop" = {
+  text = "html";
+  x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+  application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+    ++ [ "xhtml+xml" ];
+};
 ```
 
 ## Settings

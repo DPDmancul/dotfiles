@@ -8,7 +8,7 @@ Use starship to manage the prompt
   programs.starship = {
     enable = true;
     settings = {
-      <<<modules/home/starship>>>
+      <<<modules/home/starship-config>>>
     };
   };
 }
@@ -16,7 +16,7 @@ Use starship to manage the prompt
 
 ## Prompt format
 
-```nix "modules/home/starship" +=
+```nix "modules/home/starship-config" +=
 format = "╭─$all╰─$jobs$character";
 right_format = "$status";
 ```
@@ -25,7 +25,7 @@ right_format = "$status";
 
 Replace `~` with an emoji.
 
-```nix "modules/home/starship" +=
+```nix "modules/home/starship-config" +=
 directory.home_symbol = "🏠"; # Nerd font variant: 
 ```
 
@@ -33,7 +33,7 @@ directory.home_symbol = "🏠"; # Nerd font variant: 
 
 Display status of previous failed command with a symbol and a small description
 
-```nix "modules/home/starship" +=
+```nix "modules/home/starship-config" +=
 status = {
   disabled = false;
   map_symbol = true;
