@@ -23,8 +23,9 @@ gaps.smartBorders = "on";
 
 Use wpaperd for random backgrounds
 
-```nix "home-let" +=
-wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
+```nix pkgs/wpaperd.nix
+{ pkgs, rustPlatform, fetchFromGitHub, ... }:
+with pkgs; rustPlatform.buildRustPackage rec {
   pname = "wpaperd";
   version = "0.1.0";
 
@@ -43,7 +44,7 @@ wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
   ];
 
   cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
-};
+}
 ```
 
 ```nix "home-packages" +=
@@ -59,7 +60,7 @@ xdg.configFile."wpaperd/output.conf".text = ''
 ```
 
 ```sh "sway-extra-config" +=
-exec ${wpaperd}/bin/wpaperd
+exec ${pkgs.wpaperd}/bin/wpaperd
 ```
 
 ## Qt as GTK

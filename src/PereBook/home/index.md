@@ -2,12 +2,12 @@
 
 ```nix PereBook/home/default.nix
 { config, pkgs, lib, modules, dotfiles, assets, ... }: # TODO remove dotfiles
-let
-  # TODO remove
-  <<<home-let>>>
-in {
+{
   imports = [
     /${modules}/home
+    # Nvim
+    # Sway
+    ./packages.nix
   ];
 
   <<<home-config>>>
@@ -31,15 +31,13 @@ home.sessionPath = [
 
 ## Bluetooth headset battery
 
-<!-- ```nix "PereBook/home" += -->
-<!-- home.packages = [ -->
-```nix "home-packages" +=
+```nix "PereBook/home" +=
+home.packages = with pkgs; [
   (pkgs.writeShellScriptBin "batt" ''
     ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
   '')
+];
 ```
-<!-- ]; -->
-<!-- ``` -->
 
 ## OpenTabletDriver config
 

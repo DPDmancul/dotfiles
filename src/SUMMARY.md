@@ -7,6 +7,7 @@
 [Installation](./installation/index.md)
 
 - [Flake](./flake/index.md)
+  - [Packages](./flake/pkgs.md)
 
 - [Modules]()
   - [System](./modules/system/index.md)
@@ -29,6 +30,18 @@
     - [git](./modules/home/git.md)
     - [SSH](./modules/home/ssh.md)
     - [GnuPG](./modules/home/gpg.md)
+    - [Packages](./modules/home/packages/index.md)
+      - [Utilities](./modules/home/packages/utils.md)
+      - [Settings](./modules/home/packages/settings.md)
+      - [LibreOffice](./modules/home/packages/libreoffice.md)
+      - [Nemo (file manager)](./modules/home/packages/nemo.md)
+      - [LaTeX](./modules/home/packages/latex.md)
+      - [Lilypond](./modules/home/packages/lilypond.md)
+      - [Developing]()
+        - [Agda](./modules/home/packages/developing/agda.md)
+        - [DotNet](./modules/home/packages/developing/dotnet.md)
+        - [Python3](./modules/home/packages/developing/python3.md)
+        - [Rust](./modules/home/packages/developing/rust.md)
 
 - [PereBook]()
   - [System](./PereBook/system/index.md)
@@ -44,7 +57,7 @@
     - [Sway (window manager)](./home/sway.md)
       - [Waybar](./home/waybar.md)
       - [Theme](./home/theme.md)
-    - [Packages](./home/packages.md)
+    - [Packages](./PereBook/home/packages.md)
 
 - [PereWork]()
   - [System]()

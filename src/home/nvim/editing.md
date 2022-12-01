@@ -55,9 +55,9 @@ require"mini.ai".setup()
 Use `f` and `t` across lines
 
 ```nix "nvim-plugins" +=
-(buildVimPlugin {
+(vimUtils.buildVimPlugin {
   name = "vim-fanfingtastic";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "dahu";
     repo = "vim-fanfingtastic";
     rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
@@ -201,9 +201,9 @@ set nofoldenable       " Start with folds opened
 Allow easy writing in international phonetics alphabet
 
 ```nix "nvim-plugins" +=
-(buildVimPlugin rec {
+(vimUtils.buildVimPlugin rec {
   name = "vim-xsampa";
-  src = pkgs.fetchFromGitHub {
+  src = fetchFromGitHub {
     owner = "DPDmancul";
     repo = name;
     rev = "2a7ccb69c508e49126b541625e990b03a90e262f";

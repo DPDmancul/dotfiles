@@ -1,0 +1,102 @@
+# User packages
+
+```nix PereBook/home/packages.nix
+{ config, pkgs, lib, modules, ... }:
+{
+  imports = [
+    /${modules}/home/packages/latex.nix
+    /${modules}/home/packages/lilypond.nix
+    /${modules}/home/packages/developing/rust.nix
+    /${modules}/home/packages/developing/python3.nix
+    /${modules}/home/packages/developing/dotnet.nix
+  ];
+
+  home.packages = with pkgs; [
+    <<<home-packages>>>
+    # TODO remove previous in favour of
+    <<<PereBook/home/packages>>>
+  ];
+}
+```
+
+
+### PDF utils
+
+```nix "PereBook/home/packages" +=
+diffpdf
+pdfmixtool
+xournalpp # TODO rnote?
+ocrmypdf tesseract
+unfree.masterpdfeditor4
+```
+
+### E-books
+
+```nix "PereBook/home/packages" +=
+calibre
+jmtpfs # For kindle
+```
+
+### Drawing
+
+```nix "PereBook/home/packages" +=
+gimp
+kolourpaint
+inkscape
+```
+
+### Scan
+
+```nix "PereBook/home/packages" +=
+gnome.simple-scan
+```
+
+## Multimedia
+
+### Audio and music production
+
+```nix "PereBook/home/packages" +=
+audacity
+# denemo
+musescore
+```
+### Video editing and conversion
+
+```nix "PereBook/home/packages" +=
+ffmpeg
+handbrake
+mkvtoolnix
+kdenlive
+losslesscut-bin
+obs-studio
+```
+
+## Internet
+
+```nix "PereBook/home/packages" +=
+(tor-browser-bundle-bin.override {
+  useHardenedMalloc = false;
+})
+```
+
+### Downloads
+
+```nix "PereBook/home/packages" +=
+clipgrab
+qbittorrent
+```
+
+## Utilities
+
+```nix "PereBook/home/packages" +=
+sqlitebrowser
+tdesktop # Telegram
+simplenote
+ipscan
+libfaketime
+```
+
+```nix "home-config" +=
+appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
+```
+

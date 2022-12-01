@@ -32,9 +32,7 @@ in {
   '';
   extraPackages = builtins.map (x: x.package or x)
     (builtins.attrValues lsp_servers);
-  plugins = with pkgs; with vimPlugins; let
-    inherit (pkgs.vimUtils) buildVimPlugin;
-  in [
+  plugins = with pkgs; with vimPlugins; [
     plenary-nvim
     nvim-web-devicons
     <<<nvim-plugins>>>

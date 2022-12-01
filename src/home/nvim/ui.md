@@ -201,9 +201,9 @@ Do not permit normal buffers to open in terminal, filetree, ... windows
 
 ```nix "nvim-plugins" +=
 {
-  plugin = (buildVimPlugin {
+  plugin = (vimUtils.buildVimPlugin {
     name = "stickybuf-nvim";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "stevearc";
       repo = "stickybuf.nvim";
       rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";

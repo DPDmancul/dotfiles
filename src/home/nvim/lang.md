@@ -2,50 +2,14 @@
 
 Add support for some languages
 
-## LaTeX
-
-Use LaTeX instead of plain TeX
-
-```vim "nvim-config" +=
-let g:tex_flavor = 'latex'
-```
-
-### VimTeX
-
-```nix "nvim-plugins" +=
-{
-  plugin = vimtex;
-  config = ''
-    let g:vimtex_view_general_viewer =  'okular'
-  '';
-}
-```
-
-### Lilypond
-
-```nix "nvim-plugins" +=
-nui-nvim
-{
-  plugin = (buildVimPlugin rec {
-    name = "nvim-lilypond-suite";
-    src = pkgs.fetchFromGitHub {
-      owner = "martineausimon";
-      repo = name;
-      rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-      sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
-    };
-  });
-}
-```
-
 ## Quarto Pandoc
 
 ```nix "nvim-plugins" +=
 vim-pandoc-syntax
 {
-  plugin = (buildVimPlugin rec {
+  plugin = (vimUtils.buildVimPlugin rec {
     name = "quarto-vim";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "quarto-dev";
       repo = name;
       rev = "216247339470794e74a5fda5e5515008d6dc1057";
@@ -54,46 +18,6 @@ vim-pandoc-syntax
   });
 }
 ```
-
-## Agda
-
-```nix "nvim-plugins" +=
-{
-  plugin = (buildVimPlugin {
-    name = "agda-nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "Isti115";
-      repo = "agda.nvim";
-      rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-      sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
-    };
-  });
-  config = ''
-    let g:agda_theme = "light"
-    function! AgdaMapping()
-      noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
-    endfunction
-    autocmd BufWinEnter *.agda call AgdaMapping()
-    autocmd BufWinEnter *.lagda* call AgdaMapping()
-    digr ZZ 8484
-    digr NN 8469
-    digr RR 8477
-    digr FF 120125
-  '';
-}
-{
-  plugin = (buildVimPlugin rec {
-    name = "vim-agda";
-    src = pkgs.fetchFromGitHub {
-      owner = "msuperdock";
-      repo = name;
-      rev = "1695060850b5991e8aded0861fae0c31877950a7";
-      sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
-    };
-  });
-}
-```
-
 
 ## LSP
 

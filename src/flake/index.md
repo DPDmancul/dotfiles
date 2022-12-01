@@ -69,7 +69,7 @@ stylix-colors.url = "github:danth/stylix";
 
 ### Packages
 
-Add overlays to pkgs (e.g. NUR).
+Add overlays to pkgs (e.g. NUR and custom packages).
 
 Moreover generate an unfree overlay which is identical to nixpkgs, but allows unfree packages. In this way it is easier to track unfree software.  
 **Warning**: such packages are not FOSS and so it is not guaranteed they don't harm the system.
@@ -78,7 +78,9 @@ Moreover generate an unfree overlay which is identical to nixpkgs, but allows un
 legacyPackages = forAllSystems (system:
   let
     overlays = [
+      # NUR
       inputs.nur.overlay
+      # unstable, master and fallaback channels
       (self: super: {
         unstable = inputs.unstable.legacyPackages.${system};
         master = inputs.master.legacyPackages.${system};
@@ -90,6 +92,8 @@ legacyPackages = forAllSystems (system:
           };
         };
       })
+      # Custom packages
+      (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
     ];
   in
   import nixpkgs {

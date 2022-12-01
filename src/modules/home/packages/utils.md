@@ -1,0 +1,89 @@
+# Utilities
+
+```nix modules/home/packages/utils.nix
+{ config, pkgs, lib, modules, ... }:
+{
+  home.packages = with pkgs; [
+    <<<PereBook/home/packages/utils-packages>>>
+  ];
+  <<<PereBook/home/packages/utils>>>
+}
+```
+
+## Archive manager
+
+File roller, when needing a terminal, doesn't look for kitty.
+So we trick it wrapping kitty as gnome-terminal.
+
+```nix "PereBook/home/packages/utils-packages" +=
+(symlinkJoin {
+  name = "file-roller";
+  paths = [ gnome.file-roller ];
+  buildInputs = [ makeWrapper ];
+  postBuild = ''
+    wrapProgram $out/bin/file-roller \
+      --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+  '';
+})
+```
+
+```nix "PereBook/home/packages/utils" +=
+appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
+```
+
+## PDF
+
+```nix "PereBook/home/packages/utils-packages" +=
+libsForQt5.okular
+```
+
+```nix "PereBook/home/packages/utils" +=
+appDefaultForMimes."okularApplication_pdf.desktop" = {
+  application = "pdf";
+  image = [ "vnd.djvu" "x.djvu" ];
+};
+```
+
+## Image viewer
+
+```nix "PereBook/home/packages/utils-packages" +=
+imv
+```
+
+```nix "PereBook/home/packages/utils" +=
+appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+```
+
+## Video and audio player
+
+```nix "PereBook/home/packages/utils-packages" +=
+mpv
+```
+
+```nix "PereBook/home/packages/utils" +=
+appDefaultForMimes."umpv.desktop" = {
+  video = [
+    "avi" "msvideo" "x-msvideo"
+    "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+    "ogg"
+    "quicktime"
+    "webm"
+  ];
+  audio = [
+    "aac" "flac"
+    "mpeg" "mpeg3" # mp3
+    "ogg" "vorbis" "opus" "x-opus+ogg"
+    "wav" "x-wav"
+    "audio/x-ms-wma"
+  ];
+};
+```
+
+## Other utilities
+
+```nix "PereBook/home/packages/utils-packages" +=
+qalculate-gtk
+gnome.gnome-disk-utility
+baobab # disk usage
+```
+
