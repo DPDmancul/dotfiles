@@ -26,8 +26,6 @@ in {
     /${modules}/home
   ];
 
-  programs.gpg.enable = true;
-  services.gpg-agent.enable = true;
   programs.neovim = let
     lsp_servers = with pkgs; {
       rust-tools = {
@@ -693,60 +691,8 @@ in {
       }
     ];
   };
-  programs.ssh = {
-    enable = true;
-    matchBlocks = {
-      "gitlab.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitLab";
-      };
-      "github.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitHub";
-      };
-      "bitbucket.org" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-BitBucket";
-      };
-      "aur.archlinux.org" = {
-        user         = "aur";
-        identityFile = "~/.ssh/aur";
-      };
-      dei = {
-        hostname     = "login.dei.unipd.it";
-        user         = "peressonid";
-        identityFile = "~/.ssh/DEI";
-      };
-      capri = {
-        proxyJump    = "dei";
-        hostname     = "capri.dei.unipd.it";
-        user         = "p1045u27";
-        identityFile = "~/.ssh/DEI";
-      };
-      cloudveneto = {
-        proxyJump    = "dei";
-        hostname     = "147.162.226.106";
-        port         = 2222;
-        user         = "group11";
-        identityFile = "~/.ssh/DEI";
-      };
-      nassuz = {
-        hostname     = "10.10.10.10";
-        user         = "admin";
-        identityFile = "~/.ssh/nassuz";
-      };
-      pc3 = {
-        hostname     = "10.10.10.10";
-        port         = 822;
-        user         = "cominfo";
-      };
-      nassuz_web = {
-        hostname     = "lon1.tmate.io";
-        user         = "cominfo/nassuz";
-        identityFile = "~/.ssh/nassuz";
-      };
-    };
-  };
+
+  appDefaultForMimes."nvim.desktop" = "text/plain";
   xdg.configFile."wpaperd/output.conf".text = ''
     [default]
     path = "${dotfiles}/flake/wallpapers"
@@ -1085,210 +1031,6 @@ in {
         }
     '';
   };
-  programs.git = {
-    enable = true;
-    userName = "DPDmancul";
-    userEmail = "davide.peressoni@tuta.io";
-    delta = {
-      enable = true;
-      options = {
-        features = "interactive";
-        wrap-max-lines = "unlimited";
-        max-line-length = 2048;
-        syntax-theme = "gruvbox-light";
-      };
-    };
-    lfs.enable = true;
-    ignores = [
-      ".ccls-cache/"
-      ".directory"
-      "__pycache__"
-      ".pytest_cache"
-      ".owncloudsync.log"
-      "._sync_*.db*"
-      "id_rsa"
-      "id_rsa_*"
-      "id_dsa"
-      "id_dsa_*"
-      "id_ed25519"
-      "id_ed25519_*"
-      "*.key"
-      "*.pem"
-      "*.pk"
-      "*.ppk"
-    ];
-    attributes = [
-      "*.c     diff=cpp"
-      "*.h     diff=cpp"
-      "*.c++   diff=cpp"
-      "*.h++   diff=cpp"
-      "*.cpp   diff=cpp"
-      "*.hpp   diff=cpp"
-      "*.cc    diff=cpp"
-      "*.hh    diff=cpp"
-      "*.cs    diff=csharp"
-      "*.css   diff=css"
-      "*.html  diff=html"
-      "*.xhtml diff=html"
-      "*.ex    diff=elixir"
-      "*.exs   diff=elixir"
-      "*.go    diff=golang"
-      "*.php   diff=php"
-      "*.pl    diff=perl"
-      "*.py    diff=python"
-      "*.md    diff=markdown"
-      "*.rb    diff=ruby"
-      "*.rake  diff=ruby"
-      "*.rs    diff=rust"
-      "*.lisp  diff=lisp"
-      "*.el    diff=lisp"
-    ];
-    extraConfig = {
-      core.autoclrf = "input";
-      init.defaultBranch = "main";
-      status = {
-        showUntrackedFiles = "all";
-        submoduleSummary = true;
-      };
-      fetch = {
-        prune = true;
-        pruneTags = true;
-      };
-      pull = {
-        ff = "only";
-      };
-      push = {
-        autoSetupRemote = true;
-      };
-      protocol.version = 2;
-    };
-  };
-  programs.lazygit = {
-    enable = true;
-    settings = {
-      gui = {
-        theme = {
-          selectedLineBgColor = [ "#d5c4a1" ];
-          selectedRangeBgColor = [ "#d5c4a1" ];
-        };
-        showIcons = true;
-      };
-      git.paging.pager = "delta --paging=never";
-    };
-  };
-  home.packages = with pkgs; [
-    nodePackages.pnpm
-    # You must manually install `pnpm i -g eslint`
-    # and run `pnpx eslint --init` in all projects
-    neovim-remote
-    wpaperd
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    python3Packages.pygments
-    (pkgs.stdenvNoCC.mkDerivation rec {
-      preferLocalBuild = true;
-      pname = "textidote";
-      version = "0.8.3";
-      dontUnpack = true;
-      dontConfigure = true;
-
-      src = fetchurl {
-        url = "https://github.com/sylvainhalle/${pname}/releases/download/v${version}/${pname}.jar";
-        sha256 = "BIYswDrVqNEB+J9TwB0Fop+AC8qvPo53KGU7iupC7tk=";
-      };
-
-      buildPhase = ''
-        cat > ${pname} << EOF
-        #!/bin/sh
-        exec ${openjdk_headless}/bin/java -jar $src \$@
-      '';
-
-      installPhase = ''
-        install -Dm555 -t $out/bin ${pname}
-      '';
-    })
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    unfree.masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    # shotcut
-    kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    libfaketime
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    copyq
-    polkit_gnome
-      (pkgs.writeShellScriptBin "batt" ''
-        ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-      '')
-  ];
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
   wayland.windowManager.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -1415,110 +1157,184 @@ in {
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
   };
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
+  home.packages = with pkgs; [
+    nodePackages.pnpm
+    # You must manually install `pnpm i -g eslint`
+    # and run `pnpx eslint --init` in all projects
+    neovim-remote
+    wpaperd
+    wofi
+    swaylock-effects
+    sway-contrib.grimshot
+    wl-clipboard
+    wl-clipboard-x11
+    copyq
+    polkit_gnome
+    libreoffice
+    cinnamon.nemo
+    #pcmanfm lxmenu-data
+    shared-mime-info
+    (symlinkJoin {
+      name = "file-roller";
+      paths = [ gnome.file-roller ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/file-roller \
+          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
+      '';
+    })
+    texlive.combined.scheme-full
+    python3Packages.pygments
+    (pkgs.stdenvNoCC.mkDerivation rec {
+      preferLocalBuild = true;
+      pname = "textidote";
+      version = "0.8.3";
+      dontUnpack = true;
+      dontConfigure = true;
 
-      # do not create useless folders
-      desktop = "$HOME";
-      publicShare = "$HOME/.local/share/Public";
-      templates = "$HOME/.local/share/Templates";
-    };
-    desktopEntries.nvim = {
-      name = "NeoVim";
-      genericName = "Text Editor";
-      icon = "nvim";
-      exec = "kitty nvim %F";
-      terminal = false;
-      categories = [ "Utility" "TextEditor" ];
-      mimeType = [ "text/english" "text/plain" "text/x-makefile" "text/x-c++hdr" "text/x-c++src" "text/x-chdr" "text/x-csrc" "text/x-java" "text/x-moc" "text/x-pascal" "text/x-tcl" "text/x-tex" "application/x-shellscript" "text/x-c" "text/x-c++" ];
-    };
-    mimeApps = {
-      enable = true;
-      defaultApplications = lib.zipAttrsWith
-        (_: values: values)
-        (let
-          subtypes = type: program: subt:
-            builtins.listToAttrs (builtins.map
-              (x: {name = type + "/" + x; value = program; })
-              subt);
-        in [
-          { "text/plain" = "nvim.desktop"; }
-          (subtypes "application" "writer.desktop"
-            [
-              "vnd.oasis.opendocument.text"
-              "msword"
-              "vnd.ms-word"
-              "vnd.openxmlformats-officedocument.wordprocessingml.document"
-              "vnd.oasis.opendocument.text-template"
-            ])
-          (subtypes "application" "calc.desktop"
-            [
-              "vnd.oasis.opendocument.spreadsheet"
-              "vnd.ms-excel"
-              "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              "vnd.oasis.opendocument.spreadsheet-template"
-            ])
-          (subtypes "application" "impress.desktop"
-            [
-              "vnd.oasis.opendocument.presentation"
-              "vnd.ms-powerpoint"
-              "vnd.openxmlformats-officedocument.presentationml.presentation"
-              "vnd.oasis.opendocument.presentation-template"
-            ])
-          (subtypes "application" "libreoffice.desktop"
-            [
-              "vnd.oasis.opendocument.graphics"
-              "vnd.oasis.opendocument.chart"
-              "vnd.oasis.opendocument.formula"
-              "vnd.oasis.opendocument.image"
-              "vnd.oasis.opendocument.text-master"
-              "vnd.sun.xml.base"
-              "vnd.oasis.opendocument.base"
-              "vnd.oasis.opendocument.database"
-              "vnd.oasis.opendocument.graphics-template"
-              "vnd.oasis.opendocument.chart-template"
-              "vnd.oasis.opendocument.formula-template"
-              "vnd.oasis.opendocument.image-template"
-              "vnd.oasis.opendocument.text-web"
-            ])
-          { "inode/directory" = "nemo.desktop"; }
-          (subtypes "application" "org.gnome.FileRoller.desktop"
-            [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ])
-          { "application/pdf" = "okularApplication_pdf.desktop"; }
-          { "image/vnd.djvu" = "okularApplication_pdf.desktop"; }
-          { "image/x.djvu" = "okularApplication_pdf.desktop"; }
-          (subtypes "image" "imv-folder.desktop"
-            [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ])
-          (subtypes "video" "umpv.desktop"
-            [
-              "avi" "msvideo" "x-msvideo"
-              "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-              "ogg"
-              "quicktime"
-              "webm"
-            ])
-          (subtypes "audio" "umpv.desktop"
-            [
-              "aac" "flac"
-              "mpeg" "mpeg3" # mp3
-              "ogg" "vorbis" "opus" "x-opus+ogg"
-              "wav" "x-wav"
-              "audio/x-ms-wma"
-            ])
-          { "x-scheme-handler/tg" = "telegramdesktop.desktop"; }
-          { "text/html" = "firefox.desktop"; }
-          (subtypes "x-scheme-handler" "firefox.desktop"
-            [ "http" "https" "ftp" "chrome" "about" "unknown" ])
-          (subtypes "aplication" "firefox.desktop"
-            (map (ext: "x-extension-" + ext)
-              [ "htm" "html" "shtml" "xhtml" "xht" ]
-            ++ [ "xhtml+xml" ]))
-        ]);
-    };
+      src = fetchurl {
+        url = "https://github.com/sylvainhalle/${pname}/releases/download/v${version}/${pname}.jar";
+        sha256 = "BIYswDrVqNEB+J9TwB0Fop+AC8qvPo53KGU7iupC7tk=";
+      };
+
+      buildPhase = ''
+        cat > ${pname} << EOF
+        #!/bin/sh
+        exec ${openjdk_headless}/bin/java -jar $src \$@
+      '';
+
+      installPhase = ''
+        install -Dm555 -t $out/bin ${pname}
+      '';
+    })
+    libsForQt5.okular
+    diffpdf
+    pdfmixtool
+    xournalpp
+    ocrmypdf tesseract
+    unfree.masterpdfeditor4
+    calibre
+    jmtpfs # For kindle
+    pavucontrol # audio
+    pamixer
+    wdisplays   # screen
+    imv
+    gimp
+    kolourpaint
+    inkscape
+    gnome.simple-scan
+    mpv
+    ffmpeg
+    audacity
+    lilypond # frescobaldi
+    # denemo
+    musescore
+    (symlinkJoin {
+      name = "fluidsynth";
+      paths = [ fluidsynth ];
+      buildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/fluidsynth \
+          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+      '';
+    })
+    qsynth
+    handbrake
+    mkvtoolnix
+    # shotcut
+    kdenlive
+    losslesscut-bin
+    obs-studio
+    (tor-browser-bundle-bin.override {
+      useHardenedMalloc = false;
+    })
+    clipgrab
+    qbittorrent
+    qalculate-gtk
+    sqlitebrowser
+    gnome.gnome-disk-utility
+    baobab # disk usage
+    tdesktop # Telegram
+    simplenote
+    ipscan
+    libfaketime
+    # qemu
+    cargo rustc clippy rustfmt
+    gdb
+    python3
+    (agda.withPackages (p: [ p.standard-library ]))
+      (pkgs.writeShellScriptBin "batt" ''
+        ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+      '')
+  ];
+  appDefaultForMimes = {
+    "writer.desktop".application = [
+      "vnd.oasis.opendocument.text"
+      "msword"
+      "vnd.ms-word"
+      "vnd.openxmlformats-officedocument.wordprocessingml.document"
+      "vnd.oasis.opendocument.text-template"
+    ];
+    "calc.desktop".application = [
+      "vnd.oasis.opendocument.spreadsheet"
+      "vnd.ms-excel"
+      "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "vnd.oasis.opendocument.spreadsheet-template"
+    ];
+    "impress.desktop".application = [
+      "vnd.oasis.opendocument.presentation"
+      "vnd.ms-powerpoint"
+      "vnd.openxmlformats-officedocument.presentationml.presentation"
+      "vnd.oasis.opendocument.presentation-template"
+    ];
+    "libreoffice.desktop".application = [
+      "vnd.oasis.opendocument.graphics"
+      "vnd.oasis.opendocument.chart"
+      "vnd.oasis.opendocument.formula"
+      "vnd.oasis.opendocument.image"
+      "vnd.oasis.opendocument.text-master"
+      "vnd.sun.xml.base"
+      "vnd.oasis.opendocument.base"
+      "vnd.oasis.opendocument.database"
+      "vnd.oasis.opendocument.graphics-template"
+      "vnd.oasis.opendocument.chart-template"
+      "vnd.oasis.opendocument.formula-template"
+      "vnd.oasis.opendocument.image-template"
+      "vnd.oasis.opendocument.text-web"
+    ];
   };
+  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
+  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
+  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
+  appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
+  appDefaultForMimes."okularApplication_pdf.desktop" = {
+    application = "pdf";
+    image = [ "vnd.djvu" "x.djvu" ];
+  };
+  appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+  appDefaultForMimes."umpv.desktop" = {
+    video = [
+      "avi" "msvideo" "x-msvideo"
+      "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
+      "ogg"
+      "quicktime"
+      "webm"
+    ];
+    audio = [
+      "aac" "flac"
+      "mpeg" "mpeg3" # mp3
+      "ogg" "vorbis" "opus" "x-opus+ogg"
+      "wav" "x-wav"
+      "audio/x-ms-wma"
+    ];
+  };
+  appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
+  home.sessionVariables = {
+    PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
+  };
+  home.sessionPath = [
+    config.home.sessionVariables.PNPM_HOME
+  ];
   systemd.user.services.polkit-agent = {
     Unit = {
       Description = "Runs polkit authentication agent";
@@ -1535,12 +1351,6 @@ in {
       Restart = "always";
     };
   };
-  home.sessionVariables = {
-    PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
-  };
-  home.sessionPath = [
-    config.home.sessionVariables.PNPM_HOME
-  ];
   # TODO remove previous in favour of
   xdg.configFile."OpenTabletDriver/settings.json".source = /${assets}/tablet.json;
 }

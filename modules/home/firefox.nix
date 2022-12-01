@@ -1,5 +1,9 @@
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ./xdg.nix
+  ];
+
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
@@ -92,5 +96,11 @@
         }
       '';
     };
+  };
+  appDefaultForMimes."firefox.desktop" = {
+    text = "html";
+    x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+    application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+      ++ [ "xhtml+xml" ];
   };
 }

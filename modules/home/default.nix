@@ -6,6 +6,10 @@
     # Nvim
     # Sway
     ./firefox.nix
+    ./xdg.nix
+    ./git.nix
+    ./ssh.nix
+    ./gpg.nix
   ];
 
   home.username = user;
