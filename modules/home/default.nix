@@ -10,6 +10,7 @@
     ./git.nix
     ./ssh.nix
     ./gpg.nix
+    ./packages
   ];
 
   home.username = user;

@@ -38,7 +38,9 @@
       legacyPackages = forAllSystems (system:
         let
           overlays = [
+            # NUR
             inputs.nur.overlay
+            # unstable, master and fallaback channels
             (self: super: {
               unstable = inputs.unstable.legacyPackages.${system};
               master = inputs.master.legacyPackages.${system};
@@ -50,6 +52,8 @@
                 };
               };
             })
+            # Custom packages
+            (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
           ];
         in
         import nixpkgs {

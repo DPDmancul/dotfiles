@@ -1,29 +1,10 @@
 { config, pkgs, lib, modules, dotfiles, assets, ... }: # TODO remove dotfiles
-let
-  # TODO remove
-  wpaperd = with pkgs; rustPlatform.buildRustPackage rec {
-    pname = "wpaperd";
-    version = "0.1.0";
-
-    src = fetchFromGitHub {
-      owner = "danyspin97";
-      repo = pname;
-      rev = "89f32c907386af58587df46c10784ab4f17ed31e";
-      sha256 = "n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
-    };
-
-    nativeBuildInputs = [
-      pkg-config
-    ];
-    buildInputs = [
-      libxkbcommon
-    ];
-
-    cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
-  };
-in {
+{
   imports = [
     /${modules}/home
+    # Nvim
+    # Sway
+    ./packages.nix
   ];
 
   programs.neovim = let
@@ -119,35 +100,6 @@ in {
   in {
     enable = true;
     extraConfig = ''
-      set termguicolors     " Enable gui colors
-      set cursorline        " Enable highlighting of the current line
-      set signcolumn=yes    " Always show signcolumn or it would frequently shift
-      set pumheight=10      " Make popup menu smaller
-      set cmdheight=0       " Automatically hide command line
-      set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
-      set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
-      set scrolloff=2       " Show more lines on top and bottom
-      set title             " Enable window title
-      set list              " Show tabs and trailing spaces
-      set number          " Show line numbers
-      set relativenumber  " Show relative line numbers
-      set numberwidth=1   " Minimum number width
-      set conceallevel=2
-      set noshowmode
-      let g:tex_flavor = 'latex'
-      set completeopt=menuone,noselect
-      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
-      set clipboard=unnamedplus     " Sync yank register with system clipboard
-      set expandtab     " Convert tabs to spaces
-      set tabstop=2     " Display 2 spaces for a tab
-      set shiftwidth=2  " Use this number of spaces for indentation
-      set smartindent   " Make indenting smart
-      set autoindent    " Use auto indent
-      set breakindent   " Indent wrapped lines to match line start
-      set virtualedit=block
-      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
-      set foldmethod=indent  " Set 'indent' folding method
-      set nofoldenable       " Start with folds opened
       let g:mapleader = ' '
       nnoremap <cr> :
       vnoremap <cr> :
@@ -164,14 +116,151 @@ in {
       set spelllang=en,it     " Define spelling dictionaries
       set complete+=kspell    " Add spellcheck options for autocomplete
       set spelloptions=camel  " Treat parts of camelCase words as separate words
+      set termguicolors     " Enable gui colors
+      set cursorline        " Enable highlighting of the current line
+      set signcolumn=yes    " Always show signcolumn or it would frequently shift
+      set pumheight=10      " Make popup menu smaller
+      set cmdheight=0       " Automatically hide command line
+      set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
+      set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
+      set scrolloff=2       " Show more lines on top and bottom
+      set title             " Enable window title
+      set list              " Show tabs and trailing spaces
+      set number          " Show line numbers
+      set relativenumber  " Show relative line numbers
+      set numberwidth=1   " Minimum number width
+      set conceallevel=2
+      set noshowmode
+      set completeopt=menuone,noselect
+      set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
+      set clipboard=unnamedplus     " Sync yank register with system clipboard
+      set expandtab     " Convert tabs to spaces
+      set tabstop=2     " Display 2 spaces for a tab
+      set shiftwidth=2  " Use this number of spaces for indentation
+      set smartindent   " Make indenting smart
+      set autoindent    " Use auto indent
+      set breakindent   " Indent wrapped lines to match line start
+      set virtualedit=block
+      set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
+      set foldmethod=indent  " Set 'indent' folding method
+      set nofoldenable       " Start with folds opened
     '';
     extraPackages = builtins.map (x: x.package or x)
       (builtins.attrValues lsp_servers);
-    plugins = with pkgs; with vimPlugins; let
-      inherit (pkgs.vimUtils) buildVimPlugin;
-    in [
+    plugins = with pkgs; with vimPlugins; [
       plenary-nvim
       nvim-web-devicons
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          wk.setup {
+            spelling = {
+              enabled = true,
+              suggestions = 10
+            },
+            window = {
+              margin = {0, 0, 0, 0},
+              padding = {1, 0, 1, 0,}
+            }
+          }
+          local map = function (from, to, ...)
+            return {
+              from, to, ...,
+              noremap = true,
+              silent = true
+            }
+          end
+          wk.register ( 
+            {
+              f = {
+                name = "Find",
+                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
+                f = map ("<cmd>Telescope find_files<cr>", "Files"),
+                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
+                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
+                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
+                p = map ("<cmd>Telescope projects<cr>", "Projects"),
+                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
+                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
+                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
+                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
+                a = map ("<cmd>Telescope<cr>", "All telescopes"),
+              },
+              c = {
+                name = "Code",
+                e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
+              },
+              g = {
+                name = "Git",
+                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
+              },
+              r = {
+                name = "Reload",
+                r = map ("<cmd>e<cr>", "File"),
+                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
+              },
+              t = {
+                name = "Table",
+                m = "Toggle table mode",
+                t = "To table"
+              },
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+            },
+            { prefix = "<leader>" }
+          )
+          wk.register {
+            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
+            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
+            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
+            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
+            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
+            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+          }
+        '';
+      }
+      telescope-file-browser-nvim
+      telescope-fzf-native-nvim
+      telescope-symbols-nvim
+      # telescope-termfinder
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+          local telescope = require "telescope"
+          telescope.load_extension("file_browser")
+          telescope.load_extension("projects")
+          telescope.load_extension("fzf")
+          -- telescope.load_extension("termfinder")
+        '';
+      }
+      {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''require"gitsigns".setup()'';
+      }
+      {
+        plugin = project-nvim;
+        type = "lua";
+        config = ''require"project_nvim".setup()'';
+      }
+      {
+        plugin = mini-nvim;
+        type = "lua";
+        config = ''
+          require"mini.indentscope".setup()
+          require"mini.bufremove".setup()
+          vim.api.nvim_create_user_command('Bdelete', function(args)
+            MiniBufremove.delete(tonumber(args.args), args.bang)
+          end, { bang = true, addr = 'buffers', nargs = '?' })
+          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
+          require"mini.ai".setup()
+          require"mini.comment".setup()
+          require"mini.pairs".setup()
+          require"mini.surround".setup()
+        '';
+      }
       vim-numbertoggle
       lush-nvim
       {
@@ -250,6 +339,25 @@ in {
         plugin = toggleterm-nvim;
         type = "lua";
         config = ''
+          local lazygit = require"toggleterm.terminal".Terminal:new {
+            cmd = "lazygit",
+            hidden = true,
+            count = 0,
+            direction = "tab",
+            on_open = function(term)
+              term.old_laststatus = vim.opt_local.laststatus
+              vim.opt_local.laststatus = 0
+              vim.opt_local.signcolumn = "no"
+              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
+            end,
+            on_close = function(term)
+              vim.opt_local.laststatus = term.old_laststatus
+            end
+          }
+          function lazygit_toggle()
+            lazygit:toggle()
+          end
+          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
             shade_terminals = false
@@ -273,31 +381,12 @@ in {
           end
 
           vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-          local lazygit = require"toggleterm.terminal".Terminal:new {
-            cmd = "lazygit",
-            hidden = true,
-            count = 0,
-            direction = "tab",
-            on_open = function(term)
-              term.old_laststatus = vim.opt_local.laststatus
-              vim.opt_local.laststatus = 0
-              vim.opt_local.signcolumn = "no"
-              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
-            end,
-            on_close = function(term)
-              vim.opt_local.laststatus = term.old_laststatus
-            end
-          }
-          function lazygit_toggle()
-            lazygit:toggle()
-          end
-          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
         '';
       }
       {
-        plugin = (buildVimPlugin {
+        plugin = (vimUtils.buildVimPlugin {
           name = "stickybuf-nvim";
-          src = pkgs.fetchFromGitHub {
+          src = fetchFromGitHub {
             owner = "stevearc";
             repo = "stickybuf.nvim";
             rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
@@ -321,137 +410,15 @@ in {
         type = "lua";
         config = ''require"neoscroll".setup{}'';
       }
-      {
-        plugin = which-key-nvim;
-        type = "lua";
-        config = ''
-          local wk = require "which-key"
-          wk.setup {
-            spelling = {
-              enabled = true,
-              suggestions = 10
-            },
-            window = {
-              margin = {0, 0, 0, 0},
-              padding = {1, 0, 1, 0,}
-            }
-          }
-          local map = function (from, to, ...)
-            return {
-              from, to, ...,
-              noremap = true,
-              silent = true
-            }
-          end
-          wk.register ( 
-            {
-              f = {
-                name = "Find",
-                r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-                f = map ("<cmd>Telescope find_files<cr>", "Files"),
-                g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-                b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-                h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-                p = map ("<cmd>Telescope projects<cr>", "Projects"),
-                e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-                t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-                -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-                [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-                a = map ("<cmd>Telescope<cr>", "All telescopes"),
-              },
-              c = {
-                name = "Code",
-                e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
-              },
-              g = {
-                name = "Git",
-                g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-              },
-              r = {
-                name = "Reload",
-                r = map ("<cmd>e<cr>", "File"),
-                c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-              },
-              t = {
-                name = "Table",
-                m = "Toggle table mode",
-                t = "To table"
-              },
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
-            },
-            { prefix = "<leader>" }
-          )
-          wk.register {
-            ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-            ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-            ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-            ["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-            gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-            gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
-          }
-        '';
-      }
-      {
-        plugin = vimtex;
-        config = ''
-          let g:vimtex_view_general_viewer =  'okular'
-        '';
-      }
-      nui-nvim
-      {
-        plugin = (buildVimPlugin rec {
-          name = "nvim-lilypond-suite";
-          src = pkgs.fetchFromGitHub {
-            owner = "martineausimon";
-            repo = name;
-            rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-            sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
-          };
-        });
-      }
       vim-pandoc-syntax
       {
-        plugin = (buildVimPlugin rec {
+        plugin = (vimUtils.buildVimPlugin rec {
           name = "quarto-vim";
-          src = pkgs.fetchFromGitHub {
+          src = fetchFromGitHub {
             owner = "quarto-dev";
             repo = name;
             rev = "216247339470794e74a5fda5e5515008d6dc1057";
             sha256 = "HTqvZQY6TmVOWzI5N4LEaYfLg1AxWJZ6IjHhwuYQwI8=";
-          };
-        });
-      }
-      {
-        plugin = (buildVimPlugin {
-          name = "agda-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "Isti115";
-            repo = "agda.nvim";
-            rev = "c7da627547e978b4ac3780af1b8f418c8b12ff98";
-            sha256 = "c7UjrVbfaagIJS7iGdjWiFlpLUDHGc0I3ZGoUPECL00=";
-          };
-        });
-        config = ''
-          let g:agda_theme = "light"
-          function! AgdaMapping()
-            noremap <silent> <buffer> <LocalLeader>L :lua require('agda').load()<cr> " To not clash with VimTeX
-          endfunction
-          autocmd BufWinEnter *.agda call AgdaMapping()
-          autocmd BufWinEnter *.lagda* call AgdaMapping()
-          digr ZZ 8484
-          digr NN 8469
-          digr RR 8477
-          digr FF 120125
-        '';
-      }
-      {
-        plugin = (buildVimPlugin rec {
-          name = "vim-agda";
-          src = pkgs.fetchFromGitHub {
-            owner = "msuperdock";
-            repo = name;
-            rev = "1695060850b5991e8aded0861fae0c31877950a7";
-            sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
           };
         });
       }
@@ -592,9 +559,9 @@ in {
         plugin = camelcasemotion;
         config = "let g:camelcasemotion_key = '\\'";
       }
-      (buildVimPlugin {
+      (vimUtils.buildVimPlugin {
         name = "vim-fanfingtastic";
-        src = pkgs.fetchFromGitHub {
+        src = fetchFromGitHub {
           owner = "dahu";
           repo = "vim-fanfingtastic";
           rev = "6d0fea6dafbf3383dbab1463dbfb3b3d1b94b209";
@@ -639,86 +606,19 @@ in {
         config = ''require"femaco".setup()'';
       }
       undotree
-      (buildVimPlugin rec {
+      (vimUtils.buildVimPlugin rec {
         name = "vim-xsampa";
-        src = pkgs.fetchFromGitHub {
+        src = fetchFromGitHub {
           owner = "DPDmancul";
           repo = name;
           rev = "2a7ccb69c508e49126b541625e990b03a90e262f";
           sha256 = "te8pq/TxDepG/Lz4+rxfDa32K0sSWCFLcxlR3H79Wdg=";
         };
       })
-      telescope-file-browser-nvim
-      telescope-fzf-native-nvim
-      telescope-symbols-nvim
-      # telescope-termfinder
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-          local telescope = require "telescope"
-          telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
-          telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
-        '';
-      }
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
-      }
-      {
-        plugin = mini-nvim;
-        type = "lua";
-        config = ''
-          require"mini.indentscope".setup()
-          require"mini.bufremove".setup()
-          vim.api.nvim_create_user_command('Bdelete', function(args)
-            MiniBufremove.delete(tonumber(args.args), args.bang)
-          end, { bang = true, addr = 'buffers', nargs = '?' })
-          vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-          require"mini.ai".setup()
-          require"mini.comment".setup()
-          require"mini.pairs".setup()
-          require"mini.surround".setup()
-        '';
-      }
     ];
   };
 
   appDefaultForMimes."nvim.desktop" = "text/plain";
-  xdg.configFile."wpaperd/output.conf".text = ''
-    [default]
-    path = "${dotfiles}/flake/wallpapers"
-    duration = "1m"
-  '';
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
-  };
-  gtk.enable = true;
-  gtk.iconTheme = {
-    name = "Tela";
-    package = pkgs.tela-icon-theme;
-  };
-  dconf.settings."org/gnome/desktop/interface" = {
-    icon-theme = config.gtk.iconTheme.name;
-  };
-  home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
-    size = 24;
-  };
   programs.waybar = {
     enable = true;
     settings = [
@@ -1035,15 +935,6 @@ in {
     enable = true;
     wrapperFeatures.gtk = true;
     config = rec {
-      gaps.inner = 5;
-      colors.unfocused = let transparent = "#00000000"; in {
-        background = "#222222";
-        border = transparent;
-        childBorder = transparent;
-        indicator = "#292d2e";
-        text = "#888888";
-      };
-      gaps.smartBorders = "on";
       bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
       modifier = "Mod4";
       input."*".xkb_layout = "eu";
@@ -1064,6 +955,15 @@ in {
         { criteria = { app_id = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
         { criteria = { shell = "xwayland"; }; command = ''title_format "%title [%shell]"''; } # TODO: does not work for waybar
       ];
+      gaps.inner = 5;
+      colors.unfocused = let transparent = "#00000000"; in {
+        background = "#222222";
+        border = transparent;
+        childBorder = transparent;
+        indicator = "#292d2e";
+        text = "#888888";
+      };
+      gaps.smartBorders = "on";
       keybindings = lib.mkOptionDefault
         (with config.wayland.windowManager.sway.config; {
           "${modifier}+Shift+e" = ''
@@ -1125,8 +1025,8 @@ in {
         ));
     };
     extraConfig = ''
-      exec ${wpaperd}/bin/wpaperd
       exec ${pkgs.copyq}/bin/copyq
+      exec ${pkgs.wpaperd}/bin/wpaperd
     '';
   };
   programs.fish.loginShellInit = lib.mkBefore ''
@@ -1157,176 +1057,31 @@ in {
       resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
     }];
   };
-  home.packages = with pkgs; [
-    nodePackages.pnpm
-    # You must manually install `pnpm i -g eslint`
-    # and run `pnpx eslint --init` in all projects
-    neovim-remote
-    wpaperd
-    wofi
-    swaylock-effects
-    sway-contrib.grimshot
-    wl-clipboard
-    wl-clipboard-x11
-    copyq
-    polkit_gnome
-    libreoffice
-    cinnamon.nemo
-    #pcmanfm lxmenu-data
-    shared-mime-info
-    (symlinkJoin {
-      name = "file-roller";
-      paths = [ gnome.file-roller ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/file-roller \
-          --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
-      '';
-    })
-    texlive.combined.scheme-full
-    python3Packages.pygments
-    (pkgs.stdenvNoCC.mkDerivation rec {
-      preferLocalBuild = true;
-      pname = "textidote";
-      version = "0.8.3";
-      dontUnpack = true;
-      dontConfigure = true;
-
-      src = fetchurl {
-        url = "https://github.com/sylvainhalle/${pname}/releases/download/v${version}/${pname}.jar";
-        sha256 = "BIYswDrVqNEB+J9TwB0Fop+AC8qvPo53KGU7iupC7tk=";
-      };
-
-      buildPhase = ''
-        cat > ${pname} << EOF
-        #!/bin/sh
-        exec ${openjdk_headless}/bin/java -jar $src \$@
-      '';
-
-      installPhase = ''
-        install -Dm555 -t $out/bin ${pname}
-      '';
-    })
-    libsForQt5.okular
-    diffpdf
-    pdfmixtool
-    xournalpp
-    ocrmypdf tesseract
-    unfree.masterpdfeditor4
-    calibre
-    jmtpfs # For kindle
-    pavucontrol # audio
-    pamixer
-    wdisplays   # screen
-    imv
-    gimp
-    kolourpaint
-    inkscape
-    gnome.simple-scan
-    mpv
-    ffmpeg
-    audacity
-    lilypond # frescobaldi
-    # denemo
-    musescore
-    (symlinkJoin {
-      name = "fluidsynth";
-      paths = [ fluidsynth ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/fluidsynth \
-          --add-flags "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-      '';
-    })
-    qsynth
-    handbrake
-    mkvtoolnix
-    # shotcut
-    kdenlive
-    losslesscut-bin
-    obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
-    clipgrab
-    qbittorrent
-    qalculate-gtk
-    sqlitebrowser
-    gnome.gnome-disk-utility
-    baobab # disk usage
-    tdesktop # Telegram
-    simplenote
-    ipscan
-    libfaketime
-    # qemu
-    cargo rustc clippy rustfmt
-    gdb
-    python3
-    (agda.withPackages (p: [ p.standard-library ]))
-      (pkgs.writeShellScriptBin "batt" ''
-        ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
-      '')
-  ];
-  appDefaultForMimes = {
-    "writer.desktop".application = [
-      "vnd.oasis.opendocument.text"
-      "msword"
-      "vnd.ms-word"
-      "vnd.openxmlformats-officedocument.wordprocessingml.document"
-      "vnd.oasis.opendocument.text-template"
-    ];
-    "calc.desktop".application = [
-      "vnd.oasis.opendocument.spreadsheet"
-      "vnd.ms-excel"
-      "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      "vnd.oasis.opendocument.spreadsheet-template"
-    ];
-    "impress.desktop".application = [
-      "vnd.oasis.opendocument.presentation"
-      "vnd.ms-powerpoint"
-      "vnd.openxmlformats-officedocument.presentationml.presentation"
-      "vnd.oasis.opendocument.presentation-template"
-    ];
-    "libreoffice.desktop".application = [
-      "vnd.oasis.opendocument.graphics"
-      "vnd.oasis.opendocument.chart"
-      "vnd.oasis.opendocument.formula"
-      "vnd.oasis.opendocument.image"
-      "vnd.oasis.opendocument.text-master"
-      "vnd.sun.xml.base"
-      "vnd.oasis.opendocument.base"
-      "vnd.oasis.opendocument.database"
-      "vnd.oasis.opendocument.graphics-template"
-      "vnd.oasis.opendocument.chart-template"
-      "vnd.oasis.opendocument.formula-template"
-      "vnd.oasis.opendocument.image-template"
-      "vnd.oasis.opendocument.text-web"
-    ];
+  xdg.configFile."wpaperd/output.conf".text = ''
+    [default]
+    path = "${dotfiles}/flake/wallpapers"
+    duration = "1m"
+  '';
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = {
+      name = "adwaita";
+      package = pkgs.adwaita-qt;
+    };
   };
-  dconf.settings."org/cinnamon/desktop/applications/terminal".exec = "kitty";
-  dconf.settings."org/cinnamon/desktop/default-applications/terminal".exec = "kitty";
-  dconf.settings."org/nemo/desktop".show-desktop-icons = false;
-  appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
-  appDefaultForMimes."okularApplication_pdf.desktop" = {
-    application = "pdf";
-    image = [ "vnd.djvu" "x.djvu" ];
+  gtk.enable = true;
+  gtk.iconTheme = {
+    name = "Tela";
+    package = pkgs.tela-icon-theme;
   };
-  appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
-  appDefaultForMimes."umpv.desktop" = {
-    video = [
-      "avi" "msvideo" "x-msvideo"
-      "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-      "ogg"
-      "quicktime"
-      "webm"
-    ];
-    audio = [
-      "aac" "flac"
-      "mpeg" "mpeg3" # mp3
-      "ogg" "vorbis" "opus" "x-opus+ogg"
-      "wav" "x-wav"
-      "audio/x-ms-wma"
-    ];
+  dconf.settings."org/gnome/desktop/interface" = {
+    icon-theme = config.gtk.iconTheme.name;
+  };
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24;
   };
   appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
   home.sessionVariables = {
@@ -1352,6 +1107,11 @@ in {
     };
   };
   # TODO remove previous in favour of
+  home.packages = with pkgs; [
+    (pkgs.writeShellScriptBin "batt" ''
+      ${bluetooth_battery}/bin/bluetooth_battery AC:12:2F:50:BB:3A
+    '')
+  ];
   xdg.configFile."OpenTabletDriver/settings.json".source = /${assets}/tablet.json;
 }
 
