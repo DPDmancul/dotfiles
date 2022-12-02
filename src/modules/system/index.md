@@ -5,7 +5,7 @@ Here is collected the common config for all systems.
 In this folder there are also some useful modules used only by some system configs.
 
 ```nix modules/system/default.nix
-{ config, pkgs, users, lib, ... }:
+{ config, pkgs, lib, ... }:
 {
   imports = [
     ./flakes.nix
@@ -17,13 +17,11 @@ In this folder there are also some useful modules used only by some system confi
     ./packages.nix
   ];
 
-  users.users = lib.genAttrs users (user: {
-    extraGroups = [
-      "input"
-      "video"
-      <<<modules/system-user-groups>>>
-    ];
-  });
+  users.users.default.extraGroups = [
+    "input"
+    "video"
+    <<<modules/system-user-groups>>>
+  ];
 
   <<<modules/system>>>
 }

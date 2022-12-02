@@ -2,28 +2,29 @@
 
 Use waybar instead of swaybar
 
-```nix "sway-config" +=
-bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
-```
+```nix modules/home/sway/waybar.nix
+{ config, pkgs, lib, ... }:
+{
+  wayland.windowManager.sway.config.bars = [ { command = "${pkgs.waybar}/bin/waybar"; } ];
 
-```nix "home-config" +=
-programs.waybar = {
-  enable = true;
-  settings = [
-    {
-      modules = null;
-      <<<waybar-bar-settings>>>
-    }
-  ];
-  style = ''
-      <<<waybar-bar-css>>>
-  '';
-};
+  programs.waybar = {
+    enable = true;
+    settings = [
+      {
+        modules = null;
+        <<<modules/home/sway/waybar-bar-settings>>>
+      }
+    ];
+    style = ''
+      <<<modules/home/sway/waybar-bar-css>>>
+    '';
+  };
+}
 ```
 
 ## Modules
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 modules-left = [
   "sway/workspaces"
   "sway/mode"
@@ -31,13 +32,13 @@ modules-left = [
 ];
 ```
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 modules-center = [
   "sway/window"
 ];
 ```
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 modules-right = [
   # "mpd"
   "idle_inhibitor"
@@ -58,7 +59,7 @@ modules-right = [
 
 ### Clock
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 clock = {
   tooltip-format = "{: %H:%M:%S\n %Y-%m-%d\n<big>%Y %B</big>}\n<tt><small>{calendar}</small></tt>";
   format = "{:%H:%M}";
@@ -69,7 +70,7 @@ clock = {
 
 ### Pulse audio
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 pulseaudio = {
   format = "{volume}% {icon}";
   format-bluetooth = "{volume}% {icon} ";
@@ -92,7 +93,7 @@ pulseaudio = {
 
 ### System monitor
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 cpu = {
   format = "{usage}% ";
 };
@@ -108,7 +109,7 @@ temperature = {
 
 ### Network
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 network = {
   format-wifi = "{essid} ({signalStrength}%) ";
   format-ethernet = "{ipaddr}/{cidr} ";
@@ -121,7 +122,7 @@ network = {
 
 ### Battery and backlight
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 battery = {
   states = {
     good = 95;
@@ -147,7 +148,7 @@ idle_inhibitor = {
 
 ## Style
 
-```nix "waybar-bar-settings" +=
+```nix "modules/home/sway/waybar-bar-settings" +=
 height = 20;
 spacing = 0;
 ```
@@ -155,7 +156,7 @@ spacing = 0;
 The style was taken from <https://github.com/theCode-Breaker/riverwm/blob/main/waybar/river/river_style.css>
 with some small changes
 
-```css "waybar-bar-css" +=
+```css "modules/home/sway/waybar-bar-css" +=
 * {
   border: none;
   border-radius: 10px;

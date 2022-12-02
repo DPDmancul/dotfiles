@@ -11,7 +11,6 @@ In this folder there are also some useful modules used only by some user configs
     ./kitty.nix
     ./fish.nix
     # Nvim
-    # Sway
     ./firefox.nix
     ./xdg.nix
     ./git.nix

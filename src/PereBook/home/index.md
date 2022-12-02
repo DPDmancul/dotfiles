@@ -1,12 +1,12 @@
 # Home
 
 ```nix PereBook/home/default.nix
-{ config, pkgs, lib, modules, dotfiles, assets, ... }: # TODO remove dotfiles
+{ config, pkgs, lib, modules, assets, ... }:
 {
   imports = [
     /${modules}/home
     # Nvim
-    # Sway
+    /${modules}/home/sway
     ./packages.nix
   ];
 

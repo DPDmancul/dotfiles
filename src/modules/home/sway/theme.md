@@ -2,13 +2,13 @@
 
 ## Border and gaps
 
-```nix "sway-config" +=
+```nix "modules/home/sway-config" +=
 gaps.inner = 5;
 ```
 
 Disable border for inactive windows and for alone ones
 
-```nix "sway-config" +=
+```nix "modules/home/sway-config" +=
 colors.unfocused = let transparent = "#00000000"; in {
   background = "#222222";
   border = transparent;
@@ -47,11 +47,11 @@ with pkgs; rustPlatform.buildRustPackage rec {
 }
 ```
 
-```nix "home-packages" +=
+```nix "modules/home/sway-packages" +=
 wpaperd
 ```
 
-```nix "home-config" +=
+```nix "modules/home/sway" +=
 xdg.configFile."wpaperd/output.conf".text = ''
   [default]
   path = "${dotfiles}/flake/wallpapers"
@@ -59,7 +59,7 @@ xdg.configFile."wpaperd/output.conf".text = ''
 '';
 ```
 
-```sh "sway-extra-config" +=
+```sh "modules/home/sway-extra-config" +=
 exec ${pkgs.wpaperd}/bin/wpaperd
 ```
 
@@ -67,7 +67,7 @@ exec ${pkgs.wpaperd}/bin/wpaperd
 
 Use GTK theme in Qt apps
 
-```nix "home-config" +=
+```nix "modules/home/sway" +=
 qt = {
   enable = true;
   platformTheme = "gnome";
@@ -80,7 +80,7 @@ qt = {
 
 ## Icons
 
-```nix "home-config" +=
+```nix "modules/home/sway" +=
 gtk.enable = true;
 gtk.iconTheme = {
   name = "Tela";
@@ -90,7 +90,7 @@ gtk.iconTheme = {
 
 Use the same icons in Qt apps
 
-```nix "home-config" +=
+```nix "modules/home/sway" +=
 dconf.settings."org/gnome/desktop/interface" = {
   icon-theme = config.gtk.iconTheme.name;
 };
@@ -98,7 +98,7 @@ dconf.settings."org/gnome/desktop/interface" = {
 
 ## Cursors
 
-```nix "home-config" +=
+```nix "modules/home/sway" +=
 home.pointerCursor = {
   name = "Bibata-Modern-Classic";
   package = pkgs.bibata-cursors;

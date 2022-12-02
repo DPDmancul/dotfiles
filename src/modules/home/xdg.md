@@ -3,11 +3,17 @@
 ```nix modules/home/xdg.nix
 { config, pkgs, lib, ... }:
 {
-  config.xdg = {
-    enable = true;
-    <<<modules/home/xdg-config>>>
+  options = {
+    <<<modules/home/xdg-options>>>
   };
-  <<<modules/home/xdg>>>
+
+  config = {
+    xdg = {
+      enable = true;
+      <<<modules/home/xdg-config>>>
+    };
+    <<<modules/home/xdg>>>
+  };
 }
 ```
 
@@ -31,8 +37,8 @@ userDirs = {
 
 Add an option for inverse defaultApplications declaration: the mimes are assigned to the program.
 
-```nix "modules/home/xdg" +=
-options.appDefaultForMimes = with lib; let
+```nix "modules/home/xdg-options" +=
+appDefaultForMimes = with lib; let
   concatMapAttrsToList = f: attrs:
     concatMap (name: f name attrs.${name}) (attrNames attrs);
   strListOrStr = with types;
@@ -72,7 +78,7 @@ mimeApps = {
 
 ## Polkit
 
-```nix "home-config" +=
+```nix "modules/home/xdg" +=
 systemd.user.services.polkit-agent = {
   Unit = {
     Description = "Runs polkit authentication agent";
