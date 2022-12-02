@@ -1,5 +1,9 @@
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ../xdg.nix
+  ];
+  
   home.packages = with pkgs; [
     libreoffice
   ];

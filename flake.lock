@@ -148,6 +148,21 @@
         "type": "github"
       }
     },
+    "nix2lua": {
+      "locked": {
+        "lastModified": 1669103494,
+        "narHash": "sha256-jEu9VyOfTMbSITGiG329vEC6K7ZNppfhd0LojxMhzK8=",
+        "ref": "refs/heads/main",
+        "rev": "32b5ab313597df18a81a85af67c5e1380fd4f688",
+        "revCount": 13,
+        "type": "git",
+        "url": "https://git.pleshevski.ru/mynix/nix2lua"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.pleshevski.ru/mynix/nix2lua"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1659102345,
@@ -186,6 +201,7 @@
         "hardware": "hardware",
         "home-manager": "home-manager",
         "master": "master",
+        "nix2lua": "nix2lua",
         "nixpkgs": [
           "stable"
         ],

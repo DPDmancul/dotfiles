@@ -3,7 +3,8 @@
   imports = [
     ./kitty.nix
     ./fish.nix
-    # Nvim
+    ./nvim
+    ./sway
     ./firefox.nix
     ./xdg.nix
     ./git.nix

@@ -14,6 +14,7 @@
     };
     hardware.url = "github:nixos/nixos-hardware";
     stylix-colors.url = "github:danth/stylix";
+    nix2lua.url = "git+https://git.pleshevski.ru/mynix/nix2lua";
   };
 
   outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, ... }:

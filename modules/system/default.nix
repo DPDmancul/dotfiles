@@ -23,6 +23,8 @@
   hardware.opengl.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
   networking.networkmanager.enable = true;
+  users.mutableUsers = false;
+  time.timeZone = "Europe/Rome";
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];

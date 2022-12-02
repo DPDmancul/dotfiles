@@ -12,6 +12,7 @@
     ./net.nix
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix
+    /${modules}/system/sway.nix
     ./users.nix
   ];
 
@@ -22,13 +23,4 @@
   };
   fileSystems."/".options = [ "compress=zstd" ];
   hardware.opentabletdriver.enable = true;
-  time.timeZone = "Europe/Rome";
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraPackages = [ ];
-  };
-  security.pam.services.swaylock = {
-    text = "auth include login";
-  };
 }

@@ -1,5 +1,9 @@
 { config, pkgs, lib, modules, ... }:
 {
+  imports = [
+    ../xdg.nix
+  ];
+
   home.packages = with pkgs; [
     (symlinkJoin {
       name = "file-roller";
