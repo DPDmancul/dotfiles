@@ -4,7 +4,6 @@
     ./kitty.nix
     ./fish.nix
     # Nvim
-    # Sway
     ./firefox.nix
     ./xdg.nix
     ./git.nix

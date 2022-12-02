@@ -1,9 +1,7 @@
-{ config, pkgs, users, lib, ... }:
+{ config, pkgs, lib, ... }:
 {
   programs.adb.enable = true;
-  users.users = lib.genAttrs users (user: {
-    extraGroups = [
-      "adbusers"
-    ];
-  });
+  users.users.default.extraGroups = [
+    "adbusers"
+  ];
 }

@@ -15,7 +15,6 @@
     ./users.nix
   ];
 
-  environment.sessionVariables.XDG_CURRENT_DESKTOP = "sway";
   fileSystems."/home/dpd-/datos" = {
     device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
     fsType = "ext4";
