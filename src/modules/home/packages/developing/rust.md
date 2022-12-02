@@ -3,6 +3,10 @@
 ```nix modules/home/packages/developing/rust.nix
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ../../nvim/lsp.nix
+  ];
+
   home.packages = with pkgs; [
     cargo rustc clippy rustfmt
     gdb
@@ -13,10 +17,17 @@
 
 ## Neovim support
 
-<!-- TODO Language server -->
-
 ```nix "modules/home/packages/developing/rust" +=
-#programs.neovim.plugins = with pkgs.vimPlugins; [
-#];
+programs.neovim.plugins = with pkgs.vimPlugins; [
+  rust-tools-nvim
+];
+nvimLSP.rust-tools = {
+  packages = with pkgs; [
+    rust-analyzer
+    clippy
+  ];
+  config = { settings = { rust-analyzer =
+    { checkOnSave = { command = "clippy"; }; }; }; };
+};
 ```
 

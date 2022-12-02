@@ -3,6 +3,10 @@
 ```nix modules/home/packages/utils.nix
 { config, pkgs, lib, modules, ... }:
 {
+  imports = [
+    ../xdg.nix
+  ];
+
   home.packages = with pkgs; [
     <<<PereBook/home/packages/utils-packages>>>
   ];

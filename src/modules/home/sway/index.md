@@ -1,7 +1,7 @@
 # Sway
 
 ```nix modules/home/sway/default.nix
-{ config, options, pkgs, lib, dotfiles, ... }:
+{ config, pkgs, lib, dotfiles, ... }:
 {
   imports = [
     ./waybar.nix

@@ -3,6 +3,10 @@
 ```nix modules/home/packages/latex.nix
 { config, pkgs, lib, ... }:
 {
+  imports = [
+    ../nvim/lsp.nix
+  ];
+
   home.packages = with pkgs; [
     texlive.combined.scheme-full
     python3Packages.pygments
@@ -41,6 +45,8 @@ Use LaTeX instead of plain TeX
 programs.neovim.extraConfig = ''
   let g:tex_flavor = 'latex'
 '';
+
+nvimLSP.texlab = pkgs.texlab;
 ```
 
 ### VimTeX

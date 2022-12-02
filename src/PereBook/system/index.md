@@ -15,6 +15,7 @@
     ./net.nix
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix
+    /${modules}/system/sway.nix
     ./users.nix
   ];
 
@@ -46,28 +47,3 @@ Enable pen tablet FOSS drivers
 hardware.opentabletdriver.enable = true;
 ```
 
-## Timezone
-
-```nix "PereBook/system" +=
-time.timeZone = "Europe/Rome";
-```
-
-## Sway
-
-Sway is configured with home-manager but must be activated also at system level to set the environment (eg. opengl, dconf, ...)
-
-```nix "PereBook/system" +=
-programs.sway = {
-  enable = true;
-  wrapperFeatures.gtk = true;
-  extraPackages = [ ];
-};
-```
-
-Grant PAM access to swaylock
-
-```nix "PereBook/system" +=
-security.pam.services.swaylock = {
-  text = "auth include login";
-};
-```

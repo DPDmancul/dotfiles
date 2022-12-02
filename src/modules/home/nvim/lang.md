@@ -67,7 +67,6 @@ nvim-cmp
 cmp-nvim-lsp
 cmp_luasnip
 luasnip
-rust-tools-nvim
 {
   plugin = nvim-lspconfig;
   type = "lua";
@@ -77,132 +76,57 @@ rust-tools-nvim
 }
 ```
 
+Declare common LSP servers
+
+```nix "nvim-main" +=
+nvimLSP = with pkgs; {
+  rnix = rnix-lsp;
+  yamlls = nodePackages.yaml-language-server;
+  jsonls = rec {
+    package = nodePackages.vscode-langservers-extracted;
+    config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
+  };
+  efm = {
+    package = efm-langserver;
+    config =  let
+      languages = {
+        sh = [
+          {
+            lintCommand = "${shellcheck}/bin/shellcheck -f gcc -x";
+            lintSource = "shellcheck";
+            lintFormats = [
+              "%f:%l:%c: %trror: %m"
+              "%f:%l:%c: %tarning: %m"
+              "%f:%l:%c: %tote: %m"
+            ];
+          }
+          {
+            formatCommand = "${shfmt}/bin/shfmt -ci -s -bn";
+            formatStdin = true;
+          }
+        ];
+        make = [
+          {
+            lintCommand = "${checkmake}/bin/checkmake";
+            lintStdin = true;
+          }
+        ];
+      };
+    in
+    {
+      settings = {
+        inherit languages;
+      };
+      filetypes = builtins.attrNames languages;
+    };
+  };
+};
+```
+
 Set completeopt to have a better completion experience
 
 ```vim "nvim-config" +=
 set completeopt=menuone,noselect
-```
-
-Declare LSP servers
-
-```nix "lsp-servers" +=
-rust-tools = {
-  package = rust-analyzer;
-  config = { settings = { rust-analyzer =
-    { checkOnSave = { command = "clippy"; }; }; }; };
-};
-texlab = texlab;
-rnix = rnix-lsp;
-ccls = ccls;
-pyright = nodePackages.pyright;
-jdtls  = {
-  package = jdt-language-server; # Java
-  config.cmd = ["jdt-language-server" "-data" "${config.home.homeDirectory}/.jdt/workspace"];
-};
-yamlls = nodePackages.yaml-language-server;
-html = rec {
-  package = nodePackages.vscode-langservers-extracted;
-  config.cmd = ["${package}/bin/vscode-html-language-server" "--stdio"];
-
-};
-cssls = rec {
-  package = nodePackages.vscode-langservers-extracted;
-  config.cmd = ["${package}/bin/vscode-css-language-server" "--stdio"];
-};
-jsonls = rec {
-  package = nodePackages.vscode-langservers-extracted;
-  config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
-};
-eslint = rec { # JS (EcmaScript) and TS
-  package = nodePackages.vscode-langservers-extracted;
-  config = {
-    cmd = ["${package}/bin/vscode-eslint-language-server" "--stdio"];
-    settings = { packageManager = "pnpm"; };
-  };
-};
-efm = let
-  languages = {
-    sh = [
-      {
-        lintCommand = "${shellcheck}/bin/shellcheck -f gcc -x";
-        lintSource = "shellcheck";
-        lintFormats = [
-          "%f:%l:%c: %trror: %m"
-          "%f:%l:%c: %tarning: %m"
-          "%f:%l:%c: %tote: %m"
-        ];
-      }
-      {
-        formatCommand = "${shfmt}/bin/shfmt -ci -s -bn";
-        formatStdin = true;
-      }
-    ];
-    make = [
-      {
-        lintCommand = "${checkmake}/bin/checkmake";
-        lintStdin = true;
-      }
-    ];
-  };
-in {
-  package = efm-langserver;
-  config = {
-    settings = {
-      inherit languages;
-    };
-    filetypes = builtins.attrNames languages;
-  };
-};
-```
-
-vscode-eslint requires some addendum:
-
-```nix "home-packages" +=
-nodePackages.pnpm
-# You must manually install `pnpm i -g eslint`
-# and run `pnpx eslint --init` in all projects
-```
-
-```nix "home-env" +=
-PNPM_HOME = "${config.home.homeDirectory}/.pnpm-global";
-```
-
-```nix "home-path" +=
-config.home.sessionVariables.PNPM_HOME
-```
-
-
-Enable some language servers with the additional completion capabilities
-offered by nvim-cmp
-
-```lua "lsp-config" +=
-local nvim_lsp = require "lspconfig"
-local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function (client, bufnr)
-  local wk = require "which-key"
-  local map = function (from, to, ...)
-    return {
-      from, to, ...,
-      buffer = bufnr,
-      noremap = true,
-      silent = true
-    }
-  end
-  wk.register {
-   <<<nvim-lsp-keybind>>>
-  }
-end
-local servers = ${lsp_servers_config}
-
-for lsp,cfg in pairs(servers) do
-  cfg.on_attach = on_attach
-  cfg.capabilities = capabilities
-  if lsp == "rust-tools" then
-    require"rust-tools".setup { server = cfg }
-  else
-    nvim_lsp[lsp].setup(cfg)
-  end
-end
 ```
 
 nvim-cmp setup

@@ -63,6 +63,18 @@ networking.networkmanager.enable = true;
 "networkmanager"
 ```
 
+Users must follow this config and cannot be modified outside it
+
+```nix "modules/system" +=
+users.mutableUsers = false;
+```
+
+## Timezone
+
+```nix "modules/system" +=
+time.timeZone = "Europe/Rome";
+```
+
 ## Fonts
 
 ```nix "modules/system" +=

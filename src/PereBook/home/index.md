@@ -5,28 +5,11 @@
 {
   imports = [
     /${modules}/home
-    # Nvim
-    /${modules}/home/sway
     ./packages.nix
   ];
 
-  <<<home-config>>>
-  # TODO remove previous in favour of
   <<<PereBook/home>>>
 }
-
-```
-## Environment
-
-<!-- TODO: remove -->
-
-```nix "home-config" +=
-home.sessionVariables = {
-  <<<home-env>>>
-};
-home.sessionPath = [
-  <<<home-path>>>
-];
 ```
 
 ## Bluetooth headset battery

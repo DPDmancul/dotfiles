@@ -23,7 +23,7 @@ clean: remove-tangled
 
 .PHONY: remove-tangled
 remove-tangled:
-	rm -rf $(BUILD)/assets
+	rm -rf $(BUILD)/assets $(BUILD)/pkgs
 	rm -rf $(BUILD)/installation.sh
 	cd "$(SRC)" && find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf ../$(BUILD)/{} ../$(BUILD)/{}.nix \;
 

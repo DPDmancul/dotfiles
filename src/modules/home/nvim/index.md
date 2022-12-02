@@ -1,45 +1,30 @@
 # Neovim
 
-```nix "home-config" +=
-programs.neovim = let
-  lsp_servers = with pkgs; {
-    <<<lsp-servers>>>
-  };
-  lsp_servers_config = let
-    value_to_lua = value:
-      if builtins.isAttrs value then
-        set_to_lua value
-      else if builtins.isList value then
-        list_to_lua value
-      else if builtins.isBool value then
-        if value then "true" else "false"
-      else if builtins.isString value then
-        ''"${value}"''
-      else
-        ''${value}'';
-    list_to_lua = list: "{" + builtins.toString
-      (builtins.map (e: value_to_lua e + ", ") list) + "}";
-    set_to_lua = set: "{" +
-      builtins.toString (builtins.attrValues (builtins.mapAttrs
-        (name: value: ''["${name}"] = ${value_to_lua value},'') set
-      )) + "}";
-  in set_to_lua (builtins.mapAttrs
-    (_: x: x.config or {}) lsp_servers);
-in {
-  enable = true;
-  extraConfig = ''
-    <<<nvim-config>>>
-  '';
-  extraPackages = builtins.map (x: x.package or x)
-    (builtins.attrValues lsp_servers);
-  plugins = with pkgs; with vimPlugins; [
-    plenary-nvim
-    nvim-web-devicons
-    <<<nvim-plugins>>>
+```nix modules/home/nvim/default.nix
+{ config, pkgs, lib, ... }:
+{
+  imports = [
+    ../xdg.nix
+    ./lsp.nix
   ];
-};
 
-appDefaultForMimes."nvim.desktop" = "text/plain";
+  programs.neovim = {
+    enable = true;
+    extraConfig = ''
+      <<<nvim-config>>>
+    '';
+    plugins = with pkgs; with vimPlugins; [
+      plenary-nvim
+      nvim-web-devicons
+      <<<nvim-plugins>>>
+    ];
+  };
+
+  appDefaultForMimes."nvim.desktop" = "text/plain";
+
+  # TODO remove
+  <<<nvim-main>>>
+}
 ```
 
 Set space as leader

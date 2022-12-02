@@ -10,7 +10,8 @@ In this folder there are also some useful modules used only by some user configs
   imports = [
     ./kitty.nix
     ./fish.nix
-    # Nvim
+    ./nvim
+    ./sway
     ./firefox.nix
     ./xdg.nix
     ./git.nix
