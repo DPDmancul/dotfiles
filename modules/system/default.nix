@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, users, lib, ... }:
 {
   imports = [
     ./flakes.nix
@@ -10,11 +10,13 @@
     ./packages.nix
   ];
 
-  users.users.default.extraGroups = [
-    "input"
-    "video"
-    "networkmanager"
-  ];
+  users.users = lib.genAttrs users (user: {
+    extraGroups = [
+      "input"
+      "video"
+      "networkmanager"
+    ];
+  });
 
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
