@@ -5,7 +5,7 @@
 Enable printing, CUPS GUI frontend and scanning.
 
 ```nix modules/system/services/print_scan.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, users, lib, ... }:
 {
   services.printing.enable = true;
   programs.system-config-printer.enable = true;
@@ -17,10 +17,12 @@ Enable printing, CUPS GUI frontend and scanning.
 Add user to the required groups
 
 ```nix "modules/system/services/print_scan" +=
-users.users.default.extraGroups = [
-  "scanner"
-  "lp"
-];
+users.users = lib.genAttrs users (user: {
+  extraGroups = [
+    "scanner"
+    "lp"
+  ];
+});
 ```
 
 ### Brother DCP 1612W network printer

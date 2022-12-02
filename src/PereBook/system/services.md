@@ -1,7 +1,7 @@
 # Services
 
 ```nix PereBook/system/services.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, users, lib, ... }:
 {
   <<<PereBook/system/services>>>
 }
@@ -16,8 +16,10 @@ programs.adb.enable = true;
 Add user to the adb group
 
 ```nix "PereBook/system/services" +=
-users.users.default.extraGroups = [
-  "adbusers"
-];
+users.users = lib.genAttrs users (user: {
+  extraGroups = [
+    "adbusers"
+  ];
+});
 ```
 
