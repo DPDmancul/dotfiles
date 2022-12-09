@@ -24,15 +24,15 @@ gaps.smartBorders = "on";
 Use wpaperd for random backgrounds
 
 ```nix pkgs/wpaperd.nix
-{ pkgs, rustPlatform, fetchFromGitHub, ... }:
-with pkgs; rustPlatform.buildRustPackage rec {
+{ rustPlatform, fetchFromGitHub, pkg-config, libxkbcommon }:
+rustPlatform.buildRustPackage rec {
   pname = "wpaperd";
-  version = "0.1.0";
+  version = "0.2.0";
 
   src = fetchFromGitHub {
     owner = "danyspin97";
     repo = pname;
-    rev = "89f32c907386af58587df46c10784ab4f17ed31e";
+    rev = version;
     sha256 = "n1zlC2afog0UazsJEBAzXpnhVDeP3xqpNGXlJ65umHQ=";
   };
 
@@ -43,7 +43,7 @@ with pkgs; rustPlatform.buildRustPackage rec {
     libxkbcommon
   ];
 
-  cargoSha256 = "xIXmvMiOpgZgvA9C8tyzoW5ZA1rQ0e+/RuWdzJkoBsc=";
+  cargoSha256 = "8ZMdbJvedDqoDr2rhKM1TMB5N4aRde04x/9H212fe68=";
 }
 ```
 

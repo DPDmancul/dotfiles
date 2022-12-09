@@ -14,6 +14,7 @@ Add support for some languages
     ];
   };
 
+  <<<modules/home/nvim/lang>>>
 }
 ```
 
@@ -93,7 +94,7 @@ luasnip
 
 Declare common LSP servers
 
-```nix "modules/home/nvim/lang-main" +=
+```nix "modules/home/nvim/lang" +=
 nvimLSP = with pkgs; {
   rnix = rnix-lsp;
   yamlls = nodePackages.yaml-language-server;
