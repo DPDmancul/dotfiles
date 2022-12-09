@@ -25,6 +25,11 @@
           system = "x86_64-linux";
           users = [ "dpd-" ];
         }
+        {
+          host = "PereWork";
+          system = "x86_64-linux";
+          users = [ "dpd-" ];
+        }
       ];
       args = {
         inherit inputs;

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, secrets, modules, lib, ... }:
+{ config, pkgs, inputs, modules, lib, ... }:
 {
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
