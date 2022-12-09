@@ -98,4 +98,46 @@
     ];
   };
 
+  nvimLSP = with pkgs; {
+    rnix = rnix-lsp;
+    yamlls = nodePackages.yaml-language-server;
+    jsonls = rec {
+      package = nodePackages.vscode-langservers-extracted;
+      config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
+    };
+    efm = {
+      package = efm-langserver;
+      config =  let
+        languages = {
+          sh = [
+            {
+              lintCommand = "${shellcheck}/bin/shellcheck -f gcc -x";
+              lintSource = "shellcheck";
+              lintFormats = [
+                "%f:%l:%c: %trror: %m"
+                "%f:%l:%c: %tarning: %m"
+                "%f:%l:%c: %tote: %m"
+              ];
+            }
+            {
+              formatCommand = "${shfmt}/bin/shfmt -ci -s -bn";
+              formatStdin = true;
+            }
+          ];
+          make = [
+            {
+              lintCommand = "${checkmake}/bin/checkmake";
+              lintStdin = true;
+            }
+          ];
+        };
+      in
+      {
+        settings = {
+          inherit languages;
+        };
+        filetypes = builtins.attrNames languages;
+      };
+    };
+  };
 }

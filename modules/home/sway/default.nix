@@ -26,15 +26,6 @@
       enable = true;
       wrapperFeatures.gtk = true;
       config = {
-        gaps.inner = 5;
-        colors.unfocused = let transparent = "#00000000"; in {
-          background = "#222222";
-          border = transparent;
-          childBorder = transparent;
-          indicator = "#292d2e";
-          text = "#888888";
-        };
-        gaps.smartBorders = "on";
         modifier = "Mod4";
         input."*".xkb_layout = "eu";
         input."*".xkb_numlock = "enabled";
@@ -54,16 +45,24 @@
           { criteria = { app_id = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
           { criteria = { shell = "xwayland"; }; command = ''title_format "%title [%shell]"''; } # TODO: does not work for waybar
         ];
+        gaps.inner = 5;
+        colors.unfocused = let transparent = "#00000000"; in {
+          background = "#222222";
+          border = transparent;
+          childBorder = transparent;
+          indicator = "#292d2e";
+          text = "#888888";
+        };
+        gaps.smartBorders = "on";
         keybindings = lib.mkOptionDefault config.swayAddNamedKeybinds;
       };
       extraConfig = ''
-        exec ${pkgs.wpaperd}/bin/wpaperd
         exec ${pkgs.copyq}/bin/copyq
+        exec ${pkgs.wpaperd}/bin/wpaperd
       '';
     };
 
     home.packages = with pkgs; [
-      wpaperd
       wofi
       swaylock-effects
       sway-contrib.grimshot
@@ -71,34 +70,9 @@
       wl-clipboard-x11
       copyq
       polkit_gnome
+      wpaperd
     ];
 
-    xdg.configFile."wpaperd/output.conf".text = ''
-      [default]
-      path = "${dotfiles}/flake/wallpapers"
-      duration = "1m"
-    '';
-    qt = {
-      enable = true;
-      platformTheme = "gnome";
-      style = {
-        name = "adwaita";
-        package = pkgs.adwaita-qt;
-      };
-    };
-    gtk.enable = true;
-    gtk.iconTheme = {
-      name = "Tela";
-      package = pkgs.tela-icon-theme;
-    };
-    dconf.settings."org/gnome/desktop/interface" = {
-      icon-theme = config.gtk.iconTheme.name;
-    };
-    home.pointerCursor = {
-      name = "Bibata-Modern-Classic";
-      package = pkgs.bibata-cursors;
-      size = 24;
-    };
     home.sessionVariables.XDG_CURRENT_DESKTOP = "sway";
     programs.fish.loginShellInit = lib.mkBefore ''
       if test (tty) = /dev/tty1
@@ -191,5 +165,31 @@
       "${modifier}+v" = "exec kitty nvim";
     };
     swayAddKeybinds."${modifier}+q" = "exec copyq toggle";
+    xdg.configFile."wpaperd/output.conf".text = ''
+      [default]
+      path = "${dotfiles}/flake/wallpapers"
+      duration = "1m"
+    '';
+    qt = {
+      enable = true;
+      platformTheme = "gnome";
+      style = {
+        name = "adwaita";
+        package = pkgs.adwaita-qt;
+      };
+    };
+    gtk.enable = true;
+    gtk.iconTheme = {
+      name = "Tela";
+      package = pkgs.tela-icon-theme;
+    };
+    dconf.settings."org/gnome/desktop/interface" = {
+      icon-theme = config.gtk.iconTheme.name;
+    };
+    home.pointerCursor = {
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
+      size = 24;
+    };
   };
 }
