@@ -2,9 +2,24 @@
 
 Add support for some languages
 
+```nix modules/home/nvim/lang.nix
+{ config, pkgs, lib, ... }:
+{
+  programs.neovim = {
+    extraConfig = ''
+      <<<modules/home/nvim/lang-config>>>
+    '';
+    plugins = with pkgs; with vimPlugins; [
+      <<<modules/home/nvim/lang-plugins>>>
+    ];
+  };
+
+}
+```
+
 ## Quarto Pandoc
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/lang-plugins" +=
 vim-pandoc-syntax
 {
   plugin = (vimUtils.buildVimPlugin rec {
@@ -27,7 +42,7 @@ Use the power of Language Server Protocol for a better developing experience
 
 Better UI for LSP
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/lang-plugins" +=
 # popfix
 # {
 #   plugin = nvim-lsputils;
@@ -47,7 +62,7 @@ Better UI for LSP
 
 ### LSP hints
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/lang-plugins" +=
 {
   plugin = lsp_signature-nvim;
   type = "lua";
@@ -62,7 +77,7 @@ Better UI for LSP
 
 ### Config LSP and completion
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/lang-plugins" +=
 nvim-cmp
 cmp-nvim-lsp
 cmp_luasnip
@@ -71,14 +86,14 @@ luasnip
   plugin = nvim-lspconfig;
   type = "lua";
   config = ''
-    <<<lsp-config>>>
+    <<<modules/home/nvim/lang-lsp>>>
   '';
 }
 ```
 
 Declare common LSP servers
 
-```nix "nvim-main" +=
+```nix "modules/home/nvim/lang-main" +=
 nvimLSP = with pkgs; {
   rnix = rnix-lsp;
   yamlls = nodePackages.yaml-language-server;
@@ -125,13 +140,13 @@ nvimLSP = with pkgs; {
 
 Set completeopt to have a better completion experience
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/lang-config" +=
 set completeopt=menuone,noselect
 ```
 
 nvim-cmp setup
 
-```lua "lsp-config" +=
+```lua "modules/home/nvim/lang-lsp" +=
 local cmp = require "cmp"
 local luasnip = require "luasnip"
 cmp.setup {

@@ -1,6 +1,20 @@
 # Neovim editing
 
-```vim "nvim-config" +=
+```nix modules/home/nvim/editing.nix
+{ config, pkgs, lib, ... }:
+{
+  programs.neovim = {
+    extraConfig = ''
+      <<<modules/home/nvim/editing-config>>>
+    '';
+    plugins = with pkgs; with vimPlugins; [
+      <<<modules/home/nvim/editing-plugins>>>
+    ];
+  };
+
+}
+```
+```vim "modules/home/nvim/editing-config" +=
 set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
 set clipboard=unnamedplus     " Sync yank register with system clipboard
 ```
@@ -11,12 +25,12 @@ set clipboard=unnamedplus     " Sync yank register with system clipboard
 1. If not, try detect used indentation with `sleuth`
 1. Fallback to two spaces
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 editorconfig-nvim
 vim-sleuth
 ```
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/editing-config" +=
 set expandtab     " Convert tabs to spaces
 set tabstop=2     " Display 2 spaces for a tab
 set shiftwidth=2  " Use this number of spaces for indentation
@@ -29,7 +43,7 @@ set breakindent   " Indent wrapped lines to match line start
 
 Allow going past the end of line in visual block mode 
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/editing-config" +=
 set virtualedit=block
 ```
 
@@ -37,7 +51,7 @@ set virtualedit=block
 
 Move into CamelCase and snake\_case words 
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 {
   plugin = camelcasemotion;
   config = "let g:camelcasemotion_key = '\\'";
@@ -46,7 +60,7 @@ Move into CamelCase and snake\_case words
 
 ### Around and inner text objects
 
-```lua "mini-nvim" +=
+```lua "modules/home/nvim/editing-nvim" +=
 require"mini.ai".setup()
 ```
 
@@ -54,7 +68,7 @@ require"mini.ai".setup()
 
 Use `f` and `t` across lines
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 (vimUtils.buildVimPlugin {
   name = "vim-fanfingtastic";
   src = fetchFromGitHub {
@@ -68,13 +82,13 @@ Use `f` and `t` across lines
 
 ## Comments
 
-```lua "mini-nvim" +=
+```lua "modules/home/nvim/editing-nvim" +=
 require"mini.comment".setup()
 ```
 
 ## Edit with sudo
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 {
   plugin = suda-vim;
   config = "let g:suda_smart_edit = 1";
@@ -85,19 +99,31 @@ require"mini.comment".setup()
 
 Autoclose parenthesis and quotes 
 
-```lua "mini-nvim" +=
-require"mini.pairs".setup()
+```nix "modules/home/nvim/editing-plugins" +=
+{
+  plugin = nvim-autopairs;
+  type = "lua";
+  config = ''
+    require"nvim-autopairs".setup{}
+  '';
+}
 ```
 
 Easy add, remove and change parenthesis and quotes 
 
-```lua "mini-nvim" +=
-require"mini.surround".setup()
+```nix "modules/home/nvim/editing-plugins" +=
+{
+  plugin = nvim-surround;
+  type = "lua";
+  config = ''
+    require"nvim-surround".setup{}
+  '';
+}
 ```
 
 ## Table edit
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 vim-table-mode
 ```
 
@@ -105,20 +131,20 @@ vim-table-mode
 
 Do syntax highlighting via treesitter
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 nvim-ts-rainbow
 {
   plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
   type = "lua";
   config = ''
-    <<<treesitter-config>>>
+    <<<modules/home/nvim/editing-treesitter>>>
   '';
 }
 ```
 
 Enable all maintained languages, except LaTeX (highlighted and concealed via VimTeX)
 
-```lua "treesitter-config" +=
+```lua "modules/home/nvim/editing-treesitter" +=
 require"nvim-treesitter.configs".setup {
   highlight = {
     enable = true,
@@ -138,7 +164,7 @@ require"nvim-treesitter.configs".setup {
 
 Show color of colors
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 {
   plugin = nvim-colorizer-lua;
   type = "lua";
@@ -150,7 +176,7 @@ Show color of colors
 
 Open temporary buffer to edit code in Markdown
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 {
   plugin = nur.repos.m15a.vimExtraPlugins.nvim-FeMaco-lua;
   type = "lua";
@@ -162,13 +188,13 @@ Open temporary buffer to edit code in Markdown
 
 Better undo exploring the tree of all changes
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 undotree
 ```
 
 Add keymap
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
 ```
 
@@ -185,13 +211,13 @@ u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
 
 Source: <https://stackoverflow.com/a/37172060>
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/editing-config" +=
 set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
 ```
 
 ### Folds
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/editing-config" +=
 set foldmethod=indent  " Set 'indent' folding method
 set nofoldenable       " Start with folds opened
 ```
@@ -200,7 +226,7 @@ set nofoldenable       " Start with folds opened
 
 Allow easy writing in international phonetics alphabet
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/editing-plugins" +=
 (vimUtils.buildVimPlugin rec {
   name = "vim-xsampa";
   src = fetchFromGitHub {

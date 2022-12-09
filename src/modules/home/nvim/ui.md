@@ -1,6 +1,20 @@
 # Neovim UI
 
-```vim "nvim-config" +=
+```nix modules/home/nvim/ui.nix
+{ config, pkgs, lib, ... }:
+{
+  programs.neovim = {
+    extraConfig = ''
+      <<<modules/home/nvim/ui-config>>>
+    '';
+    plugins = with pkgs; with vimPlugins; [
+      <<<modules/home/nvim/ui-plugins>>>
+    ];
+  };
+
+}
+```
+```vim "modules/home/nvim/ui-config" +=
 set termguicolors     " Enable gui colors
 set cursorline        " Enable highlighting of the current line
 set signcolumn=yes    " Always show signcolumn or it would frequently shift
@@ -17,7 +31,7 @@ set list              " Show tabs and trailing spaces
 
 Enable relative line numbers
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/ui-config" +=
 set number          " Show line numbers
 set relativenumber  " Show relative line numbers
 set numberwidth=1   " Minimum number width
@@ -25,7 +39,7 @@ set numberwidth=1   " Minimum number width
 
 Show relative numbers only when needed
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 vim-numbertoggle
 ```
 
@@ -41,7 +55,7 @@ require"mini.indentscope".setup()
 
 Use conceal to show pretty symbols 
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/ui-config" +=
 set conceallevel=2
 ```
 
@@ -49,7 +63,7 @@ set conceallevel=2
 
 Use Gruvbox light theme 
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 lush-nvim
 {
   plugin = gruvbox-nvim;
@@ -65,17 +79,17 @@ lush-nvim
 Use lualine as statusline, adding `lsp_progres`s and an indication on the
 indentation size and type.
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 lualine-lsp-progress
 {
   plugin = lualine-nvim;
   type = "lua";
   config = ''
-    <<<lualine-config>>>
+    <<<modules/home/nvim/ui-lualine>>>
   '';
 }
 ```
-```lua "lualine-config" +=
+```lua "modules/home/nvim/ui-lualine" +=
 require"lualine".setup {
   options = {
     section_separators = {
@@ -110,7 +124,7 @@ require"lualine".setup {
 
 Hide mode: it is already visible in lualine 
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim/ui-config" +=
 set noshowmode
 ```
 
@@ -118,17 +132,17 @@ set noshowmode
 
  View buffers as modern "tabs"
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 {
   plugin = bufferline-nvim;
   type = "lua";
   config = ''
-    <<<bufferline-config>>>
+    <<<modules/home/nvim/ui-bufferline>>>
   '';
 }
 ```
 
-```lua "bufferline-config" +=
+```lua "modules/home/nvim/ui-bufferline" +=
 require"bufferline".setup {
   options = {
     right_mouse_command = "vertical sbuffer %d",
@@ -151,7 +165,7 @@ require"bufferline".setup {
 
 ## Command and search completion
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 {
   plugin = wilder-nvim;
   config = "call wilder#setup({'modes': [':', '/', '?']})";
@@ -160,16 +174,16 @@ require"bufferline".setup {
 
 ## Toggle terminal
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 {
   plugin = toggleterm-nvim;
   type = "lua";
   config = ''
-    <<<toggleterm-config>>>
+    <<<modules/home/nvim/ui-toggleterm>>>
   '';
 }
 ```
-```lua "toggleterm-config" +=
+```lua "modules/home/nvim/ui-toggleterm" +=
 require"toggleterm".setup {
   open_mapping = [[<c-\>]],
   shade_terminals = false
@@ -199,7 +213,7 @@ vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
 
 Do not permit normal buffers to open in terminal, filetree, ... windows
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 {
   plugin = (vimUtils.buildVimPlugin {
     name = "stickybuf-nvim";
@@ -236,7 +250,7 @@ vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
 
 ## Smooth scroll
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim/ui-plugins" +=
 {
   plugin = neoscroll-nvim;
   type = "lua";

@@ -1,19 +1,28 @@
 # *TODO* Neovim key mappings
 
-```nix "nvim-plugins" +=
+TODO add options
+
+```nix modules/home/nvim/keymap.nix
+{ config, pkgs, lib, ... }:
 {
-  plugin = which-key-nvim;
-  type = "lua";
-  config = ''
-    local wk = require "which-key"
-    <<<nvim-which-key>>>
-  '';
+  programs.neovim = {
+    plugins = with pkgs; with vimPlugins; [
+      {
+        plugin = which-key-nvim;
+        type = "lua";
+        config = ''
+          local wk = require "which-key"
+          <<<modules/home/nvim/keymap-which-key>>>
+        '';
+      }
+    ];
+  };
 }
 ```
 
 Setup which-key window
 
-```lua "nvim-which-key" +=
+```lua "modules/home/nvim/keymap-which-key" +=
 wk.setup {
   spelling = {
     enabled = true,
@@ -28,7 +37,7 @@ wk.setup {
 
 Declare key bindings
 
-```lua "nvim-which-key" +=
+```lua "modules/home/nvim/keymap-which-key" +=
 local map = function (from, to, ...)
   return {
     from, to, ...,
@@ -38,18 +47,18 @@ local map = function (from, to, ...)
 end
 wk.register ( 
   {
-    <<<nvim-keybind-leader>>>
+    <<<modules/home/nvim/keymap-keybind-leader>>>
   },
   { prefix = "<leader>" }
 )
 wk.register {
-  <<<nvim-keybind>>>
+  <<<modules/home/nvim/keymap-keybind>>>
 }
 ```
 
 ## Find
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 f = {
   name = "Find",
   r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
@@ -68,7 +77,7 @@ f = {
 
 ## Code
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 c = {
   name = "Code",
   e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
@@ -77,7 +86,7 @@ c = {
 
 ## Git
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 g = {
   name = "Git",
   g = map ("<cmd>Lazygit<cr>", "Lazygit"),
@@ -86,7 +95,7 @@ g = {
 
 ## Reload
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 r = {
   name = "Reload",
   r = map ("<cmd>e<cr>", "File"),
@@ -96,7 +105,7 @@ r = {
 
 ## Table
 
-```lua "nvim-keybind-leader" +=
+```lua "modules/home/nvim/keymap-keybind-leader" +=
 t = {
   name = "Table",
   m = "Toggle table mode",
@@ -106,7 +115,7 @@ t = {
 
 ## Bufferline
 
-```lua "nvim-keybind" +=
+```lua "modules/home/nvim/keymap-keybind" +=
 ["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
 ["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
 ["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
@@ -117,7 +126,7 @@ gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
 
 ## LSP
 
-```lua "nvim-lsp-keybind" +=
+```lua "modules/home/nvim/keymap-lsp-keybind" +=
 g = {
   D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
   d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),

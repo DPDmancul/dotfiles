@@ -18,6 +18,11 @@ Managing the config with flakes allows to pin source versions.
           system = "x86_64-linux";
           users = [ "dpd-" ];
         }
+        {
+          host = "PereWork";
+          system = "x86_64-linux";
+          users = [ "dpd-" ];
+        }
       ];
       args = {
         inherit inputs;

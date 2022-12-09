@@ -5,44 +5,47 @@
 {
   imports = [
     ../xdg.nix
+    ./ui.nix
+    ./editing.nix
+    ./keymap.nix
+    ./lang.nix
     ./lsp.nix
   ];
 
   programs.neovim = {
     enable = true;
     extraConfig = ''
-      <<<nvim-config>>>
+      <<<modules/home/nvim-config>>>
     '';
     plugins = with pkgs; with vimPlugins; [
       plenary-nvim
       nvim-web-devicons
-      <<<nvim-plugins>>>
+      <<<modules/home/nvim-plugins>>>
     ];
   };
 
   appDefaultForMimes."nvim.desktop" = "text/plain";
 
-  # TODO remove
-  <<<nvim-main>>>
+  <<<modules/home/nvim-main>>>
 }
 ```
 
 Set space as leader
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 let g:mapleader = ' '
 ```
 
 Use return to enter command mode: it's easier to press than _:_
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 nnoremap <cr> :
 vnoremap <cr> :
 ```
 
 ## General
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 set mouse=a     " Enable mouse
 set lazyredraw  " Use lazy redraw
 set undofile    " Enable persistent undo
@@ -51,7 +54,7 @@ set hidden      " Allow buffers in background
 
 ## Search
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 set ignorecase " Enable case insensitive search
 set smartcase  " when using uppercase make case sensitive
 set incsearch  " Show search results while typing
@@ -61,20 +64,19 @@ set incsearch  " Show search results while typing
 
 Use telescope as fuzzy finder
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim-plugins" +=
 telescope-file-browser-nvim
 telescope-fzf-native-nvim
 telescope-symbols-nvim
-# telescope-termfinder
 {
   plugin = telescope-nvim;
   type = "lua";
   config = ''
-    <<<telescope-config>>>
+    <<<modules/home/nvim-telescope>>>
   '';
 }
 ```
-```lua "telescope-config" +=
+```lua "modules/home/nvim-telescope" +=
 local telescope = require "telescope"
 telescope.load_extension("file_browser")
 telescope.load_extension("projects")
@@ -86,7 +88,7 @@ telescope.load_extension("fzf")
 
 Git easy with ~~Magit~~ Lazygit
 
-```lua "toggleterm-config" +=
+```lua "modules/home/nvim/ui-toggleterm" +=
 local lazygit = require"toggleterm.terminal".Terminal:new {
   cmd = "lazygit",
   hidden = true,
@@ -110,18 +112,20 @@ vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
 
 Use NeoVim remote to open git message edit
 
-```nix "home-packages" +=
-neovim-remote
+```nix "modules/home/nvim-main" +=
+home.packages = with pkgs; [
+  neovim-remote
+];
 ```
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 let $GIT_EDITOR = 'nvr -cc split --remote-wait'
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 ```
 
 Show git signs
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim-plugins" +=
 {
   plugin = gitsigns-nvim;
   type = "lua";
@@ -131,7 +135,7 @@ Show git signs
 
 ## Spelling
 
-```vim "nvim-config" +=
+```vim "modules/home/nvim-config" +=
 set spell
 set spelllang=en,it     " Define spelling dictionaries
 set complete+=kspell    " Add spellcheck options for autocomplete
@@ -140,7 +144,7 @@ set spelloptions=camel  " Treat parts of camelCase words as separate words
 
 ## Projects
 
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim-plugins" +=
 {
   plugin = project-nvim;
   type = "lua";
@@ -151,7 +155,7 @@ set spelloptions=camel  " Treat parts of camelCase words as separate words
 ## Mini.nvim
 
 A collection of small useful plugins
-```nix "nvim-plugins" +=
+```nix "modules/home/nvim-plugins" +=
 {
   plugin = mini-nvim;
   type = "lua";

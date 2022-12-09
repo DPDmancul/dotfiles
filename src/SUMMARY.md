@@ -57,11 +57,15 @@
 - [PereBook]()
   - [System](./PereBook/system/index.md)
     - [Networking](./PereBook/system/net.md)
+    - [Services](./PereBook/system/services.md)
     - [Users](./PereBook/system/users.md)
   - [Home](./PereBook/home/index.md)
     - [Packages](./PereBook/home/packages.md)
 
 - [PereWork]()
-  - [System]()
-  - [Home]()
+  - [System](./PereWork/system/index.md)
+    - [Networking](./PereWork/system/net.md)
+    - [Users](./PereWork/system/users.md)
+  - [Home](./PereWork/home/index.md)
+    - [Packages](./PereWork/home/packages.md)
 

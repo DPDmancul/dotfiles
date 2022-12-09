@@ -8,9 +8,9 @@
   ];
 
   home.packages = with pkgs; [
-    <<<PereBook/home/packages/utils-packages>>>
+    <<<modules/home/packages/utils-packages>>>
   ];
-  <<<PereBook/home/packages/utils>>>
+  <<<modules/home/packages/utils>>>
 }
 ```
 
@@ -19,7 +19,7 @@
 File roller, when needing a terminal, doesn't look for kitty.
 So we trick it wrapping kitty as gnome-terminal.
 
-```nix "PereBook/home/packages/utils-packages" +=
+```nix "modules/home/packages/utils-packages" +=
 (symlinkJoin {
   name = "file-roller";
   paths = [ gnome.file-roller ];
@@ -31,17 +31,17 @@ So we trick it wrapping kitty as gnome-terminal.
 })
 ```
 
-```nix "PereBook/home/packages/utils" +=
+```nix "modules/home/packages/utils" +=
 appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
 ```
 
 ## PDF
 
-```nix "PereBook/home/packages/utils-packages" +=
+```nix "modules/home/packages/utils-packages" +=
 libsForQt5.okular
 ```
 
-```nix "PereBook/home/packages/utils" +=
+```nix "modules/home/packages/utils" +=
 appDefaultForMimes."okularApplication_pdf.desktop" = {
   application = "pdf";
   image = [ "vnd.djvu" "x.djvu" ];
@@ -50,21 +50,21 @@ appDefaultForMimes."okularApplication_pdf.desktop" = {
 
 ## Image viewer
 
-```nix "PereBook/home/packages/utils-packages" +=
+```nix "modules/home/packages/utils-packages" +=
 imv
 ```
 
-```nix "PereBook/home/packages/utils" +=
+```nix "modules/home/packages/utils" +=
 appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
 ```
 
 ## Video and audio player
 
-```nix "PereBook/home/packages/utils-packages" +=
+```nix "modules/home/packages/utils-packages" +=
 mpv
 ```
 
-```nix "PereBook/home/packages/utils" +=
+```nix "modules/home/packages/utils" +=
 appDefaultForMimes."umpv.desktop" = {
   video = [
     "avi" "msvideo" "x-msvideo"
@@ -85,7 +85,7 @@ appDefaultForMimes."umpv.desktop" = {
 
 ## Other utilities
 
-```nix "PereBook/home/packages/utils-packages" +=
+```nix "modules/home/packages/utils-packages" +=
 qalculate-gtk
 gnome.gnome-disk-utility
 baobab # disk usage
