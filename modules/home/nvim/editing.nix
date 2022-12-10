@@ -42,13 +42,6 @@
           require"nvim-autopairs".setup{}
         '';
       }
-      {
-        plugin = nvim-surround;
-        type = "lua";
-        config = ''
-          require"nvim-surround".setup{}
-        '';
-      }
       vim-table-mode
       nvim-ts-rainbow
       {
