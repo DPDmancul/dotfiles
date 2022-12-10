@@ -82,7 +82,7 @@ Use `f` and `t` across lines
 
 ## Comments
 
-```lua "modules/home/nvim/editing-nvim" +=
+```lua "mini-nvim" +=
 require"mini.comment".setup()
 ```
 
@@ -111,14 +111,8 @@ Autoclose parenthesis and quotes
 
 Easy add, remove and change parenthesis and quotes 
 
-```nix "modules/home/nvim/editing-plugins" +=
-{
-  plugin = nvim-surround;
-  type = "lua";
-  config = ''
-    require"nvim-surround".setup{}
-  '';
-}
+```lua "mini-nvim" +=
+require"mini.surround".setup()
 ```
 
 ## Table edit
