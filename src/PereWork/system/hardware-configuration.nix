@@ -2,34 +2,32 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
+
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_usb_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/c16c90b5-e254-4712-9942-e33c97271bbb";
+    { device = "/dev/disk/by-uuid/e621e78c-38cf-424c-a52b-8cb233aaf2f2";
       fsType = "btrfs";
       options = [ "subvol=nixos" ];
     };
 
-  boot.initrd.luks.devices."nixenc".device = "/dev/disk/by-uuid/09bc5fd9-6428-478c-b0dc-89cffae0e401";
-
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/FC6E-3186";
+    { device = "/dev/disk/by-uuid/5C4A-A6B4";
       fsType = "vfat";
     };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/d56c4d70-d444-445e-914b-d1331b617240"; }];
+    [ { device = "/dev/disk/by-uuid/d1bb1a04-86fb-4fa7-be11-aedbf51946db"; }
+    ];
 
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

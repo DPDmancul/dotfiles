@@ -5,11 +5,9 @@
 {
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
-    # TODO:
-    # common-pc-laptop-ssd
-    # common-pc-laptop-hdd
-    # common-cpu-intel
-    # common-gpu-intel
+    common-pc-laptop-ssd
+    common-cpu-intel
+    #lenovo-thinkpad-p50
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
