@@ -67,5 +67,6 @@
     - [Networking](./PereWork/system/net.md)
     - [Users](./PereWork/system/users.md)
   - [Home](./PereWork/home/index.md)
+    - [Sway](./PereWork/home/sway.md)
     - [Packages](./PereWork/home/packages.md)
 

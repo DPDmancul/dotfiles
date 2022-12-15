@@ -12,6 +12,7 @@
     #<<<PereWork/home/packages-packages>>>
     keepassxc
     unfree.dropbox-cli
+    unfree.jetbrains.rider
   ];
 
   #<<<PereWork/home/packages>>>

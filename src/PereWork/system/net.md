@@ -16,9 +16,8 @@ Per-interface useDHCP will be mandatory in the future, so this config replicates
 ```nix "PereWork/system/net" +=
 networking = {
   useDHCP = false;
-  # TODO:
-  # interfaces.enp7s0.useDHCP = true;
-  # interfaces.wlp6s0.useDHCP = true;
+  # interfaces.enp0s31f6.useDHCP = true;
+  # interfaces.wlp4s0.useDHCP = true;
 };
 ```
 

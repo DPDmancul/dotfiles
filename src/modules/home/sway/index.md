@@ -173,9 +173,9 @@ services.wlsunset = {
 ### Autorandr
 
 ```nix "modules/home/sway" +=
-services.kanshi = {
-  enable = true;
-};
+# services.kanshi = {
+#   enable = true;
+# };
 ```
 
 ### Move to another screen
