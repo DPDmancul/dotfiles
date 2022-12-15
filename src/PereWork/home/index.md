@@ -5,6 +5,7 @@
 {
   imports = [
     /${modules}/home
+    ./ssh.nix
     ./sway.nix
     ./packages.nix
   ];
