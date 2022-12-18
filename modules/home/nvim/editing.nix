@@ -32,6 +32,11 @@
         };
       })
       {
+        plugin = comment-nvim;
+        type = "lua";
+        config = ''require"Comment".setup()'';
+      }
+      {
         plugin = suda-vim;
         config = "let g:suda_smart_edit = 1";
       }

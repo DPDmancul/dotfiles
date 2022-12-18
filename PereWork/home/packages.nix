@@ -7,6 +7,8 @@
 
   home.packages = with pkgs; [
     #<<<PereWork/home/packages-packages>>>
+    keepassxc
+    unfree.dropbox-cli
   ];
 
   #<<<PereWork/home/packages>>>

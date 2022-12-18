@@ -2,11 +2,10 @@
 {
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
-    # TODO:
-    # common-pc-laptop-ssd
-    # common-pc-laptop-hdd
-    # common-cpu-intel
-    # common-gpu-intel
+    common-pc-laptop-ssd
+    common-cpu-intel
+    # lenovo-thinkpad-p50 # not imported to use nouveau drivers instead of proprietary ones
+    common-pc-laptop-acpi_call
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
@@ -15,5 +14,7 @@
     ./users.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+  hardware.enableAllFirmware = true;
   fileSystems."/".options = [ "compress=zstd" ];
 }

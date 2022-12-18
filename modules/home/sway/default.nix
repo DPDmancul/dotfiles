@@ -58,7 +58,7 @@
       };
       extraConfig = ''
         exec ${pkgs.copyq}/bin/copyq
-        exec ${pkgs.wpaperd}/bin/wpaperd
+        exec ${pkgs.unstable.wpaperd}/bin/wpaperd
       '';
     };
 
@@ -70,7 +70,7 @@
       wl-clipboard-x11
       copyq
       polkit_gnome
-      wpaperd
+      unstable.wpaperd
     ];
 
     home.sessionVariables.XDG_CURRENT_DESKTOP = "sway";
@@ -110,9 +110,9 @@
       latitude = "46"; # North
       longitude = "13"; # East
     };
-    services.kanshi = {
-      enable = true;
-    };
+    # services.kanshi = {
+    #   enable = true;
+    # };
     swayAddNamedKeybinds.moveToScreen = with lib; listToAttrs (concatMap ({ left, down, up, right }: [
         (nameValuePair "${modifier}+Ctrl+Shift+${left}" "move workspace to output left")
         (nameValuePair "${modifier}+Ctrl+Shift+${down}" "move workspace to output down")

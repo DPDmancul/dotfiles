@@ -2,8 +2,7 @@
 {
   networking = {
     useDHCP = false;
-    # TODO:
-    # interfaces.enp7s0.useDHCP = true;
-    # interfaces.wlp6s0.useDHCP = true;
+    # interfaces.enp0s31f6.useDHCP = true;
+    # interfaces.wlp4s0.useDHCP = true;
   };
 }

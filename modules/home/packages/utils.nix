@@ -19,7 +19,7 @@
     mpv
     qalculate-gtk
     gnome.gnome-disk-utility
-    baobab # disk usage
+    dua # disk usage
   ];
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
   appDefaultForMimes."okularApplication_pdf.desktop" = {

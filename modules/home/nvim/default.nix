@@ -66,7 +66,6 @@
             MiniBufremove.delete(tonumber(args.args), args.bang)
           end, { bang = true, addr = 'buffers', nargs = '?' })
           vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-          require"mini.comment".setup()
           require"mini.surround".setup()
         '';
       }
