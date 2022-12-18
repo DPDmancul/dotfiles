@@ -82,8 +82,12 @@ Use `f` and `t` across lines
 
 ## Comments
 
-```lua "mini-nvim" +=
-require"mini.comment".setup()
+```nix "modules/home/nvim/editing-plugins" +=
+{
+  plugin = comment-nvim;
+  type = "lua";
+  config = ''require"Comment".setup()'';
+}
 ```
 
 ## Edit with sudo

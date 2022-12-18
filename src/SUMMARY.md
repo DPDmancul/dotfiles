@@ -24,6 +24,7 @@
       - [Kitty (terminal emulator)](./modules/home/kitty.md)
       - [Fish (shell)](./modules/home/fish.md)
       - [Starship](./modules/home/starship.md)
+      - [Zoxide](./modules/home/zoxide.md)
     - [Neovim](./modules/home/nvim/index.md)
       - [UI](./modules/home/nvim/ui.md)
       - [Editing](./modules/home/nvim/editing.md)
@@ -69,5 +70,6 @@
   - [Home](./PereWork/home/index.md)
     - [SSH](./PereWork/home/ssh.md)
     - [Sway](./PereWork/home/sway.md)
+    - [Rider](./PereWork/home/rider.md)
     - [Packages](./PereWork/home/packages.md)
 

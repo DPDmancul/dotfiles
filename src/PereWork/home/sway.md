@@ -1,4 +1,6 @@
-# User packages
+# Sway
+
+Config displays position
 
 ```nix PereWork/home/sway.nix
 { config, pkgs, lib, ... }:

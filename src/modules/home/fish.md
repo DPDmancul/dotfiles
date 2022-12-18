@@ -5,6 +5,7 @@
 {
   imports = [
     ./starship.nix
+    ./zoxide.nix
   ];
 
   programs.fish = {

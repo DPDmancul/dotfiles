@@ -88,6 +88,6 @@ appDefaultForMimes."umpv.desktop" = {
 ```nix "modules/home/packages/utils-packages" +=
 qalculate-gtk
 gnome.gnome-disk-utility
-baobab # disk usage
+dua # disk usage
 ```
 

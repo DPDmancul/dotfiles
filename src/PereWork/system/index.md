@@ -7,7 +7,7 @@
     common-pc-laptop
     common-pc-laptop-ssd
     common-cpu-intel
-    # lenovo-thinkpad-p50
+    # lenovo-thinkpad-p50 # not imported to use nouveau drivers instead of proprietary ones
     common-pc-laptop-acpi_call
   ] ++ [
     /${modules}/system
@@ -17,14 +17,18 @@
     ./users.nix
   ];
 
-  nixpkgs.config.allowUnfree = true; # For hardware config
-  hardware.enableAllFirmware = true; # For wireless
-
   <<<PereWork/system>>>
 }
 ```
 
-Enable unfree drivers
+Enable all wireless drivers. `allowUnfree` is needed because `enableAllFirmware` assert it to be true, but being this a flake it doesn't really work
+
+```nix "PereWork/system" +=
+nixpkgs.config.allowUnfree = true;
+hardware.enableAllFirmware = true;
+```
+
+now really enable unfree drivers
 
 ```nix "unfree-extra" +=
 "broadcom-bt-firmware"
