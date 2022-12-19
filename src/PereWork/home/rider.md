@@ -30,6 +30,7 @@ source ~/.config/nvim/init-home-manager.vim
 ```vim "PereWork/home/rider-ideavimrc" +=
 set ideajoin # `J` to join lines
 set ideaput  # clipboard integration
+set showmode
 ```
 
 ### Plugins
