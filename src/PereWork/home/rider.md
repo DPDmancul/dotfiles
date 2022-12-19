@@ -25,6 +25,12 @@ Source vim config
 source ~/.config/nvim/init-home-manager.vim
 ```
 
+Emulate visual put without changing register, which is inexplicably missing from ideavim
+
+```vim "PereWork/home/rider-ideavimrc" +=
+vnoremap P "_c<C-R>*<esc>
+```
+
 ### Settings
 
 ```vim "PereWork/home/rider-ideavimrc" +=
