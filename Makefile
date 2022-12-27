@@ -41,4 +41,5 @@ $(BUILD)/%:
 	git submodule update --init --recursive
 	chmod +x -R hooks
 	ln -srf hooks/* "$$(git rev-parse --git-path hooks)"
+	git config submodule.recurse true
 
