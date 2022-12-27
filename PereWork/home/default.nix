@@ -2,6 +2,7 @@
 {
   imports = [
     /${modules}/home
+    ./git.nix
     ./ssh.nix
     ./sway.nix
     ./rider.nix

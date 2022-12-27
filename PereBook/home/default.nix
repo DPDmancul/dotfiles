@@ -3,7 +3,6 @@
   imports = [
     /${modules}/home
     ./packages.nix
-    ../../PereWork/home/rider.nix # To Test
   ];
 
   home.packages = with pkgs; [
