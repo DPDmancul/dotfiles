@@ -17,6 +17,10 @@
 ```nix "modules/home/git-config" +=
 userName = "DPDmancul";
 userEmail = "davide.peressoni@tuta.io";
+signing = {
+  key = "694FC712B317CF9004114DC4EC1145E786990CED";
+  signByDefault = true;
+};
 ```
 
 ## CR/LF
