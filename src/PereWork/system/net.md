@@ -7,17 +7,21 @@
 }
 ```
 
-## DHCP
+## Bond interfaces
 
-The global useDHCP flag is deprecated, therefore explicitly set to false here.
+Bond ethernet and wifi to give precedence to the former
 
-Per-interface useDHCP will be mandatory in the future, so this config replicates the default behaviour.
+TODO: make it work with NixOs config. Now it works via nmtui config
 
 ```nix "PereWork/system/net" +=
-networking = {
-  useDHCP = false;
-  # interfaces.enp0s31f6.useDHCP = true;
-  # interfaces.wlp4s0.useDHCP = true;
-};
+# networking.bonds.bond0 = {
+#   interfaces = [ "enp0s31f6" "wlp4s0" ];
+#   driverOptions = {
+#     miimon = "100";
+#     mode = "active-backup";
+#     primary = "enp0s31f6";
+#   };
+# };
+# systemd.network.networks.enp0s31f6.networkConfig.PrimarySlave = true;
 ```
 
