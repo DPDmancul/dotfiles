@@ -1,8 +1,12 @@
 { config, pkgs, lib, ... }:
 {
-  networking = {
-    useDHCP = false;
-    # interfaces.enp0s31f6.useDHCP = true;
-    # interfaces.wlp4s0.useDHCP = true;
-  };
+  # networking.bonds.bond0 = {
+  #   interfaces = [ "enp0s31f6" "wlp4s0" ];
+  #   driverOptions = {
+  #     miimon = "100";
+  #     mode = "active-backup";
+  #     primary = "enp0s31f6";
+  #   };
+  # };
+  # systemd.network.networks.enp0s31f6.networkConfig.PrimarySlave = true;
 }
