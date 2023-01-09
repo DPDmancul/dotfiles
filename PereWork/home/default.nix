@@ -5,6 +5,7 @@
     ./git.nix
     ./ssh.nix
     ./sway.nix
+    ./firefox.nix
     ./rider.nix
     ./packages.nix
   ];
