@@ -11,7 +11,7 @@ all: install doc ;
 build: $(BUILD) remove-tangled
 	cd $(BUILD) && lmt $$(find ../ -type f -name '*.md')
 	cd "$(SRC)" && find . -type f -not -name '*.md' -exec cp {} ../$(BUILD)/{} \;
-	cp -r assets $(BUILD)/
+	cp -r assets .sops.yaml $(BUILD)/
 	sed -i "s*<<<pwd>>>*$$PWD*" $(BUILD)/flake.nix
 
 doc:
@@ -23,7 +23,7 @@ clean: remove-tangled
 
 .PHONY: remove-tangled
 remove-tangled:
-	rm -rf $(BUILD)/assets $(BUILD)/pkgs
+	rm -rf $(BUILD)/assets $(BUILD)/.sops.yaml $(BUILD)/pkgs
 	rm -rf $(BUILD)/installation.sh
 	cd "$(SRC)" && find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf ../$(BUILD)/{} ../$(BUILD)/{}.nix \;
 

@@ -10,7 +10,7 @@ Managing the config with flakes allows to pin source versions.
     <<<flake-inputs>>>
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, sops-nix, ... }:
     let
       machines = [
         {
@@ -27,7 +27,6 @@ Managing the config with flakes allows to pin source versions.
       args = {
         inherit inputs;
         dotfiles = "<<<pwd>>>";
-        secrets = import ./secrets.nix;
         assets = ./assets;
         modules = ./modules;
       };
@@ -44,31 +43,30 @@ Managing the config with flakes allows to pin source versions.
 ### Channels
 
 ```nix "flake-inputs" +=
-stable.url = "github:nixos/nixpkgs/nixos-22.11";
-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-master.url = "github:nixos/nixpkgs/master";
-fallback.url = "github:nixos/nixpkgs/nixos-22.11-small";
+stable.url = github:nixos/nixpkgs/nixos-22.11;
+unstable.url = github:nixos/nixpkgs/nixos-unstable;
+master.url = github:nixos/nixpkgs/master;
+fallback.url = github:nixos/nixpkgs/nixos-22.11-small;
 nixpkgs.follows = "stable";
 ```
 
 ### Nix User Repository
 
 ```nix "flake-inputs" +=
-nur.url = "github:nix-community/NUR";
+nur.url = github:nix-community/NUR;
 ```
 
 ### Utilities
 
-Home manager, flake utils, hardware config and color schemes
-
 ```nix "flake-inputs" +=
 home-manager = {
-  url = "github:nix-community/home-manager/release-22.11";
+  url = github:nix-community/home-manager/release-22.11;
   inputs.nixpkgs.follows = "nixpkgs";
 };
-hardware.url = "github:nixos/nixos-hardware";
-stylix-colors.url = "github:danth/stylix";
-nix2lua.url = "git+https://git.pleshevski.ru/mynix/nix2lua";
+hardware.url = github:nixos/nixos-hardware;
+sops-nix.url = github:Mic92/sops-nix;
+stylix-colors.url = github:danth/stylix;
+nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
 ```
 
 ## Outputs
@@ -131,6 +129,7 @@ nixosConfigurations = builtins.listToAttrs (map
         inherit (machine) system;
         pkgs = legacyPackages.${machine.system};
         modules = [
+          sops-nix.nixosModules.sops
           { networking.hostName = machine.host; }
           ./${machine.host}/system
         ];

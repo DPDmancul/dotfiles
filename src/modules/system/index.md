@@ -5,7 +5,7 @@ Here is collected the common config for all systems.
 In this folder there are also some useful modules used only by some system configs.
 
 ```nix modules/system/default.nix
-{ config, pkgs, users, lib, ... }:
+{ config, pkgs, users, lib, assets, ... }:
 {
   imports = [
     ./flakes.nix
@@ -16,6 +16,9 @@ In this folder there are also some useful modules used only by some system confi
     ./services/print_scan.nix
     ./packages.nix
   ];
+
+  sops.defaultSopsFile = /${assets}/secrets/secrets.yaml;
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   users.users = lib.genAttrs users (user: {
     extraGroups = [

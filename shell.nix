@@ -1,6 +1,7 @@
 { pkgs ? import <nixpkgs> { } }:
 let
-  flake-shell = import ./flake/shell.nix { inherit pkgs; };
+  flakeShellPath = ./flake/shell.nix;
+  flakeShell = import flakeShellPath { inherit pkgs; };
   lock = builtins.fromJSON (builtins.readFile ./flake/flake.lock);
   nur = import
     (builtins.fetchTarball {
@@ -10,13 +11,20 @@ let
     {
       inherit pkgs;
     };
-in
-flake-shell.overrideAttrs (oldAttrs: {
-  nativeBuildInputs = with pkgs; oldAttrs.nativeBuildInputs ++ [
+  nativeBuildInputs = with pkgs; [
     gnused
     jq
     mdbook
     nur.repos.hutzdog.lmt
   ];
-})
+in
+if builtins.pathExists flakeShellPath then
+  flakeShell.overrideAttrs
+    (oldAttrs: {
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ nativeBuildInputs;
+    })
+else
+  pkgs.mkShell {
+    inherit nativeBuildInputs;
+  }
 
