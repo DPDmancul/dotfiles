@@ -1,4 +1,4 @@
-{ config, pkgs, assets, secrets, lib, ... }:
+{ config, pkgs, assets, lib, ... }:
 {
   networking = {
     useDHCP = false;
@@ -11,11 +11,14 @@
   };
   networking.enableIPv6 = false;
 
+  sops.secrets."vpn/openvpn-credentials-nordvpn" = {};
   services.openvpn.servers = {
     vpn  = {
-      config = "config ${assets}/it238.nordvpn.com.udp.ovpn";
+      config = ''
+        config ${assets}/it238.nordvpn.com.udp.ovpn
+        auth-user-pass ${config.sops.secrets."vpn/openvpn-credentials-nordvpn".path}
+      '';
       updateResolvConf = true;
-      authUserPass = secrets.vpn;
     };
   };
 }

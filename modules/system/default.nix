@@ -1,4 +1,4 @@
-{ config, pkgs, users, lib, ... }:
+{ config, pkgs, users, lib, assets, ... }:
 {
   imports = [
     ./flakes.nix
@@ -9,6 +9,9 @@
     ./services/print_scan.nix
     ./packages.nix
   ];
+
+  sops.defaultSopsFile = /${assets}/secrets/secrets.yaml;
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   users.users = lib.genAttrs users (user: {
     extraGroups = [

@@ -1,0 +1,7 @@
+keys:
+  - &main age164dzxm72md5rw2hteg9gysaev56usm7sqdfp5r9jeqng8ghqzvnq2advvx
+creation_rules:
+  - path_regex: assets/secrets/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *main

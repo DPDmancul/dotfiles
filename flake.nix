@@ -2,22 +2,23 @@
   description = "DPD- NixOs config";
 
   inputs = {
-    stable.url = "github:nixos/nixpkgs/nixos-22.11";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    master.url = "github:nixos/nixpkgs/master";
-    fallback.url = "github:nixos/nixpkgs/nixos-22.11-small";
+    stable.url = github:nixos/nixpkgs/nixos-22.11;
+    unstable.url = github:nixos/nixpkgs/nixos-unstable;
+    master.url = github:nixos/nixpkgs/master;
+    fallback.url = github:nixos/nixpkgs/nixos-22.11-small;
     nixpkgs.follows = "stable";
-    nur.url = "github:nix-community/NUR";
+    nur.url = github:nix-community/NUR;
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = github:nix-community/home-manager/release-22.11;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hardware.url = "github:nixos/nixos-hardware";
-    stylix-colors.url = "github:danth/stylix";
-    nix2lua.url = "git+https://git.pleshevski.ru/mynix/nix2lua";
+    hardware.url = github:nixos/nixos-hardware;
+    sops-nix.url = github:Mic92/sops-nix;
+    stylix-colors.url = github:danth/stylix;
+    nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, ... }:
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, sops-nix, ... }:
     let
       machines = [
         {
@@ -34,7 +35,6 @@
       args = {
         inherit inputs;
         dotfiles = "/home/dpd-/.dotfiles";
-        secrets = import ./secrets.nix;
         assets = ./assets;
         modules = ./modules;
       };
@@ -74,6 +74,9 @@
           ];
           config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
+              "brscan4"
+              "brscan4-etc-files"
+              "brother-udev-rule-type1"
               "broadcom-bt-firmware"
               "b43-firmware"
               "xow_dongle-firmware"
@@ -81,9 +84,6 @@
               "facetimehd-calibration"
               # "nvidia-x11"
               # "nvidia-settings"
-              "brscan4"
-              "brscan4-etc-files"
-              "brother-udev-rule-type1"
             ];
         }
       );
@@ -95,6 +95,7 @@
               inherit (machine) system;
               pkgs = legacyPackages.${machine.system};
               modules = [
+                sops-nix.nixosModules.sops
                 { networking.hostName = machine.host; }
                 ./${machine.host}/system
               ];
