@@ -71,6 +71,7 @@
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)
     - [Sway](./PereWork/home/sway.md)
+    - [Firefox](./PereWork/home/firefox.md)
     - [Rider](./PereWork/home/rider.md)
     - [Packages](./PereWork/home/packages.md)
 
