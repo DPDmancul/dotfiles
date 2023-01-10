@@ -12,6 +12,7 @@
     ./net.nix
     /${modules}/system/sway.nix
     ./users.nix
+    ./docker.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
