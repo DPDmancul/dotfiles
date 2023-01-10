@@ -67,6 +67,7 @@
   - [System](./PereWork/system/index.md)
     - [Networking](./PereWork/system/net.md)
     - [Users](./PereWork/system/users.md)
+    - [Docker](./PereWork/system/docker.md)
   - [Home](./PereWork/home/index.md)
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)

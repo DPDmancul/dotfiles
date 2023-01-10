@@ -15,6 +15,7 @@
     ./net.nix
     /${modules}/system/sway.nix
     ./users.nix
+    ./docker.nix
   ];
 
   <<<PereWork/system>>>
