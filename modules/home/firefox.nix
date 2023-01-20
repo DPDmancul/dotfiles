@@ -22,7 +22,7 @@
           "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
           # "vim-vixen@i-beam.org" = ext "vim-vixen";
           "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-          "arklove@qq.com" = ext "git-master";
+          # "arklove@qq.com" = ext "git-master";
           "proxydocile@unipd.it"= {
             installation_mode = "force_installed";
             install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
