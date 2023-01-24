@@ -97,6 +97,7 @@ shellAliases = {
   mkcd = ''mkdir -p "$argv"; and cd'';
   # cat = "bat";
   ll = "lsd -l";
+  dc = "docker-compose";
 };
 ```
 
