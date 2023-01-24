@@ -8,7 +8,13 @@
   ];
 
   home.packages = with pkgs; [
-    nodePackages.npm
+    nodejs
+  ];
+
+  home.sessionVariables.PREFIX =
+    "${config.home.homeDirectory}/.npm-global";
+  home.sessionPath = [
+    config.home.sessionVariables.PREFIX
   ];
 
   <<<modules/home/packages/developing/node>>>
