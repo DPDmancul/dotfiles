@@ -5,7 +5,13 @@
   ];
 
   home.packages = with pkgs; [
-    nodePackages.npm
+    nodejs
+  ];
+
+  home.sessionVariables.PREFIX =
+    "${config.home.homeDirectory}/.npm-global";
+  home.sessionPath = [
+    config.home.sessionVariables.PREFIX
   ];
 
   # You must manually install `npm i -g eslint`
