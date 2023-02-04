@@ -10,6 +10,7 @@
     #<<<PereWork/home/packages-packages>>>
     keepassxc
     unfree.dropbox-cli
+    unfree.postman
   ];
 
   #<<<PereWork/home/packages>>>
