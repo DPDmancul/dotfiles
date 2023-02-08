@@ -1,4 +1,4 @@
-{ config, pkgs, lib, dotfiles, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
     ./waybar.nix
@@ -67,7 +67,7 @@
       swaylock-effects
       sway-contrib.grimshot
       wl-clipboard
-      wl-clipboard-x11
+      # wl-clipboard-x11
       copyq
       polkit_gnome
       unstable.wpaperd
@@ -167,7 +167,7 @@
     swayAddKeybinds."${modifier}+q" = "exec copyq toggle";
     xdg.configFile."wpaperd/output.conf".text = ''
       [default]
-      path = "${dotfiles}/flake/wallpapers"
+      path = "${inputs.wallpapers}"
       duration = "1m"
     '';
     qt = {

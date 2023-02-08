@@ -17,7 +17,7 @@
     libsForQt5.okular
     imv
     mpv
-    qalculate-gtk
+    gnome.gnome-calculator #qalculate-gtk
     gnome.gnome-disk-utility
     dua # disk usage
   ];

@@ -240,7 +240,8 @@
         "sops-nix": "sops-nix",
         "stable": "stable",
         "stylix-colors": "stylix-colors",
-        "unstable": "unstable"
+        "unstable": "unstable",
+        "wallpapers": "wallpapers"
       }
     },
     "sops-nix": {
@@ -358,6 +359,22 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1656339717,
+        "narHash": "sha256-d5x2wM5gFvO3aR1exjFRHhzcNEXTR7VzUYDdYXBl0CI=",
+        "owner": "DPDmancul",
+        "repo": "dotfiles-wallpapers",
+        "rev": "c53efad749e18886619e50bb9348d963022174b8",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "DPDmancul",
+        "repo": "dotfiles-wallpapers",
+        "type": "gitlab"
       }
     }
   },

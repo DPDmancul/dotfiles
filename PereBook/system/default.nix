@@ -13,6 +13,7 @@
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix
     /${modules}/system/sway.nix
+    /${modules}/system/gnome.nix
     ./users.nix
   ];
 
