@@ -14,6 +14,7 @@
     ./hardware-configuration.nix
     ./net.nix
     /${modules}/system/sway.nix
+    /${modules}/system/gnome.nix
     ./users.nix
     ./docker.nix
   ];

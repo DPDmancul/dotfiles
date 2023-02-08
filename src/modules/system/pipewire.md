@@ -5,6 +5,7 @@ Use PipeWire as multimedia framework
 ```nix modules/system/services/pipewire.nix
 { config, pkgs, lib, ... }:
 {
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

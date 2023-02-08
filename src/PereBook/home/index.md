@@ -5,6 +5,7 @@
 {
   imports = [
     /${modules}/home
+    /${modules}/home/gnome
     ./packages.nix
   ];
 

@@ -30,7 +30,7 @@ unstable.wpaperd
 ```nix "modules/home/sway" +=
 xdg.configFile."wpaperd/output.conf".text = ''
   [default]
-  path = "${dotfiles}/flake/wallpapers"
+  path = "${inputs.wallpapers}"
   duration = "1m"
 '';
 ```

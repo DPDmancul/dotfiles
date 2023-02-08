@@ -1,7 +1,7 @@
 # Sway
 
 ```nix modules/home/sway/default.nix
-{ config, pkgs, lib, dotfiles, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
     ./waybar.nix
@@ -275,7 +275,7 @@ swayAddNamedKeybinds.shortcuts = {
 
 ```nix "modules/home/sway-packages" +=
 wl-clipboard
-wl-clipboard-x11
+# wl-clipboard-x11
 copyq
 ```
 
