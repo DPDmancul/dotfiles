@@ -4,9 +4,10 @@
     ./flakes.nix
     ./boot.nix
     ./i18n.nix
-    ./services.nix
+    ./services
     ./services/pipewire.nix
     ./services/print_scan.nix
+    ./lightdm.nix
     ./packages.nix
   ];
 

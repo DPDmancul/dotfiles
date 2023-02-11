@@ -2,7 +2,8 @@
 {
   imports = [
     /${modules}/home
-    /${modules}/home/gnome
+    /${modules}/home/wm/sway.nix
+    /${modules}/home/wm/i3.nix
     ./packages.nix
   ];
 

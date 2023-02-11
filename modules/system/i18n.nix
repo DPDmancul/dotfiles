@@ -8,4 +8,6 @@
       LC_MONETARY = "fur_IT";  # €
     };
   };
+
+  services.xserver.layout = "eu";
 }
