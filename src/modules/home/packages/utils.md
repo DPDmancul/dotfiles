@@ -86,7 +86,7 @@ appDefaultForMimes."umpv.desktop" = {
 ## Other utilities
 
 ```nix "modules/home/packages/utils-packages" +=
-gnome.gnome-calculator #qalculate-gtk
+qalculate-gtk
 gnome.gnome-disk-utility
 dua # disk usage
 ```

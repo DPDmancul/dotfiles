@@ -11,7 +11,7 @@ In this folder there are also some useful modules used only by some user configs
     ./kitty.nix
     ./fish.nix
     ./nvim
-    ./sway
+    ./theme.nix
     ./firefox.nix
     ./xdg.nix
     ./git.nix
@@ -29,6 +29,14 @@ In this folder there are also some useful modules used only by some user configs
 ```nix "modules/home" +=
 home.username = user;
 home.homeDirectory = "/home/${config.home.username}";
+```
+
+## Keyboard
+
+Enable Num Lock at startup
+
+```nix "modules/home" +=
+xsession.numlock.enable = true;
 ```
 
 ## Dots utility

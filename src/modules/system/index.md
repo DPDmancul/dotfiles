@@ -11,9 +11,10 @@ In this folder there are also some useful modules used only by some system confi
     ./flakes.nix
     ./boot.nix
     ./i18n.nix
-    ./services.nix
+    ./services
     ./services/pipewire.nix
     ./services/print_scan.nix
+    ./lightdm.nix
     ./packages.nix
   ];
 

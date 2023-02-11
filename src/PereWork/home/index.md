@@ -5,6 +5,7 @@
 {
   imports = [
     /${modules}/home
+    /${modules}/home/wm/i3.nix
     /${modules}/home/gnome
     ./git.nix
     ./ssh.nix

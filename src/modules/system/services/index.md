@@ -1,6 +1,6 @@
 # Services
 
-```nix modules/system/services.nix
+```nix modules/system/services/default.nix
 { config, pkgs, lib, ... }:
 {
   <<<modules/system/services>>>
