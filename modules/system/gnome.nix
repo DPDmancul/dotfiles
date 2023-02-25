@@ -8,7 +8,6 @@
     };
     desktopManager.gnome.enable = true;
   };
-  programs.dconf.enable = true;
 
   services.gnome.core-utilities.enable = false;
   services.xserver.desktopManager.xterm.enable = false;

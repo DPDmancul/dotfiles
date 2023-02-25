@@ -8,6 +8,7 @@
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./lightdm.nix
+    ./i3.nix
     ./packages.nix
   ];
 
@@ -28,6 +29,7 @@
   boot.supportedFilesystems = [ "ntfs" ];
   networking.networkmanager.enable = true;
   users.mutableUsers = false;
+  programs.dconf.enable = true;
   time.timeZone = "Europe/Rome";
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })

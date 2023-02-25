@@ -59,6 +59,22 @@
         "type": "github"
       }
     },
+    "feh-random-background": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1677356925,
+        "narHash": "sha256-ti1kmGRSD/xX88o2epEoinMemtF7fWNbP4GaBMsq+2o=",
+        "owner": "DPDmancul",
+        "repo": "feh-random-background",
+        "rev": "4f68e13a0215aea89c7d0ce94da3d8fe9cd6d890",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DPDmancul",
+        "repo": "feh-random-background",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1667395993,
@@ -228,6 +244,7 @@
     "root": {
       "inputs": {
         "fallback": "fallback",
+        "feh-random-background": "feh-random-background",
         "flake-utils": "flake-utils",
         "hardware": "hardware",
         "home-manager": "home-manager",

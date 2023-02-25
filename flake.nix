@@ -16,6 +16,10 @@
     sops-nix.url = github:Mic92/sops-nix;
     stylix-colors.url = github:danth/stylix;
     nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
+    feh-random-background = {
+      url = github:DPDmancul/feh-random-background;
+      flake = false;
+    };
     wallpapers = {
       url = gitlab:DPDmancul/dotfiles-wallpapers;
       flake = false;

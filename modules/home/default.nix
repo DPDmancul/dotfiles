@@ -4,6 +4,7 @@
     ./kitty.nix
     ./fish.nix
     ./nvim
+    ./i3
     ./theme.nix
     ./firefox.nix
     ./xdg.nix

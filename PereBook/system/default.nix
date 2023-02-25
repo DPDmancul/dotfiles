@@ -12,8 +12,6 @@
     ./net.nix
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix
-    /${modules}/system/sway.nix
-    /${modules}/system/i3.nix
     ./users.nix
   ];
 

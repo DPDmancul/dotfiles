@@ -10,8 +10,6 @@
     /${modules}/system
     ./hardware-configuration.nix
     ./net.nix
-    /${modules}/system/i3.nix
-    /${modules}/system/gnome.nix
     ./users.nix
     ./docker.nix
   ];

@@ -95,6 +95,9 @@
         .browser-toolbar:not(.titlebar-color) {
           background-color: #f9f9fa65 !important;
         }
+        #webrtcIndicator {
+          display: none;
+        }
       '';
     };
   };
