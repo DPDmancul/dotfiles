@@ -5,11 +5,9 @@
 {
   imports = [
     /${modules}/home
-    /${modules}/home/wm/i3.nix
-    /${modules}/home/gnome
     ./git.nix
     ./ssh.nix
-    ./sway.nix
+    ./sway.nix # TODO to x11
     ./firefox.nix
     ./rider.nix
     ./packages.nix

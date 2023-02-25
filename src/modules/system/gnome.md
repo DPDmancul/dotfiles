@@ -13,7 +13,6 @@ Enable Gnome and GDM with X11 <!-- and Wayland -->.
     };
     desktopManager.gnome.enable = true;
   };
-  programs.dconf.enable = true;
 
   <<<modules/system/gnome>>>
 }

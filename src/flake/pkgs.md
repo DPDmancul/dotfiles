@@ -10,3 +10,4 @@ Load all custom packages as overlay.
       (concatMap (match "(.*)\.nix") (attrNames (readDir ./.))))
     (pkg: pkgs.callPackage ./${pkg}.nix { })
 ```
+

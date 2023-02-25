@@ -5,8 +5,6 @@
 {
   imports = [
     /${modules}/home
-    /${modules}/home/wm/sway.nix
-    /${modules}/home/wm/i3.nix
     ./packages.nix
   ];
 

@@ -232,3 +232,10 @@ Transparent bar
 }
 ```
 
+Disable annoying sharing indicator
+
+```css "modules/home/fiefox-css" +=
+#webrtcIndicator {
+  display: none;
+}
+```

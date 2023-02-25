@@ -11,6 +11,7 @@ In this folder there are also some useful modules used only by some user configs
     ./kitty.nix
     ./fish.nix
     ./nvim
+    ./i3
     ./theme.nix
     ./firefox.nix
     ./xdg.nix

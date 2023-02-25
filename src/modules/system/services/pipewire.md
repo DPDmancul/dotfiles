@@ -11,7 +11,6 @@ Use PipeWire as multimedia framework
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    #jack.enable = true;
   };
   <<<modules/system/services/pipewire>>>
 }

@@ -8,7 +8,7 @@ GUI for easily manage settings.
   home.packages = with pkgs; [
     pavucontrol # audio
     pamixer
-    wdisplays   # screen
+    arandr      # screen
   ];
 }
 ```

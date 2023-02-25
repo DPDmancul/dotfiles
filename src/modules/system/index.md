@@ -15,6 +15,7 @@ In this folder there are also some useful modules used only by some system confi
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./lightdm.nix
+    ./i3.nix
     ./packages.nix
   ];
 
@@ -71,6 +72,12 @@ Users must follow this config and cannot be modified outside it
 
 ```nix "modules/system" +=
 users.mutableUsers = false;
+```
+
+Enable dconf
+
+```nix "modules/system" +=
+programs.dconf.enable = true;
 ```
 
 ## Timezone
