@@ -62,15 +62,15 @@
     "feh-random-background": {
       "flake": false,
       "locked": {
-        "lastModified": 1677356925,
-        "narHash": "sha256-ti1kmGRSD/xX88o2epEoinMemtF7fWNbP4GaBMsq+2o=",
-        "owner": "DPDmancul",
+        "lastModified": 1677382200,
+        "narHash": "sha256-sleNDucjlvc+qknUeIf+SoPSuaSlAX3bZtw7KvlyQUE=",
+        "owner": "KoviRobi",
         "repo": "feh-random-background",
-        "rev": "4f68e13a0215aea89c7d0ce94da3d8fe9cd6d890",
+        "rev": "33659d5de598ba41ad042edc0daabd3efa12b6cc",
         "type": "github"
       },
       "original": {
-        "owner": "DPDmancul",
+        "owner": "KoviRobi",
         "repo": "feh-random-background",
         "type": "github"
       }

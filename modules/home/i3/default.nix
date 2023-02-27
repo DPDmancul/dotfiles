@@ -32,7 +32,7 @@ in
     };
   };
   imports = [
-    ./i3bar.nix
+    ./polybar.nix
     (inputs.feh-random-background + /home-manager-service.nix)
   ];
 
