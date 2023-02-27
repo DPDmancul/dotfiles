@@ -34,7 +34,7 @@
       - [Language support](./modules/home/nvim/lang.md)
       - [LSP](./modules/home/nvim/lsp.md)
     - [i3](./modules/home/i3/index.md)
-      - [i3bar](./modules/home/i3/i3bar.md)
+      - [Polybar](./modules/home/i3/polybar.md)
     - [Theme](./modules/home/theme.md)
     - [Gnome](./modules/home/gnome/index.md)
     - [Firefox](./modules/home/firefox.md)

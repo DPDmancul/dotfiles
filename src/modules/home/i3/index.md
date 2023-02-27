@@ -44,7 +44,7 @@ functional programming techniques to build them.
 
 ```nix modules/home/i3/default.nix +=
   imports = [
-    ./i3bar.nix
+    ./polybar.nix
     <<<modules/home/i3-imports>>>
   ];
 
@@ -369,7 +369,7 @@ Use random backgrounds with feh
 
 ```nix "flake-inputs" +=
 feh-random-background = {
-  url = github:DPDmancul/feh-random-background;
+  url = github:KoviRobi/feh-random-background;
   flake = false;
 };
 wallpapers = {
