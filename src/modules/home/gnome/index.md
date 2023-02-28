@@ -69,12 +69,6 @@ Hide title bar
 "org/gnome/terminal/legacy/settings".headerbar = false; # TODO
 ```
 
-Hide window buttons
-
-```nix "modules/home/gnome-dconf" +=
-"org/gnome/desktop/wm/preferences".button-layout = "";
-```
-
 **TODO** import from sway settings cursors, icons and background
 
 

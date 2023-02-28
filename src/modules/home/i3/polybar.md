@@ -6,6 +6,7 @@ Use polybar instead of i3bar
 { config, pkgs, lib, ... }: let
   # TODO create my lib
   concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
+  barName = "top";
 in
 {
   xsession.windowManager.i3.config.bars = [];
@@ -13,13 +14,12 @@ in
   services.polybar = {
     enable = true;
     package = pkgs.polybarFull;
-    script = "polybar top &"; # TODO
     settings = rec {
       <<<modules/home/i3/polybar-settings>>>
     };
   };
 
- # <<<modules/home/i3/polybar>>>
+ <<<modules/home/i3/polybar>>>
 }
 ```
 
@@ -49,7 +49,9 @@ colors = {
 ## Top bar
 
 ```nix "modules/home/i3/polybar-settings" +=
-"bar/top" = {
+"bar/${barName}" = {
+  <<<modules/home/i3/polybar-settings-bar>>>
+
   background = "\${colors.background}";
   foreground = "\${colors.foreground}";
 
@@ -283,12 +285,37 @@ Wi-fi
 };
 ```
 
-## TODO Multi output
+## Multi output
 
+Simulate multi output feature with an autorandr hook.
+
+First of all disable polybar reloading on output change (we will do it), and show the bar on a monitor taken from env
 
 ```nix "modules/home/i3/polybar-settings" +=
 settings.screenchange.reload = true;
 ```
 
+```nix "modules/home/i3/polybar-settings-bar" +=
+monitor = "\${env:MONITOR:}";
+```
 
+Start polybar on all displays
+
+```nix "modules/home/i3/polybar" +=
+services.polybar.script = ''
+  for m in $(polybar --list-monitors | ${pkgs.coreutils}/bin/cut -d":" -f1); do
+    MONITOR=$m polybar ${barName} &
+  done
+'';
+```
+
+Then enable autorandr hook after switch
+```nix "modules/home/i3/polybar" +=
+programs.autorandr = {
+  enable = true;
+  hooks.postswitch = {
+    "reload-polybar" = "systemctl --user restart polybar";
+  };
+};
+```
 

@@ -50,3 +50,34 @@ home.pointerCursor = {
   gtk.enable = true;
 };
 ```
+
+## Window borders
+
+Remove ugly borders from GTK apps
+
+```nix "modules/home/theme" +=
+xdg.configFile."gtk-4.0/gtk.css".text = ''
+  window {
+    padding: 0;
+    box-shadow: none;
+  }
+'';
+xdg.configFile."gtk-3.0/gtk.css".text = ''
+  decoration {
+    padding: 0;
+  }
+'';
+```
+
+## Window buttons
+
+Hide window buttons
+
+```nix "modules/home/theme" +=
+dconf.settings."org/gnome/desktop/wm/preferences".button-layout = "";
+xdg.configFile."gtk-3.0/settings.ini".text = ''
+   gtk-decoration-layout=:menu
+'';
+```
+
+

@@ -257,26 +257,34 @@ services.swayidle = {
   }];
 };
 ```
+-->
 
 ### Capture
 
-Use grimshot to take screenshots
+Use scrot to take screenshots
 
-```nix "TODO-modules/home/i3/sway-packages" +=
-sway-contrib.grimshot
+```nix "modules/home/i3-packages" +=
+scrot
 ```
 
 Save (_print_) to file and copy (_yank_) to clipboard
 
-```nix "TODO-modules/home/i3/sway" +=
-swayAddNamedKeybinds.grimshot = lib.concatMapAttrs (key: func: {
-  "${modifier}+${key}" = "exec grimshot ${func} active";       # Active window
-  "${modifier}+Shift+${key}" = "exec grimshot ${func} area";   # Select area
-  "${modifier}+Mod1+${key}" = "exec grimshot ${func} output";  # Whole screen
-  "${modifier}+Ctrl+${key}" = "exec grimshot ${func} window";  # Choose window
-}) { p = "save"; y = "copy"; };
+- `z` to silently shot
+- `p` for showing the pointer
+
+`--release` is needed to allow selection
+
+```nix "modules/home/i3" +=
+i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
+  "--release ${modifier}+${key}" = fn "-zpu";       # Focused window
+  "--release ${modifier}+Shift+${key}" = fn "-zps"; # Select area or window
+  "--release ${modifier}+Ctrl+${key}" = fn "-zp";   # Whole screen
+}) {
+  p = let dir = "${config.xdg.userDirs.pictures}/Screenshots";
+      in args: "exec --no-startup-id mkdir -p ${dir} && scrot ${args} -F '${dir}/%Y-%m-%d_%H%M%S.png'";
+  y = args: "exec --no-startup-id scrot ${args} - | xclip -selection clipboard -t image/png";
+};
 ```
--->
 
 ## Shortcuts
 
