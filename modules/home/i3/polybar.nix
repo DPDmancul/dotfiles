@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }: let
   # TODO create my lib
   concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
+  barName = "top";
 in
 {
   xsession.windowManager.i3.config.bars = [];
@@ -8,7 +9,6 @@ in
   services.polybar = {
     enable = true;
     package = pkgs.polybarFull;
-    script = "polybar top &"; # TODO
     settings = rec {
       colors = {
         background = "#0000";
@@ -28,7 +28,9 @@ in
           azure = "#A6B5E8E0";
         green = "#A6ABE9B3";
       };
-      "bar/top" = {
+      "bar/${barName}" = {
+        monitor = "\${env:MONITOR:}";
+
         background = "\${colors.background}";
         foreground = "\${colors.foreground}";
 
@@ -193,5 +195,15 @@ in
     };
   };
 
- # <<<modules/home/i3/polybar>>>
+ services.polybar.script = ''
+   for m in $(polybar --list-monitors | ${pkgs.coreutils}/bin/cut -d":" -f1); do
+     MONITOR=$m polybar ${barName} &
+   done
+ '';
+ programs.autorandr = {
+   enable = true;
+   hooks.postswitch = {
+     "reload-polybar" = "systemctl --user restart polybar";
+   };
+ };
 }

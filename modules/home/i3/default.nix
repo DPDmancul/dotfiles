@@ -163,6 +163,15 @@ in
       )
     );
     i3AddKeybinds."Ctrl+${alt}+l" = ''exec --no-startup-id "i3lock-color --clock --indicator --blur 7x5 --pass-{media,screen,power,volume}-keys"'';
+    i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
+      "--release ${modifier}+${key}" = fn "-zpu";       # Focused window
+      "--release ${modifier}+Shift+${key}" = fn "-zps"; # Select area or window
+      "--release ${modifier}+Ctrl+${key}" = fn "-zp";   # Whole screen
+    }) {
+      p = let dir = "${config.xdg.userDirs.pictures}/Screenshots";
+          in args: "exec --no-startup-id mkdir -p ${dir} && scrot ${args} -F '${dir}/%Y-%m-%d_%H%M%S.png'";
+      y = args: "exec --no-startup-id scrot ${args} - | xclip -selection clipboard -t image/png";
+    };
     i3AddNamedKeybinds.shortcuts = {
       "${modifier}+z" = "exec firefox";
       "${modifier}+x" = "exec nemo";
@@ -177,6 +186,7 @@ in
 
     home.packages = with pkgs; [
       i3lock-color
+      scrot
       copyq
       xclip
       polkit_gnome

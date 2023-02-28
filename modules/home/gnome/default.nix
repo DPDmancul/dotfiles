@@ -20,7 +20,6 @@
       ];
     };
     "org/gnome/terminal/legacy/settings".headerbar = false; # TODO
-    "org/gnome/desktop/wm/preferences".button-layout = "";
   };
 
   home.packages = with pkgs; [
