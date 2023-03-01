@@ -7,7 +7,7 @@
     /${modules}/home
     ./git.nix
     ./ssh.nix
-    ./sway.nix # TODO to x11
+    ./autorandr.nix
     ./firefox.nix
     ./rider.nix
     ./packages.nix

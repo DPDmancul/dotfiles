@@ -44,6 +44,7 @@ functional programming techniques to build them.
 
 ```nix modules/home/i3/default.nix +=
   imports = [
+    ./picom.nix
     ./polybar.nix
     <<<modules/home/i3-imports>>>
   ];
@@ -71,14 +72,6 @@ functional programming techniques to build them.
     ];
   };
 }
-```
-
-## Compositor
-
-Enable transparency for Firefox with compositor
-
-```nix "modules/home/i3" +=
-services.picom.enable = true;
 ```
 
 ## Modifier key
@@ -244,21 +237,6 @@ i3lock-color
 i3AddKeybinds."Ctrl+${alt}+l" = ''exec --no-startup-id "i3lock-color --clock --indicator --blur 7x5 --pass-{media,screen,power,volume}-keys"'';
 ```
 
-<!--
-### Idle
-
-```nix "TODO-modules/home/i3/sway" +=
-services.swayidle = {
-  enable = true;
-  timeouts = [{
-    timeout = 300;
-    command = ''${pkgs.sway}/bin/swaymsg "output * dpms off"'';
-    resumeCommand = ''${pkgs.sway}/bin/swaymsg "output * dpms on"'';
-  }];
-};
-```
--->
-
 ### Capture
 
 Use scrot to take screenshots
@@ -350,18 +328,11 @@ polkit_gnome
 gaps.inner = 5;
 ```
 
-Disable border for inactive windows and for alone ones
+Disable ugly borders
 
 ```nix "modules/home/i3-config" +=
-# TODO transaprent not working in i3
-colors.unfocused = let transparent = "#00000000"; in {
-  background = "#222222";
-  border = transparent;
-  childBorder = transparent;
-  indicator = "#292d2e";
-  text = "#888888";
-};
-gaps.smartBorders = "on";
+window.border = 0;
+floating.border = 0;
 ```
 
 Disable titlebars

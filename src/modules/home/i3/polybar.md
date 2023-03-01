@@ -309,6 +309,12 @@ services.polybar.script = ''
 '';
 ```
 
+Wait i3 before starting polybar (otherwise workspaces and window title are not shown)
+
+```nix "modules/home/i3/polybar" +=
+# systemd.user.services.polybar.Unit.After = [ "graphical-session.target" ]; # TODO: not solving
+```
+
 Then enable autorandr hook after switch
 ```nix "modules/home/i3/polybar" +=
 programs.autorandr = {
