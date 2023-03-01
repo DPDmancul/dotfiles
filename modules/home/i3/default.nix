@@ -32,6 +32,7 @@ in
     };
   };
   imports = [
+    ./picom.nix
     ./polybar.nix
     (inputs.feh-random-background + /home-manager-service.nix)
   ];
@@ -61,15 +62,8 @@ in
             { criteria = { class = "firefox"; title = "^Picture-in-Picture$"; }; command = "floating enable, sticky enable, border none, inhibit_idle open"; }
           ];
           gaps.inner = 5;
-          # TODO transaprent not working in i3
-          colors.unfocused = let transparent = "#00000000"; in {
-            background = "#222222";
-            border = transparent;
-            childBorder = transparent;
-            indicator = "#292d2e";
-            text = "#888888";
-          };
-          gaps.smartBorders = "on";
+          window.border = 0;
+          floating.border = 0;
           window.titlebar = false;
           floating.titlebar = false;
           startup = [
@@ -83,7 +77,6 @@ in
       };
     };
 
-    services.picom.enable = true;
     programs.rofi = {
       enable = true;
       terminal = config.xsession.windowManager.i3.config.terminal;

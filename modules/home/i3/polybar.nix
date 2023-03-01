@@ -200,6 +200,7 @@ in
      MONITOR=$m polybar ${barName} &
    done
  '';
+ systemd.user.services.polybar.Unit.After = [ "graphical-session.target" ];
  programs.autorandr = {
    enable = true;
    hooks.postswitch = {
