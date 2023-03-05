@@ -4,18 +4,15 @@
 { config, pkgs, lib, inputs, ... }:
 let
   inherit (config.xsession.windowManager.i3.config) modifier;
-  vi-directions = {
-    left = "h";
-    down = "j";
-    up = "k";
-    right = "l";
-  };
-  arrow-directions = {
-    left = "Left";
-    down = "Down";
-    up = "Up";
-    right = "Right";
-  };
+  vi-directions = { left = "h"; down = "j"; up = "k"; right = "l"; };
+  arrow-directions = { left = "Left"; down = "Down"; up = "Up"; right = "Right"; };
+  forEachDirection = with lib; flip concatMapAttrs (concatMapToAttrs
+    (concatMapAttrs (direction: key: { ${key} = direction; }))
+    [
+      vi-directions
+      arrow-directions
+    ]
+  );
 in
 {
 ```
@@ -60,28 +57,22 @@ functional programming techniques to build them.
 Enable both vi and arrow mode for moving focus and windows
 
 ```nix "modules/home/i3/keybinds" +=
-i3AddNamedKeybinds.move = lib.concatMapPairToAttrs
-  (name: value: {
-    "${modifier}+${value}" = "focus ${name}";
-    "${modifier}+Shift+${value}" = "move ${name}";
-  })
-  [
-    vi-directions
-    arrow-directions
-  ];
+i3AddNamedKeybinds.move = forEachDirection (key: direction:
+  {
+    "${modifier}+${key}" = "focus ${direction}";
+    "${modifier}+Shift+${key}" = "move ${direction}";
+  }
+);
 ```
 
 ### Move window to another screen
 
 ```nix "modules/home/i3/keybinds" +=
-i3AddNamedKeybinds.moveToScreen = lib.concatMapPairToAttrs
-  (name: value: {
-    "${modifier}+Ctrl+Shift+${value}" = "move workspace to output ${name}";
-  })
-  [
-    vi-directions
-    arrow-directions
-  ];
+i3AddNamedKeybinds.moveToScreen = forEachDirection (key: direction:
+  {
+    "${modifier}+Ctrl+Shift+${key}" = "move workspace to output ${direction}";
+  }
+);
 ```
 
 ### Resize windows
