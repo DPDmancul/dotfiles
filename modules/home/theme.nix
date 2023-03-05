@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
+  imports = [
+    (inputs.feh-random-background + /home-manager-service.nix)
+  ];
+
   qt = {
     enable = true;
     platformTheme = "gnome";
@@ -37,4 +41,9 @@
   xdg.configFile."gtk-3.0/settings.ini".text = ''
      gtk-decoration-layout=:menu
   '';
+  services.feh-random-background = {
+    enable = true;
+    imageDirectory = "${inputs.wallpapers}";
+    interval = "1m";
+  };
 }

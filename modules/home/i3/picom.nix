@@ -7,6 +7,10 @@ in
     enable = true;
     backend = "glx";
     settings = {
+      xrender-sync-fence = true;
+      vsync = true;
+    };
+    settings = {
       corner-radius = 10;
       round-borders = 1;
     };
@@ -14,6 +18,8 @@ in
     shadowExclude = [
       # i3 tabs
       "class_g = 'i3-frame'"
+      # Firefox extension menus
+      "class_g = 'firefox' && argb"
       # Telegram context menu
       "_NET_WM_WINDOW_TYPE:a *= '_KDE_NET_WM_WINDOW_TYPE_OVERRIDE'"
     ];

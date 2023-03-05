@@ -1,6 +1,4 @@
 { config, pkgs, lib, ... }: let
-  # TODO create my lib
-  concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
   barName = "top";
 in
 {
@@ -58,7 +56,7 @@ in
         };
         tray.position = "right";
       };
-      rounded = concatMapToAttrs (spec: {
+      rounded = lib.concatMapToAttrs (spec: {
         ${spec} = {
           prefix = {
             foreground = "\${self.${spec}-background}";
@@ -88,7 +86,7 @@ in
         pin.workspaces = true; # show only this monitor ws
         enable.scroll = false;
 
-        label = concatMapToAttrs (spec: {
+        label = lib.concatMapToAttrs (spec: {
           ${spec} = {
             text = "%index%"; # do not show icon
             padding = "4px";
@@ -200,7 +198,12 @@ in
      MONITOR=$m polybar ${barName} &
    done
  '';
- systemd.user.services.polybar.Unit.After = [ "graphical-session.target" ];
+ # systemd.user.services.polybar.Unit.After = [ "graphical-session.target" ]; # TODO: not solving
+
+ # Temporary fix: restart polybar
+ xsession.windowManager.i3.config.startup = [
+   { command = "systemctl --user restart polybar"; always = true; notification = false; }
+ ];
  programs.autorandr = {
    enable = true;
    hooks.postswitch = {
