@@ -8,6 +8,8 @@
 
 - [Flake](./flake/index.md)
   - [Packages](./flake/pkgs.md)
+  - [Overlays](./flake/overlays.md)
+  - [Lib](./flake/lib.md)
 
 - [Modules]()
   - [System](./modules/system/index.md)
@@ -34,6 +36,7 @@
       - [Language support](./modules/home/nvim/lang.md)
       - [LSP](./modules/home/nvim/lsp.md)
     - [i3](./modules/home/i3/index.md)
+      - [Keybinds](./modules/home/i3/keybinds.md)
       - [Picom](./modules/home/i3/picom.md)
       - [Polybar](./modules/home/i3/polybar.md)
     - [Theme](./modules/home/theme.md)

@@ -6,10 +6,7 @@ I don't use blur since it slows the system too much and becomes unusable.
 
 
 ```nix modules/home/i3/picom.nix
-{ config, pkgs, lib, ... }: let
-  # TODO create my lib
-  concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
-in
+{ config, pkgs, lib, ... }:
 {
   services.picom = {
     enable = true;
@@ -22,6 +19,15 @@ Use glx backend since xrender shows black background on non-transparent windows
 
 ```nix "modules/home/i3/picom-settings" +=
 backend = "glx";
+```
+
+Enable `xrender-sync-fence` to overcome some flickering
+
+```nix "modules/home/i3/picom-settings" +=
+settings = {
+  xrender-sync-fence = true;
+  vsync = true;
+};
 ```
 
 ## Rounded corners
@@ -45,10 +51,12 @@ Disable for some windows
 shadowExclude = [
   # i3 tabs
   "class_g = 'i3-frame'"
+  # Firefox extension menus
+  "class_g = 'firefox' && argb"
   # Telegram context menu
   "_NET_WM_WINDOW_TYPE:a *= '_KDE_NET_WM_WINDOW_TYPE_OVERRIDE'"
 ];
-wintypes = concatMapToAttrs (type: {
+wintypes = lib.concatMapToAttrs (type: {
   ${type} = {
     shadow = false;
   };

@@ -1,8 +1,12 @@
 # Theme
 
 ```nix modules/home/theme.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
+  imports = [
+    <<<modules/home/theme-imports>>>
+  ];
+
   <<<modules/home/theme>>>
 }
 ```
@@ -80,4 +84,30 @@ xdg.configFile."gtk-3.0/settings.ini".text = ''
 '';
 ```
 
+## Background
+
+Use random backgrounds with feh
+
+```nix "flake-inputs" +=
+feh-random-background = {
+  url = github:KoviRobi/feh-random-background;
+  flake = false;
+};
+wallpapers = {
+  url = gitlab:DPDmancul/dotfiles-wallpapers;
+  flake = false;
+};
+```
+
+```nix "modules/home/theme-imports" +=
+(inputs.feh-random-background + /home-manager-service.nix)
+```
+
+```nix "modules/home/theme" +=
+services.feh-random-background = {
+  enable = true;
+  imageDirectory = "${inputs.wallpapers}";
+  interval = "1m";
+};
+```
 

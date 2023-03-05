@@ -4,8 +4,6 @@ Use polybar instead of i3bar
 
 ```nix modules/home/i3/polybar.nix
 { config, pkgs, lib, ... }: let
-  # TODO create my lib
-  concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
   barName = "top";
 in
 {
@@ -96,7 +94,7 @@ Antialiasing for powerline is terrible: disable it
 Emulate rounded corner with powerline chars
 
 ```nix "modules/home/i3/polybar-settings" +=
-rounded = concatMapToAttrs (spec: {
+rounded = lib.concatMapToAttrs (spec: {
   ${spec} = {
     prefix = {
       foreground = "\${self.${spec}-background}";
@@ -131,7 +129,7 @@ rounded = concatMapToAttrs (spec: {
   pin.workspaces = true; # show only this monitor ws
   enable.scroll = false;
 
-  label = concatMapToAttrs (spec: {
+  label = lib.concatMapToAttrs (spec: {
     ${spec} = {
       text = "%index%"; # do not show icon
       padding = "4px";
@@ -313,6 +311,11 @@ Wait i3 before starting polybar (otherwise workspaces and window title are not s
 
 ```nix "modules/home/i3/polybar" +=
 # systemd.user.services.polybar.Unit.After = [ "graphical-session.target" ]; # TODO: not solving
+
+# Temporary fix: restart polybar
+xsession.windowManager.i3.config.startup = [
+  { command = "systemctl --user restart polybar"; always = true; notification = false; }
+];
 ```
 
 Then enable autorandr hook after switch

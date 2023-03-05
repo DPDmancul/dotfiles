@@ -98,7 +98,7 @@ legacyPackages = forAllSystems (system:
       })
       # Custom packages
       (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
-    ];
+    ] ++ import ./overlays;
   in
   import nixpkgs {
     inherit system;
@@ -147,7 +147,7 @@ homeConfigurations = builtins.listToAttrs (builtins.concatMap
     (user: {
       name = "${user}@${machine.host}";
       value = home-manager.lib.homeManagerConfiguration
-        {
+        rec {
           pkgs = legacyPackages.${machine.system};
           modules =
             let
@@ -160,7 +160,13 @@ homeConfigurations = builtins.listToAttrs (builtins.concatMap
                 else ./${machine.host}/home
               )
             ];
-          extraSpecialArgs = args // { inherit user; };
+          extraSpecialArgs = args // {
+            inherit user;
+            lib = pkgs.lib.extend (self: super:
+              home-manager.lib //
+                import ./lib.nix { lib = self; }
+            );
+          };
         };
     })
     machine.users)
