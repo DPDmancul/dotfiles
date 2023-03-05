@@ -1,7 +1,4 @@
-{ config, pkgs, lib, ... }: let
-  # TODO create my lib
-  concatMapToAttrs = f: with lib; flip pipe [ (map f) (foldl' mergeAttrs { }) ];
-in
+{ config, pkgs, lib, ... }:
 {
   services.picom = {
     enable = true;
@@ -23,7 +20,7 @@ in
       # Telegram context menu
       "_NET_WM_WINDOW_TYPE:a *= '_KDE_NET_WM_WINDOW_TYPE_OVERRIDE'"
     ];
-    wintypes = concatMapToAttrs (type: {
+    wintypes = lib.concatMapToAttrs (type: {
       ${type} = {
         shadow = false;
       };
