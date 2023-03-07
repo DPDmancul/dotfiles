@@ -22,4 +22,6 @@
   };
   fileSystems."/".options = [ "compress=zstd" ];
   hardware.opentabletdriver.enable = true;
+  ethIfs = [ "enp7s0" ];
+  wifiIfs = [ "wlan0" "wlp6s0" ];
 }

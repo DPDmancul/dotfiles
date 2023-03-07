@@ -90,8 +90,8 @@
               "xow_dongle-firmware"
               "facetimehd-firmware"
               "facetimehd-calibration"
-              # "nvidia-x11"
-              # "nvidia-settings"
+              "nvidia-x11"
+              "nvidia-settings"
             ];
         }
       );
@@ -99,7 +99,7 @@
         (machine: {
           name = machine.host;
           value = nixpkgs.lib.nixosSystem
-            {
+            rec {
               inherit (machine) system;
               pkgs = legacyPackages.${machine.system};
               modules = [
@@ -107,7 +107,10 @@
                 { networking.hostName = machine.host; }
                 ./${machine.host}/system
               ];
-              specialArgs = args // { inherit (machine) users; };
+              specialArgs = args // {
+                inherit (machine) users;
+                lib = pkgs.lib.extend (self: super: import ./lib.nix { lib = self; });
+              };
             };
         })
         machines);

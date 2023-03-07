@@ -5,6 +5,7 @@
     ./boot.nix
     ./i18n.nix
     ./services
+    ./services/net.nix
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./lightdm.nix
@@ -19,7 +20,6 @@
     extraGroups = [
       "input"
       "video"
-      "networkmanager"
     ];
   });
 
@@ -27,7 +27,6 @@
   systemd.enableEmergencyMode = false;
   hardware.opengl.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
-  networking.networkmanager.enable = true;
   users.mutableUsers = false;
   programs.dconf.enable = true;
   time.timeZone = "Europe/Rome";

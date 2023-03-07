@@ -55,11 +55,22 @@ in
     extraConfig = {
       show-icons = true;
     };
-    # TODO config
+    theme = with config.lib.formats.rasi; {
+      "@import" = "gruvbox-light";
+      window.border = mkLiteral "none";
+    };
   };
   services.dunst = {
     enable = true;
-    # TODO config
+    iconTheme = {
+      inherit (config.gtk.iconTheme) name package;
+    };
+    settings = {
+      global = {
+        follow = "mouse";
+        corner_radius = config.services.picom.settings.corner-radius;
+      };
+    };
   };
   services.gammastep = {
     enable = true;

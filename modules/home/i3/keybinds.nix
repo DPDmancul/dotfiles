@@ -12,14 +12,14 @@ let
   );
 in
 {
-  options = {
-    i3AddKeybinds =  with lib; mkOption {
-      type = with types; attrsOf str;
+  options = with lib; with types; {
+    i3AddKeybinds = mkOption {
+      type = attrsOf str;
       description = "Additional keybindings to the default ones.";
       default = { };
     };
-    i3AddNamedKeybinds = with lib; mkOption {
-      type = with types; attrsOf (attrsOf str);
+    i3AddNamedKeybinds = mkOption {
+      type = attrsOf (attrsOf str);
       description = "Additional keybindings to the default ones.
         The keybinds are collected in a set whose names are discarded,
         and so can be used for organization purpose.";
@@ -59,8 +59,8 @@ in
       }
     );
     i3AddKeybinds = {
-      "${modifier}+Shift+h" = "split h";
-      "${modifier}+Shift+v" = "split v";
+      "${modifier}+Ctrl+h" = "split h";
+      "${modifier}+Ctrl+v" = "split v";
     };
     i3AddKeybinds = {
       "${modifier}+Shift+s" = "sticky toggle";

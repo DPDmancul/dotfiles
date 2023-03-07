@@ -4,12 +4,11 @@
     common-pc-laptop
     common-pc-laptop-ssd
     common-cpu-intel
-    # lenovo-thinkpad-p50 # not imported to use nouveau drivers instead of proprietary ones
+    lenovo-thinkpad-p50
     common-pc-laptop-acpi_call
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
-    ./net.nix
     ./users.nix
     ./docker.nix
   ];
@@ -17,4 +16,6 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
   fileSystems."/".options = [ "compress=zstd" ];
+  ethIfs = [ "enp0s31f6" ];
+  wifiIfs = [ "wlan0" "wlp4s0" ];
 }
