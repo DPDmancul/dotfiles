@@ -21,14 +21,14 @@ The following option allows to declare keybindings in multiple places and to use
 functional programming techniques to build them.
 
 ```nix modules/home/i3/keybinds.nix +=
-  options = {
-    i3AddKeybinds =  with lib; mkOption {
-      type = with types; attrsOf str;
+  options = with lib; with types; {
+    i3AddKeybinds = mkOption {
+      type = attrsOf str;
       description = "Additional keybindings to the default ones.";
       default = { };
     };
-    i3AddNamedKeybinds = with lib; mkOption {
-      type = with types; attrsOf (attrsOf str);
+    i3AddNamedKeybinds = mkOption {
+      type = attrsOf (attrsOf str);
       description = "Additional keybindings to the default ones.
         The keybinds are collected in a set whose names are discarded,
         and so can be used for organization purpose.";
@@ -98,12 +98,12 @@ modes.resize = {
 
 ### Split orientation
 
-Since `Super + h` is already used to move focus, and `Super + v` to open neovim, add a shift to change split orientation.
+Since `Super + h` is already used to move focus, and `Super + v` to open neovim, add a control to change split orientation.
 
 ```nix "modules/home/i3/keybinds" +=
 i3AddKeybinds = {
-  "${modifier}+Shift+h" = "split h";
-  "${modifier}+Shift+v" = "split v";
+  "${modifier}+Ctrl+h" = "split h";
+  "${modifier}+Ctrl+v" = "split v";
 };
 ```
 

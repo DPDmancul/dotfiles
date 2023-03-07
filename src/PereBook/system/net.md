@@ -7,20 +7,6 @@
 }
 ```
 
-## DHCP
-
-The global useDHCP flag is deprecated, therefore explicitly set to false here.
-
-Per-interface useDHCP will be mandatory in the future, so this config replicates the default behaviour.
-
-```nix "PereBook/system/net" +=
-networking = {
-  useDHCP = false;
-  interfaces.enp7s0.useDHCP = true;
-  interfaces.wlp6s0.useDHCP = true;
-};
-```
-
 ## WiFi key drivers
 
 ```nix "PereBook/system/net" +=
@@ -32,20 +18,9 @@ boot = {
 
 ## VPN
 
-Disable IPv6 since it is not supported
-
 ```nix "PereBook/system/net" +=
-networking.enableIPv6 = false;
-
-sops.secrets."vpn/openvpn-credentials-nordvpn" = {};
-services.openvpn.servers = {
-  vpn  = {
-    config = ''
-      config ${assets}/it238.nordvpn.com.udp.ovpn
-      auth-user-pass ${config.sops.secrets."vpn/openvpn-credentials-nordvpn".path}
-    '';
-    updateResolvConf = true;
-  };
-};
+sops.secrets."vpn/nordvpn.nmconnection".path = "/etc/NetworkManager/system-connections/nordvpn.nmconnection";
+sops.secrets."vpn/it238.nordvpn.com.udp-ca.pem".path = "/root/.cert/nm-openvpn/it238.nordvpn.com.udp-ca.pem";
+sops.secrets."vpn/it238.nordvpn.com.udp-tls-auth.pem".path = "/root/.cert/nm-openvpn/it238.nordvpn.com.udp-tls-auth.pem";
 ```
 

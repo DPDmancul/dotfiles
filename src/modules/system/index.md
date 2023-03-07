@@ -12,6 +12,7 @@ In this folder there are also some useful modules used only by some system confi
     ./boot.nix
     ./i18n.nix
     ./services
+    ./services/net.nix
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./lightdm.nix
@@ -26,7 +27,6 @@ In this folder there are also some useful modules used only by some system confi
     extraGroups = [
       "input"
       "video"
-      <<<modules/system-user-groups>>>
     ];
   });
 
@@ -56,16 +56,6 @@ Enable NTFS support
 
 ```nix "modules/system" +=
 boot.supportedFilesystems = [ "ntfs" ];
-```
-
-Enable NetworkManager
-
-```nix "modules/system" +=
-networking.networkmanager.enable = true;
-```
-
-```nix "modules/system-user-groups" +=
-"networkmanager"
 ```
 
 Users must follow this config and cannot be modified outside it

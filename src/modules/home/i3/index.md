@@ -58,7 +58,10 @@ programs.rofi = {
   extraConfig = {
     show-icons = true;
   };
-  # TODO config
+  theme = with config.lib.formats.rasi; {
+    "@import" = "gruvbox-light";
+    window.border = mkLiteral "none";
+  };
 };
 ```
 
@@ -71,7 +74,15 @@ menu = "rofi -show drun";
 ```nix "modules/home/i3" +=
 services.dunst = {
   enable = true;
-  # TODO config
+  iconTheme = {
+    inherit (config.gtk.iconTheme) name package;
+  };
+  settings = {
+    global = {
+      follow = "mouse";
+      corner_radius = config.services.picom.settings.corner-radius;
+    };
+  };
 };
 ```
 

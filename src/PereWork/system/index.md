@@ -7,12 +7,11 @@
     common-pc-laptop
     common-pc-laptop-ssd
     common-cpu-intel
-    # lenovo-thinkpad-p50 # not imported to use nouveau drivers instead of proprietary ones
+    lenovo-thinkpad-p50
     common-pc-laptop-acpi_call
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
-    ./net.nix
     ./users.nix
     ./docker.nix
   ];
@@ -36,8 +35,8 @@ now really enable unfree drivers
 "xow_dongle-firmware"
 "facetimehd-firmware"
 "facetimehd-calibration"
-# "nvidia-x11"
-# "nvidia-settings"
+"nvidia-x11"
+"nvidia-settings"
 ```
 
 ## Hardware

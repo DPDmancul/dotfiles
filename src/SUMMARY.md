@@ -17,6 +17,7 @@
     - [Bootloader](./modules/system/boot.md)
     - [Internationalization](./modules/system/i18n.md)
     - [Services](./modules/system/services/index.md)
+      - [Networking](./modules/system/services/net.md)
       - [PipeWire](./modules/system/services/pipewire.md)
       - [Print and scan](./modules/system/services/print_scan.md)
     - [LightDM (display manager)](./modules/system/lightdm.md)
@@ -72,7 +73,6 @@
 
 - [PereWork]()
   - [System](./PereWork/system/index.md)
-    - [Networking](./PereWork/system/net.md)
     - [Users](./PereWork/system/users.md)
     - [Docker](./PereWork/system/docker.md)
   - [Home](./PereWork/home/index.md)
