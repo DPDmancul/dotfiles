@@ -10,6 +10,7 @@
     ripgrep  # alternative grep
     usbutils
     pciutils
+    sops
     xdg-utils
     wget
     git

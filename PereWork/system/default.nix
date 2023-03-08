@@ -16,6 +16,4 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
   fileSystems."/".options = [ "compress=zstd" ];
-  ethIfs = [ "enp0s31f6" ];
-  wifiIfs = [ "wlan0" "wlp4s0" ];
 }
