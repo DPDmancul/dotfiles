@@ -52,6 +52,7 @@ fd       # faster find
 ripgrep  # alternative grep
 usbutils
 pciutils
+sops
 ```
 
 ### xdg utils

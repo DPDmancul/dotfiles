@@ -83,7 +83,7 @@ Antialiasing for powerline is terrible: disable it
   modules = {
     left = "i3";
     center = "window";
-    right = "volume eth wlan ram cpu battery clock"; # TODO idle
+    right = "volume vpn eth wlan ram cpu battery clock"; # TODO idle
   };
   tray.position = "right";
 };
@@ -193,6 +193,18 @@ TODO: headphones 
   ramp.volume = [ "" "" "" ];
   label.muted = " ";
   click.right = "pavucontrol";
+};
+```
+
+### VPN
+
+```nix "modules/home/i3/polybar-settings" +=
+"module/vpn" = {
+  type = "custom/script";
+  "inherit" = "rounded";
+  format.background = "\${colors.violet}";
+  exec = ''[ -n "$(${pkgs.networkmanager}/bin/nmcli -t -f name,type con show --order name --active 2>/dev/null | ${pkgs.gnugrep}/bin/grep vpn | ${pkgs.coreutils}/bin/head -1 | ${pkgs.coreutils}/bin/cut -d: -f1)" ] && echo ""'';
+  interval = 10;
 };
 ```
 

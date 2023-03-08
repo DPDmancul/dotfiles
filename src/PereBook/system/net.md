@@ -24,3 +24,4 @@ sops.secrets."vpn/it238.nordvpn.com.udp-ca.pem".path = "/root/.cert/nm-openvpn/i
 sops.secrets."vpn/it238.nordvpn.com.udp-tls-auth.pem".path = "/root/.cert/nm-openvpn/it238.nordvpn.com.udp-tls-auth.pem";
 ```
 
+TODO: autoconnect
