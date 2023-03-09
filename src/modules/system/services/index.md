@@ -102,6 +102,15 @@ Just in case it could be needed remap `caps` from `right ctrl`
 ```
 -->
 
+## Autorandr
+
+```nix "modules/system/services" +=
+services.autorandr = {
+  enable = true;
+  defaultTarget = "horizontal";
+};
+```
+
 ## Backlight control
 
 ```nix "modules/system/services" +=

@@ -7,7 +7,6 @@
     /${modules}/home
     ./git.nix
     ./ssh.nix
-    ./autorandr.nix
     ./firefox.nix
     ./rider.nix
     ./packages.nix

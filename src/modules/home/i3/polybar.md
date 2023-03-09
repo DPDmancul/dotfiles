@@ -331,6 +331,7 @@ xsession.windowManager.i3.config.startup = [
 ```
 
 Then enable autorandr hook after switch
+
 ```nix "modules/home/i3/polybar" +=
 programs.autorandr = {
   enable = true;

@@ -1,10 +1,9 @@
 # Autorandr
 
-```nix PereWork/home/autorandr.nix
+```nix PereWork/system/autorandr.nix
 { config, pkgs, lib, ... }:
 {
-  programs.autorandr = {
-    enable = true;
+  services.autorandr = {
     profiles = {
       "scrivanie" = {
         config = {

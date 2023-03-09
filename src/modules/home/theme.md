@@ -52,6 +52,7 @@ home.pointerCursor = {
   package = pkgs.bibata-cursors;
   size = 24;
   gtk.enable = true;
+  x11.enable = true;
 };
 ```
 
@@ -108,6 +109,17 @@ services.feh-random-background = {
   enable = true;
   imageDirectory = "${inputs.wallpapers}";
   interval = "1m";
+};
+```
+
+restart the service on monitor config change
+
+```nix "modules/home/theme" +=
+programs.autorandr = {
+  enable = true;
+  hooks.postswitch = {
+    "reload-background" = "systemctl --user start feh-random-background";
+  };
 };
 ```
 
