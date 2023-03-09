@@ -32,5 +32,9 @@
   #   daemon.enable = true;
   #   updater.enable = true;
   # };
+  services.autorandr = {
+    enable = true;
+    defaultTarget = "horizontal";
+  };
   programs.light.enable = true;
 }

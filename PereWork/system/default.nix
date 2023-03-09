@@ -10,6 +10,7 @@
     /${modules}/system
     ./hardware-configuration.nix
     ./users.nix
+    ./autorandr.nix
     ./docker.nix
   ];
 

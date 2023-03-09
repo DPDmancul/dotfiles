@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 {
-  programs.autorandr = {
-    enable = true;
+  services.autorandr = {
     profiles = {
       "scrivanie" = {
         config = {

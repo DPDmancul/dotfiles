@@ -25,6 +25,7 @@
     package = pkgs.bibata-cursors;
     size = 24;
     gtk.enable = true;
+    x11.enable = true;
   };
   xdg.configFile."gtk-4.0/gtk.css".text = ''
     window {
@@ -45,5 +46,11 @@
     enable = true;
     imageDirectory = "${inputs.wallpapers}";
     interval = "1m";
+  };
+  programs.autorandr = {
+    enable = true;
+    hooks.postswitch = {
+      "reload-background" = "systemctl --user start feh-random-background";
+    };
   };
 }
