@@ -11,6 +11,7 @@
     keepassxc
     unfree.dropbox-cli
     unfree.postman
+    unfree.ngrok
   ];
 
   #<<<PereWork/home/packages>>>

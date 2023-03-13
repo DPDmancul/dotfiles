@@ -3,7 +3,7 @@
     "base16": {
       "inputs": {
         "nixpkgs": [
-          "stylix-colors",
+          "stylix",
           "nixpkgs"
         ]
       },
@@ -24,17 +24,17 @@
     "coricamu": {
       "inputs": {
         "nixpkgs": [
-          "stylix-colors",
+          "stylix",
           "nixpkgs"
         ],
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1659649195,
-        "narHash": "sha256-wRpMO4Mm4uizR5M71iipdi8ssSYMEPPAIwWyFYnhnco=",
+        "lastModified": 1677749800,
+        "narHash": "sha256-xIqxDr4fkOA5R4OudbQoUMS8xvPJNCyGfqugENutSP4=",
         "owner": "danth",
         "repo": "coricamu",
-        "rev": "cdd2f7326efd91509caf84e69b669a7f9e6782bc",
+        "rev": "40db414609dc6d72319987d3e9d7b56fe405c28f",
         "type": "github"
       },
       "original": {
@@ -72,6 +72,22 @@
       "original": {
         "owner": "KoviRobi",
         "repo": "feh-random-background",
+        "type": "github"
+      }
+    },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673956053,
+        "narHash": "sha256-4gtG9iQuiKITOjNQQeQIpoIB6b16fm+504Ch3sNKLd8=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
         "type": "github"
       }
     },
@@ -128,7 +144,7 @@
     "home-manager_2": {
       "inputs": {
         "nixpkgs": [
-          "stylix-colors",
+          "stylix",
           "nixpkgs"
         ],
         "utils": "utils_3"
@@ -256,7 +272,7 @@
         "nur": "nur",
         "sops-nix": "sops-nix",
         "stable": "stable",
-        "stylix-colors": "stylix-colors",
+        "stylix": "stylix",
         "unstable": "unstable",
         "wallpapers": "wallpapers"
       }
@@ -296,19 +312,20 @@
         "type": "github"
       }
     },
-    "stylix-colors": {
+    "stylix": {
       "inputs": {
         "base16": "base16",
         "coricamu": "coricamu",
+        "flake-compat": "flake-compat",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1674929176,
-        "narHash": "sha256-wJyHWteEy5MvAK7jeIpmpkpTbyjceRizNg4li/z6Ew4=",
+        "lastModified": 1678458325,
+        "narHash": "sha256-LppqiGnyIPCHUndi8m6iF/EoC885FXeJ/nbhbydZyTU=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "8c22082ab103feee5c84941667fe32099e58de7c",
+        "rev": "679a80676840185cbc72a3751ccdac169477c21a",
         "type": "github"
       },
       "original": {

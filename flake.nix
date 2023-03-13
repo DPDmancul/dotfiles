@@ -14,7 +14,6 @@
     };
     hardware.url = github:nixos/nixos-hardware;
     sops-nix.url = github:Mic92/sops-nix;
-    stylix-colors.url = github:danth/stylix;
     nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
     feh-random-background = {
       url = github:KoviRobi/feh-random-background;
