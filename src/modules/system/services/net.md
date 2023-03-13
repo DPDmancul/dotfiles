@@ -35,13 +35,13 @@ systemd.network.wait-online = {
 
 TODO
 ```nix "modules/system/services/net" +=
-networking.bonds.bond0 = {
-  interfaces = [
-    "enp7s0"
-    "wlan0"
-  ];
-  driverOptions.mode = "active-backup";
-};
+# networking.bonds.bond0 = {
+#   interfaces = [
+#     "enp7s0"
+#     "wlan0"
+#   ];
+#   driverOptions.mode = "active-backup";
+# };
 ```
 
 ## Wireless networks
