@@ -12,13 +12,13 @@
     anyInterface = true;
     timeout = 0;
   };
-  networking.bonds.bond0 = {
-    interfaces = [
-      "enp7s0"
-      "wlan0"
-    ];
-    driverOptions.mode = "active-backup";
-  };
+  # networking.bonds.bond0 = {
+  #   interfaces = [
+  #     "enp7s0"
+  #     "wlan0"
+  #   ];
+  #   driverOptions.mode = "active-backup";
+  # };
   sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
 
   networking.wireless = {
