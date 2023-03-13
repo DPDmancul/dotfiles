@@ -134,13 +134,6 @@ in
         label.muted = " ";
         click.right = "pavucontrol";
       };
-      "module/vpn" = {
-        type = "custom/script";
-        "inherit" = "rounded";
-        format.background = "\${colors.violet}";
-        exec = ''[ -n "$(${pkgs.networkmanager}/bin/nmcli -t -f name,type con show --order name --active 2>/dev/null | ${pkgs.gnugrep}/bin/grep vpn | ${pkgs.coreutils}/bin/head -1 | ${pkgs.coreutils}/bin/cut -d: -f1)" ] && echo ""'';
-        interval = 10;
-      };
       net = {
         type = "internal/network";
         label.disconnected = "";
@@ -159,6 +152,11 @@ in
         "inherit" = "net rounded";
         interface.type = "wireless";
         label.connected = " %essid:0:10:...% (%signal%%)";
+      };
+      "module/vpn" = {
+        "inherit" = "net rounded";
+        interface = "tun0";
+        label.connected = "";
       };
       "module/ram" = {
         type = "internal/memory";

@@ -1,20 +1,31 @@
 { config, pkgs, assets, lib, users, ... }:
 {
-  networking.networkmanager.enable = true;
-  sops.secrets = let
-    sopsFile = /${assets}/secrets/nm.yaml;
-  in with lib; with builtins; genAttrs
-    (filter isString
-      (concatMap (match ''([^ \t#"][^:]*):.*|"([^"])":.*|.*'') 
-                 (splitString "\n" (readFile sopsFile))))
-    (key: mkIf (key != "sops") {
-      path = "/etc/NetworkManager/system-connections/${key}";
-      inherit sopsFile;
-    });
+  networking = {
+    useNetworkd = true;
+    wireless.iwd.enable = true;
+  };
 
-  users.users = lib.genAttrs users (user: {
-    extraGroups = [
-      "networkmanager"
+  environment.systemPackages = with pkgs; [
+    iwgtk
+  ];
+  systemd.network.wait-online = {
+    anyInterface = true;
+    timeout = 0;
+  };
+  networking.bonds.bond0 = {
+    interfaces = [
+      "enp7s0"
+      "wlan0"
     ];
-  });
+    driverOptions.mode = "active-backup";
+  };
+  sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
+
+  networking.wireless = {
+    environmentFile = config.sops.secrets."wireless.env".path;
+    networks = {
+      IDR_CASA.psk = "@IDR_CASA_PSK@";
+      "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
+    };
+  };
 }
