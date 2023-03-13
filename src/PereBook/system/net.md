@@ -19,9 +19,16 @@ boot = {
 ## VPN
 
 ```nix "PereBook/system/net" +=
-sops.secrets."vpn/nordvpn.nmconnection".path = "/etc/NetworkManager/system-connections/nordvpn.nmconnection";
-sops.secrets."vpn/it238.nordvpn.com.udp-ca.pem".path = "/root/.cert/nm-openvpn/it238.nordvpn.com.udp-ca.pem";
-sops.secrets."vpn/it238.nordvpn.com.udp-tls-auth.pem".path = "/root/.cert/nm-openvpn/it238.nordvpn.com.udp-tls-auth.pem";
+sops.secrets."vpn/openvpn-credentials-nordvpn" = {};
+
+services.openvpn.servers = {
+  vpn  = {
+    config = ''
+      config ${assets}/it238.nordvpn.com.udp.ovpn
+      auth-user-pass ${config.sops.secrets."vpn/openvpn-credentials-nordvpn".path}
+    '';
+    autoStart = false; # TODO fix reconnect after wi-fi drops
+  };
+};
 ```
 
-TODO: autoconnect
