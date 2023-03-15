@@ -19,6 +19,41 @@
   #   ];
   #   driverOptions.mode = "active-backup";
   # };
+  # systemd.network.networks  = {
+  #   "40-bond0" = {
+  #     matchConfig.Name = "bond0";
+  #     networkConfig.DHCP = "yes";
+  #   };
+  #   "40-enp7s0".networkConfig.PrimarySlave = "yes";
+  # };
+  # systemd.network = {
+  #   netdevs."10-bond0" = {
+  #     netdevConfig = {
+  #       Name = "bond0";
+  #       Kind = "bond";
+  #     };
+  #     bondConfig.Mode = "active-backup";
+  #   };
+  #   networks = let
+  #     bond = "bond0";
+  #   in {
+  #     "10-${bond}" = {
+  #       matchConfig.Name = bond;
+  #       networkConfig.DHCP = "yes";
+  #     };
+  #     "20-${bond}-eth" = {
+  #       matchConfig.Name = [ "en*" "eth*" ];
+  #       networkConfig = {
+  #         Bond = bond;
+  #         PrimarySlave = "yes";
+  #       };
+  #     };
+  #     "20-${bond}-wlan" = {
+  #       matchConfig.Name = "wl*";
+  #       networkConfig.Bond = bond;
+  #     };
+  #   };
+  # };
   sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
 
   networking.wireless = {
