@@ -34,6 +34,7 @@ systemd.network.wait-online = {
 ## Bonding
 
 TODO
+
 ```nix "modules/system/services/net" +=
 # networking.bonds.bond0 = {
 #   interfaces = [
@@ -41,6 +42,43 @@ TODO
 #     "wlan0"
 #   ];
 #   driverOptions.mode = "active-backup";
+# };
+# systemd.network.networks = {
+#   "40-bond0".networkConfig.DHCP = "yes";
+#   "40-enp7s0".networkConfig.PrimarySlave = "yes";
+# };
+```
+
+OR
+
+```nix "modules/system/services/net" +=
+# systemd.network = {
+#   netdevs."10-bond0" = {
+#     netdevConfig = {
+#       Name = "bond0";
+#       Kind = "bond";
+#     };
+#     bondConfig.Mode = "active-backup";
+#   };
+#   networks = let
+#     bond = "bond0";
+#   in {
+#     "10-${bond}" = {
+#       matchConfig.Name = bond;
+#       networkConfig.DHCP = "yes";
+#     };
+#     "20-${bond}-eth" = {
+#       matchConfig.Name = [ "en*" "eth*" ];
+#       networkConfig = {
+#         Bond = bond;
+#         PrimarySlave = "yes";
+#       };
+#     };
+#     "20-${bond}-wlan" = {
+#       matchConfig.Name = "wl*";
+#       networkConfig.Bond = bond;
+#     };
+#   };
 # };
 ```
 
