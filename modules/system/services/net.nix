@@ -19,11 +19,8 @@
   #   ];
   #   driverOptions.mode = "active-backup";
   # };
-  # systemd.network.networks  = {
-  #   "40-bond0" = {
-  #     matchConfig.Name = "bond0";
-  #     networkConfig.DHCP = "yes";
-  #   };
+  # systemd.network.networks = {
+  #   "40-bond0".networkConfig.DHCP = "yes";
   #   "40-enp7s0".networkConfig.PrimarySlave = "yes";
   # };
   # systemd.network = {
