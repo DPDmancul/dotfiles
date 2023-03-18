@@ -11,4 +11,6 @@
       };
     };
   };
+
+  services.xserver.dpi = 100;
 }

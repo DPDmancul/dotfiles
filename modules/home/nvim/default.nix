@@ -60,13 +60,13 @@
         plugin = mini-nvim;
         type = "lua";
         config = ''
+          require"mini.surround".setup()
           require"mini.indentscope".setup()
           require"mini.bufremove".setup()
           vim.api.nvim_create_user_command('Bdelete', function(args)
             MiniBufremove.delete(tonumber(args.args), args.bang)
           end, { bang = true, addr = 'buffers', nargs = '?' })
           vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
-          require"mini.surround".setup()
         '';
       }
     ];

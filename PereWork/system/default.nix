@@ -17,4 +17,6 @@
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
   fileSystems."/".options = [ "compress=zstd" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.prime.offload.enable = false;
 }
