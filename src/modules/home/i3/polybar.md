@@ -34,12 +34,12 @@ colors = {
   gray-opaque = "#333";
   red = "#A6E8A2AF";
   purple = "#A6C9CBFF"; #idle
-    yellow = "#A6FAE3B0";
+  yellow = "#A6FAE3B0";
   violet = "#A6BD93F9";
   lilla = "#A6DDB6F2";
   cyan = "#A696CDFB";
   salmon = "#A6F8BD96"; # temp
-    azure = "#A6B5E8E0";
+  azure = "#A6B5E8E0";
   green = "#A6ABE9B3";
 };
 ```
@@ -117,6 +117,10 @@ rounded = lib.concatMapToAttrs (spec: {
   "format-unmounted"
   "format-connected"
   "format-disconnected"
+  "format-charging"
+  "format-discharging"
+  "format-full"
+  "format-low"
   "content"
 ];
 ```
@@ -268,14 +272,23 @@ VPN
   type = "internal/battery";
   time.format = "%H:%M";
   format = {
-    charging = "<animation-charging> <label-charging>";
-    discharging = "<ramp-capacity> <label-discharging>";
-    full = "<ramp-capacity> <label-full>";
+    charging = {
+      text = "<animation-charging>  <label-charging>";
+      background = "\${colors.azure}";
+    };
+    discharging = {
+      text = "<ramp-capacity>  <label-discharging>";
+      background = "\${colors.azure}";
+    };
+    full = {
+      text = "<ramp-capacity>  <label-full>";
+      background = "\${colors.azure}";
+    };
+    low.background = "\${colors.red}";
   };
   ramp.capacity = [ "" "" "" "" "" ];
   animation.charging = ramp.capacity;
   "inherit" = "rounded";
-  format.background = "\${colors.azure}";
 };
 ```
 

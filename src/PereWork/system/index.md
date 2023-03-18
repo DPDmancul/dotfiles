@@ -48,3 +48,11 @@ Enable BTRFS compression
 fileSystems."/".options = [ "compress=zstd" ];
 ```
 
+### nvidia
+
+Disable offload mode, otherwise X won't start
+
+```nix "PereWork/system" +=
+services.xserver.videoDrivers = [ "nvidia" ];
+hardware.nvidia.prime.offload.enable = false;
+```
