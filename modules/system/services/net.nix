@@ -1,6 +1,7 @@
 { config, pkgs, assets, lib, users, ... }:
 {
-  networking.useNetworkd = true;
+  networking.networkmanager.enable = true;
+  # networking.useNetworkd = true;
   systemd.network.wait-online = {
     anyInterface = true;
     timeout = 0;
@@ -44,21 +45,21 @@
   #     };
   #   };
   # };
-  networking.wireless = {
-    enable = true;
-    userControlled.enable = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    wpa_supplicant_gui
-  ];
-  sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
-
-  networking.wireless = {
-    environmentFile = config.sops.secrets."wireless.env".path;
-    networks = {
-      IDR_CASA.psk = "@IDR_CASA_PSK@";
-      "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
-    };
-  };
+  # networking.wireless = {
+  #   enable = true;
+  #   userControlled.enable = true;
+  # };
+  #
+  # environment.systemPackages = with pkgs; [
+  #   wpa_supplicant_gui
+  # ];
+  # sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
+  #
+  # networking.wireless = {
+  #   environmentFile = config.sops.secrets."wireless.env".path;
+  #   networks = {
+  #     IDR_CASA.psk = "@IDR_CASA_PSK@";
+  #     "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
+  #   };
+  # };
 }
