@@ -1,13 +1,6 @@
 { config, pkgs, assets, lib, users, ... }:
 {
-  networking = {
-    useNetworkd = true;
-    wireless.iwd.enable = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    iwgtk
-  ];
+  networking.useNetworkd = true;
   systemd.network.wait-online = {
     anyInterface = true;
     timeout = 0;
@@ -51,6 +44,14 @@
   #     };
   #   };
   # };
+  networking.wireless = {
+    enable = true;
+    userControlled.enable = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    wpa_supplicant_gui
+  ];
   sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
 
   networking.wireless = {
