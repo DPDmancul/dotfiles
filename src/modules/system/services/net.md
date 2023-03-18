@@ -7,12 +7,20 @@
 }
 ```
 
+**TODO**
+
+meanwhile use networkmanager
+
+```nix "modules/system/services/net" +=
+networking.networkmanager.enable = true;
+```
+
 ## Networkd
 
 Manage networks with networkd.
 
 ```nix "modules/system/services/net" +=
-networking.useNetworkd = true;
+# networking.useNetworkd = true;
 ```
 
 Disable annoying awaiting being online at startup
@@ -80,26 +88,26 @@ OR
 Enable wpa_supplicant, wpa_cli and wpa_gui
 
 ```nix "modules/system/services/net" +=
-networking.wireless = {
-  enable = true;
-  userControlled.enable = true;
-};
-
-environment.systemPackages = with pkgs; [
-  wpa_supplicant_gui
-];
+# networking.wireless = {
+#   enable = true;
+#   userControlled.enable = true;
+# };
+#
+# environment.systemPackages = with pkgs; [
+#   wpa_supplicant_gui
+# ];
 ```
 
 ### Networks
 
 ```nix "modules/system/services/net" +=
-sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
-
-networking.wireless = {
-  environmentFile = config.sops.secrets."wireless.env".path;
-  networks = {
-    IDR_CASA.psk = "@IDR_CASA_PSK@";
-    "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
-  };
-};
+# sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
+#
+# networking.wireless = {
+#   environmentFile = config.sops.secrets."wireless.env".path;
+#   networks = {
+#     IDR_CASA.psk = "@IDR_CASA_PSK@";
+#     "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
+#   };
+# };
 ```
