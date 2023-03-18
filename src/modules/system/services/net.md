@@ -9,17 +9,10 @@
 
 ## Networkd
 
-Manage networks with networkd; use iwd as wifi backend.
+Manage networks with networkd.
 
 ```nix "modules/system/services/net" +=
-networking = {
-  useNetworkd = true;
-  wireless.iwd.enable = true;
-};
-
-environment.systemPackages = with pkgs; [
-  iwgtk
-];
+networking.useNetworkd = true;
 ```
 
 Disable annoying awaiting being online at startup
@@ -82,7 +75,22 @@ OR
 # };
 ```
 
-## Wireless networks
+## Wireless
+
+Enable wpa_supplicant, wpa_cli and wpa_gui
+
+```nix "modules/system/services/net" +=
+networking.wireless = {
+  enable = true;
+  userControlled.enable = true;
+};
+
+environment.systemPackages = with pkgs; [
+  wpa_supplicant_gui
+];
+```
+
+### Networks
 
 ```nix "modules/system/services/net" +=
 sops.secrets."wireless.env".sopsFile = /${assets}/secrets/wireless.yaml;
@@ -95,4 +103,3 @@ networking.wireless = {
   };
 };
 ```
-
