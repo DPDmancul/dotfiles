@@ -1,4 +1,0 @@
-[submodule "flake"]
-	path = flake
-	url = ../dotfiles.git
-	branch = flake
