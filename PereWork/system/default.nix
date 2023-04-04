@@ -19,4 +19,10 @@
   fileSystems."/".options = [ "compress=zstd" ];
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.prime.offload.enable = false;
+  networking.hosts = {
+    "10.14.201.215" = [ 
+      "k8sd-plant-jft-mvlabs.vidim.it"
+      "k8sd-plant-jft-mvlabs.vidim.it"
+    ];
+  };
 }
