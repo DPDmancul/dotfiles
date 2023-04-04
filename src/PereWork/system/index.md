@@ -56,3 +56,11 @@ Disable offload mode, otherwise X won't start
 services.xserver.videoDrivers = [ "nvidia" ];
 hardware.nvidia.prime.offload.enable = false;
 ```
+
+## Hosts
+
+```nix "PereWork/system" +=
+networking.hosts = {
+  "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
+};
+```
