@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ -e .commit ]
-then
-  git add $(cat .commit)
-  rm .commit
-  git commit --amend -C HEAD --no-verify
-fi

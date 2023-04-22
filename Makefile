@@ -8,7 +8,7 @@ DOC := book
 
 all: install doc ;
 
-build: $(BUILD) remove-tangled
+build: remove-tangled
 	cd $(BUILD) && lmt $$(find ../ -type f -name '*.md')
 	cd "$(SRC)" && find . -type f -not -name '*.md' -exec cp {} ../$(BUILD)/{} \;
 	cp -r assets .sops.yaml $(BUILD)/
@@ -36,10 +36,4 @@ install-%: build .delegate-install-%;
 
 .DEFAULT:
 	@$(MAKE) .delegate-$@
-
-$(BUILD)/%:
-	git submodule update --init --recursive
-	chmod +x -R hooks
-	ln -srf hooks/* "$$(git rev-parse --git-path hooks)"
-	git config submodule.recurse true
 

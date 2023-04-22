@@ -13,6 +13,12 @@ meanwhile use networkmanager
 
 ```nix "modules/system/services/net" +=
 networking.networkmanager.enable = true;
+
+users.users = lib.genAttrs users (user: {
+    extraGroups = [
+      "network"
+    ];
+  });
 ```
 
 ## Networkd
