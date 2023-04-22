@@ -16,7 +16,7 @@ See [table of contents](./src/SUMMARY.md).
 
 <!-- ANCHOR: content -->
 
-Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/flake).
+Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/nix/flake).
 
 # Usage
 
