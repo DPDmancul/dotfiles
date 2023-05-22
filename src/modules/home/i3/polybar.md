@@ -175,7 +175,7 @@ Here we cannon inherit rounded, so we have to emulate it:
 ```nix "modules/home/i3/polybar-settings" +=
 "module/window" = {
   type = "internal/xwindow";
-  label = "%title:0:60:...%";
+  label = "%title:0:60:…%";
   "inherit" = "rounded";
   format.background = "\${colors.glass}";
 };
@@ -232,7 +232,7 @@ Wi-fi
 "module/wlan" = {
   "inherit" = "net rounded";
   interface.type = "wireless";
-  label.connected = " %essid:0:10:...% (%signal%%)";
+  label.connected = " %essid:0:10:…% (%signal%%)";
 };
 ```
 

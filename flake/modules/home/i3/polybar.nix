@@ -122,7 +122,7 @@ in
       };
       "module/window" = {
         type = "internal/xwindow";
-        label = "%title:0:60:...%";
+        label = "%title:0:60:…%";
         "inherit" = "rounded";
         format.background = "\${colors.glass}";
       };
@@ -155,7 +155,7 @@ in
       "module/wlan" = {
         "inherit" = "net rounded";
         interface.type = "wireless";
-        label.connected = " %essid:0:10:...% (%signal%%)";
+        label.connected = " %essid:0:10:…% (%signal%%)";
       };
       "module/vpn" = {
         "inherit" = "net rounded";
