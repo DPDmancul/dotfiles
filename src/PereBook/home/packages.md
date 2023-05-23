@@ -44,7 +44,6 @@ jmtpfs # For kindle
 
 ```nix "PereBook/home/packages-packages" +=
 gimp
-kolourpaint
 inkscape
 ```
 

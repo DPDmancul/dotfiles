@@ -20,7 +20,6 @@
     calibre
     jmtpfs # For kindle
     gimp
-    kolourpaint
     inkscape
     gnome.simple-scan
     audacity
