@@ -43,10 +43,10 @@ Managing the config with flakes allows to pin source versions.
 ### Channels
 
 ```nix "flake-inputs" +=
-stable.url = github:nixos/nixpkgs/nixos-22.11;
+stable.url = github:nixos/nixpkgs/nixos-23.05;
 unstable.url = github:nixos/nixpkgs/nixos-unstable;
 master.url = github:nixos/nixpkgs/master;
-fallback.url = github:nixos/nixpkgs/nixos-22.11-small;
+fallback.url = github:nixos/nixpkgs/nixos-23.05-small;
 nixpkgs.follows = "stable";
 ```
 
@@ -60,7 +60,7 @@ nur.url = github:nix-community/NUR;
 
 ```nix "flake-inputs" +=
 home-manager = {
-  url = github:nix-community/home-manager/release-22.11;
+  url = github:nix-community/home-manager/release-23.05;
   inputs.nixpkgs.follows = "nixpkgs";
 };
 hardware.url = github:nixos/nixos-hardware;

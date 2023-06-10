@@ -30,6 +30,6 @@ boot.loader.timeout = 2;
 Use RAM to store temporary files
 
 ```nix "modules/system/boot" +=
-boot.tmpOnTmpfs = true;
+boot.tmp.useTmpfs = true;
 ```
 
