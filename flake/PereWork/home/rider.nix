@@ -5,7 +5,7 @@
   ];
 
   xdg.configFile."ideavim/ideavimrc".text = ''
-    source ~/.config/nvim/init-home-manager.vim
+    ${config.programs.neovim.generatedConfigViml}
     vnoremap P "_c<C-R>*<esc>
     set ideajoin # `J` to join lines
     set ideaput  # clipboard integration

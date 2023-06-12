@@ -22,7 +22,7 @@ xdg.configFile."ideavim/ideavimrc".text = ''
 Source vim config
 
 ```vim "PereWork/home/rider-ideavimrc" +=
-source ~/.config/nvim/init-home-manager.vim
+${config.programs.neovim.generatedConfigViml}
 ```
 
 Emulate visual put without changing register, which is inexplicably missing from ideavim
