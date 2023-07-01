@@ -25,6 +25,16 @@ users.users = lib.genAttrs users (user: {
 });
 ```
 
+### Discover network printers
+
+```nix "modules/system/services/print_scan" +=
+services.avahi = {
+  enable = true;
+  nssmdns = true;
+  openFirewall = true;
+};
+```
+
 ### Brother DCP 1612W network printer
 
 ```nix modules/system/services/print_scan/brotherDCP1612W.nix
