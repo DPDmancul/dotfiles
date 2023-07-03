@@ -19,8 +19,6 @@
     unfree.masterpdfeditor4
     calibre
     jmtpfs # For kindle
-    gimp
-    inkscape
     gnome.simple-scan
     audacity
     # denemo
@@ -36,6 +34,7 @@
     })
     clipgrab
     qbittorrent
+    sqlite
     sqlitebrowser
     tdesktop # Telegram
     simplenote

@@ -48,6 +48,14 @@ appDefaultForMimes."okularApplication_pdf.desktop" = {
 };
 ```
 
+## Drawing
+
+```nix "modules/home/packages/utils-packages" +=
+kolourpaint
+gimp
+inkscape
+```
+
 ## Image viewer
 
 ```nix "modules/home/packages/utils-packages" +=
@@ -87,7 +95,6 @@ appDefaultForMimes."umpv.desktop" = {
 
 ```nix "modules/home/packages/utils-packages" +=
 qalculate-gtk
-kolourpaint
 gnome.gnome-disk-utility
 dua # disk usage
 ```

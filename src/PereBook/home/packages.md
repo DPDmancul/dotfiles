@@ -40,13 +40,6 @@ calibre
 jmtpfs # For kindle
 ```
 
-### Drawing
-
-```nix "PereBook/home/packages-packages" +=
-gimp
-inkscape
-```
-
 ### Scan
 
 ```nix "PereBook/home/packages-packages" +=
@@ -91,6 +84,7 @@ qbittorrent
 ## Utilities
 
 ```nix "PereBook/home/packages-packages" +=
+sqlite
 sqlitebrowser
 tdesktop # Telegram
 simplenote

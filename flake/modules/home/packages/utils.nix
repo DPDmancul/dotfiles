@@ -15,10 +15,12 @@
       '';
     })
     libsForQt5.okular
+    kolourpaint
+    gimp
+    inkscape
     imv
     mpv
     qalculate-gtk
-    kolourpaint
     gnome.gnome-disk-utility
     dua # disk usage
   ];
