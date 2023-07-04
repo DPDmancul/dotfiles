@@ -145,7 +145,7 @@ Enable all maintained languages, except LaTeX (highlighted and concealed via Vim
 ```lua "modules/home/nvim/editing-treesitter" +=
 require"nvim-treesitter.configs".setup {
   highlight = {
-    enable = true,
+    enable = false, -- disable until treesitter is updated in nixpkgs
     disable = { "latex" },
   },
   incremental_selection = { enable = true },

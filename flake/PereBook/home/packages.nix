@@ -21,6 +21,7 @@
     jmtpfs # For kindle
     gnome.simple-scan
     audacity
+    ardour
     # denemo
     musescore
     ffmpeg

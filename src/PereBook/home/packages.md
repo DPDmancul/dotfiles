@@ -52,6 +52,7 @@ gnome.simple-scan
 
 ```nix "PereBook/home/packages-packages" +=
 audacity
+ardour
 # denemo
 musescore
 ```

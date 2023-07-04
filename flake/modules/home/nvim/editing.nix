@@ -55,7 +55,7 @@
         config = ''
           require"nvim-treesitter.configs".setup {
             highlight = {
-              enable = true,
+              enable = false, -- disable until treesitter is updated in nixpkgs
               disable = { "latex" },
             },
             incremental_selection = { enable = true },
