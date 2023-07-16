@@ -97,5 +97,6 @@ appDefaultForMimes."umpv.desktop" = {
 qalculate-gtk
 gnome.gnome-disk-utility
 dua # disk usage
+jq # cmd json parser
 ```
 
