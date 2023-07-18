@@ -15,6 +15,7 @@ In this folder there are also some useful modules used only by some system confi
     ./services/net.nix
     ./services/pipewire.nix
     ./services/print_scan.nix
+    ./services/docker.nix
     ./lightdm.nix
     ./i3.nix
     ./packages.nix

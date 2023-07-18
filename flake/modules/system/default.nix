@@ -8,6 +8,7 @@
     ./services/net.nix
     ./services/pipewire.nix
     ./services/print_scan.nix
+    ./services/docker.nix
     ./lightdm.nix
     ./i3.nix
     ./packages.nix

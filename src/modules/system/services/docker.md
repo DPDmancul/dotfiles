@@ -1,6 +1,6 @@
 # Docker
 
-```nix PereWork/system/docker.nix
+```nix modules/system/services/docker.nix
 { config, pkgs, lib, assets, ... }:
 {
   virtualisation.docker = {
