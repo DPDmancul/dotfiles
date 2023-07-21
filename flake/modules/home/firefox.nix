@@ -34,6 +34,7 @@
           "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
           "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
           "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
+          "{74145f27-f039-47ce-a470-a662b129930a}" = ext "clearurls";
           # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
         };
         PasswordManagerEnabled = false;
