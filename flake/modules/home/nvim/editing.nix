@@ -50,12 +50,12 @@
       vim-table-mode
       nvim-ts-rainbow
       {
-        plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+        plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
         config = ''
           require"nvim-treesitter.configs".setup {
             highlight = {
-              enable = false, -- disable until treesitter is updated in nixpkgs
+              enable = true,
               disable = { "latex" },
             },
             incremental_selection = { enable = true },

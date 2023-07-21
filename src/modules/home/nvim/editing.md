@@ -132,7 +132,7 @@ Do syntax highlighting via treesitter
 ```nix "modules/home/nvim/editing-plugins" +=
 nvim-ts-rainbow
 {
-  plugin = nvim-treesitter.withPlugins (p: pkgs.tree-sitter.allGrammars);
+  plugin = nvim-treesitter.withAllGrammars;
   type = "lua";
   config = ''
     <<<modules/home/nvim/editing-treesitter>>>
@@ -145,7 +145,7 @@ Enable all maintained languages, except LaTeX (highlighted and concealed via Vim
 ```lua "modules/home/nvim/editing-treesitter" +=
 require"nvim-treesitter.configs".setup {
   highlight = {
-    enable = false, -- disable until treesitter is updated in nixpkgs
+    enable = true,
     disable = { "latex" },
   },
   incremental_selection = { enable = true },
