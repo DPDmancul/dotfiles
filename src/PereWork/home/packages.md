@@ -12,10 +12,10 @@
   home.packages = with pkgs; [
     #<<<PereWork/home/packages-packages>>>
     keepassxc
-    unfree.dropbox-cli
+    appimage-run
+    unfree.dropbox-cli # TODO with home manager
     unfree.postman
     unfree.ngrok
-    openvpn
   ];
 
   #<<<PereWork/home/packages>>>
