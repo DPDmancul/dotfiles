@@ -12,6 +12,7 @@
     unfree.dropbox-cli
     unfree.postman
     unfree.ngrok
+    openvpn
   ];
 
   #<<<PereWork/home/packages>>>
