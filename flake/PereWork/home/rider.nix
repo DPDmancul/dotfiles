@@ -19,12 +19,15 @@
     map <leader>fg <Action>(FindInPath)
     map <leader>fb <Action>(Switcher)
     " map <leader>fp <Action>() TODO
-    map <leader>gg <Action>(GitRepositoryActions) " TODO
+    map <leader>gg <Action>(ActivateVersionControlToolWindow)
 
     map ]b <Action>(NextTab)
     " map ]B <Action>() TODO 
     map [b <Action>(PreviousTab)
     " map [B <Action>() TODO
+
+    map ]d <Action>(GotoNextError) 
+    map [d <Action>(GotoPreviousError)
 
     map gD <Action>(GotoDeclaration)
     map gI <Action>(GotoImplementation)
