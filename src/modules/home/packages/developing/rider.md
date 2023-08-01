@@ -1,39 +1,39 @@
 # JetBrains Rider
 
-```nix PereWork/home/rider.nix
+```nix modules/home/packages/developing/rider.nix
 { config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
     unfree.jetbrains.rider
   ];
 
-  <<<PereWork/home/rider>>>
+  <<<modules/home/packages/developing/rider>>>
 }
 ```
 
 ## Vim emulation
 
-```nix "PereWork/home/rider" +=
+```nix "modules/home/packages/developing/rider" +=
 xdg.configFile."ideavim/ideavimrc".text = ''
-  <<<PereWork/home/rider-ideavimrc>>>
+  <<<modules/home/packages/developing/rider-ideavimrc>>>
 '';
 ```
 
 Source vim config
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 ${config.programs.neovim.generatedConfigViml}
 ```
 
 Emulate visual put without changing register, which is inexplicably missing from ideavim
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 vnoremap P "_c<C-R>*<esc>
 ```
 
 ### Settings
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 set ideajoin # `J` to join lines
 set ideaput  # clipboard integration
 set showmode
@@ -41,14 +41,14 @@ set showmode
 
 ### Plugins
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 set commentary
 set surround
 ```
 
 Use sandwich key mapping for surround
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 map sa ys
 map sr cs
 map sd ds
@@ -58,7 +58,7 @@ map sd ds
 
 TODO
 
-```vim "PereWork/home/rider-ideavimrc" +=
+```vim "modules/home/packages/developing/rider-ideavimrc" +=
 map <leader>ff <Action>(GotoFile)
 map <leader>fg <Action>(FindInPath)
 map <leader>fb <Action>(Switcher)

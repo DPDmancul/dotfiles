@@ -58,6 +58,7 @@
       - [Developing]()
         - [Agda](./modules/home/packages/developing/agda.md)
         - [DotNet](./modules/home/packages/developing/dotnet.md)
+          - [Rider](./modules/home/packages/developing/rider.md)
         - [Java](./modules/home/packages/developing/java.md)
         - [Node.js](./modules/home/packages/developing/node.md)
         - [Python3](./modules/home/packages/developing/python3.md)
@@ -80,6 +81,5 @@
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)
     - [Firefox](./PereWork/home/firefox.md)
-    - [Rider](./PereWork/home/rider.md)
     - [Packages](./PereWork/home/packages.md)
 
