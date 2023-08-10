@@ -8,6 +8,7 @@
     ./git.nix
     ./ssh.nix
     ./firefox.nix
+    /${modules}/home/packages/qemu.nix
     ./packages.nix
   ];
 
