@@ -19,6 +19,7 @@
     appimage-run
     openvpn
     (writeScriptBin "openvpn_legacy" ''${openvpn_legacy}/bin/openvpn "$@"'')
+    remmina
     unfree.dropbox-cli # TODO with home manager
     unfree.postman
     unfree.ngrok
