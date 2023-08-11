@@ -6,7 +6,6 @@
     passwordFile = config.sops.secrets."users/PereBook/dpd-/password".path;
     extraGroups = [
       "wheel" # Enable 'sudo' for the user.
-      "libvirtd" # virtualisation
     ];
   };
 }
