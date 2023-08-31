@@ -2,6 +2,9 @@
 {
   programs.neovim = {
     extraConfig = ''
+      augroup filetypedetect
+        autocmd BufNew,BufNewFile,BufRead *.env :setfiletype dotenv
+      augroup END
       set completeopt=menuone,noselect
     '';
     plugins = with pkgs; with vimPlugins; [

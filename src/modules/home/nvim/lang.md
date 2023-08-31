@@ -18,6 +18,14 @@ Add support for some languages
 }
 ```
 
+## Filetypes
+
+```vim "modules/home/nvim/lang-config" +=
+augroup filetypedetect
+  autocmd BufNew,BufNewFile,BufRead *.env :setfiletype dotenv
+augroup END
+```
+
 ## Quarto Pandoc
 
 ```nix "modules/home/nvim/lang-plugins" +=
