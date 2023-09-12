@@ -24,16 +24,16 @@
     ];
   });
 
+  virtualisation = {
+    libvirtd.enable = true;
+    virtualbox.host.enable = true;
+  };
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
   hardware.opengl.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
   users.mutableUsers = false;
   programs.dconf.enable = true;
-  virtualisation = {
-    libvirtd.enable = true;
-    virtualbox.host.enable = true;
-  };
   time.timeZone = "Europe/Rome";
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })

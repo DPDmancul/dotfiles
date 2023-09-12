@@ -39,6 +39,15 @@ now really enable unfree drivers
 "nvidia-settings"
 ```
 
+Enable virtualisation
+
+```nix "modules/system" +=
+virtualisation = {
+  libvirtd.enable = true;
+  virtualbox.host.enable = true;
+};
+```
+
 ## Hardware
 
 Enable BTRFS compression
