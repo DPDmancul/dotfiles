@@ -20,6 +20,7 @@
     openvpn
     (writeScriptBin "openvpn_legacy" ''${openvpn_legacy}/bin/openvpn "$@"'')
     remmina
+    virtualbox
     postgresql # TODO install only client
     unfree.dropbox-cli # TODO with home manager
     unfree.postman
