@@ -7,6 +7,7 @@
     extraGroups = [
       "wheel" # Enable 'sudo' for the user.
       "libvirtd" # virtualisation
+      "vboxusers"
     ];
   };
 }

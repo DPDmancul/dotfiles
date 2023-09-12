@@ -74,7 +74,10 @@ programs.dconf.enable = true;
 Enable virtualisation
 
 ```nix "modules/system" +=
-virtualisation.libvirtd.enable = true;
+virtualisation = {
+  libvirtd.enable = true;
+  virtualbox.host.enable = true;
+};
 ```
 
 ## Timezone
