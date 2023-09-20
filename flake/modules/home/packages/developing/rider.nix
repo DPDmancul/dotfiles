@@ -6,7 +6,7 @@
 
   xdg.configFile."ideavim/ideavimrc".text = ''
     ${config.programs.neovim.generatedConfigViml}
-    vnoremap P "_c<C-R>*<esc>
+    " vnoremap P "_c<C-R>*<esc>
     set ideajoin # `J` to join lines
     set ideaput  # clipboard integration
     set showmode
