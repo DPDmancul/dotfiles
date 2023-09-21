@@ -24,6 +24,7 @@
     gnome.gnome-disk-utility
     dua # disk usage
     jq # cmd json parser
+    appimage-run
   ];
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
   appDefaultForMimes."okularApplication_pdf.desktop" = {
