@@ -72,6 +72,7 @@
     - [Services](./PereBook/system/services.md)
     - [Users](./PereBook/system/users.md)
   - [Home](./PereBook/home/index.md)
+    - [Backup](./PereBook/home/backup.md)
     - [Packages](./PereBook/home/packages.md)
 
 - [PereWork]()

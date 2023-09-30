@@ -5,6 +5,7 @@
 {
   imports = [
     /${modules}/home
+    ./backup.nix
     ./packages.nix
   ];
 
