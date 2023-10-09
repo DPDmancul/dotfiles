@@ -3,10 +3,22 @@
 # dotfiles
 
 <center>
-  <img width="200px" src="img/icon.png" />
+  <img width="200px" src="img/icon.png" alt="" />
 </center>
 
 My dotfiles for NixOS and the Nix package manager, written in literate programming.
+
+<center float="left">
+  <a target="_blank" href="https://gitlab.com/DPDmancul/dotfiles/uploads/4d84681a642f07ae433c1103aa192fb6/2023-10-09_223159.png">
+    <img width="30%" alt="screenshot" src="https://gitlab.com/DPDmancul/dotfiles/uploads/4d84681a642f07ae433c1103aa192fb6/2023-10-09_223159.png" />
+  </a>
+  <a target="_blank" href="https://gitlab.com/DPDmancul/dotfiles/uploads/1cc22b8f49e9970d6d9066e3474e0db6/2023-10-09_224134.png">
+    <img width="30%" alt="screenshot" src="https://gitlab.com/DPDmancul/dotfiles/uploads/1cc22b8f49e9970d6d9066e3474e0db6/2023-10-09_224134.png" />
+  </a>
+  <a target="_blank" href="https://gitlab.com/DPDmancul/dotfiles/uploads/e79e72080235ed6030eb858bf0f27267/2023-10-09_224835.png">
+    <img width="30%" alt="screenshot" src="https://gitlab.com/DPDmancul/dotfiles/uploads/e79e72080235ed6030eb858bf0f27267/2023-10-09_224835.png" />
+  </a>
+</center>
 
 <!-- ANCHOR_END: header -->
 
