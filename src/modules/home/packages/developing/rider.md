@@ -25,19 +25,11 @@ Source vim config
 ${config.programs.neovim.generatedConfigViml}
 ```
 
-Emulate visual put without changing register, which is inexplicably missing from ideavim
-
-EDIT: it was added in a recent update
-
-```vim "modules/home/packages/developing/rider-ideavimrc" +=
-" vnoremap P "_c<C-R>*<esc>
-```
-
 ### Settings
 
 ```vim "modules/home/packages/developing/rider-ideavimrc" +=
 set ideajoin # `J` to join lines
-set ideaput  # clipboard integration
+set clipboard+=ideaput # clipboard integration
 set showmode
 ```
 

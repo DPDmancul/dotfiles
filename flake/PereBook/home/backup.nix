@@ -20,7 +20,7 @@
         ];
       };
     };
-    # TODO move wait home-manager update
+    # TODO wait home-manager update
     # hooks.extraConfig = {
     #   # do not execute if destination is unmounted
     #   before_backup = "findmnt ${mntPoint} > /dev/null || exit 75";

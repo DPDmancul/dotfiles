@@ -24,6 +24,10 @@
     ];
   });
 
+  virtualisation = {
+    libvirtd.enable = true;
+    virtualbox.host.enable = true;
+  };
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
   hardware.opengl.enable = true;
@@ -36,8 +40,4 @@
   ];
   nix.settings.auto-optimise-store = true;
   system.stateVersion = "21.11";
-  virtualisation = {
-    libvirtd.enable = true;
-    virtualbox.host.enable = true;
-  };
 }
