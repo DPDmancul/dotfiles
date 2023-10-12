@@ -1,7 +1,7 @@
 # System
 
 ```nix PereWork/system/default.nix
-{ config, pkgs, inputs, modules, lib, ... }:
+{ config, pkgs, inputs, modules, sops, lib, ... }:
 {
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
@@ -71,4 +71,11 @@ hardware.nvidia.prime.offload.enable = false;
 networking.hosts = {
   "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
 };
+```
+
+## Certificates
+
+```nix "PereWork/system" +=
+sops.secrets."ca/PereWork.pem" = {};
+security.pki.certificateFiles = [ config.sops.secrets."ca/PereWork.pem".path ];
 ```
