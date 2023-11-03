@@ -23,6 +23,11 @@ Login to git remotes using keys, instead of writing the password each time
   user         = "git";
   identityFile = "~/.ssh/MVLabsGit";
 };
+
+"10.227.15.64" = {
+  identityFile = "~/.ssh/MVLabsGit";
+};
+
 ```
 
 ## Private keys
