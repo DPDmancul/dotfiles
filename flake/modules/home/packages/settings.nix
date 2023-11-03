@@ -5,5 +5,6 @@
     pamixer
     arandr      # screen
     gnome.seahorse # gnome keyring
+    libsecret # secret-tool
   ];
 }

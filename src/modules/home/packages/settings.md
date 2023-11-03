@@ -10,6 +10,7 @@ GUI for easily manage settings.
     pamixer
     arandr      # screen
     gnome.seahorse # gnome keyring
+    libsecret # secret-tool
   ];
 }
 ```
