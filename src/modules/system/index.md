@@ -18,6 +18,7 @@ In this folder there are also some useful modules used only by some system confi
     ./services/docker.nix
     ./lightdm.nix
     ./i3.nix
+    ./keyring.nix
     ./packages.nix
   ];
 

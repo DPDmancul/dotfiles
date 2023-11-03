@@ -24,6 +24,7 @@
     - [LightDM (display manager)](./modules/system/lightdm.md)
     - [i3 (window manager)](./modules/system/i3.md)
     - [Gnome](./modules/system/gnome.md)
+    - [Keyring](./modules/system/keyring.md)
     - [Packages](./modules/system/packages.md)
   - [Home](./modules/home/index.md)
     - [Terminal and shell]()
