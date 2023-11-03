@@ -4,5 +4,6 @@
     pavucontrol # audio
     pamixer
     arandr      # screen
+    gnome.seahorse # gnome keyring
   ];
 }
