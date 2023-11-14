@@ -99,5 +99,6 @@ gnome.gnome-disk-utility
 dua # disk usage
 jq # cmd json parser
 appimage-run
+perl536Packages.AppMusicChordPro
 ```
 

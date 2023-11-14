@@ -26,7 +26,7 @@ optimise:
 collect-garbage:
 	$(HOME-MANAGER) expire-generations "-30 days"
 	sudo nix-collect-garbage --delete-older-than 90d
-	$(MAKE) install-system # update the set of boot entries
+#	$(MAKE) install-system # update the set of boot entries
 
 defrag:
 	sudo mount -o remount rw /nix/store/
