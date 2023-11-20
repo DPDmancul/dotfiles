@@ -20,7 +20,6 @@
     openvpn
     (writeScriptBin "openvpn_legacy" ''${openvpn_legacy}/bin/openvpn "$@"'')
     openconnect
-    vpn-slice
     remmina
     postgresql # TODO install only client
     unfree.dropbox-cli # TODO with home manager

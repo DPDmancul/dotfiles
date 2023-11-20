@@ -2,13 +2,16 @@
 
 ```nix modules/home/packages/developing/dotnet.nix
 { config, pkgs, lib, ... }:
+let
+  dotnet-sdk = pkgs.dotnet-sdk_8;
+in
 {
   home.packages = with pkgs; [
     dotnet-sdk
   ];
 
   home.sessionVariables = {
-    DOTNET_ROOT = pkgs.dotnet-sdk;
+    DOTNET_ROOT = dotnet-sdk;
     # disable telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT = 1;
   };
