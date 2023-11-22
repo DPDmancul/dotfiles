@@ -1,6 +1,9 @@
 { config, pkgs, lib, ... }:
 let
-  dotnet-sdk = pkgs.dotnet-sdk_8;
+  dotnet-sdk = with pkgs.dotnetCorePackages; combinePackages [
+    sdk_8_0
+    sdk_6_0
+  ];
 in
 {
   home.packages = with pkgs; [
