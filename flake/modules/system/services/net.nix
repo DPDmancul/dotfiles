@@ -4,7 +4,7 @@
 
   users.users = lib.genAttrs users (user: {
       extraGroups = [
-        "network"
+        "networkmanager"
       ];
     });
   # networking.useNetworkd = true;

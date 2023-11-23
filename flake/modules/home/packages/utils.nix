@@ -32,7 +32,7 @@
     application = "pdf";
     image = [ "vnd.djvu" "x.djvu" ];
   };
-  appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+  appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
   appDefaultForMimes."umpv.desktop" = {
     video = [
       "avi" "msvideo" "x-msvideo"

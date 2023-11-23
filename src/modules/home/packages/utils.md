@@ -63,7 +63,7 @@ imv
 ```
 
 ```nix "modules/home/packages/utils" +=
-appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
 ```
 
 ## Video and audio player

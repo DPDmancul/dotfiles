@@ -16,7 +16,7 @@ networking.networkmanager.enable = true;
 
 users.users = lib.genAttrs users (user: {
     extraGroups = [
-      "network"
+      "networkmanager"
     ];
   });
 ```
