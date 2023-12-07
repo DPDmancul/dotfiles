@@ -9,7 +9,7 @@ in
   ];
   config = {
     services.printing.drivers = with pkgs; [
-      brlaser
+      brlaser-master
     ];
     hardware.printers = {
       ensureDefaultPrinter = "Brother";
