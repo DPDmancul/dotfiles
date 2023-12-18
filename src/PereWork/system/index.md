@@ -73,6 +73,18 @@ networking.hosts = {
 };
 ```
 
+## Teamviewer
+
+<!-- TODO: move -->
+
+```nix "unfree-extra" +=
+"teamviewer"
+```
+
+```nix "PereWork/system" +=
+services.teamviewer.enable = true;
+```
+
 ## Certificates
 
 ```nix "PereWork/system" +=

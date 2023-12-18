@@ -21,6 +21,7 @@
   networking.hosts = {
     "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
   };
+  services.teamviewer.enable = true;
   sops.secrets."ca/PereWork.pem" = {};
   security.pki.certificateFiles = [ config.sops.secrets."ca/PereWork.pem".path ];
 }
