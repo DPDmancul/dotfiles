@@ -3,6 +3,7 @@
 
   inputs = {
     stable.url = github:nixos/nixpkgs/nixos-23.05;
+    next.url = github:nixos/nixpkgs/nixos-23.11;
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
     master.url = github:nixos/nixpkgs/master;
     fallback.url = github:nixos/nixpkgs/nixos-23.05-small;
@@ -50,16 +51,17 @@
     rec {
       legacyPackages = forAllSystems (system:
         let
-          overlays = [
+          overlays = config: [
             # NUR
             inputs.nur.overlay
             # unstable, master and fallaback channels
             (self: super: {
-              unstable = inputs.unstable.legacyPackages.${system};
-              master = inputs.master.legacyPackages.${system};
+              unstable = import inputs.unstable { inherit system config; };
+              next = import inputs.next { inherit system config; };
+              master = import inputs.master { inherit system config; };
               fallback = import inputs.fallback {
                 inherit system;
-                config = {
+                config = config // {
                   allowBroken = true;
                   allowInsecure = true;
                 };
@@ -71,10 +73,11 @@
         in
         import nixpkgs {
           inherit system;
-          overlays = overlays ++ [
+          overlays = (overlays {}) ++ [
             (self: super: {
               unfree = import nixpkgs {
-                inherit system overlays;
+                inherit system;
+                overlays = (overlays { allowUnfree = true; });
                 config.allowUnfree = true;
               };
             })

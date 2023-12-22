@@ -4,7 +4,7 @@
 { config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
-    unfree.jetbrains.rider
+    unfree.unstable.jetbrains.rider
   ];
 
   <<<modules/home/packages/developing/rider>>>

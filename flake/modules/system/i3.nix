@@ -9,7 +9,7 @@
 
     windowManager.i3 = {
       enable = true;
-      package = pkgs.unstable.i3; # TODO stable after gaps being merged
+      package = pkgs.next.i3;
       extraPackages = [ ];
     };
   };

@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
-    unfree.jetbrains.rider
+    unfree.unstable.jetbrains.rider
   ];
 
   xdg.configFile."ideavim/ideavimrc".text = ''
