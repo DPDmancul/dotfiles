@@ -81,9 +81,12 @@ time.timeZone = "Europe/Rome";
 ## Fonts
 
 ```nix "modules/system" +=
-fonts.fonts = with pkgs; [
-  (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-];
+fonts = {
+  enableDefaultPackages = true;
+  packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+  ];
+};
 ```
 
 ## Optimise Nix store

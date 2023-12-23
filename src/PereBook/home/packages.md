@@ -28,7 +28,7 @@
 
 ```nix "PereBook/home/packages-packages" +=
 diffpdf
-pdfmixtool
+# pdfmixtool
 xournalpp # TODO rnote?
 ocrmypdf tesseract
 unfree.masterpdfeditor4
@@ -71,9 +71,7 @@ obs-studio
 ## Internet
 
 ```nix "PereBook/home/packages-packages" +=
-(tor-browser-bundle-bin.override {
-  useHardenedMalloc = false;
-})
+tor-browser-bundle-bin
 ```
 
 ### Downloads
@@ -89,7 +87,6 @@ qbittorrent
 sqlite
 sqlitebrowser
 tdesktop # Telegram
-simplenote
 ipscan
 libfaketime
 ```

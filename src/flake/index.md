@@ -43,11 +43,10 @@ Managing the config with flakes allows to pin source versions.
 ### Channels
 
 ```nix "flake-inputs" +=
-stable.url = github:nixos/nixpkgs/nixos-23.05;
-next.url = github:nixos/nixpkgs/nixos-23.11;
+stable.url = github:nixos/nixpkgs/nixos-23.11;
 unstable.url = github:nixos/nixpkgs/nixos-unstable;
 master.url = github:nixos/nixpkgs/master;
-fallback.url = github:nixos/nixpkgs/nixos-23.05-small;
+fallback.url = github:nixos/nixpkgs/nixos-23.11-small;
 nixpkgs.follows = "stable";
 ```
 
@@ -61,7 +60,7 @@ nur.url = github:nix-community/NUR;
 
 ```nix "flake-inputs" +=
 home-manager = {
-  url = github:nix-community/home-manager/release-23.05;
+  url = github:nix-community/home-manager/release-23.11;
   inputs.nixpkgs.follows = "nixpkgs";
 };
 hardware.url = github:nixos/nixos-hardware;
@@ -87,7 +86,6 @@ legacyPackages = forAllSystems (system:
       # unstable, master and fallaback channels
       (self: super: {
         unstable = import inputs.unstable { inherit system config; };
-        next = import inputs.next { inherit system config; };
         master = import inputs.master { inherit system config; };
         fallback = import inputs.fallback {
           inherit system;

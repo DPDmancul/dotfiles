@@ -9,7 +9,6 @@
 
     windowManager.i3 = {
       enable = true;
-      package = pkgs.next.i3;
       extraPackages = [ ];
     };
   };

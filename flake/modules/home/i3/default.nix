@@ -14,7 +14,6 @@ in
     enable = true; # .xsession for lightDM
     windowManager.i3 = {
       enable = true;
-      package = pkgs.next.i3;
       config = {
         modifier = "Mod4";
         terminal = "kitty";

@@ -25,10 +25,6 @@
     ];
   });
 
-  virtualisation = {
-    libvirtd.enable = true;
-    virtualbox.host.enable = true;
-  };
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
   hardware.opengl.enable = true;
@@ -36,9 +32,16 @@
   users.mutableUsers = false;
   programs.dconf.enable = true;
   time.timeZone = "Europe/Rome";
-  fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-  ];
+  fonts = {
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    ];
+  };
   nix.settings.auto-optimise-store = true;
   system.stateVersion = "21.11";
+  virtualisation = {
+    libvirtd.enable = true;
+    virtualbox.host.enable = true;
+  };
 }

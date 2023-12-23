@@ -1,6 +1,11 @@
 { config, pkgs, lib, ... }:
 {
   services.dbus.enable = true;
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
   services.gvfs.enable = true;

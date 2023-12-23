@@ -14,7 +14,7 @@
 
   home.packages = with pkgs; [
     diffpdf
-    pdfmixtool
+    # pdfmixtool
     xournalpp # TODO rnote?
     ocrmypdf tesseract
     unfree.masterpdfeditor4
@@ -31,15 +31,12 @@
     kdenlive
     losslesscut-bin
     obs-studio
-    (tor-browser-bundle-bin.override {
-      useHardenedMalloc = false;
-    })
+    tor-browser-bundle-bin
     clipgrab
     qbittorrent
     sqlite
     sqlitebrowser
     tdesktop # Telegram
-    simplenote
     ipscan
     libfaketime
   ];

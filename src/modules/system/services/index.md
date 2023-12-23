@@ -15,6 +15,16 @@ Required by many other services (e.g. `xdg-desktop-portal`)
 services.dbus.enable = true;
 ```
 
+## Xdg desktop portal
+
+```nix "modules/system/services" +=
+xdg.portal = {
+  enable = true;
+  xdgOpenUsePortal = true;
+  configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+};
+```
+
 ## Bluetooth
 
 ```nix "modules/system/services" +=
