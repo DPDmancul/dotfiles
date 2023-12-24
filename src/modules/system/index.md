@@ -86,6 +86,13 @@ fonts = {
   packages = with pkgs; [
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
+  fontconfig = {
+    defaultFonts = {
+      serif = [ "DejaVu Serif" ];
+      sansSerif = [ "DejaVu Sans" ];
+      monospace = [ "JetBrainsMono" ];
+    };
+  };
 };
 ```
 

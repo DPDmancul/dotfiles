@@ -37,6 +37,13 @@
     packages = with pkgs; [
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
+    fontconfig = {
+      defaultFonts = {
+        serif = [ "DejaVu Serif" ];
+        sansSerif = [ "DejaVu Sans" ];
+        monospace = [ "JetBrainsMono" ];
+      };
+    };
   };
   nix.settings.auto-optimise-store = true;
   system.stateVersion = "21.11";

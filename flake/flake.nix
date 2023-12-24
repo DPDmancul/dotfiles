@@ -56,7 +56,6 @@
             # unstable, master and fallaback channels
             (self: super: {
               unstable = import inputs.unstable { inherit system config; };
-              next = import inputs.next { inherit system config; };
               master = import inputs.master { inherit system config; };
               fallback = import inputs.fallback {
                 inherit system;
