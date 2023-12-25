@@ -225,15 +225,17 @@ Enable custom stylesheet
 Transparent bar
 
 ```css "modules/home/fiefox-css" +=
-#main-window {
-  background: #f9f9faa5 !important;
-}
-#navigator-toolbox {
-  background-color: transparent !important;
-}
-.tab-background:is([selected], [multiselected]),
-.browser-toolbar:not(.titlebar-color) {
-  background-color: #f9f9fa65 !important;
+@media (prefers-color-scheme: light) {
+  #main-window {
+    background: #f9f9faa5 !important;
+  }
+  #navigator-toolbox {
+    background-color: transparent !important;
+  }
+  .tab-background:is([selected], [multiselected]),
+  .browser-toolbar:not(.titlebar-color) {
+    background-color: #f9f9fa65 !important;
+  }
 }
 ```
 
