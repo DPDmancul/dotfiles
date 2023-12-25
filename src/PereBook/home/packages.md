@@ -55,7 +55,7 @@ gnome.simple-scan
 audacity
 ardour
 # denemo
-musescore
+unstable.musescore
 ```
 ### Video editing and conversion
 

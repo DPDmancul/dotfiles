@@ -24,7 +24,7 @@
     audacity
     ardour
     # denemo
-    musescore
+    unstable.musescore
     ffmpeg
     handbrake
     mkvtoolnix
