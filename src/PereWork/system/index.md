@@ -20,14 +20,21 @@
 }
 ```
 
-Enable all wireless drivers. `allowUnfree` is needed because `enableAllFirmware` assert it to be true, but being this a flake it doesn't really work
+Enable unfree wireless drivers. This must be done manually, since `enableAllFirmware` requires `pkgs` to directly contain unfree packages.
 
 ```nix "PereWork/system" +=
-nixpkgs.config.allowUnfree = true;
-hardware.enableAllFirmware = true;
+hardware = {
+  enableAllFirmware = false;
+  firmware = with pkgs.unfree; [
+    broadcom-bt-firmware
+    b43Firmware_5_1_138
+    b43Firmware_6_30_163_46
+    xow_dongle-firmware
+    facetimehd-firmware
+    facetimehd-calibration
+  ];
+};
 ```
-
-now really enable unfree drivers
 
 ```nix "unfree-extra" +=
 "broadcom-bt-firmware"
@@ -35,6 +42,11 @@ now really enable unfree drivers
 "xow_dongle-firmware"
 "facetimehd-firmware"
 "facetimehd-calibration"
+```
+
+Enable unfree video drivers.
+
+```nix "unfree-extra" +=
 "nvidia-x11"
 "nvidia-settings"
 ```
