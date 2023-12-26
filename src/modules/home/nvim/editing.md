@@ -130,7 +130,7 @@ vim-table-mode
 Do syntax highlighting via treesitter
 
 ```nix "modules/home/nvim/editing-plugins" +=
-nvim-ts-rainbow
+rainbow-delimiters-nvim
 {
   plugin = nvim-treesitter.withAllGrammars;
   type = "lua";

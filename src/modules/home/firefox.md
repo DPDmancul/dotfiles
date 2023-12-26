@@ -11,18 +11,16 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      extraPolicies = {
-        ExtensionSettings = let
-          ext = name: {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
-          };
-        in {
-          <<<modules/home/fiefox-ext>>>
+    policies = {
+      ExtensionSettings = let
+        ext = name: {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
         };
-        <<<modules/home/fiefox-policies>>>
+      in {
+        <<<modules/home/fiefox-ext>>>
       };
+      <<<modules/home/fiefox-policies>>>
     };
     profiles.default = {
       settings = {

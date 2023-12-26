@@ -48,7 +48,7 @@
         '';
       }
       vim-table-mode
-      nvim-ts-rainbow
+      rainbow-delimiters-nvim
       {
         plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
