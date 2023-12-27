@@ -102,3 +102,14 @@ appimage-run
 perl536Packages.AppMusicChordPro
 ```
 
+tldr: short command examples
+
+```nix "modules/home/packages/utils" +=
+programs.tealdeer = {
+  enable = true;
+  settings = {
+    updates.auto_update = true;
+  };
+};
+```
+

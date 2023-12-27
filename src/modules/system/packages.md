@@ -47,7 +47,6 @@ bottom
 ```nix "modules/system/packages-packages" +=
 bat      # cat with syntax highlighting
 lsd      # ls with colors and icons (TODO config)
-tealdeer # tldr: short command examples
 fd       # faster find
 ripgrep  # alternative grep
 usbutils
