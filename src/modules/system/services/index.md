@@ -20,8 +20,8 @@ services.dbus.enable = true;
 ```nix "modules/system/services" +=
 xdg.portal = {
   enable = true;
-  xdgOpenUsePortal = true;
-  configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+  extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+  configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
 };
 ```
 

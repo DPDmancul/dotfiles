@@ -3,8 +3,8 @@
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
-    xdgOpenUsePortal = true;
-    configPackages = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
   };
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
