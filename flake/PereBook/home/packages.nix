@@ -28,7 +28,7 @@
     ffmpeg
     handbrake
     mkvtoolnix
-    kdenlive
+    kdenlive frei0r
     losslesscut-bin
     obs-studio
     tor-browser-bundle-bin
