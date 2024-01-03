@@ -19,10 +19,7 @@ Use GTK theme in Qt apps
 qt = {
   enable = true;
   platformTheme = "gnome";
-  style = {
-    name = "adwaita";
-    package = pkgs.adwaita-qt;
-  };
+  style.name = "adwaita";
 };
 ```
 

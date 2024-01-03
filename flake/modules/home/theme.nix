@@ -7,10 +7,7 @@
   qt = {
     enable = true;
     platformTheme = "gnome";
-    style = {
-      name = "adwaita";
-      package = pkgs.adwaita-qt;
-    };
+    style.name = "adwaita";
   };
   gtk.enable = true;
   gtk.iconTheme = {
