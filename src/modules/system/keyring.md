@@ -9,7 +9,8 @@ Enable Gnome Keyring
 
 # Enable automatic unlock
   security.pam.services = {
-    lightdm.enableGnomeKeyring = config.services.xserver.displayManager.lightdm.enable;
+    login.enableGnomeKeyring = true;
+    lightdm-greeter.enableGnomeKeyring = config.services.xserver.displayManager.lightdm.enable;
     gdm.enableGnomeKeyring = config.services.xserver.displayManager.gdm.enable;
   };
 }
