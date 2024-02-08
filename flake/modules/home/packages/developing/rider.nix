@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     unfree.unstable.jetbrains.rider
+    unfree.codeium
   ];
 
   xdg.configFile."ideavim/ideavimrc".text = ''

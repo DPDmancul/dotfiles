@@ -5,6 +5,7 @@
 {
   home.packages = with pkgs; [
     unfree.unstable.jetbrains.rider
+    unfree.codeium # TODO: symlink
   ];
 
   <<<modules/home/packages/developing/rider>>>
