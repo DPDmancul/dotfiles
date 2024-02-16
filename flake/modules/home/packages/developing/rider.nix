@@ -2,7 +2,7 @@
 {
   home.packages = with pkgs; [
     unfree.unstable.jetbrains.rider
-    unfree.codeium
+    unfree.codeium # TODO: symlink
   ];
 
   xdg.configFile."ideavim/ideavimrc".text = ''

@@ -9,6 +9,7 @@
     ripgrep  # alternative grep
     usbutils
     pciutils
+    file
     sops
     zip
     unzip

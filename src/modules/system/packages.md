@@ -51,6 +51,7 @@ fd       # faster find
 ripgrep  # alternative grep
 usbutils
 pciutils
+file
 sops
 ```
 
