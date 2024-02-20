@@ -25,6 +25,7 @@
     dua # disk usage
     jq # cmd json parser
     appimage-run
+    gitlab-runner
     perl536Packages.AppMusicChordPro
   ];
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];

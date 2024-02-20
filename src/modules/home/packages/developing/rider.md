@@ -12,6 +12,10 @@
 }
 ```
 
+Remember to set the correct path for the dotnet cli: set `~/.nix-profile/dotnet`
+in `Settings` → `Build, Execution, Deployment` → `Toolset and Build` → `.NET
+CLI executable path`
+
 ## Vim emulation
 
 ```nix "modules/home/packages/developing/rider" +=
