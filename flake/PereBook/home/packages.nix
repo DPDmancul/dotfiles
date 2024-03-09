@@ -18,6 +18,7 @@
     xournalpp # TODO rnote?
     ocrmypdf tesseract
     unfree.masterpdfeditor4
+    poppler_utils
     calibre
     jmtpfs # For kindle
     gnome.simple-scan

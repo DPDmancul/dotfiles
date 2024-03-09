@@ -32,6 +32,7 @@ diffpdf
 xournalpp # TODO rnote?
 ocrmypdf tesseract
 unfree.masterpdfeditor4
+poppler_utils
 ```
 
 ### E-books
