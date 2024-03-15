@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   home.packages = with pkgs; [
+    mono
     unfree.unstable.jetbrains.rider
     unfree.codeium # TODO: symlink
   ];
