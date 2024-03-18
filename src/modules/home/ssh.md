@@ -8,8 +8,19 @@
     matchBlocks = {
       <<<modules/home/ssh-hosts>>>
     };
+    <<<modules/home/ssh-config>>>
   };
+  # <<<modules/home/ssh>>>
 }
+```
+
+## Multiplexing
+
+Reuse TCP connections to avoid re-authenticating (e.g. for `scp` when already logged in `ssh`)
+
+```nix "modules/home/ssh-config" +=
+controlMaster = "auto";
+controlPersist = "10m";
 ```
 
 ## Hosts

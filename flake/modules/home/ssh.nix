@@ -12,5 +12,8 @@
         identityFile = "~/.ssh/dpd-GitHub";
       };
     };
+    controlMaster = "auto";
+    controlPersist = "10m";
   };
+  # <<<modules/home/ssh>>>
 }
