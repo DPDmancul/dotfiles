@@ -101,14 +101,6 @@ shellAliases = {
 };
 ```
 
-Use the ssh wrapper of kitty when using kitty terminal
-
-```fish "modules/home/fish-init" +=
-if test $TERM = 'xterm-kitty'
-  alias ssh 'kitty +kitten ssh -o "ControlPath=${config.programs.ssh.controlPath}"'
-end
-```
-
 ## Prompt
 
 ### Welcome prompot

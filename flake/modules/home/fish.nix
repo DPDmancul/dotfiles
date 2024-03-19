@@ -38,9 +38,6 @@
       set -g man_bold -o green
       set -g man_standout -b cyan black
       set -g man_underline -o yellow
-      if test $TERM = 'xterm-kitty'
-        alias ssh 'kitty +kitten ssh -o "ControlPath=${config.programs.ssh.controlPath}"'
-      end
       set DISTRIBUTION (cat /etc/os-release | grep PRETTY | sed 's/PRETTY_NAME="\(.*\)"/\1/')
       set fish_greeting  (set_color green)$USER@(uname -n) (set_color yellow)(uname -srm) (set_color cyan)(uname -o) $DISTRIBUTION
     '';
