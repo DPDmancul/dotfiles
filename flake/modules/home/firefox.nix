@@ -19,7 +19,6 @@
         };
         "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
         "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-        "keepassxc-browser@keepassxc.org" = ext "keepassxc-browser";
         # "vim-vixen@i-beam.org" = ext "vim-vixen";
         "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
         # "arklove@qq.com" = ext "git-master";
@@ -31,7 +30,7 @@
         "@testpilot-containers" = ext "multi-account-containers";
         "@contain-facebook" = ext "facebook-container";
         "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-        "jid1-KKzOGWgsW3Ao4Q@jetpack" = ext "i-dont-care-about-cookies";
+        # "idcac-pub@guus.ninja" = ext "istilldontcareaboutcookies"; # replaced with uBlock origin Cookie notices lists
         "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
         "{74145f27-f039-47ce-a470-a662b129930a}" = ext "clearurls";
         # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
