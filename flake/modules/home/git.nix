@@ -8,6 +8,11 @@
       key = "694FC712B317CF9004114DC4EC1145E786990CED";
       signByDefault = true;
     };
+    aliases = {
+      co = "checkout";
+      cb = "checkout -b";
+      s = "status";
+    };
     extraConfig.core.autoclrf = "input";
     extraConfig.init.defaultBranch = "main";
     extraConfig.status.showUntrackedFiles = "all";

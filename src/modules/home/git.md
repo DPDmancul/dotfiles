@@ -23,6 +23,16 @@ signing = {
 };
 ```
 
+## Aliases
+
+```nix "modules/home/git-config" +=
+aliases = {
+  co = "checkout";
+  cb = "checkout -b";
+  s = "status";
+};
+```
+
 ## CR/LF
 
 Fix EOL for files written under Windows
