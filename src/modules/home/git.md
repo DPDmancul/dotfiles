@@ -29,7 +29,10 @@ signing = {
 aliases = {
   co = "checkout";
   cb = "checkout -b";
-  s = "status";
+  br = "branch";
+  ci = "commit";
+  st = "status";
+  rb = "rebase";
 };
 ```
 
@@ -92,6 +95,14 @@ Automatic set default remote when pushing.
 extraConfig.push = {
   autoSetupRemote = true;
 };
+```
+
+## Rerere
+
+Reuse recorded conflict resolutions
+
+```nix "modules/home/git-config" +=
+extraConfig.rerere.enabled = true;
 ```
 
 ## Protocol
@@ -235,5 +246,4 @@ attributes = [
   "*.el    diff=lisp"
 ];
 ```
-
 

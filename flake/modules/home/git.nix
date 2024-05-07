@@ -11,7 +11,10 @@
     aliases = {
       co = "checkout";
       cb = "checkout -b";
-      s = "status";
+      br = "branch";
+      ci = "commit";
+      st = "status";
+      rb = "rebase";
     };
     extraConfig.core.autoclrf = "input";
     extraConfig.init.defaultBranch = "main";
@@ -27,6 +30,7 @@
     extraConfig.push = {
       autoSetupRemote = true;
     };
+    extraConfig.rerere.enabled = true;
     extraConfig.protocol.version = 2;
     delta = {
       enable = true;
