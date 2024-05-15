@@ -68,4 +68,8 @@
   #     "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
   #   };
   # };
+
+  environment.systemPackages = with pkgs; [
+    gnome-network-displays
+  ];
 }

@@ -4,6 +4,10 @@
 { config, pkgs, assets, lib, users, ... }:
 {
   <<<modules/system/services/net>>>
+
+  environment.systemPackages = with pkgs; [
+    <<<modules/system/services/net-packages>>>
+  ];
 }
 ```
 
@@ -116,4 +120,11 @@ Enable wpa_supplicant, wpa_cli and wpa_gui
 #     "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
 #   };
 # };
+```
+### Network displays
+
+Cast to miracast and chromecast
+
+```nix "modules/system/services/net-packages" +=
+gnome-network-displays
 ```
