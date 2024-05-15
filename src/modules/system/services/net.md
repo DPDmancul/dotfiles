@@ -128,3 +128,9 @@ Cast to miracast and chromecast
 ```nix "modules/system/services/net-packages" +=
 gnome-network-displays
 ```
+
+Miracast requires TCP port 7236 to be open
+
+```nix "modules/system/services/net" +=
+networking.firewall.allowedTCPPorts = [ 7236 ];
+```

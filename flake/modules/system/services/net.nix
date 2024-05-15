@@ -68,6 +68,7 @@
   #     "MV Labs Guests".psk = "@MV_Labs_Guests_PSK@";
   #   };
   # };
+  networking.firewall.allowedTCPPorts = [ 7236 ];
 
   environment.systemPackages = with pkgs; [
     gnome-network-displays
