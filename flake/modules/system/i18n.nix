@@ -9,5 +9,5 @@
     };
   };
 
-  services.xserver.layout = "eu";
+  services.xserver.xkb.layout = "eu";
 }

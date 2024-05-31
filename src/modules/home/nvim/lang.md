@@ -104,7 +104,6 @@ Declare common LSP servers
 
 ```nix "modules/home/nvim/lang" +=
 nvimLSP = with pkgs; {
-  rnix = rnix-lsp;
   yamlls = nodePackages.yaml-language-server;
   jsonls = rec {
     package = nodePackages.vscode-langservers-extracted;

@@ -45,7 +45,7 @@ with inputs.nix2lua.lib;
           plugin = nvim-lspconfig;
           type = "lua";
           config = let
-            lspConfig = toLua (mapAttrs (name: value: mkLuaRaw
+            lspConfig = toLua (mapAttrs (name: value: raw
               value.config) config.nvimLSP);
           in
           ''

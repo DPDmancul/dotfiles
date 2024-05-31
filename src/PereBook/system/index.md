@@ -8,7 +8,6 @@
     common-pc-laptop-ssd
     common-pc-laptop-hdd
     common-cpu-intel
-    common-gpu-intel
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix

@@ -2,14 +2,14 @@
   description = "DPD- NixOs config";
 
   inputs = {
-    stable.url = github:nixos/nixpkgs/nixos-23.11;
+    stable.url = github:nixos/nixpkgs/nixos-24.05;
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
     master.url = github:nixos/nixpkgs/master;
-    fallback.url = github:nixos/nixpkgs/nixos-23.11-small;
+    fallback.url = github:nixos/nixpkgs/nixos-24.05-small;
     nixpkgs.follows = "stable";
     nur.url = github:nix-community/NUR;
     home-manager = {
-      url = github:nix-community/home-manager/release-23.11;
+      url = github:nix-community/home-manager/release-24.05;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hardware.url = github:nixos/nixos-hardware;

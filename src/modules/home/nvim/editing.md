@@ -94,14 +94,14 @@ Use `f` and `t` across lines
 
 ```nix "modules/home/nvim/editing-plugins" +=
 {
-  plugin = suda-vim;
+  plugin = vim-suda;
   config = "let g:suda_smart_edit = 1";
 }
 ```
 
 ## Parenthesis, quotes & co.
 
-Autoclose parenthesis and quotes 
+Autoclose parenthesis and quotes
 
 ```nix "modules/home/nvim/editing-plugins" +=
 {
@@ -113,7 +113,7 @@ Autoclose parenthesis and quotes
 }
 ```
 
-Easy add, remove and change parenthesis and quotes 
+Easy add, remove and change parenthesis and quotes
 
 ```lua "mini-nvim" +=
 require"mini.surround".setup()
