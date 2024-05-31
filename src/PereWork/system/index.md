@@ -53,7 +53,7 @@ Enable unfree video drivers.
 
 Enable virtualisation
 
-```nix "modules/system" +=
+```nix "PereWork/system" +=
 virtualisation = {
   libvirtd.enable = true;
   virtualbox.host.enable = true;
