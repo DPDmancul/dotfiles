@@ -14,7 +14,7 @@
           --prefix PATH : "${writeShellScriptBin "gnome-terminal" ''"${kitty}/bin/kitty" $@''}/bin"
       '';
     })
-    libsForQt5.okular
+    kdePackages.okular
     kolourpaint
     gimp
     inkscape

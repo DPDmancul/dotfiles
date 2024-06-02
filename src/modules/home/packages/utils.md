@@ -38,7 +38,7 @@ appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7
 ## PDF
 
 ```nix "modules/home/packages/utils-packages" +=
-libsForQt5.okular
+kdePackages.okular
 ```
 
 ```nix "modules/home/packages/utils" +=
