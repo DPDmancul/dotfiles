@@ -70,14 +70,12 @@ Bottom border is not required, since I use i3 with gaps
   line.size = "4px"; # colored line under active workspace
 ```
 
-Antialiasing for powerline is terrible: disable it 
-
 ```nix "modules/home/i3/polybar-settings" +=
   font = [
     # T1: text
     "JetbrainsMono Nerd Font:size=9;2"
     # T2: powerline
-    "JetbrainsMono Nerd Font:antialias=false:size=11;2"
+    "JetbrainsMono Nerd Font:antialias=true:size=11;2"
   ];
 
   modules = {
