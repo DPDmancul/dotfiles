@@ -6,7 +6,7 @@
 
   qt = {
     enable = true;
-    platformTheme = "gnome";
+    platformTheme.name = "adwaita";
     style.name = "adwaita";
   };
   gtk.enable = true;
@@ -17,6 +17,8 @@
   dconf.settings."org/gnome/desktop/interface" = {
     icon-theme = config.gtk.iconTheme.name;
   };
+
+  home.sessionVariables.XDG_CURRENT_DESKTOP = "Gnome";
   home.pointerCursor = {
     name = "Bibata-Modern-Classic";
     package = pkgs.bibata-cursors;

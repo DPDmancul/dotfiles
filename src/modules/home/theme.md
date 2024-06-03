@@ -18,7 +18,7 @@ Use GTK theme in Qt apps
 ```nix "modules/home/theme" +=
 qt = {
   enable = true;
-  platformTheme = "gnome";
+  platformTheme.name = "adwaita";
   style.name = "adwaita";
 };
 ```
@@ -39,6 +39,8 @@ Use the same icons in Qt apps
 dconf.settings."org/gnome/desktop/interface" = {
   icon-theme = config.gtk.iconTheme.name;
 };
+
+home.sessionVariables.XDG_CURRENT_DESKTOP = "Gnome";
 ```
 
 ## Cursors

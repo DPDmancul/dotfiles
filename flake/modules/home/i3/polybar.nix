@@ -46,7 +46,7 @@ in
           # T1: text
           "JetbrainsMono Nerd Font:size=9;2"
           # T2: powerline
-          "JetbrainsMono Nerd Font:antialias=false:size=11;2"
+          "JetbrainsMono Nerd Font:antialias=true:size=11;2"
         ];
 
         modules = {

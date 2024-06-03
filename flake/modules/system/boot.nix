@@ -11,5 +11,4 @@
   };
 
   boot.loader.timeout = 2;
-  boot.tmp.useTmpfs = true;
 }

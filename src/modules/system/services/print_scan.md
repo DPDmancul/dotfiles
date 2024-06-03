@@ -30,7 +30,7 @@ users.users = lib.genAttrs users (user: {
 ```nix "modules/system/services/print_scan" +=
 services.avahi = {
   enable = true;
-  nssmdns = true;
+  nssmdns4 = true;
   openFirewall = true;
 };
 ```
