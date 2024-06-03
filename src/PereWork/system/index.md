@@ -102,5 +102,5 @@ services.teamviewer.enable = true;
 
 ```nix "PereWork/system" +=
 sops.secrets."ca/PereWork.pem" = {};
-security.pki.certificateFiles = [ config.sops.secrets."ca/PereWork.pem".path ];
+# security.pki.certificateFiles = [ config.sops.secrets."ca/PereWork.pem".path ];
 ```
