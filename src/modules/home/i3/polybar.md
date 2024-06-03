@@ -81,9 +81,8 @@ Bottom border is not required, since I use i3 with gaps
   modules = {
     left = "i3";
     center = "window";
-    right = "volume vpn eth wlan ram cpu battery clock"; # TODO idle
+    right = "volume vpn eth wlan ram cpu battery tray clock"; # TODO idle
   };
-  tray.position = "right";
 };
 ```
 
@@ -220,7 +219,7 @@ Wired
 "module/eth" = {
   "inherit" = "net rounded";
   interface.type = "wired";
-  label.connected = " %linkspeed%";
+  label.connected = "󰈀 %linkspeed%";
 };
 ```
 
@@ -230,7 +229,7 @@ Wi-fi
 "module/wlan" = {
   "inherit" = "net rounded";
   interface.type = "wireless";
-  label.connected = " %essid:0:10:…% (%signal%%)";
+  label.connected = "  %essid:0:10:…% (%signal%%)";
 };
 ```
 
@@ -287,6 +286,14 @@ VPN
   ramp.capacity = [ "" "" "" "" "" ];
   animation.charging = ramp.capacity;
   "inherit" = "rounded";
+};
+```
+
+### Tray
+
+```nix "modules/home/i3/polybar-settings" +=
+"module/try" = {
+  type = "internal/try";
 };
 ```
 

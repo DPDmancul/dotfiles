@@ -52,9 +52,8 @@ in
         modules = {
           left = "i3";
           center = "window";
-          right = "volume vpn eth wlan ram cpu battery clock"; # TODO idle
+          right = "volume vpn eth wlan ram cpu battery tray clock"; # TODO idle
         };
-        tray.position = "right";
       };
       rounded = lib.concatMapToAttrs (spec: {
         ${spec} = {
@@ -150,12 +149,12 @@ in
       "module/eth" = {
         "inherit" = "net rounded";
         interface.type = "wired";
-        label.connected = " %linkspeed%";
+        label.connected = "󰈀 %linkspeed%";
       };
       "module/wlan" = {
         "inherit" = "net rounded";
         interface.type = "wireless";
-        label.connected = " %essid:0:10:…% (%signal%%)";
+        label.connected = "  %essid:0:10:…% (%signal%%)";
       };
       "module/vpn" = {
         "inherit" = "net rounded";
@@ -197,6 +196,9 @@ in
         ramp.capacity = [ "" "" "" "" "" ];
         animation.charging = ramp.capacity;
         "inherit" = "rounded";
+      };
+      "module/try" = {
+        type = "internal/try";
       };
       "module/clock" = {
         type = "internal/date";
