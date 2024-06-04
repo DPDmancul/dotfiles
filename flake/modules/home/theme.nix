@@ -41,6 +41,9 @@
   xdg.configFile."gtk-3.0/settings.ini".text = ''
      gtk-decoration-layout=:menu
   '';
+  xdg.configFile."gtk-4.0/settings.ini".text = ''
+     gtk-decoration-layout=:menu
+  '';
   services.feh-random-background = {
     enable = true;
     imageDirectory = "${inputs.wallpapers}";

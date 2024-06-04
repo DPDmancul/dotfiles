@@ -82,6 +82,9 @@ dconf.settings."org/gnome/desktop/wm/preferences".button-layout = "";
 xdg.configFile."gtk-3.0/settings.ini".text = ''
    gtk-decoration-layout=:menu
 '';
+xdg.configFile."gtk-4.0/settings.ini".text = ''
+   gtk-decoration-layout=:menu
+'';
 ```
 
 ## Background
