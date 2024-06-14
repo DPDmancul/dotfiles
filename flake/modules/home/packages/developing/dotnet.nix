@@ -8,6 +8,7 @@ in
 {
   home.packages = with pkgs; [
     dotnet-sdk
+    nuget
   ];
 
   home.sessionVariables = {
