@@ -42,4 +42,5 @@
     defaultTarget = "horizontal";
   };
   programs.light.enable = true;
+  programs.nix-ld.enable = true;
 }
