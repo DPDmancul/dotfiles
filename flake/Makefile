@@ -17,7 +17,7 @@ install-system: .git-add
 	sudo nixos-rebuild switch --flake .#
 
 install-home: .git-add
-	rm -f ~/.config/mimeapps.list.bak ~/.local/share/applications/mimeapps.list.bak
+	rm -f ~/.config/mimeapps.list.bak ~/.local/share/applications/mimeapps.list.bak ~/.mozilla/firefox/default/*.bak
 	$(HOME-MANAGER) switch -b bak --flake .#$$USER@$$(hostname)
 
 optimise:

@@ -26,14 +26,12 @@
           installation_mode = "force_installed";
           install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
         };
-        "uBlock0@raymondhill.net" = ext "ublock-origin";
         "@testpilot-containers" = ext "multi-account-containers";
         "@contain-facebook" = ext "facebook-container";
         "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
-        # "idcac-pub@guus.ninja" = ext "istilldontcareaboutcookies"; # replaced with uBlock origin Cookie notices lists
         "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-        "{74145f27-f039-47ce-a470-a662b129930a}" = ext "clearurls";
         # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
+        "uBlock0@raymondhill.net" = ext "ublock-origin";
       };
       PasswordManagerEnabled = false;
       EnableTrackingProtection = {
@@ -45,6 +43,121 @@
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
       DisablePocket = true;
+      "3rdparty".Extensions."uBlock0@raymondhill.net" = {
+        userSettings = [
+          [ "cloudStorageEnabled" "true" ]
+          [ "prefetchingDisabled" "true"]
+          [ "hyperlinkAuditingDisabled" "true" ]
+          # TODO block CSP reports
+          [ "cnameUncloakEnabled" "true" ]
+          [ "autoUpdate" "true" ]
+          [ "suspendUntilListsAreLoaded" "true" ]
+          [ "parseAllABPHideFilters" "true" ] # Parse and enforce cosmetic filters
+          [ "ignoreGenericCosmeticFilters" "false" ]
+        ];
+        toOverwrite = {
+          filterLists = [
+            "user-filters"
+            "ITA-0"
+
+            # Built-in
+            "ublock-filters"
+            "ublock-badware"
+            "ublock-privacy"
+            "ublock-abuse"
+            "ublock-quick-fixes"
+            "ublock-unbreak"
+            "ublock-badlists"
+
+            # Ads
+            "easylist"
+            "adguard-generic"
+            "adguard-mobile"
+
+            # Privacy
+            "easyprivacy"
+            "adguard-spyware"
+            "adguard-spyware-url"
+            "block-lan"
+            "https://divested.dev/blocklists/Fingerprinting.ubl"
+            "https://raw.githubusercontent.com/yokoffing/filterlists/main/block_third_party_fonts.txt"
+
+            # Malware protection, security
+            "urlhaus-1"
+            "curben-phishing"
+            "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/ips/tif.txt"
+            "https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw/7290e0681bcd07415420b5c80a253652fd13f840/MS-1"
+
+            # Multipurpose
+            "plowe-0"
+            "dpollock-0"
+
+            # Cookie notices (replaces istilldontcareaboutcookies)
+            "fanboy-cookiemonster"
+            "ublock-cookies-easylist"
+            "adguard-cookies"
+            "ublock-cookies-adguard"
+
+            # Social widgets
+            "fanboy-social"
+            "adguard-social"
+            "fanboy-thirdparty_social"
+
+            # Annoyances
+            "easylist-chat"
+            "easylist-newsletters"
+            "easylist-notifications"
+            "easylist-annoyances"
+            "adguard-mobile-app-banners"
+            "adguard-other-annoyances"
+            "adguard-popup-overlays"
+            "adguard-widgets"
+            "ublock-annoyances"
+
+            # URL Shortener tools (replaces clearurls)
+            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
+
+            # DNS content blocking
+            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Dandelion%20Sprout's%20Anti-Malware%20List.txt"
+            "https://divested.dev/hosts-domains-wildcards"
+            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/hoster.txt"
+            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/spam-tlds-ublock.txt"
+            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/pro.plus.txt"
+            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/tif.txt"
+            "https://raw.githubusercontent.com/xRuffKez/NRD/main/nrd-14day_adblock.txt"
+            "https://big.oisd.nl"
+          ];
+          filters = [
+            "musescore.com##._sQKq"
+
+            # IDN Homograph attacks
+            "xn--*"
+            "xn--*$doc,popup,frame"
+
+            # Google Doubleclick & Analytics
+            "||doubleclick.net^$important"
+            "||google-analytics.com^$important"
+
+            # Social media tracking
+            "||facebook.com^$important,third-party"
+            "||facebook.net^$important,third-party"
+            "||linkedin.com^$important,third-party"
+            "||instagram.com^$important,third-party"
+            "||tiktok.com^$important,third-party"
+            "||twitter.com^$third-party"
+            "||x.com^$third-party"
+            "||gravatar.com^$important,third-party"
+
+            # 3rd party sign-in
+            "||accounts.google.com^$third-party"
+            "||appleid.apple.com^$third-party"
+            "||appleid.cdn-apple.com^$third-party"
+            "@@||accounts.google.com^$domain=youtube.com|chromium.org|gstatic.com|googleusercontent.com"
+            "@@||appleid.apple.com^$domain=appleid.cdn-apple.com"
+            "@@||appleid.cdn-apple.com^$domain=appleid.apple.com"
+          ];
+        };
+      };
     };
     profiles.default = {
       settings = {
@@ -103,6 +216,8 @@
           display: none;
         }
       '';
+      search.default = "DuckDuckGo";
+      search.privateDefault = "DuckDuckGo";
     };
   };
   appDefaultForMimes."firefox.desktop" = {
