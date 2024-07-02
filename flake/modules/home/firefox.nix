@@ -116,16 +116,6 @@
 
             # URL Shortener tools (replaces clearurls)
             "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
-
-            # DNS content blocking
-            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Dandelion%20Sprout's%20Anti-Malware%20List.txt"
-            "https://divested.dev/hosts-domains-wildcards"
-            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/hoster.txt"
-            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/spam-tlds-ublock.txt"
-            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/pro.plus.txt"
-            "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/adblock/tif.txt"
-            "https://raw.githubusercontent.com/xRuffKez/NRD/main/nrd-14day_adblock.txt"
-            "https://big.oisd.nl"
           ];
           filters = [
             "musescore.com##._sQKq"
