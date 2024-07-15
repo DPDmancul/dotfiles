@@ -136,7 +136,6 @@
             "||tiktok.com^$important,third-party"
             "||twitter.com^$third-party"
             "||x.com^$third-party"
-            "||gravatar.com^$important,third-party"
 
             # 3rd party sign-in
             "||accounts.google.com^$third-party"
