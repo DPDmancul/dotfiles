@@ -25,6 +25,7 @@
     unfree.dropbox-cli # TODO with home manager
     unfree.postman
     unfree.ngrok
+    wireshark
   ];
 
   #<<<PereWork/home/packages>>>
