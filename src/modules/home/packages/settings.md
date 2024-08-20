@@ -9,7 +9,6 @@ GUI for easily manage settings.
     pavucontrol # audio
     pamixer
     arandr      # screen
-    gnome.seahorse # gnome keyring
     libsecret # secret-tool
   ];
 }
