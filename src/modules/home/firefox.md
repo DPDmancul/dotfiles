@@ -252,7 +252,7 @@ Settings inspired from <https://codeberg.org/Magnesium1062/ublock-origin-setting
       "adguard-spyware-url"
       "block-lan"
       "https://divested.dev/blocklists/Fingerprinting.ubl"
-      "https://raw.githubusercontent.com/yokoffing/filterlists/main/block_third_party_fonts.txt"
+      # "https://raw.githubusercontent.com/yokoffing/filterlists/main/block_third_party_fonts.txt"
 
       # Malware protection, security
       "urlhaus-1"
