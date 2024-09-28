@@ -26,6 +26,7 @@
           end
           wk.register ( 
             {
+              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
               f = {
                 name = "Find",
                 r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
@@ -58,7 +59,6 @@
                 m = "Toggle table mode",
                 t = "To table"
               },
-              u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
             },
             { prefix = "<leader>" }
           )

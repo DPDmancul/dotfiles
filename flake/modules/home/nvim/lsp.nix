@@ -76,7 +76,8 @@ with inputs.nix2lua.lib;
                  r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
                  c = {
                    a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-                   f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer")
+                   f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer"),
+                   l = map ("<cmd>lua vim.lsp.codelens.run()<CR>", "Code lens")
                  },
                  e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
                  q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
