@@ -17,6 +17,6 @@
 ## Neovim support
 
 ```nix "modules/home/packages/developing/python3" +=
-nvimLSP.pyright = pkgs.nodePackages.pyright;
+nvimLSP.pyright = pkgs.pyright;
 ```
 

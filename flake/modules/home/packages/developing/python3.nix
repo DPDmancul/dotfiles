@@ -7,5 +7,5 @@
   home.packages = with pkgs; [
     python3
   ];
-  nvimLSP.pyright = pkgs.nodePackages.pyright;
+  nvimLSP.pyright = pkgs.pyright;
 }

@@ -42,6 +42,6 @@ fileSystems."/".options = [ "compress=zstd" ];
 Enable pen tablet FOSS drivers
 
 ```nix "PereBook/system" +=
-hardware.opentabletdriver.enable = true;
+# hardware.opentabletdriver.enable = true;
 ```
 
