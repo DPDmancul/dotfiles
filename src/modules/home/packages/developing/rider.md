@@ -12,7 +12,7 @@
 }
 ```
 
-Remember to set the correct path for the dotnet cli: set `~/.nix-profile/dotnet`
+Remember to set the correct path for the dotnet cli: set `~/.nix-profile/share/dotnet/dotnet`
 in `Settings` → `Build, Execution, Deployment` → `Toolset and Build` → `.NET
 CLI executable path`
 
