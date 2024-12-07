@@ -20,139 +20,93 @@ TODO add options
 }
 ```
 
-Setup which-key window
-
-```lua "modules/home/nvim/keymap-which-key" +=
-wk.setup {
-  spelling = {
-    enabled = true,
-    suggestions = 10
-  },
-  window = {
-    margin = {0, 0, 0, 0},
-    padding = {1, 0, 1, 0,}
-  }
-}
-```
-
 Declare key bindings
 
 ```lua "modules/home/nvim/keymap-which-key" +=
-local map = function (from, to, ...)
-  return {
-    from, to, ...,
-    noremap = true,
-    silent = true
-  }
-end
-wk.register ( 
-  {
-    <<<modules/home/nvim/keymap-keybind-leader>>>
-  },
-  { prefix = "<leader>" }
-)
-wk.register {
+wk.add {
   <<<modules/home/nvim/keymap-keybind>>>
 }
 ```
 
 ## Find
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-f = {
-  name = "Find",
-  r = map ("<cmd>Telescope resume<cr>", "Resume saerch"),
-  f = map ("<cmd>Telescope find_files<cr>", "Files"),
-  g = map ("<cmd>Telescope live_grep<cr>", "Grep"),
-  b = map ("<cmd>Telescope buffers<cr>", "Buffers"),
-  h = map ("<cmd>Telescope help_tags<cr>", "Help"),
-  p = map ("<cmd>Telescope projects<cr>", "Projects"),
-  e = map ("<cmd>Telescope file_browser<cr>", "Explore"),
-  t = map ("<cmd>NvimTreeToggle<cr>", "File tree"),
-  -- ["\\"] = map ("<cmd>Telescope termfinder find<cr>", "Terminals"),
-  [":"] = map ("<cmd>Telescope commands<cr>", "Commands"),
-  a = map ("<cmd>Telescope<cr>", "All telescopes"),
-},
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>f", group = "Find"},
+{ "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume saerch" },
+{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Files" },
+{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
+{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
+{ "<leader>fp", "<cmd>Telescope projects<cr>", desc = "Projects" },
+{ "<leader>fe", "<cmd>Telescope file_browser<cr>", desc = "Explore" },
+{ "<leader>ft", "<cmd>NvimTreeToggle<cr>", desc = "File tree" },
+-- { "<leader>f\\", "<cmd>Telescope termfinder find<cr>", desc = "Terminals" },
+{ "<leader>f:", "<cmd>Telescope commands<cr>", desc = "Commands" },
+{ "<leader>fa", "<cmd>Telescope<cr>", desc = "All telescopes" },
 ```
 
 ## Code
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-c = {
-  name = "Code",
-  e = map ("<cmd>FeMaco<cr>", "Edit fenced block"),
-},
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>c", group = "Code" },
+{ "<leader>ce", "<cmd>FeMaco<cr>", desc = "Edit fenced block" },
 ```
 
 ## Git
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-g = {
-  name = "Git",
-  g = map ("<cmd>Lazygit<cr>", "Lazygit"),
-},
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>g" , group = "Git" },
+{ "<leader>gg", "<cmd>Lazygit<cr>", desc = "Lazygit" },
 ```
 
 ## Reload
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-r = {
-  name = "Reload",
-  r = map ("<cmd>e<cr>", "File"),
-  c = map ("<cmd>source ~/.config/nvim/init.vim<cr>", "Config"),
-},
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>r", group = "Reload" },
+{ "<leader>rr", "<cmd>e<cr>", desc = "File" },
+{ "<leader>rc", "<cmd>source ~/.config/nvim/init.vim<cr>", desc = "Config" },
 ```
 
 ## Table
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-t = {
-  name = "Table",
-  m = "Toggle table mode",
-  t = "To table"
-},
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>t", group = "Table" },
+{ "<leader>tm", desc = "Toggle table mode" },
+{ "<leader>tt", desc = "To table" },
 ```
 
 ## Bufferline
 
 ```lua "modules/home/nvim/keymap-keybind" +=
-["]b"] = map ("<cmd>BufferLineCycleNext<cr>", "Next buffer"),
-["]B"] = map ("<cmd>BufferLineMoveNext<cr>", "Move buffer right"),
-["[b"] = map ("<cmd>BufferLineCyclePrev<cr>", "Previous buffer"),
-["[B"] = map ("<cmd>BufferLineMovePrev<cr>", "Move buffer left"),
-gb = map ("<cmd>BufferLinePick<cr>", "Go to buffer"),
-gB = map ("<cmd>BufferLinePickClose<cr>", "Close picked buffer"),
+{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+{ "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer right" },
+{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
+{ "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
+{ "gb", "<cmd>BufferLinePick<cr>", desc = "Go to buffer" },
+{ "gB", "<cmd>BufferLinePickClose<cr>", desc = "Close picked buffer" },
 ```
 
 ## LSP
 
 ```lua "modules/home/nvim/keymap-lsp-keybind" +=
-g = {
-  D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
-  d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-  I = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
-  r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
-},
-["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
-["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
-["<leader>"] = {
-  w = {
-    name = "Workspace",
-    a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
-    r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
-    l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
-  },
-  D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
-  r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
-  c = {
-    a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-    f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer"),
-    l = map ("<cmd>lua vim.lsp.codelens.run()<CR>", "Code lens")
-  },
-  e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
-  q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
-},
-["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
-["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
+{ "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration" },
+{ "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to defintion" },
+{ "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", desc = "Go to implementation" },
+{ "gr", "<cmd>lua vim.lsp.buf.references()<CR>", desc = "References" },
+{ "<S-k>", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Documentation" },
+{ "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", desc = "Signature help" },
+{ "<leader>w", group = "Workspace" },
+{ "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", desc = "Add workspace folder" },
+{ "<leader>wr:", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", desc = "Remove workspace folder" },
+{ "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", desc = "List workspace folders" },
+{ "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", desc = "Type definition" },
+{ "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename" },
+{ "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action" },
+{ "<leader>cf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", desc = "Format buffer" },
+{ "<leader>cl", "<cmd>lua vim.lsp.codelens.run()<CR>", desc = "Code lens" },
+{ "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show line diagnostics" },
+{ "<leader>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", desc = "Set loclist" },
+{ "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to previous" },
+{ "]d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to next" },
 ```
 

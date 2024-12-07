@@ -7,7 +7,7 @@
   home.packages = with pkgs; [
     (symlinkJoin {
       name = "file-roller";
-      paths = [ gnome.file-roller ];
+      paths = [ file-roller ];
       buildInputs = [ makeWrapper ];
       postBuild = ''
         wrapProgram $out/bin/file-roller \
@@ -21,12 +21,12 @@
     imv
     mpv
     qalculate-gtk
-    gnome.gnome-disk-utility
+    gnome-disk-utility
     dua # disk usage
     jq # cmd json parser
     appimage-run
     gitlab-runner
-    perl536Packages.AppMusicChordPro
+    perl540Packages.AppMusicChordPro
   ];
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
   appDefaultForMimes."okularApplication_pdf.desktop" = {

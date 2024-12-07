@@ -192,8 +192,8 @@ undotree
 
 Add keymap
 
-```lua "modules/home/nvim/keymap-keybind-leader" +=
-u = map ("<cmd>UndotreeToggle<cr>", "Undo tree"),
+```lua "modules/home/nvim/keymap-keybind" +=
+{ "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
 ```
 
 ## *TODO* Format

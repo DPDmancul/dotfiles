@@ -51,7 +51,7 @@ systemd.enableEmergencyMode = false;
 Enable OpenGL
 
 ```nix "modules/system" +=
-hardware.opengl.enable = true;
+hardware.graphics.enable = true;
 ```
 
 Enable NTFS support

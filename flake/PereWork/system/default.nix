@@ -3,9 +3,7 @@
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
-    common-cpu-intel
     lenovo-thinkpad-p50
-    common-pc-laptop-acpi_call
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix

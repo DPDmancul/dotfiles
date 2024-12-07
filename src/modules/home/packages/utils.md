@@ -22,7 +22,7 @@ So we trick it wrapping kitty as gnome-terminal.
 ```nix "modules/home/packages/utils-packages" +=
 (symlinkJoin {
   name = "file-roller";
-  paths = [ gnome.file-roller ];
+  paths = [ file-roller ];
   buildInputs = [ makeWrapper ];
   postBuild = ''
     wrapProgram $out/bin/file-roller \
@@ -95,12 +95,12 @@ appDefaultForMimes."umpv.desktop" = {
 
 ```nix "modules/home/packages/utils-packages" +=
 qalculate-gtk
-gnome.gnome-disk-utility
+gnome-disk-utility
 dua # disk usage
 jq # cmd json parser
 appimage-run
 gitlab-runner
-perl536Packages.AppMusicChordPro
+perl540Packages.AppMusicChordPro
 ```
 
 tldr: short command examples

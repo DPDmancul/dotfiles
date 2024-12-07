@@ -27,7 +27,7 @@
 
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
   users.mutableUsers = false;
   programs.dconf.enable = true;

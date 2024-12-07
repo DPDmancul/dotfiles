@@ -5,7 +5,7 @@
   ];
 
   home.packages = with pkgs; [
-    cinnamon.nemo
+    nemo
     shared-mime-info
   ];
 

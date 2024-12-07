@@ -5,7 +5,6 @@
 let
   dotnet-sdk = with pkgs.dotnetCorePackages; combinePackages [
     sdk_8_0
-    sdk_6_0
   ];
 in
 {
@@ -15,7 +14,7 @@ in
   ];
 
   home.sessionVariables = {
-    DOTNET_ROOT = dotnet-sdk;
+    DOTNET_ROOT = "${dotnet-sdk}/share/dotnet";
     # disable telemetry
     DOTNET_CLI_TELEMETRY_OPTOUT = 1;
   };
@@ -29,13 +28,13 @@ in
 You have to manually install the language server:
 
 ```bash
-dotnet tool install --global csharp-ls
+# dotnet tool install --global csharp-ls
 ```
 
 ```nix "modules/home/packages/developing/dotnet" +=
-nvimLSP.csharp_ls = [];
-home.sessionPath = [
-  "${config.home.homeDirectory}/.dotnet/tools"
-];
+# nvimLSP.csharp_ls = [];
+# home.sessionPath = [
+#   "${config.home.homeDirectory}/.dotnet/tools"
+# ];
 ```
 

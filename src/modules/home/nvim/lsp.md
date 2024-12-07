@@ -74,7 +74,7 @@ local on_attach = function (client, bufnr)
       silent = true
     }
   end
-  wk.register {
+  wk.add {
    <<<modules/home/nvim/keymap-lsp-keybind>>>
   }
 end

@@ -20,5 +20,5 @@
     options = [ "noatime" ];
   };
   fileSystems."/".options = [ "compress=zstd" ];
-  hardware.opentabletdriver.enable = true;
+  # hardware.opentabletdriver.enable = true;
 }
