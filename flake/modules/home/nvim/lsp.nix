@@ -56,34 +56,26 @@ with inputs.nix2lua.lib;
                   silent = true
                 }
               end
-              wk.register {
-               g = {
-                 D = map ("<cmd>lua vim.lsp.buf.declaration()<CR>", "Go to declaration"),
-                 d = map ("<cmd>lua vim.lsp.buf.definition()<CR>", "Go to defintion"),
-                 I = map ("<cmd>lua vim.lsp.buf.implementation()<CR>", "Go to implementation"),
-                 r = map ("<cmd>lua vim.lsp.buf.references()<CR>", "References")
-               },
-               ["<S-k>"] = map ("<cmd>lua vim.lsp.buf.hover()<CR>", "Documentation"),
-               ["<C-k>"] = map ("<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature help"),
-               ["<leader>"] = {
-                 w = {
-                   name = "Workspace",
-                   a = map ("<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", "Add workspace folder"),
-                   r = map ("<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", "Remove workspace folder"),
-                   l = map ("<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", "List workspace folders")
-                 },
-                 D = map ("<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type definition"),
-                 r = map ("<cmd>lua vim.lsp.buf.rename()<CR>", "Rename"),
-                 c = {
-                   a = map ("<cmd>lua vim.lsp.buf.code_action()<CR>", "Code action"),
-                   f = map ("<cmd>lua vim.lsp.buf.format{async=true}<CR>", "Format buffer"),
-                   l = map ("<cmd>lua vim.lsp.codelens.run()<CR>", "Code lens")
-                 },
-                 e = map ("<cmd>lua vim.diagnostic.open_float()<CR>", "Show line diagnostics"),
-                 q = map ("<cmd>lua vim.diagnostic.set_loclist()<CR>", "Set loclist")
-               },
-               ["[d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to previous"),
-               ["]d"] = map ("<cmd>lua vim.diagnostic.goto_prev()<CR>", "Go to next"),
+              wk.add {
+               { "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", desc = "Go to declaration" },
+               { "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", desc = "Go to defintion" },
+               { "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", desc = "Go to implementation" },
+               { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", desc = "References" },
+               { "<S-k>", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Documentation" },
+               { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", desc = "Signature help" },
+               { "<leader>w", group = "Workspace" },
+               { "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", desc = "Add workspace folder" },
+               { "<leader>wr:", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", desc = "Remove workspace folder" },
+               { "<leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", desc = "List workspace folders" },
+               { "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", desc = "Type definition" },
+               { "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", desc = "Rename" },
+               { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", desc = "Code action" },
+               { "<leader>cf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", desc = "Format buffer" },
+               { "<leader>cl", "<cmd>lua vim.lsp.codelens.run()<CR>", desc = "Code lens" },
+               { "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show line diagnostics" },
+               { "<leader>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", desc = "Set loclist" },
+               { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to previous" },
+               { "]d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to next" },
               }
             end
             local servers = ${lspConfig}

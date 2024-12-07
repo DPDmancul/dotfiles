@@ -38,20 +38,14 @@ vim.g.haskell_tools = {
           silent = true
         }
       end
-      wk.register {
+      wk.add {
         <<<modules/home/nvim/keymap-lsp-keybind>>>
       }
-      wk.register {
-        ["<leader>"] = {
-          b = {
-            e = map (ht.lsp.buf_eval_all, "Eval buffer");
-            r = map (function() ht.repl.toggle(vim.api.nvim_buf_get_name(0)) end, "Buffer repl")
-          };
-          h = {
-            s = map (ht.hoogle.hoogle_signature, "Hoogle signature");
-            r = map (ht.repl.toggle, "Repl")
-          };
-        }
+      wk.add {
+        { "<leader>be", ht.lsp.buf_eval_all, desc = "Eval buffer" },
+        { "<leader>br", function() ht.repl.toggle(vim.api.nvim_buf_get_name(0)) end, desc = "Buffer repl" },
+        { "<leader>hs", ht.hoogle.hoogle_signature, desc = "Hoogle signature" },
+        { "<leader>hr", ht.repl.toggle, desc = "Repl" },
       }
     end,
   },
