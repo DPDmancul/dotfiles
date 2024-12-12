@@ -31,17 +31,7 @@ qsynth
 ```nix "modules/home/packages/lilypond" +=
 programs.neovim.plugins = with pkgs; with vimPlugins; [
   nui-nvim
-  {
-    plugin = (vimUtils.buildVimPlugin rec {
-      name = "nvim-lilypond-suite";
-      src = fetchFromGitHub {
-        owner = "martineausimon";
-        repo = name;
-        rev = "803bf45a46c234bd18dbee6668460cea83a8172e";
-        sha256 = "nbqywtDOLS6bco+tLqAmZYvG5Ol0qE4EcXVvWHwXK0s=";
-      };
-    });
-  }
+  nvim-lilypond-suite
 ];
 ```
 

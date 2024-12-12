@@ -11,6 +11,7 @@ in
   home.packages = with pkgs; [
     dotnet-sdk
     nuget
+    dotnet-ef
   ];
 
   home.sessionVariables = {

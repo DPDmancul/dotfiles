@@ -27,16 +27,6 @@
         digr FF 120125
       '';
     }
-    {
-      plugin = (vimUtils.buildVimPlugin rec {
-        name = "vim-agda";
-        src = fetchFromGitHub {
-          owner = "msuperdock";
-          repo = name;
-          rev = "1695060850b5991e8aded0861fae0c31877950a7";
-          sha256 = "xp/aeki1f0DqyOjv8Yw+KUfPOeRRJDW86vgw0YcOIlc=";
-        };
-      });
-    }
+    vim-agda
   ];
 }

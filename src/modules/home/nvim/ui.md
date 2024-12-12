@@ -220,21 +220,12 @@ Do not permit normal buffers to open in terminal, filetree, ... windows
     src = fetchFromGitHub {
       owner = "stevearc";
       repo = "stickybuf.nvim";
-      rev = "db2965ccd97b3f1012b19a76d8541f9843b12960";
-      sha256 = "J/j7pyvqdSfQUkcXw0krvw303N+FlgDN+wH0bAefOYw=";
+      rev = "v2.0.0";
+      sha256 = "sha256-u9sjbr0e51fBQil8MlaYHd9iY6BfX8T4uRBnUpzZ/8s=";
     };
   });
   type = "lua";
-  config = ''
-    require("stickybuf").setup({
-      buftype = {
-        quickfix = "buftype", -- VimTeX
-      },
-      filetype = {
-        toggleterm = "filetype",
-      }
-    })
-  '';
+  config = ''require("stickybuf").setup()'';
 }
 ```
 
