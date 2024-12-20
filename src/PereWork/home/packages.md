@@ -22,7 +22,6 @@
     openconnect gp-saml-gui
     remmina
     postgresql # TODO install only client
-    unfree.dropbox-cli # TODO with home manager
     unfree.postman
     unfree.ngrok
     wireshark
