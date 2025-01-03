@@ -24,8 +24,7 @@
     simple-scan
     audacity
     ardour
-    # denemo
-    unstable.musescore
+    musescore-appimage
     ffmpeg
     handbrake
     mkvtoolnix
