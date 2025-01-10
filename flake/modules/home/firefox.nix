@@ -22,6 +22,7 @@
         # "vim-vixen@i-beam.org" = ext "vim-vixen";
         "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
         # "arklove@qq.com" = ext "git-master";
+        "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = ext "requestcontrol";
         "proxydocile@unipd.it"= {
           installation_mode = "force_installed";
           install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
