@@ -15,7 +15,7 @@
       set foldmethod=indent  " Set 'indent' folding method
       set nofoldenable       " Start with folds opened
       inoremap <A-u> <c-r>=trim(system('uuidgen'))<cr>
-      nnoremap <A-u> i<c-r>=trim(system('uuidgen'))<cr><esc>
+      nnoremap <A-u> "=trim(system('uuidgen'))<cr>p
     '';
     plugins = with pkgs; with vimPlugins; [
       editorconfig-nvim

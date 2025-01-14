@@ -3,6 +3,6 @@
   programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-gt2;
+    pinentryPackage = pkgs.pinentry-gtk2;
   };
 }
