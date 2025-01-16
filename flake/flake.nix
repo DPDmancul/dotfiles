@@ -52,7 +52,7 @@
         let
           overlays = config: [
             # NUR
-            inputs.nur.overlay
+            inputs.nur.overlays.default
             # unstable, master and fallaback channels
             (self: super: {
               unstable = import inputs.unstable { inherit system config; };

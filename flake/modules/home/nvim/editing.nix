@@ -78,7 +78,7 @@
         config = ''require"colorizer".setup{}'';
       }
       {
-        plugin = nur.repos.m15a.vimExtraPlugins.nvim-FeMaco-lua;
+        plugin = vimPlugins.nvim-FeMaco-lua;
         type = "lua";
         config = ''require"femaco".setup()'';
       }

@@ -176,7 +176,7 @@ Open temporary buffer to edit code in Markdown
 
 ```nix "modules/home/nvim/editing-plugins" +=
 {
-  plugin = nur.repos.m15a.vimExtraPlugins.nvim-FeMaco-lua;
+  plugin = vimPlugins.nvim-FeMaco-lua;
   type = "lua";
   config = ''require"femaco".setup()'';
 }
