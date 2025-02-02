@@ -6,6 +6,7 @@
   imports = [
     /${modules}/home
     ./backup.nix
+    ./firefox.nix
     ./packages.nix
   ];
 

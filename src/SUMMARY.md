@@ -75,6 +75,7 @@
     - [Users](./PereBook/system/users.md)
   - [Home](./PereBook/home/index.md)
     - [Backup](./PereBook/home/backup.md)
+    - [Firefox](./PereBook/home/firefox.md)
     - [Packages](./PereBook/home/packages.md)
 
 - [PereWork]()
