@@ -12,15 +12,14 @@
   in
   [
     #<<<PereWork/home/packages-packages>>>
-    keepassxc
     appimage-run
     openvpn
     (writeScriptBin "openvpn_legacy" ''${openvpn_legacy}/bin/openvpn "$@"'')
     openconnect gp-saml-gui
     remmina
     postgresql # TODO install only client
+    unfree.drawio
     unfree.postman
-    unfree.ngrok
     wireshark
   ];
 
