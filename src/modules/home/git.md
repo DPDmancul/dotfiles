@@ -8,6 +8,10 @@
     <<<modules/home/git-config>>>
   };
 
+  home.packages = with pkgs; [
+    <<<modules/home/git-packages>>>
+  ];
+
   <<<modules/home/git>>>
 }
 ```
@@ -139,6 +143,14 @@ delta = {
 
 ```nix "modules/home/git-config" +=
 lfs.enable = true;
+```
+
+## Filter repo
+
+Install git-filter-repo, which [replaces git-filter-branch](https://git-scm.com/docs/git-filter-branch#_warning)
+
+```nix "modules/home/git-packages" +=
+git-filter-repo
 ```
 
 ## Lazy git

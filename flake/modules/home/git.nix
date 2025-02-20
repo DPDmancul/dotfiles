@@ -88,6 +88,10 @@
     ];
   };
 
+  home.packages = with pkgs; [
+    git-filter-repo
+  ];
+
   programs.lazygit = {
     enable = true;
     settings = {
