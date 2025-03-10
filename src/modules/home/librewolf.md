@@ -61,6 +61,14 @@ Enable Firefox Sync
 
 ```nix "modules/home/librewolf-settings" +=
 "identity.fxaccounts.enabled" = true;
+"services.sync.engine.addons" = false;
+"services.sync.engine.addresses" = false;
+"services.sync.engine.creditcards" = false;
+"services.sync.engine.passwords" = false;
+"services.sync.engine.prefs" = false;
+"services.sync.engine.bookmarks" = true;
+"services.sync.engine.history" = true;
+"services.sync.engine.tabs" = true;
 ```
 
 Preserve data at shutdown
@@ -78,10 +86,11 @@ Enable hardware video acceleration
 "media.ffmpeg.vaapi.enabled" = true;
 ```
 
-Enable WebGL
+Enable WebGL and DRM
 
 ```nix "modules/home/librewolf-settings" +=
 "webgl.disabled" = false;
+"media.eme.enabled" = true;
 ```
 
 Developer tools to inspect Firefox UI
@@ -95,6 +104,12 @@ Clean new tab page
 
 ```nix "modules/home/librewolf-settings" +=
 "browser.newtabpage.activity-stream.feeds.topsites" = false;
+```
+
+Disable translations for some languages
+
+```nix "modules/home/librewolf-settings" +=
+"browser.translations.neverTranslateLanguages" = "it";
 ```
 
 ## Extensions
