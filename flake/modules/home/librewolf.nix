@@ -144,6 +144,7 @@
         "identity.fxaccounts.enabled" = true;
         "privacy.clearOnShutdown.history" = false;
         "privacy.clearOnShutdown.cookies" = false;
+        "privacy.clearOnShutdown_v2.cache" = false;
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
         "media.ffmpeg.vaapi.enabled" = true;
         "webgl.disabled" = false;
