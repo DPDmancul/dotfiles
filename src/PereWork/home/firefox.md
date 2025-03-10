@@ -6,7 +6,7 @@
   programs.firefox = {
     profiles.default = {
       settings = {
-        <<<PereWork/home/fiefox-settings>>>
+        <<<PereWork/home/firefox-settings>>>
       };
     };
   };
@@ -17,7 +17,7 @@
 
 Restore previous session on startup
 
-```nix "PereWork/home/fiefox-settings" +=
+```nix "PereWork/home/firefox-settings" +=
 "browser.startup.page" = 3;
 ```
 

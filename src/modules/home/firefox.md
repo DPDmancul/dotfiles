@@ -12,82 +12,102 @@
   programs.firefox = {
     enable = true;
     policies = {
+      # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let
         ext = name: {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
         };
       in {
-        <<<modules/home/fiefox-ext>>>
+        <<<modules/home/firefox-ext>>>
       };
-      <<<modules/home/fiefox-policies>>>
+      <<<modules/home/firefox-policies>>>
     };
     profiles.default = {
       settings = {
-        <<<modules/home/fiefox-settings>>>
+        <<<modules/home/firefox-settings>>>
       };
       userChrome = ''
-        <<<modules/home/fiefox-css>>>
+        <<<modules/home/firefox-css>>>
       '';
-      <<<modules/home/fiefox-profile>>>
+      <<<modules/home/firefox-profile>>>
     };
   };
-  <<<modules/home/fiefox>>>
+  <<<modules/home/firefox>>>
 }
 ```
 
 ## Mime
 
-```nix "modules/home/fiefox" +=
-# appDefaultForMimes."firefox.desktop" = {
-#   text = "html";
-#   x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
-#   application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
-#     ++ [ "xhtml+xml" ];
-# };
+```nix "modules/home/firefox" +=
+appDefaultForMimes."firefox.desktop" = {
+  text = "html";
+  x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+  application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+    ++ [ "xhtml+xml" ];
+};
 ```
 
 ## Settings
 
 Ask if to download (and where) or to open a file
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.download.useDownloadDir" = false;
 "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
 "browser.download.always_ask_before_handling_new_types" = true;
 ```
 
+Firefox Sync
+
+```nix "modules/home/firefox-settings" +=
+"services.sync.engine.addons" = false;
+"services.sync.engine.addresses" = false;
+"services.sync.engine.creditcards" = false;
+"services.sync.engine.passwords" = false;
+"services.sync.engine.prefs" = false;
+"services.sync.engine.bookmarks" = true;
+"services.sync.engine.history" = true;
+"services.sync.engine.tabs" = true;
+```
+
 Developer tools to inspect Firefox UI
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "devtools.debugger.remote-enabled" = true;
 "devtools.chrome.enabled" = true;
 ```
 
 Disable password manager
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/firefox-policies" +=
 PasswordManagerEnabled = false;
 ```
 
 Enable hardware video acceleration
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "media.ffmpeg.vaapi.enabled" = true;
+```
+
+Disable translations for some languages
+
+```nix "modules/home/firefox-settings" +=
+"browser.translations.neverTranslateLanguages" = "it";
 ```
 
 ### Privacy
 
 Enable HTTPS everywhere
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "dom.security.https_only_mode" = true;
 "dom.security.https_only_mode_ever_enabled" = true;
 ```
 
 Block some trackers
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/firefox-policies" +=
 EnableTrackingProtection = {
   Value = true;
   Locked = true;
@@ -96,7 +116,7 @@ EnableTrackingProtection = {
 };
 ```
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "privacy.donottrackheader.enabled" = true;
 "privacy.trackingprotection.enabled" = true;
 "privacy.trackingprotection.socialtracking.enabled" = true;
@@ -105,12 +125,12 @@ EnableTrackingProtection = {
 
 Disable telemetry
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/firefox-policies" +=
 DisableTelemetry = true;
 DisableFirefoxStudies = true;
 ```
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.newtabpage.activity-stream.feeds.telemetry" = false;
 "browser.newtabpage.activity-stream.telemetry" = false;
 "browser.ping-centre.telemetry" = false;
@@ -128,7 +148,7 @@ DisableFirefoxStudies = true;
 
 Disable tracking ads in newtab
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
 "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
 "browser.newtabpage.activity-stream.showSponsored" = false;
@@ -136,13 +156,13 @@ Disable tracking ads in newtab
 
 Disable search suggestions
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.search.suggest.enabled" = false;
 ```
 
 Use DuckDuckGo as search engine
 
-```nix "modules/home/fiefox-profile" +=
+```nix "modules/home/firefox-profile" +=
 search.default = "DuckDuckGo";
 search.privateDefault = "DuckDuckGo";
 ```
@@ -151,11 +171,11 @@ search.privateDefault = "DuckDuckGo";
 
 Disable unused Pocket
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/firefox-policies" +=
 DisablePocket = true;
 ```
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
 "extensions.pocket.enabled" = false;
 "extensions.pocket.api" = "";
@@ -168,14 +188,14 @@ DisablePocket = true;
 
 Manage all extensions via home-manager
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/firefox-ext" +=
 "*" = {
   installation_mode = "blocked";
   blocked_install_message = "Extensions managed by home-manager.";
 };
 ```
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/firefox-ext" +=
 "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
 "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
 # "vim-vixen@i-beam.org" = ext "vim-vixen";
@@ -195,30 +215,30 @@ Manage all extensions via home-manager
 
 Block many trackers
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/firefox-ext" +=
 "@testpilot-containers" = ext "multi-account-containers";
 "@contain-facebook" = ext "facebook-container";
-"jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+"{b86e4813-687a-43e6-ab65-0bde4ab75758}" = ext "localcdn-fork-of-decentraleyes";
 "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
 ```
 
 <!--
 Block scripts
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/firefox-ext" +=
 # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
 ```
 -->
 
 #### uBlock Origin
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/firefox-ext" +=
 "uBlock0@raymondhill.net" = ext "ublock-origin";
 ```
 
 Settings inspired from <https://codeberg.org/Magnesium1062/ublock-origin-settings>
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/firefox-policies" +=
 "3rdparty".Extensions."uBlock0@raymondhill.net" = {
   userSettings = [
     [ "cloudStorageEnabled" "true" ]
@@ -329,20 +349,20 @@ Settings inspired from <https://codeberg.org/Magnesium1062/ublock-origin-setting
 
 Compact mode
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "browser.uidensity" = 1;
 "browser.tabs.inTitlebar" = 0;
 ```
 
 Enable custom stylesheet
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/firefox-settings" +=
 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 ```
 
 Transparent bar
 
-```css "modules/home/fiefox-css" +=
+```css "modules/home/firefox-css" +=
 @media (prefers-color-scheme: light) {
   #main-window {
     background: #f9f9faa5 !important;
@@ -359,7 +379,7 @@ Transparent bar
 
 Disable annoying sharing indicator
 
-```css "modules/home/fiefox-css" +=
+```css "modules/home/firefox-css" +=
 #webrtcIndicator {
   display: none;
 }

@@ -44,7 +44,6 @@
       - [Polybar](./modules/home/i3/polybar.md)
     - [Theme](./modules/home/theme.md)
     - [Gnome](./modules/home/gnome/index.md)
-    - [LibreWolf](./modules/home/librewolf.md)
     - [Firefox](./modules/home/firefox.md)
     - [freedesktop.org](./modules/home/xdg.md)
     - [git](./modules/home/git.md)
@@ -76,7 +75,6 @@
     - [Users](./PereBook/system/users.md)
   - [Home](./PereBook/home/index.md)
     - [Backup](./PereBook/home/backup.md)
-    - [LibreWolf](./PereBook/home/librewolf.md)
     - [Firefox](./PereBook/home/firefox.md)
     - [Packages](./PereBook/home/packages.md)
 
@@ -87,7 +85,6 @@
   - [Home](./PereWork/home/index.md)
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)
-    - [LibreWolf](./PereWork/home/librewolf.md)
     - [Firefox](./PereWork/home/firefox.md)
     - [Packages](./PereWork/home/packages.md)
 

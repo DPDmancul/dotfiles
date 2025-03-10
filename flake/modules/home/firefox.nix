@@ -7,6 +7,7 @@
   programs.firefox = {
     enable = true;
     policies = {
+      # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let
         ext = name: {
           installation_mode = "force_installed";
@@ -32,7 +33,7 @@
         };
         "@testpilot-containers" = ext "multi-account-containers";
         "@contain-facebook" = ext "facebook-container";
-        "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+        "{b86e4813-687a-43e6-ab65-0bde4ab75758}" = ext "localcdn-fork-of-decentraleyes";
         "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
         # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
         "uBlock0@raymondhill.net" = ext "ublock-origin";
@@ -157,9 +158,18 @@
         "browser.download.useDownloadDir" = false;
         "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
         "browser.download.always_ask_before_handling_new_types" = true;
+        "services.sync.engine.addons" = false;
+        "services.sync.engine.addresses" = false;
+        "services.sync.engine.creditcards" = false;
+        "services.sync.engine.passwords" = false;
+        "services.sync.engine.prefs" = false;
+        "services.sync.engine.bookmarks" = true;
+        "services.sync.engine.history" = true;
+        "services.sync.engine.tabs" = true;
         "devtools.debugger.remote-enabled" = true;
         "devtools.chrome.enabled" = true;
         "media.ffmpeg.vaapi.enabled" = true;
+        "browser.translations.neverTranslateLanguages" = "it";
         "dom.security.https_only_mode" = true;
         "dom.security.https_only_mode_ever_enabled" = true;
         "privacy.donottrackheader.enabled" = true;
@@ -214,10 +224,10 @@
       search.privateDefault = "DuckDuckGo";
     };
   };
-  # appDefaultForMimes."firefox.desktop" = {
-  #   text = "html";
-  #   x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
-  #   application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
-  #     ++ [ "xhtml+xml" ];
-  # };
+  appDefaultForMimes."firefox.desktop" = {
+    text = "html";
+    x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+    application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+      ++ [ "xhtml+xml" ];
+  };
 }

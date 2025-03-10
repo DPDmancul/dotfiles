@@ -6,7 +6,7 @@
   programs.firefox = {
     profiles.default = {
       settings = {
-        <<<PereBook/home/fiefox-settings>>>
+        <<<PereBook/home/firefox-settings>>>
       };
     };
   };
@@ -19,7 +19,7 @@
 
 Enable DNS over HTTPS
 
-```nix "PereBook/home/fiefox-settings" +=
+```nix "PereBook/home/firefox-settings" +=
 "network.trr.mode" = 2;
 ```
 

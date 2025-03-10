@@ -152,7 +152,7 @@ defaultWorkspace = "workspace number 1";
 
 ```nix "modules/home/i3/keybinds" +=
 i3AddNamedKeybinds.shortcuts = {
-  "${modifier}+z" = "exec librewolf";
+  "${modifier}+z" = "exec firefox";
   "${modifier}+x" = "exec nemo";
   "${modifier}+v" = "exec ${config.xsession.windowManager.i3.config.terminal} nvim";
 };

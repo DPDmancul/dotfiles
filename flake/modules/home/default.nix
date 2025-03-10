@@ -6,8 +6,7 @@
     ./nvim
     ./i3
     ./theme.nix
-    ./librewolf.nix
-    # ./firefox.nix
+    ./firefox.nix
     ./xdg.nix
     ./git.nix
     ./ssh.nix
