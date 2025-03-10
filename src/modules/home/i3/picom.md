@@ -53,6 +53,7 @@ shadowExclude = [
   "class_g = 'i3-frame'"
   # Firefox extension menus
   "class_g = 'firefox' && argb"
+  "class_g = 'librewolf' && argb"
   # Telegram context menu
   "_NET_WM_WINDOW_TYPE:a *= '_KDE_NET_WM_WINDOW_TYPE_OVERRIDE'"
 ];

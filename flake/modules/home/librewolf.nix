@@ -4,9 +4,10 @@
     ./xdg.nix
   ];
 
-  programs.firefox = {
+  programs.librewolf = {
     enable = true;
     policies = {
+      # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let
         ext = name: {
           installation_mode = "force_installed";
@@ -19,34 +20,17 @@
         };
         "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
         "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-        # "vim-vixen@i-beam.org" = ext "vim-vixen";
         "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-        # "arklove@qq.com" = ext "git-master";
-        # "extension@requestly.in" = {
-        #   installation_mode = "force_installed";
-        #   isntall_url = "https://rqst.ly/firefox";
-        # };
         "proxydocile@unipd.it" = {
           installation_mode = "force_installed";
           install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
         };
         "@testpilot-containers" = ext "multi-account-containers";
         "@contain-facebook" = ext "facebook-container";
-        "jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+        "{b86e4813-687a-43e6-ab65-0bde4ab75758}" = ext "localcdn-fork-of-decentraleyes";
         "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
-        # "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
         "uBlock0@raymondhill.net" = ext "ublock-origin";
       };
-      PasswordManagerEnabled = false;
-      EnableTrackingProtection = {
-        Value = true;
-        Locked = true;
-        Cryptomining = true;
-        Fingerprinting = true;
-      };
-      DisableTelemetry = true;
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
       "3rdparty".Extensions."uBlock0@raymondhill.net" = {
         userSettings = [
           [ "cloudStorageEnabled" "true" ]
@@ -155,40 +139,17 @@
     profiles.default = {
       settings = {
         "browser.download.useDownloadDir" = false;
-        "browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
+        "browser.download.dir" = "${config.xdg.userDirs.download}/LibreWolf";
         "browser.download.always_ask_before_handling_new_types" = true;
+        "identity.fxaccounts.enabled" = true;
+        "privacy.clearOnShutdown.history" = false;
+        "privacy.clearOnShutdown.cookies" = false;
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "webgl.disabled" = false;
         "devtools.debugger.remote-enabled" = true;
         "devtools.chrome.enabled" = true;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "dom.security.https_only_mode" = true;
-        "dom.security.https_only_mode_ever_enabled" = true;
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "privacy.partition.network_state.ocsp_cache" = true;
-        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-        "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.ping-centre.telemetry" = false;
-        "toolkit.telemetry.archive.enabled" = false;
-        "toolkit.telemetry.bhrPing.enabled" = false;
-        "toolkit.telemetry.enabled" = false;
-        "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
-        "toolkit.telemetry.newProfilePing.enabled" = false;
-        "toolkit.telemetry.reportingpolicy.firstRun" = false;
-        "toolkit.telemetry.shutdownPingSender.enabled" = false;
-        "toolkit.telemetry.unified" = false;
-        "toolkit.telemetry.updatePing.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-        "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-        "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
+        "browser.newtabpage.activity-stream.feeds.topsites" = false;
         "browser.uidensity" = 1;
         "browser.tabs.inTitlebar" = 0;
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
@@ -210,14 +171,12 @@
           display: none;
         }
       '';
-      search.default = "DuckDuckGo";
-      search.privateDefault = "DuckDuckGo";
     };
   };
-  # appDefaultForMimes."firefox.desktop" = {
-  #   text = "html";
-  #   x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
-  #   application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
-  #     ++ [ "xhtml+xml" ];
-  # };
+  appDefaultForMimes."librewolf.desktop" = {
+    text = "html";
+    x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+    application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+      ++ [ "xhtml+xml" ];
+  };
 }

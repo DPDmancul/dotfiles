@@ -3,6 +3,7 @@
   imports = [
     /${modules}/home
     ./backup.nix
+    ./librewolf.nix
     ./firefox.nix
     ./packages.nix
   ];

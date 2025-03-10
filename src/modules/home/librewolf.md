@@ -1,190 +1,116 @@
-# Firefox
+# LibreWolf
 
 <!-- TODO: better organization -->
 
-```nix modules/home/firefox.nix
+```nix modules/home/librewolf.nix
 { config, pkgs, lib, ... }:
 {
   imports = [
     ./xdg.nix
   ];
 
-  programs.firefox = {
+  programs.librewolf = {
     enable = true;
     policies = {
+      # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let
         ext = name: {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
         };
       in {
-        <<<modules/home/fiefox-ext>>>
+        <<<modules/home/librewolf-ext>>>
       };
-      <<<modules/home/fiefox-policies>>>
+      <<<modules/home/librewolf-policies>>>
     };
     profiles.default = {
       settings = {
-        <<<modules/home/fiefox-settings>>>
+        <<<modules/home/librewolf-settings>>>
       };
       userChrome = ''
-        <<<modules/home/fiefox-css>>>
+        <<<modules/home/librewolf-css>>>
       '';
-      <<<modules/home/fiefox-profile>>>
     };
   };
-  <<<modules/home/fiefox>>>
+  <<<modules/home/librewolf>>>
 }
 ```
 
 ## Mime
 
-```nix "modules/home/fiefox" +=
-# appDefaultForMimes."firefox.desktop" = {
-#   text = "html";
-#   x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
-#   application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
-#     ++ [ "xhtml+xml" ];
-# };
+```nix "modules/home/librewolf" +=
+appDefaultForMimes."librewolf.desktop" = {
+  text = "html";
+  x-scheme-handler = [ "http" "https" "ftp" "chrome" "about" "unknown" ];
+  application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
+    ++ [ "xhtml+xml" ];
+};
 ```
 
 ## Settings
 
 Ask if to download (and where) or to open a file
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/librewolf-settings" +=
 "browser.download.useDownloadDir" = false;
-"browser.download.dir" = "${config.xdg.userDirs.download}/Firefox";
+"browser.download.dir" = "${config.xdg.userDirs.download}/LibreWolf";
 "browser.download.always_ask_before_handling_new_types" = true;
 ```
 
-Developer tools to inspect Firefox UI
+Enable Firefox Sync
 
-```nix "modules/home/fiefox-settings" +=
-"devtools.debugger.remote-enabled" = true;
-"devtools.chrome.enabled" = true;
+```nix "modules/home/librewolf-settings" +=
+"identity.fxaccounts.enabled" = true;
 ```
 
-Disable password manager
+Preserve data at shutdown
 
-```nix "modules/home/fiefox-policies" +=
-PasswordManagerEnabled = false;
+```nix "modules/home/librewolf-settings" +=
+"privacy.clearOnShutdown.history" = false;
+"privacy.clearOnShutdown.cookies" = false;
+"privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
 ```
 
 Enable hardware video acceleration
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/librewolf-settings" +=
 "media.ffmpeg.vaapi.enabled" = true;
 ```
 
-### Privacy
+Enable WebGL
 
-Enable HTTPS everywhere
-
-```nix "modules/home/fiefox-settings" +=
-"dom.security.https_only_mode" = true;
-"dom.security.https_only_mode_ever_enabled" = true;
+```nix "modules/home/librewolf-settings" +=
+"webgl.disabled" = false;
 ```
 
-Block some trackers
+Developer tools to inspect Firefox UI
 
-```nix "modules/home/fiefox-policies" +=
-EnableTrackingProtection = {
-  Value = true;
-  Locked = true;
-  Cryptomining = true;
-  Fingerprinting = true;
-};
+```nix "modules/home/librewolf-settings" +=
+"devtools.debugger.remote-enabled" = true;
+"devtools.chrome.enabled" = true;
 ```
 
-```nix "modules/home/fiefox-settings" +=
-"privacy.donottrackheader.enabled" = true;
-"privacy.trackingprotection.enabled" = true;
-"privacy.trackingprotection.socialtracking.enabled" = true;
-"privacy.partition.network_state.ocsp_cache" = true;
-```
+Clean new tab page
 
-Disable telemetry
-
-```nix "modules/home/fiefox-policies" +=
-DisableTelemetry = true;
-DisableFirefoxStudies = true;
-```
-
-```nix "modules/home/fiefox-settings" +=
-"browser.newtabpage.activity-stream.feeds.telemetry" = false;
-"browser.newtabpage.activity-stream.telemetry" = false;
-"browser.ping-centre.telemetry" = false;
-"toolkit.telemetry.archive.enabled" = false;
-"toolkit.telemetry.bhrPing.enabled" = false;
-"toolkit.telemetry.enabled" = false;
-"toolkit.telemetry.firstShutdownPing.enabled" = false;
-"toolkit.telemetry.hybridContent.enabled" = false;
-"toolkit.telemetry.newProfilePing.enabled" = false;
-"toolkit.telemetry.reportingpolicy.firstRun" = false;
-"toolkit.telemetry.shutdownPingSender.enabled" = false;
-"toolkit.telemetry.unified" = false;
-"toolkit.telemetry.updatePing.enabled" = false;
-```
-
-Disable tracking ads in newtab
-
-```nix "modules/home/fiefox-settings" +=
-"browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
-"browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
-"browser.newtabpage.activity-stream.showSponsored" = false;
-```
-
-Disable search suggestions
-
-```nix "modules/home/fiefox-settings" +=
-"browser.search.suggest.enabled" = false;
-```
-
-Use DuckDuckGo as search engine
-
-```nix "modules/home/fiefox-profile" +=
-search.default = "DuckDuckGo";
-search.privateDefault = "DuckDuckGo";
-```
-
-### Pocket
-
-Disable unused Pocket
-
-```nix "modules/home/fiefox-policies" +=
-DisablePocket = true;
-```
-
-```nix "modules/home/fiefox-settings" +=
-"browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-"extensions.pocket.enabled" = false;
-"extensions.pocket.api" = "";
-"extensions.pocket.oAuthConsumerKey" = "";
-"extensions.pocket.showHome" = false;
-"extensions.pocket.site" = "";
+```nix "modules/home/librewolf-settings" +=
+"browser.newtabpage.activity-stream.feeds.topsites" = false;
 ```
 
 ## Extensions
 
 Manage all extensions via home-manager
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/librewolf-ext" +=
 "*" = {
   installation_mode = "blocked";
   blocked_install_message = "Extensions managed by home-manager.";
 };
 ```
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/librewolf-ext" +=
 "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
 "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-# "vim-vixen@i-beam.org" = ext "vim-vixen";
 "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-# "arklove@qq.com" = ext "git-master";
-# "extension@requestly.in" = {
-#   installation_mode = "force_installed";
-#   isntall_url = "https://rqst.ly/firefox";
-# };
 "proxydocile@unipd.it" = {
   installation_mode = "force_installed";
   install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
@@ -195,30 +121,22 @@ Manage all extensions via home-manager
 
 Block many trackers
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/librewolf-ext" +=
 "@testpilot-containers" = ext "multi-account-containers";
 "@contain-facebook" = ext "facebook-container";
-"jid1-BoFifL9Vbdl2zQ@jetpack" = ext "decentraleyes";
+"{b86e4813-687a-43e6-ab65-0bde4ab75758}" = ext "localcdn-fork-of-decentraleyes";
 "{c0e1baea-b4cb-4b62-97f0-278392ff8c37}" = ext "behind-the-overlay-revival";
 ```
 
-<!--
-Block scripts
-
-```nix "modules/home/fiefox-ext" +=
-# "{73a6fe31-595d-460b-a920-fcc0f8843232}" = ext "noscript";
-```
--->
-
 #### uBlock Origin
 
-```nix "modules/home/fiefox-ext" +=
+```nix "modules/home/librewolf-ext" +=
 "uBlock0@raymondhill.net" = ext "ublock-origin";
 ```
 
 Settings inspired from <https://codeberg.org/Magnesium1062/ublock-origin-settings>
 
-```nix "modules/home/fiefox-policies" +=
+```nix "modules/home/librewolf-policies" +=
 "3rdparty".Extensions."uBlock0@raymondhill.net" = {
   userSettings = [
     [ "cloudStorageEnabled" "true" ]
@@ -329,20 +247,20 @@ Settings inspired from <https://codeberg.org/Magnesium1062/ublock-origin-setting
 
 Compact mode
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/librewolf-settings" +=
 "browser.uidensity" = 1;
 "browser.tabs.inTitlebar" = 0;
 ```
 
 Enable custom stylesheet
 
-```nix "modules/home/fiefox-settings" +=
+```nix "modules/home/librewolf-settings" +=
 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 ```
 
 Transparent bar
 
-```css "modules/home/fiefox-css" +=
+```css "modules/home/librewolf-css" +=
 @media (prefers-color-scheme: light) {
   #main-window {
     background: #f9f9faa5 !important;
@@ -359,7 +277,7 @@ Transparent bar
 
 Disable annoying sharing indicator
 
-```css "modules/home/fiefox-css" +=
+```css "modules/home/librewolf-css" +=
 #webrtcIndicator {
   display: none;
 }
