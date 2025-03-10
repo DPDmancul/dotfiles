@@ -14,7 +14,7 @@ In this folder there are also some useful modules used only by some user configs
     ./i3
     ./theme.nix
     ./librewolf.nix
-    ./firefox.nix
+    # ./firefox.nix
     ./xdg.nix
     ./git.nix
     ./ssh.nix
