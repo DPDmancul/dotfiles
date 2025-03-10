@@ -16,8 +16,8 @@
       # i3 tabs
       "class_g = 'i3-frame'"
       # Firefox extension menus
-      "class_g = 'firefox' && argb"
-      "class_g = 'librewolf' && argb"
+      "class_g = 'firefox' && (window_type = 'utility' || window_type = 'popup_menu') && argb"
+      "class_g = 'librewolf' && (window_type = 'utility' || window_type = 'popup_menu') && argb"
       # Telegram context menu
       "_NET_WM_WINDOW_TYPE:a *= '_KDE_NET_WM_WINDOW_TYPE_OVERRIDE'"
     ];
