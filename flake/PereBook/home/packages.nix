@@ -19,6 +19,7 @@
     ocrmypdf tesseract
     unfree.masterpdfeditor4
     poppler_utils
+    texlivePackages.pdfbook2
     calibre
     jmtpfs # For kindle
     simple-scan

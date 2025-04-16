@@ -10,6 +10,7 @@
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
+    ./net.nix
     ./users.nix
     ./autorandr.nix
   ];

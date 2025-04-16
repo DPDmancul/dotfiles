@@ -80,6 +80,7 @@
 
 - [PereWork]()
   - [System](./PereWork/system/index.md)
+    - [Networking](./PereWork/system/net.md)
     - [Users](./PereWork/system/users.md)
     - [Autorandr](./PereWork/system/autorandr.md)
   - [Home](./PereWork/home/index.md)
