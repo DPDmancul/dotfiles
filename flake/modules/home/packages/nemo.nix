@@ -7,6 +7,9 @@
   home.packages = with pkgs; [
     nemo
     shared-mime-info
+    libheif
+    libheif.out
+    ffmpegthumbnailer
   ];
 
   appDefaultForMimes."nemo.desktop" = "inode/directory";

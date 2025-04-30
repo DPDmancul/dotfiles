@@ -135,3 +135,4 @@ Enable FHS support for unpatched programs with nix-ld
 ```nix "modules/system/services" +=
 programs.nix-ld.enable = true;
 ```
+

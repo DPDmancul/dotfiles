@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     nemo
     shared-mime-info
+    <<<modules/home/packages/nemo-packages>>>
   ];
 
   appDefaultForMimes."nemo.desktop" = "inode/directory";
@@ -31,3 +32,17 @@ Disable rendering of icons on desktop
 dconf.settings."org/nemo/desktop".show-desktop-icons = false;
 ```
 
+## Thumbnails
+
+Enable HEIC thumbnails (TODO: not working)
+
+```nix "modules/home/packages/nemo-packages" +=
+libheif
+libheif.out
+```
+
+Enable video thumbnails
+
+```nix "modules/home/packages/nemo-packages" +=
+ffmpegthumbnailer
+```
