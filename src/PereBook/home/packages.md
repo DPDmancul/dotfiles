@@ -64,7 +64,7 @@ musescore-appimage
 ffmpeg
 handbrake
 mkvtoolnix
-kdenlive frei0r
+kdePackages.kdenlive frei0r
 losslesscut-bin
 obs-studio
 ```

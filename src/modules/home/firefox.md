@@ -163,8 +163,8 @@ Disable search suggestions
 Use DuckDuckGo as search engine
 
 ```nix "modules/home/firefox-profile" +=
-search.default = "DuckDuckGo";
-search.privateDefault = "DuckDuckGo";
+search.default = "ddg";
+search.privateDefault = "ddg";
 ```
 
 ### Pocket

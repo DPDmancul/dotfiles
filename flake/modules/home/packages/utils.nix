@@ -15,8 +15,8 @@
       '';
     })
     kdePackages.okular
-    kolourpaint
-    gimp
+    kdePackages.kolourpaint
+    gimp3
     inkscape
     imv
     mpv

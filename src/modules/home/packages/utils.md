@@ -51,8 +51,8 @@ appDefaultForMimes."okularApplication_pdf.desktop" = {
 ## Drawing
 
 ```nix "modules/home/packages/utils-packages" +=
-kolourpaint
-gimp
+kdePackages.kolourpaint
+gimp3
 inkscape
 ```
 
