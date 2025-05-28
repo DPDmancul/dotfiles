@@ -99,8 +99,6 @@ gnome-disk-utility
 dua # disk usage
 jq # cmd json parser
 appimage-run
-gitlab-runner
-perl540Packages.AppMusicChordPro
 ```
 
 tldr: short command examples

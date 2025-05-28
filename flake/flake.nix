@@ -6,6 +6,7 @@
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
     master.url = github:nixos/nixpkgs/master;
     fallback.url = github:nixos/nixpkgs/nixos-25.05-small;
+    previous.url = github:nixos/nixpkgs/nixos-24.11;
     nixpkgs.follows = "stable";
     nur.url = github:nix-community/NUR;
     home-manager = {
