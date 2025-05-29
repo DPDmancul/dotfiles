@@ -88,6 +88,7 @@ legacyPackages = forAllSystems (system:
       (self: super: {
         unstable = import inputs.unstable { inherit system config; };
         master = import inputs.master { inherit system config; };
+        previous = import inputs.previous { inherit system config; };
         fallback = import inputs.fallback {
           inherit system;
           config = config // {
