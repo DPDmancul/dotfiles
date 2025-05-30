@@ -64,7 +64,7 @@ musescore-appimage
 ffmpeg
 handbrake
 mkvtoolnix
-kdenlive frei0r
+kdePackages.kdenlive frei0r
 losslesscut-bin
 obs-studio
 ```
@@ -90,6 +90,7 @@ sqlitebrowser
 tdesktop # Telegram
 ipscan
 libfaketime
+previous.perl540Packages.AppMusicChordPro
 ```
 
 ```nix "PereBook/home/packages" +=

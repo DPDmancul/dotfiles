@@ -51,8 +51,8 @@ appDefaultForMimes."okularApplication_pdf.desktop" = {
 ## Drawing
 
 ```nix "modules/home/packages/utils-packages" +=
-kolourpaint
-gimp
+kdePackages.kolourpaint
+gimp3
 inkscape
 ```
 
@@ -99,8 +99,6 @@ gnome-disk-utility
 dua # disk usage
 jq # cmd json parser
 appimage-run
-gitlab-runner
-perl540Packages.AppMusicChordPro
 ```
 
 tldr: short command examples

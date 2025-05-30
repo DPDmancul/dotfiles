@@ -2,20 +2,28 @@
 let
   flakeShellPath = ./flake/shell.nix;
   flakeShell = import flakeShellPath { inherit pkgs; };
-  lock = builtins.fromJSON (builtins.readFile ./flake/flake.lock);
-  nur = import
-    (builtins.fetchTarball {
-      url = "https://github.com/nix-community/NUR/archive/${lock.nodes.nur.locked.rev}.tar.gz";
-      sha256 = lock.nodes.nur.locked.narHash;
-    })
-    {
-      inherit pkgs;
-    };
+  lmt = pkgs.buildGoModule {
+      pname = "lmt";
+      version = "3-8-2021";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "driusan";
+        repo = "lmt";
+        rev = "a940ba5299babf61ab6dfc72f308ea362cb6e4ec";
+        sha256 = "0jpiv9xm8wbi8rdfkkqfhqmjqqfzzhbwwh9m2n52cy4dxbfs8wbh";
+      };
+
+      vendorHash = null;
+
+      prePatch = ''
+        echo -e "module lmt\n\ngo 1.12" > go.mod
+      '';
+  };
   nativeBuildInputs = with pkgs; [
     gnused
     jq
     mdbook
-    nur.repos.hutzdog.lmt
+    lmt
   ];
 in
 if builtins.pathExists flakeShellPath then

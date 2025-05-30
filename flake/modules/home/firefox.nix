@@ -220,8 +220,8 @@
           display: none;
         }
       '';
-      search.default = "DuckDuckGo";
-      search.privateDefault = "DuckDuckGo";
+      search.default = "ddg";
+      search.privateDefault = "ddg";
     };
   };
   appDefaultForMimes."firefox.desktop" = {

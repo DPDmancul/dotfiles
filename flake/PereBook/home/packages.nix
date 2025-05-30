@@ -29,7 +29,7 @@
     ffmpeg
     handbrake
     mkvtoolnix
-    kdenlive frei0r
+    kdePackages.kdenlive frei0r
     losslesscut-bin
     obs-studio
     tor-browser-bundle-bin
@@ -40,6 +40,7 @@
     tdesktop # Telegram
     ipscan
     libfaketime
+    previous.perl540Packages.AppMusicChordPro
   ];
 
   appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";

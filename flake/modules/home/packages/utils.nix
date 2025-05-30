@@ -15,8 +15,8 @@
       '';
     })
     kdePackages.okular
-    kolourpaint
-    gimp
+    kdePackages.kolourpaint
+    gimp3
     inkscape
     imv
     mpv
@@ -25,8 +25,6 @@
     dua # disk usage
     jq # cmd json parser
     appimage-run
-    gitlab-runner
-    perl540Packages.AppMusicChordPro
   ];
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
   appDefaultForMimes."okularApplication_pdf.desktop" = {

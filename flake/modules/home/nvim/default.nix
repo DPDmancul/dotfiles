@@ -35,26 +35,21 @@
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       telescope-symbols-nvim
+      telescope-project-nvim
       {
         plugin = telescope-nvim;
         type = "lua";
         config = ''
           local telescope = require "telescope"
           telescope.load_extension("file_browser")
-          telescope.load_extension("projects")
+          telescope.load_extension("project")
           telescope.load_extension("fzf")
-          -- telescope.load_extension("termfinder")
         '';
       }
       {
         plugin = gitsigns-nvim;
         type = "lua";
         config = ''require"gitsigns".setup()'';
-      }
-      {
-        plugin = project-nvim;
-        type = "lua";
-        config = ''require"project_nvim".setup()'';
       }
       {
         plugin = mini-nvim;

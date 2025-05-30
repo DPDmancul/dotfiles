@@ -8,13 +8,14 @@
         config = ''
           local wk = require "which-key"
           wk.add {
+            { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
             { "<leader>f", group = "Find"},
             { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume saerch" },
             { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Files" },
             { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
             { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
             { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
-            { "<leader>fp", "<cmd>Telescope projects<cr>", desc = "Projects" },
+            { "<leader>fp", "<cmd>Telescope project<cr>", desc = "Projects" },
             { "<leader>fe", "<cmd>Telescope file_browser<cr>", desc = "Explore" },
             { "<leader>ft", "<cmd>NvimTreeToggle<cr>", desc = "File tree" },
             -- { "<leader>f\\", "<cmd>Telescope termfinder find<cr>", desc = "Terminals" },
@@ -36,7 +37,6 @@
             { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
             { "gb", "<cmd>BufferLinePick<cr>", desc = "Go to buffer" },
             { "gB", "<cmd>BufferLinePickClose<cr>", desc = "Close picked buffer" },
-            { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
           }
         '';
       }
