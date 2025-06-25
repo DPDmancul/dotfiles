@@ -37,7 +37,7 @@ wk.add {
 { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Grep" },
 { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
 { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
-{ "<leader>fp", "<cmd>Telescope projects<cr>", desc = "Projects" },
+{ "<leader>fp", "<cmd>Telescope project<cr>", desc = "Projects" },
 { "<leader>fe", "<cmd>Telescope file_browser<cr>", desc = "Explore" },
 { "<leader>ft", "<cmd>NvimTreeToggle<cr>", desc = "File tree" },
 -- { "<leader>f\\", "<cmd>Telescope termfinder find<cr>", desc = "Terminals" },

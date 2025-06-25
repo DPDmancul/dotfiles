@@ -68,6 +68,7 @@ Use telescope as fuzzy finder
 telescope-file-browser-nvim
 telescope-fzf-native-nvim
 telescope-symbols-nvim
+telescope-project-nvim
 {
   plugin = telescope-nvim;
   type = "lua";
@@ -76,12 +77,12 @@ telescope-symbols-nvim
   '';
 }
 ```
+
 ```lua "modules/home/nvim-telescope" +=
 local telescope = require "telescope"
 telescope.load_extension("file_browser")
-telescope.load_extension("projects")
+telescope.load_extension("project")
 telescope.load_extension("fzf")
--- telescope.load_extension("termfinder")
 ```
 
 ## Git
@@ -140,24 +141,6 @@ set spell
 set spelllang=en,it     " Define spelling dictionaries
 set complete+=kspell    " Add spellcheck options for autocomplete
 set spelloptions=camel  " Treat parts of camelCase words as separate words
-```
-
-## Projects
-
-```nix "modules/home/nvim-plugins" +=
-{
-  plugin = vimUtils.buildVimPlugin {
-    name = "project-nvim";
-    src = fetchFromGitHub {
-      owner = "DrKJeff16";
-      repo = "project.nvim";
-      rev = "b7a524c144b403c37797bfd22c812d01ae44e246";
-      sha256 = "Z7Jo9+3T8ORabdo+Qew/9RpxJHD7W9U4jHlVMQRKO0A=";
-    };
-  };
-  type = "lua";
-  config = ''require"project_nvim".setup()'';
-}
 ```
 
 ## Mini.nvim
