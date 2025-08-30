@@ -33,6 +33,7 @@
     losslesscut-bin
     obs-studio
     tor-browser-bundle-bin
+    wgnord
     clipgrab
     qbittorrent
     sqlite

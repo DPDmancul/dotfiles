@@ -73,6 +73,7 @@ obs-studio
 
 ```nix "PereBook/home/packages-packages" +=
 tor-browser-bundle-bin
+wgnord
 ```
 
 ### Downloads
