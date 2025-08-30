@@ -25,6 +25,14 @@ users.users = lib.genAttrs users (user: {
   });
 ```
 
+## Resolved
+
+Use resolved to provide DNS resolution
+
+```nix "modules/system/services/net" +=
+services.resolved.enable = true;
+```
+
 ## Networkd
 
 Manage networks with networkd.

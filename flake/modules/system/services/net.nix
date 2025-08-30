@@ -7,6 +7,7 @@
         "networkmanager"
       ];
     });
+  services.resolved.enable = true;
   # networking.useNetworkd = true;
   systemd.network.wait-online = {
     anyInterface = true;
