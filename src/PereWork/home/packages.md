@@ -8,6 +8,7 @@
     /${modules}/home/packages/developing/dotnet.nix
     /${modules}/home/packages/developing/rider.nix
     /${modules}/home/packages/developing/node.nix
+    /${modules}/home/packages/developing/haskell.nix
   ];
 
   home.packages = with pkgs; let

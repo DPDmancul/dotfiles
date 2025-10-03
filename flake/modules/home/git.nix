@@ -14,6 +14,8 @@
       br = "branch";
       ci = "commit";
       st = "status";
+      sw = "switch";
+      sc = "switch -c";
       rb = "rebase";
     };
     extraConfig.core.autoclrf = "input";

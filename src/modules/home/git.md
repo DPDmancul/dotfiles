@@ -36,6 +36,8 @@ aliases = {
   br = "branch";
   ci = "commit";
   st = "status";
+  sw = "switch";
+  sc = "switch -c";
   rb = "rebase";
 };
 ```
