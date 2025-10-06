@@ -99,6 +99,7 @@ gnome-disk-utility
 dua # disk usage
 jq # cmd json parser
 appimage-run
+localsend
 ```
 
 tldr: short command examples
