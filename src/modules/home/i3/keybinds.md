@@ -170,6 +170,23 @@ i3AddKeybinds = {
 };
 ```
 
+### Media controls
+
+```nix "modules/home/i3/keybinds" +=
+i3AddKeybinds = {
+  "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
+  "XF86AudioPause" = "exec --no-startup-id playerctl pause";
+  "XF86AudioNext" = "exec --no-startup-id playerctl next";
+  "XF86AudioPrev" = "exec --no-startup-id playerctl previous";
+};
+```
+
+This requires playerctl
+
+```nix "modules/home/i3/keybinds" +=
+services.playerctld.enable = true;
+```
+
 ### Brightness
 
 Don't know why the following are triggered twice, so a step of 2 is indeed a step of 4.

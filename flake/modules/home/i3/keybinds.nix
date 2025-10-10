@@ -96,6 +96,13 @@ in
       "XF86AudioMute" = "exec --no-startup-id pamixer -t";
     };
     i3AddKeybinds = {
+      "XF86AudioPlay" = "exec --no-startup-id playerctl play-pause";
+      "XF86AudioPause" = "exec --no-startup-id playerctl pause";
+      "XF86AudioNext" = "exec --no-startup-id playerctl next";
+      "XF86AudioPrev" = "exec --no-startup-id playerctl previous";
+    };
+    services.playerctld.enable = true;
+    i3AddKeybinds = {
       "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
       "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";
     };
