@@ -19,7 +19,6 @@
     gimp3
     inkscape
     imv
-    mpv
     qalculate-gtk
     gnome-disk-utility
     dua # disk usage
@@ -33,6 +32,7 @@
     image = [ "vnd.djvu" "x.djvu" ];
   };
   appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+  programs.mpv.enable = true;
   appDefaultForMimes."umpv.desktop" = {
     video = [
       "avi" "msvideo" "x-msvideo"

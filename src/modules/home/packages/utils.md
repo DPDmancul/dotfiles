@@ -68,8 +68,8 @@ appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg"
 
 ## Video and audio player
 
-```nix "modules/home/packages/utils-packages" +=
-mpv
+```nix "modules/home/packages/utils" +=
+programs.mpv.enable = true;
 ```
 
 ```nix "modules/home/packages/utils" +=

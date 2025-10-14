@@ -102,6 +102,7 @@ in
       "XF86AudioPrev" = "exec --no-startup-id playerctl previous";
     };
     services.playerctld.enable = true;
+    programs.mpv.scripts = [ pkgs.mpvScripts.mpris ];
     i3AddKeybinds = {
       "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
       "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";

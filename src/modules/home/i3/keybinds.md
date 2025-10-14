@@ -185,6 +185,7 @@ This requires playerctl
 
 ```nix "modules/home/i3/keybinds" +=
 services.playerctld.enable = true;
+programs.mpv.scripts = [ pkgs.mpvScripts.mpris ];
 ```
 
 ### Brightness
