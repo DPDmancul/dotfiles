@@ -18,7 +18,7 @@
     kdePackages.kolourpaint
     gimp3
     inkscape
-    imv
+    loupe
     qalculate-gtk
     gnome-disk-utility
     dua # disk usage
@@ -31,7 +31,7 @@
     application = "pdf";
     image = [ "vnd.djvu" "x.djvu" ];
   };
-  appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+  appDefaultForMimes."org.gnome.Loupe.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" "heic" "heif" "webp" ];
   programs.mpv.enable = true;
   appDefaultForMimes."umpv.desktop" = {
     video = [

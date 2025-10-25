@@ -59,11 +59,11 @@ inkscape
 ## Image viewer
 
 ```nix "modules/home/packages/utils-packages" +=
-imv
+loupe
 ```
 
 ```nix "modules/home/packages/utils" +=
-appDefaultForMimes."imv-folder.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" ];
+appDefaultForMimes."org.gnome.Loupe.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" "heic" "heif" "webp" ];
 ```
 
 ## Video and audio player
