@@ -20,6 +20,7 @@
     unfree.masterpdfeditor4
     poppler_utils
     texlivePackages.pdfbook2
+    qpdf
     calibre
     jmtpfs # For kindle
     simple-scan

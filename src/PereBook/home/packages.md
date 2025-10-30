@@ -34,6 +34,7 @@ ocrmypdf tesseract
 unfree.masterpdfeditor4
 poppler_utils
 texlivePackages.pdfbook2
+qpdf
 ```
 
 ### E-books
