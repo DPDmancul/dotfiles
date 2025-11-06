@@ -6,7 +6,7 @@
       set cursorline        " Enable highlighting of the current line
       set signcolumn=yes    " Always show signcolumn or it would frequently shift
       set pumheight=10      " Make popup menu smaller
-      set cmdheight=0       " Automatically hide command line
+      " set cmdheight=0       " Automatically hide command line
       set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
       set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
       set scrolloff=2       " Show more lines on top and bottom
@@ -97,6 +97,25 @@
         plugin = toggleterm-nvim;
         type = "lua";
         config = ''
+          local lazygit = require"toggleterm.terminal".Terminal:new {
+            cmd = "lazygit",
+            hidden = true,
+            count = 0,
+            direction = "tab",
+            on_open = function(term)
+              term.old_laststatus = vim.opt_local.laststatus
+              vim.opt_local.laststatus = 0
+              vim.opt_local.signcolumn = "no"
+              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
+            end,
+            on_close = function(term)
+              vim.opt_local.laststatus = term.old_laststatus
+            end
+          }
+          function lazygit_toggle()
+            lazygit:toggle()
+          end
+          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
             shade_terminals = false
@@ -120,25 +139,6 @@
           end
 
           vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-          local lazygit = require"toggleterm.terminal".Terminal:new {
-            cmd = "lazygit",
-            hidden = true,
-            count = 0,
-            direction = "tab",
-            on_open = function(term)
-              term.old_laststatus = vim.opt_local.laststatus
-              vim.opt_local.laststatus = 0
-              vim.opt_local.signcolumn = "no"
-              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
-            end,
-            on_close = function(term)
-              vim.opt_local.laststatus = term.old_laststatus
-            end
-          }
-          function lazygit_toggle()
-            lazygit:toggle()
-          end
-          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
         '';
       }
       {

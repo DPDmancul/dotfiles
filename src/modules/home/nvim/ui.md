@@ -19,7 +19,7 @@ set termguicolors     " Enable gui colors
 set cursorline        " Enable highlighting of the current line
 set signcolumn=yes    " Always show signcolumn or it would frequently shift
 set pumheight=10      " Make popup menu smaller
-set cmdheight=0       " Automatically hide command line
+" set cmdheight=0       " Automatically hide command line
 set colorcolumn=+1    " Draw colored column one step to the right of desired maximum width
 set linebreak         " Wrap long lines at 'breakat' (if 'wrap' is set)
 set scrolloff=2       " Show more lines on top and bottom

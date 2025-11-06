@@ -68,7 +68,15 @@ Use telescope as fuzzy finder
 telescope-file-browser-nvim
 telescope-fzf-native-nvim
 telescope-symbols-nvim
-telescope-project-nvim
+(vimUtils.buildVimPlugin {
+  name = "project-nvim";
+  src = fetchFromGitHub {
+    owner = "DrKJeff16";
+    repo = "project.nvim";
+    rev = "deaec4c3606ade11f6ae89b4e9576065b3140d0e";
+    sha256 = "VYOABmvydOHu7EM8n1EQ+Le1NOtZIcaSjwW4x8uhNQI=";
+  };
+})
 {
   plugin = telescope-nvim;
   type = "lua";
@@ -79,9 +87,11 @@ telescope-project-nvim
 ```
 
 ```lua "modules/home/nvim-telescope" +=
+require"project".setup()
+
 local telescope = require "telescope"
 telescope.load_extension("file_browser")
-telescope.load_extension("project")
+telescope.load_extension("projects")
 telescope.load_extension("fzf")
 ```
 
