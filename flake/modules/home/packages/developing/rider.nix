@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   home.packages = with pkgs; [
     mono
-    unfree.unstable.jetbrains.rider
+    (pkgs.unfree.callPackage "${inputs.unstable}/pkgs/applications/editors/jetbrains/default.nix" { inherit (pkgs.jetbrains) jdk; }).rider
   ];
 
   xdg.configFile."ideavim/ideavimrc".text = ''
