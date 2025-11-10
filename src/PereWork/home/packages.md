@@ -22,6 +22,7 @@
     openconnect gp-saml-gui
     remmina
     postgresql # TODO install only client
+    unfree.redisinsight
     unfree.drawio
     unfree.postman
     wireshark
