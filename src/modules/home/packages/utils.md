@@ -102,6 +102,15 @@ appimage-run
 localsend
 ```
 
+open ports for localsend (TODO move to this module)
+
+```nix modules/system/default.nix
+networking.firewall = {
+  allowedUDPPorts = [ 53317 ];
+  allowedTCPPorts = [ 53317 ];
+};
+```
+
 tldr: short command examples
 
 ```nix "modules/home/packages/utils" +=

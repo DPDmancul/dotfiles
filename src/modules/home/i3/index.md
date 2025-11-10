@@ -185,6 +185,17 @@ window.commands = [
 polkit_gnome
 ```
 
+## D-Bus
+
+Pass environment variables from the window manager to session dbus. For example it enables gnome keyring password prompt.
+
+```sh "modules/home/i3-startup" +=
+{
+  command = "dbus-update-activation-environment --all";
+  notification = false;
+}
+```
+
 ## Border and gaps
 
 ```nix "modules/home/i3-config" +=

@@ -43,6 +43,10 @@ in
             command = "${pkgs.copyq}/bin/copyq";
             notification = false;
           }
+          {
+            command = "dbus-update-activation-environment --all";
+            notification = false;
+          }
         ];
       };
     };
