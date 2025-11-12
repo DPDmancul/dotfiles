@@ -39,6 +39,8 @@ appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7
 
 ```nix "modules/home/packages/utils-packages" +=
 kdePackages.okular
+unfree.masterpdfeditor4
+
 ```
 
 ```nix "modules/home/packages/utils" +=
