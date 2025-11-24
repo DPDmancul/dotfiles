@@ -249,3 +249,13 @@ vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
 }
 ```
 
+## Image support
+
+```nix "modules/home/nvim/ui-plugins" +=
+{
+  plugin = image-nvim;
+  type = "lua";
+  config = ''require"image".setup{}'';
+}
+```
+

@@ -159,6 +159,11 @@
         type = "lua";
         config = ''require"neoscroll".setup{}'';
       }
+      {
+        plugin = image-nvim;
+        type = "lua";
+        config = ''require"image".setup{}'';
+      }
     ];
   };
 
