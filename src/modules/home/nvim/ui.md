@@ -255,7 +255,19 @@ vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
 {
   plugin = image-nvim;
   type = "lua";
-  config = ''require"image".setup{}'';
+  config = ''
+    require"image".setup{
+      integrations = {
+        markdown = {
+          filetypes = { "markdown", "vimwiki", "quarto" },
+        },
+        html = {
+          enabled = true,
+          filetypes = { "html", "xhtml", "htm", "markdown" },
+        },
+      },
+    }
+  '';
 }
 ```
 
