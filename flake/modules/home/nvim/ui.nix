@@ -170,7 +170,8 @@
               },
               html = {
                 enabled = true,
-                filetypes = { "html", "xhtml", "htm", "markdown" },
+                -- temporary disable markdown since it slows down writing
+                filetypes = { "html", "xhtml", "htm" --[[, "markdown"]] },
               },
             },
           }

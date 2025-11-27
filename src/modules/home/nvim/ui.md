@@ -263,7 +263,9 @@ vim.api.nvim_set_keymap('c', 'bd', 'Bdelete', {noremap = true})
         },
         html = {
           enabled = true,
-          filetypes = { "html", "xhtml", "htm", "markdown" },
+          -- temporary disable markdown since it slows down writing
+          -- https://github.com/3rd/image.nvim/issues/234#issuecomment-2466705353
+          filetypes = { "html", "xhtml", "htm" --[[, "markdown"]] },
         },
       },
     }
