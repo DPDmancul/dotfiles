@@ -25,17 +25,15 @@
 user = {
   name = "DPDmancul";
   email = "davide.peressoni@tuta.io";
+  signingkey = "694FC712B317CF9004114DC4EC1145E786990CED";
 };
-signing = {
-  key = "694FC712B317CF9004114DC4EC1145E786990CED";
-  signByDefault = true;
-};
+tag.gpgSign = true;
 ```
 
 ## Aliases
 
 ```nix "modules/home/git-settings" +=
-aliases = {
+alias = {
   co = "checkout";
   cb = "checkout -b";
   br = "branch";
@@ -174,7 +172,9 @@ programs.lazygit = {
       };
       showIcons = true;
     };
-    git.paging.pager = "delta --paging=never";
+    git.pagers = [
+      { pager = "delta --paging=never"; }
+    ];
   };
 };
 ```
