@@ -56,7 +56,7 @@ simple-scan
 ```nix "PereBook/home/packages-packages" +=
 audacity
 ardour
-musescore-appimage
+musescore
 ```
 ### Video editing and conversion
 
