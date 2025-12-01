@@ -6,7 +6,7 @@
     desktopManager.xterm.enable = false;
 
     displayManager.lightdm = {
-      enable = !config.services.xserver.displayManager.gdm.enable;
+      enable = !config.services.displayManager.gdm.enable;
     };
   };
 }

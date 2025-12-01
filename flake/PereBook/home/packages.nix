@@ -41,7 +41,7 @@
     tdesktop # Telegram
     ipscan
     libfaketime
-    previous.perl540Packages.AppMusicChordPro
+    "24.11".perl540Packages.AppMusicChordPro
   ];
 
   appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";

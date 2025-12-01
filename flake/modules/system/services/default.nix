@@ -11,7 +11,7 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
   services.openssh.enable = true;
-  programs.ssh.startAgent = true;
+  programs.ssh.startAgent = !config.services.gnome.gcr-ssh-agent.enable;
   environment.etc."dual-function-keys.yaml".text = ''
     MAPPINGS:
       - KEY: KEY_CAPSLOCK

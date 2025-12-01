@@ -171,6 +171,7 @@
               html = {
                 enabled = true,
                 -- temporary disable markdown since it slows down writing
+                -- https://github.com/3rd/image.nvim/issues/234#issuecomment-2466705353
                 filetypes = { "html", "xhtml", "htm" --[[, "markdown"]] },
               },
             },

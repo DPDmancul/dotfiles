@@ -5,6 +5,9 @@
 {
   programs.git = {
     enable = true;
+    settings = {
+      <<<modules/home/git-settings>>>
+    };
     <<<modules/home/git-config>>>
   };
 
@@ -18,9 +21,11 @@
 
 ## User config
 
-```nix "modules/home/git-config" +=
-userName = "DPDmancul";
-userEmail = "davide.peressoni@tuta.io";
+```nix "modules/home/git-settings" +=
+user = {
+  name = "DPDmancul";
+  email = "davide.peressoni@tuta.io";
+};
 signing = {
   key = "694FC712B317CF9004114DC4EC1145E786990CED";
   signByDefault = true;
@@ -29,7 +34,7 @@ signing = {
 
 ## Aliases
 
-```nix "modules/home/git-config" +=
+```nix "modules/home/git-settings" +=
 aliases = {
   co = "checkout";
   cb = "checkout -b";
@@ -46,29 +51,29 @@ aliases = {
 
 Fix EOL for files written under Windows
 
-```nix "modules/home/git-config" +=
-extraConfig.core.autoclrf = "input";
+```nix "modules/home/git-settings" +=
+core.autoclrf = "input";
 ```
 
 ## Default branch
 
 When creating a new repo, set the default branch to `main`
 
-```nix "modules/home/git-config" +=
-extraConfig.init.defaultBranch = "main";
+```nix "modules/home/git-settings" +=
+init.defaultBranch = "main";
 ```
 
 ## Status
 
 Show also individual files in untracked directories
 
-```nix "modules/home/git-config" +=
-extraConfig.status.showUntrackedFiles = "all";
+```nix "modules/home/git-settings" +=
+status.showUntrackedFiles = "all";
 ```
 
 Enable submodule summary showing the summary of commits for modified submodules
 
-```nix "modules/home/git-config" +=
+```nix "modules/home/git-settings" +=
 extraConfig.status.submoduleSummary = true;
 ```
 
@@ -76,8 +81,8 @@ extraConfig.status.submoduleSummary = true;
 
 Prune the local tracking branches and tags when fetching from remote
 
-```nix "modules/home/git-config" +=
-extraConfig.fetch = {
+```nix "modules/home/git-settings" +=
+fetch = {
   prune = true;
   pruneTags = true;
 };
@@ -87,8 +92,8 @@ extraConfig.fetch = {
 
 When pulling only update the current branch by fast-forwarding
 
-```nix "modules/home/git-config" +=
-extraConfig.pull = {
+```nix "modules/home/git-settings" +=
+pull = {
   ff = "only";
 };
 ```
@@ -97,8 +102,8 @@ extraConfig.pull = {
 
 Automatic set default remote when pushing.
 
-```nix "modules/home/git-config" +=
-extraConfig.push = {
+```nix "modules/home/git-settings" +=
+push = {
   autoSetupRemote = true;
 };
 ```
@@ -107,8 +112,8 @@ extraConfig.push = {
 
 Reuse recorded conflict resolutions
 
-```nix "modules/home/git-config" +=
-extraConfig.rerere.enabled = true;
+```nix "modules/home/git-settings" +=
+rerere.enabled = true;
 ```
 
 ## Protocol
@@ -117,8 +122,8 @@ Enable git protocol version 2.
 
 Read [about it](https://about.gitlab.com/2018/12/10/git-protocol-v2-enabled-for-ssh-on-gitlab-dot-com/).
 
-```nix "modules/home/git-config" +=
-extraConfig.protocol.version = 2;
+```nix "modules/home/git-settings" +=
+protocol.version = 2;
 ```
 
 ## Credential helper
@@ -129,9 +134,10 @@ TODO
 
 Delta enhance your git diff output by adding some cool features like syntax highlighting, line numbering, and side-by-side view.
 
-```nix "modules/home/git-config" +=
-delta = {
+```nix "modules/home/git" +=
+programs.delta = {
   enable = true;
+  enableGitIntegration = true;
   options = {
     features = "interactive";
     wrap-max-lines = "unlimited";

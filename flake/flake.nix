@@ -2,15 +2,12 @@
   description = "DPD- NixOs config";
 
   inputs = {
-    stable.url = github:nixos/nixpkgs/nixos-25.05;
+    stable.url = github:nixos/nixpkgs/nixos-25.11;
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
-    master.url = github:nixos/nixpkgs/master;
-    fallback.url = github:nixos/nixpkgs/nixos-25.05-small;
-    previous.url = github:nixos/nixpkgs/nixos-24.11;
+    "24.11".url = github:nixos/nixpkgs/nixos-24.11;
     nixpkgs.follows = "stable";
-    nur.url = github:nix-community/NUR;
     home-manager = {
-      url = github:nix-community/home-manager/release-25.05;
+      url = github:nix-community/home-manager/release-25.11;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hardware.url = github:nixos/nixos-hardware;
@@ -52,12 +49,9 @@
       legacyPackages = forAllSystems (system:
         let
           overlays = config: [
-            # NUR
-            inputs.nur.overlays.default
             # unstable, master and fallaback channels
             (self: super: {
               unstable = import inputs.unstable { inherit system config; };
-              master = import inputs.master { inherit system config; };
               previous = import inputs.previous { inherit system config; };
               fallback = import inputs.fallback {
                 inherit system;
