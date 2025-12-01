@@ -45,6 +45,7 @@ Managing the config with flakes allows to pin source versions.
 ```nix "flake-inputs" +=
 stable.url = github:nixos/nixpkgs/nixos-25.11;
 unstable.url = github:nixos/nixpkgs/nixos-unstable;
+"25.05".url = github:nixos/nixpkgs/nixos-25.05;
 "24.11".url = github:nixos/nixpkgs/nixos-24.11;
 nixpkgs.follows = "stable";
 ```
@@ -78,13 +79,8 @@ legacyPackages = forAllSystems (system:
       (self: super: {
         unstable = import inputs.unstable { inherit system config; };
         previous = import inputs.previous { inherit system config; };
-        fallback = import inputs.fallback {
-          inherit system;
-          config = config // {
-            allowBroken = true;
-            allowInsecure = true;
-          };
-        };
+        "25.05" = import inputs."25.05" { inherit system config; };
+        "24.11" = import inputs."24.11" { inherit system config; };
       })
       # Custom packages
       (self: super: import ./pkgs { pkgs = self; lib = super.lib; })

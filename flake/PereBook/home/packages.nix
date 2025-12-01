@@ -25,7 +25,7 @@
     simple-scan
     audacity
     ardour
-    musescore-appimage
+    musescore
     ffmpeg
     handbrake
     mkvtoolnix
@@ -41,7 +41,7 @@
     tdesktop # Telegram
     ipscan
     libfaketime
-    "24.11".perl540Packages.AppMusicChordPro
+    pkgs."24.11".perl540Packages.AppMusicChordPro
   ];
 
   appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
