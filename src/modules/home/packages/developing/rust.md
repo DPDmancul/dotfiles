@@ -19,15 +19,13 @@
 
 ```nix "modules/home/packages/developing/rust" +=
 programs.neovim.plugins = with pkgs.vimPlugins; [
-  rust-tools-nvim
+  rustaceanvim
 ];
-nvimLSP.rust-tools = {
+nvimLSP.rustaceanvim = {
   packages = with pkgs; [
     rust-analyzer
     clippy
   ];
-  config = { settings = { rust-analyzer =
-    { checkOnSave = { command = "clippy"; }; }; }; };
 };
 ```
 

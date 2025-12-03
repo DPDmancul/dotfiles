@@ -31,7 +31,7 @@ diffpdf
 # pdfmixtool
 xournalpp # TODO rnote?
 ocrmypdf tesseract
-poppler_utils
+poppler-utils
 texlivePackages.pdfbook2
 qpdf
 ```
@@ -72,14 +72,14 @@ obs-studio
 ## Internet
 
 ```nix "PereBook/home/packages-packages" +=
-tor-browser-bundle-bin
+tor-browser
 wgnord
 ```
 
 ### Downloads
 
 ```nix "PereBook/home/packages-packages" +=
-clipgrab
+# clipgrab
 qbittorrent
 ```
 
@@ -88,7 +88,7 @@ qbittorrent
 ```nix "PereBook/home/packages-packages" +=
 sqlite
 sqlitebrowser
-tdesktop # Telegram
+telegram-desktop
 ipscan
 libfaketime
 pkgs."24.11".perl540Packages.AppMusicChordPro

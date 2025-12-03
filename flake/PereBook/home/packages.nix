@@ -17,7 +17,7 @@
     # pdfmixtool
     xournalpp # TODO rnote?
     ocrmypdf tesseract
-    poppler_utils
+    poppler-utils
     texlivePackages.pdfbook2
     qpdf
     calibre
@@ -32,13 +32,13 @@
     kdePackages.kdenlive frei0r
     losslesscut-bin
     obs-studio
-    tor-browser-bundle-bin
+    tor-browser
     wgnord
-    clipgrab
+    # clipgrab
     qbittorrent
     sqlite
     sqlitebrowser
-    tdesktop # Telegram
+    telegram-desktop
     ipscan
     libfaketime
     pkgs."24.11".perl540Packages.AppMusicChordPro
