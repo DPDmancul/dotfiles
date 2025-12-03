@@ -39,7 +39,7 @@
     sqlite
     sqlitebrowser
     telegram-desktop
-    ipscan
+    # ipscan
     libfaketime
     pkgs."24.11".perl540Packages.AppMusicChordPro
   ];
