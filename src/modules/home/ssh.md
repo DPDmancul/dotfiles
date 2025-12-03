@@ -5,10 +5,10 @@
 {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false; # to be ready for 26.05
     matchBlocks = {
       <<<modules/home/ssh-hosts>>>
     };
-    <<<modules/home/ssh-config>>>
   };
   # <<<modules/home/ssh>>>
 }
@@ -18,9 +18,12 @@
 
 Reuse TCP connections to avoid re-authenticating (e.g. for `scp` when already logged in `ssh`)
 
-```nix "modules/home/ssh-config" +=
-controlMaster = "auto";
-controlPersist = "10m";
+```nix "modules/home/ssh-hosts" +=
+"*" = {
+  controlPath = "~/.ssh/master-%r@%n:%p";
+  controlMaster = "auto";
+  controlPersist = "10m";
+};
 ```
 
 ## Hosts

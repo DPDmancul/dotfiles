@@ -50,7 +50,7 @@ Enable OpenSSH daemon
 
 ```nix "modules/system/services" +=
 services.openssh.enable = true;
-programs.ssh.startAgent = true;
+programs.ssh.startAgent = !config.services.gnome.gcr-ssh-agent.enable;
 ```
 
 ## Keyboard mappings

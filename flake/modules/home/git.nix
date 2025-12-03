@@ -2,46 +2,40 @@
 {
   programs.git = {
     enable = true;
-    userName = "DPDmancul";
-    userEmail = "davide.peressoni@tuta.io";
-    signing = {
-      key = "694FC712B317CF9004114DC4EC1145E786990CED";
-      signByDefault = true;
-    };
-    aliases = {
-      co = "checkout";
-      cb = "checkout -b";
-      br = "branch";
-      ci = "commit";
-      st = "status";
-      sw = "switch";
-      sc = "switch -c";
-      rb = "rebase";
-    };
-    extraConfig.core.autoclrf = "input";
-    extraConfig.init.defaultBranch = "main";
-    extraConfig.status.showUntrackedFiles = "all";
-    extraConfig.status.submoduleSummary = true;
-    extraConfig.fetch = {
-      prune = true;
-      pruneTags = true;
-    };
-    extraConfig.pull = {
-      ff = "only";
-    };
-    extraConfig.push = {
-      autoSetupRemote = true;
-    };
-    extraConfig.rerere.enabled = true;
-    extraConfig.protocol.version = 2;
-    delta = {
-      enable = true;
-      options = {
-        features = "interactive";
-        wrap-max-lines = "unlimited";
-        max-line-length = 2048;
-        syntax-theme = "gruvbox-light";
+    settings = {
+      user = {
+        name = "DPDmancul";
+        email = "davide.peressoni@tuta.io";
+        signingkey = "694FC712B317CF9004114DC4EC1145E786990CED";
       };
+      commit.gpgsign = true;
+      tag.gpgSign = true;
+      alias = {
+        co = "checkout";
+        cb = "checkout -b";
+        br = "branch";
+        ci = "commit";
+        st = "status";
+        sw = "switch";
+        sc = "switch -c";
+        rb = "rebase";
+      };
+      core.autoclrf = "input";
+      init.defaultBranch = "main";
+      status.showUntrackedFiles = "all";
+      extraConfig.status.submoduleSummary = true;
+      fetch = {
+        prune = true;
+        pruneTags = true;
+      };
+      pull = {
+        ff = "only";
+      };
+      push = {
+        autoSetupRemote = true;
+      };
+      rerere.enabled = true;
+      protocol.version = 2;
     };
     lfs.enable = true;
     ignores = [
@@ -94,6 +88,16 @@
     git-filter-repo
   ];
 
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      features = "interactive";
+      wrap-max-lines = "unlimited";
+      max-line-length = 2048;
+      syntax-theme = "gruvbox-light";
+    };
+  };
   programs.lazygit = {
     enable = true;
     settings = {
@@ -104,7 +108,9 @@
         };
         showIcons = true;
       };
-      git.paging.pager = "delta --paging=never";
+      git.pagers = [
+        { pager = "delta --paging=never"; }
+      ];
     };
   };
 }

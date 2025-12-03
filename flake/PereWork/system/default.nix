@@ -25,7 +25,7 @@
   };
   virtualisation = {
     libvirtd.enable = true;
-    virtualbox.host.enable = true;
+    # virtualbox.host.enable = true;
   };
   fileSystems."/".options = [ "compress=zstd" ];
   services.xserver.videoDrivers = [ "nvidia" ];

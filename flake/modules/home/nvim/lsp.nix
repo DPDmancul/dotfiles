@@ -44,7 +44,6 @@ with inputs.nix2lua.lib;
               value.config) config.nvimLSP);
           in
           ''
-            local nvim_lsp = require "lspconfig"
             local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
             local on_attach = function (client, bufnr)
               local wk = require "which-key"
@@ -81,12 +80,13 @@ with inputs.nix2lua.lib;
             local servers = ${lspConfig}
 
             for lsp,cfg in pairs(servers) do
+              vim.lsp.enable(lsp)
               cfg.on_attach = on_attach
               cfg.capabilities = capabilities
               if lsp == "rust-tools" then
                 require"rust-tools".setup { server = cfg }
               else
-                nvim_lsp[lsp].setup(cfg)
+                vim.lsp.config(lsp, cfg)
               end
             end
           '';

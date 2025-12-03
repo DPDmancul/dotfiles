@@ -55,7 +55,7 @@ Enable virtualisation
 ```nix "PereWork/system" +=
 virtualisation = {
   libvirtd.enable = true;
-  virtualbox.host.enable = true;
+  # virtualbox.host.enable = true;
 };
 ```
 

@@ -17,7 +17,7 @@
     # pdfmixtool
     xournalpp # TODO rnote?
     ocrmypdf tesseract
-    poppler_utils
+    poppler-utils
     texlivePackages.pdfbook2
     qpdf
     calibre
@@ -25,23 +25,23 @@
     simple-scan
     audacity
     ardour
-    musescore-appimage
+    musescore
     ffmpeg
     handbrake
     mkvtoolnix
     kdePackages.kdenlive frei0r
     losslesscut-bin
     obs-studio
-    tor-browser-bundle-bin
+    tor-browser
     wgnord
-    clipgrab
+    # clipgrab
     qbittorrent
     sqlite
     sqlitebrowser
-    tdesktop # Telegram
-    ipscan
+    telegram-desktop
+    # ipscan
     libfaketime
-    previous.perl540Packages.AppMusicChordPro
+    pkgs."24.11".perl540Packages.AppMusicChordPro
   ];
 
   appDefaultForMimes."telegramdesktop.desktop" = "x-scheme-handler/tg";
