@@ -37,9 +37,6 @@ services.avahi = {
 
 ### Brother DCP 1612W network printer
 
-`brlaser` has troubles with large files, so I will use it from
-master branch where the issue is solved.
-
 ```nix modules/system/services/print_scan/brotherDCP1612W.nix
 { config, pkgs, lib, ... }:
 let
@@ -52,7 +49,7 @@ in
   ];
   config = {
     services.printing.drivers = with pkgs; [
-      brlaser-master
+      brlaser
     ];
     hardware.printers = {
       ensureDefaultPrinter = "Brother";
