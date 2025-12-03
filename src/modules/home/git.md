@@ -27,6 +27,7 @@ user = {
   email = "davide.peressoni@tuta.io";
   signingkey = "694FC712B317CF9004114DC4EC1145E786990CED";
 };
+commit.gpgsign = true;
 tag.gpgSign = true;
 ```
 
