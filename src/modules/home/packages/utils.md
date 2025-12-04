@@ -106,7 +106,7 @@ localsend
 
 open ports for localsend (TODO move to this module)
 
-```nix modules/system +=
+```nix "modules/system" +=
 networking.firewall = {
   allowedUDPPorts = [ 53317 ];
   allowedTCPPorts = [ 53317 ];
