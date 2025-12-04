@@ -91,7 +91,7 @@ sqlitebrowser
 telegram-desktop
 # ipscan
 libfaketime
-pkgs."24.11".perl540Packages.AppMusicChordPro
+perl540Packages.AppMusicChordPro
 ```
 
 ```nix "PereBook/home/packages" +=
