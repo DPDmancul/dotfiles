@@ -109,6 +109,7 @@ nvimLSP = with pkgs; {
     package = nodePackages.vscode-langservers-extracted;
     config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
   };
+  lemminx = lemminx; # xml
   efm = {
     package = efm-langserver;
     config =  let
