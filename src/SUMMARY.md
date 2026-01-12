@@ -64,6 +64,8 @@
         - [Haskell](./modules/home/packages/developing/haskell.md)
         - [Java](./modules/home/packages/developing/java.md)
         - [Node.js](./modules/home/packages/developing/node.md)
+        - [PHP](./modules/home/packages/developing/php.md)
+          - [PhpStorm](./modules/home/packages/developing/phpstorm.md)
         - [Python3](./modules/home/packages/developing/python3.md)
         - [Rust](./modules/home/packages/developing/rust.md)
         - [Web](./modules/home/packages/developing/web.md)

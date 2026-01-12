@@ -9,6 +9,7 @@
     /${modules}/home/packages/developing/python3.nix
     /${modules}/home/packages/developing/dotnet.nix
     /${modules}/home/packages/developing/node.nix
+    /${modules}/home/packages/developing/php.nix
     /${modules}/home/packages/developing/web.nix
   ];
 
