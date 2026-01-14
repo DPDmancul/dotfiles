@@ -225,8 +225,8 @@ set nofoldenable       " Start with folds opened
 Press `Alt+d` to insert current date
 
 ```vim "modules/home/nvim/editing-config" +=
-inoremap <A-d> <c-r>=strftime('+%Y-%m-%d')<cr>
-nnoremap <A-d> "=strftime('+%Y-%m-%d')<cr>p
+inoremap <A-d> <c-r>=strftime('%Y-%m-%d')<cr>
+nnoremap <A-d> "=strftime('%Y-%m-%d')<cr>p
 ```
 
 ## Generate uuids
