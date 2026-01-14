@@ -14,6 +14,8 @@
       set formatlistpat=^\\s*\\w\\+[.\)]\\s\\+\\\\|^\\s*[\\-\\+\\*]\\+\\s\\+
       set foldmethod=indent  " Set 'indent' folding method
       set nofoldenable       " Start with folds opened
+      inoremap <A-d> <c-r>=strftime('+%Y-%m-%d')<cr>
+      nnoremap <A-d> "=strftime('+%Y-%m-%d')<cr>p
       inoremap <A-u> <c-r>=trim(system('uuidgen'))<cr>
       nnoremap <A-u> "=trim(system('uuidgen'))<cr>p
     '';

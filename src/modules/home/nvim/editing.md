@@ -220,6 +220,15 @@ set foldmethod=indent  " Set 'indent' folding method
 set nofoldenable       " Start with folds opened
 ```
 
+## Insert date
+
+Press `Alt+d` to insert current date
+
+```vim "modules/home/nvim/editing-config" +=
+inoremap <A-d> <c-r>=strftime('+%Y-%m-%d')<cr>
+nnoremap <A-d> "=strftime('+%Y-%m-%d')<cr>p
+```
+
 ## Generate uuids
 
 Press `Alt+u` to insert a new uuid
