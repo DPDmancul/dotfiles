@@ -10,3 +10,13 @@
 }
 ```
 
+## X debug
+
+Open X debug port
+
+```nix "PereWork/system/net" +=
+networking.firewall = {
+  allowedTCPPorts = [ 43768 ];
+};
+```
+

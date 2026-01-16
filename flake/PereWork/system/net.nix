@@ -15,4 +15,7 @@
       autoStart = false;
     };
   };
+  networking.firewall = {
+    allowedTCPPorts = [ 43768 ];
+  };
 }
