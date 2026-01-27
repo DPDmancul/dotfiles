@@ -28,6 +28,7 @@
     unfree.drawio
     unfree.postman
     wireshark
+    unfree.claude-code
   ];
 
   #<<<PereWork/home/packages>>>
