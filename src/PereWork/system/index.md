@@ -6,7 +6,9 @@
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
-    lenovo-thinkpad-p50
+    # lenovo-thinkpad-p16s-intel-gen3:
+    common-cpu-intel#-arrow-lake
+    common-gpu-intel#-arrow-lake
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
