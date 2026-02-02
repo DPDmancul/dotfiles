@@ -41,6 +41,7 @@
     ignores = [
       ".ccls-cache/"
       ".directory"
+      "**/.claude/settings.local.json"
       "__pycache__"
       ".pytest_cache"
       ".owncloudsync.log"

@@ -202,6 +202,12 @@ For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 ".directory"
 ```
 
+## LLM settings
+
+```nix "modules/home/git-ignore" +=
+"**/.claude/settings.local.json"
+```
+
 ## Python cache
 
 ```nix "modules/home/git-ignore" +=

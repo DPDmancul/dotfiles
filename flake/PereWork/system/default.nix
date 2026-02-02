@@ -35,7 +35,7 @@
     "192.168.69.2" = [ "k8sd-topbest-imel.i4paintshop.com" "argocd-topbest-imel.i4paintshop.com" "pgad-topbest-imel.i4paintshop.com" ];
     "192.168.3.245" = [ "sg.inplant.live" "sg.inplant.io" ];
   };
-  services.teamviewer.enable = true;
+  # services.teamviewer.enable = true;
   sops.secrets."ca/PereWork.pem" = {};
   # security.pki.certificateFiles = [ config.sops.secrets."ca/PereWork.pem".path ];
 }
