@@ -222,12 +222,12 @@ in
 
  # Temporary fix: restart polybar
  xsession.windowManager.i3.config.startup = [
-   { command = "systemctl --user restart polybar"; always = true; notification = false; }
+   { command = "systemctl --user restart polybar --no-block"; always = true; notification = false; }
  ];
  programs.autorandr = {
    enable = true;
    hooks.postswitch = {
-     "reload-polybar" = "systemctl --user restart polybar";
+     "reload-polybar" = "systemctl --user restart polybar --no-block";
    };
  };
 }

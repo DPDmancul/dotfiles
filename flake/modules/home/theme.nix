@@ -52,7 +52,7 @@
   programs.autorandr = {
     enable = true;
     hooks.postswitch = {
-      "reload-background" = "systemctl --user start feh-random-background";
+      "reload-background" = "systemctl --user start feh-random-background --no-block";
     };
   };
 }

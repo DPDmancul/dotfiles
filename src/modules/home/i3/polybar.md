@@ -342,7 +342,7 @@ Wait i3 before starting polybar (otherwise workspaces and window title are not s
 
 # Temporary fix: restart polybar
 xsession.windowManager.i3.config.startup = [
-  { command = "systemctl --user restart polybar"; always = true; notification = false; }
+  { command = "systemctl --user restart polybar --no-block"; always = true; notification = false; }
 ];
 ```
 
@@ -352,7 +352,7 @@ Then enable autorandr hook after switch
 programs.autorandr = {
   enable = true;
   hooks.postswitch = {
-    "reload-polybar" = "systemctl --user restart polybar";
+    "reload-polybar" = "systemctl --user restart polybar --no-block";
   };
 };
 ```
