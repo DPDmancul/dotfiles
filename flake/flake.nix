@@ -79,8 +79,6 @@
               "xow_dongle-firmware"
               "facetimehd-firmware"
               "facetimehd-calibration"
-              "nvidia-x11"
-              "nvidia-settings"
               "teamviewer"
               "brscan4"
               "brscan4-etc-files"

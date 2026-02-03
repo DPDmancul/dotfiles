@@ -45,13 +45,6 @@ hardware = {
 "facetimehd-calibration"
 ```
 
-Enable unfree video drivers.
-
-```nix "unfree-extra" +=
-"nvidia-x11"
-"nvidia-settings"
-```
-
 Enable virtualisation
 
 ```nix "PereWork/system" +=
@@ -67,15 +60,6 @@ Enable BTRFS compression
 
 ```nix "PereWork/system" +=
 fileSystems."/".options = [ "compress=zstd" ];
-```
-
-### nvidia
-
-Disable offload mode, otherwise X won't start
-
-```nix "PereWork/system" +=
-services.xserver.videoDrivers = [ "nvidia" ];
-hardware.nvidia.prime.offload.enable = false;
 ```
 
 ## Hosts
