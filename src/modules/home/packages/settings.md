@@ -9,7 +9,8 @@ GUI for easily manage settings.
     pavucontrol # audio
     pamixer
     arandr      # screen
-    libsecret # secret-tool
+    libsecret   # secret-tool
+    glib        # gsettings
   ];
 }
 ```

@@ -26,7 +26,7 @@
     ];
   };
   virtualisation = {
-    libvirtd.enable = true;
+    # libvirtd.enable = true;
     # virtualbox.host.enable = true;
   };
   fileSystems."/".options = [ "compress=zstd" ];
