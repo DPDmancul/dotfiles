@@ -32,7 +32,7 @@
         config = {
           DP-3-1-8 = external-base-config // { position = "0x0"; };
           DP-3-8 = external-base-config // { position = "2560x0"; primary = true; };
-          eDP-1 = laptop-base-config // { position = "5120x360"; };
+          eDP-1 = laptop-base-config // { position = "5120x240"; };
         };
       };
     };
