@@ -147,7 +147,6 @@ Default workspace
 defaultWorkspace = "workspace number 1";
 ```
 
-
 ## Shortcuts
 
 ```nix "modules/home/i3/keybinds" +=

@@ -52,6 +52,7 @@ in
     };
   };
 
+  xsession.numlock.enable = true;
   programs.rofi = {
     enable = true;
     terminal = config.xsession.windowManager.i3.config.terminal;

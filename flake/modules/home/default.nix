@@ -7,6 +7,7 @@
     ./zoxide.nix
     ./nvim
     ./i3
+    ./niri
     ./theme.nix
     ./firefox.nix
     ./xdg.nix
@@ -18,7 +19,6 @@
 
   home.username = user;
   home.homeDirectory = "/home/${config.home.username}";
-  xsession.numlock.enable = true;
   home.packages = [
     (pkgs.writeShellScriptBin "dots" ''
       cd "${dotfiles}"

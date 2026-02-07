@@ -11,6 +11,7 @@
     ./services/docker.nix
     ./lightdm.nix
     ./i3.nix
+    ./niri.nix
     ./keyring.nix
     ./packages.nix
   ];

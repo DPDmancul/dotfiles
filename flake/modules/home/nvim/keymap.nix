@@ -8,6 +8,7 @@
         config = ''
           local wk = require "which-key"
           wk.add {
+            { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
             { "<leader>f", group = "Find"},
             { "<leader>fr", "<cmd>Telescope resume<cr>", desc = "Resume saerch" },
             { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Files" },
@@ -36,7 +37,6 @@
             { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
             { "gb", "<cmd>BufferLinePick<cr>", desc = "Go to buffer" },
             { "gB", "<cmd>BufferLinePickClose<cr>", desc = "Close picked buffer" },
-            { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
           }
         '';
       }

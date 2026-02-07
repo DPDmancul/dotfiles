@@ -14,6 +14,7 @@ In this folder there are also some useful modules used only by some user configs
     ./zoxide.nix
     ./nvim
     ./i3
+    ./niri
     ./theme.nix
     ./firefox.nix
     ./xdg.nix
@@ -32,14 +33,6 @@ In this folder there are also some useful modules used only by some user configs
 ```nix "modules/home" +=
 home.username = user;
 home.homeDirectory = "/home/${config.home.username}";
-```
-
-## Keyboard
-
-Enable Num Lock at startup
-
-```nix "modules/home" +=
-xsession.numlock.enable = true;
 ```
 
 ## Dots utility

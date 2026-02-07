@@ -34,6 +34,14 @@ in
 }
 ```
 
+## Keyboard
+
+Enable Num Lock at startup
+
+```nix "modules/home/i3" +=
+xsession.numlock.enable = true;
+```
+
 ## Modifier key
 
 Use super as mod key
