@@ -6,6 +6,7 @@
       name = "jetbrainsmono nerd font";
       size = 10;
     };
+    settings.text_composition_strategy = "legacy"; # useful for light themes
     settings.url_style = "single";
     settings = {
       cursor                  = "#928374";

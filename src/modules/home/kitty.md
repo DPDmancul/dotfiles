@@ -20,6 +20,7 @@ font = {
   name = "jetbrainsmono nerd font";
   size = 10;
 };
+settings.text_composition_strategy = "legacy"; # useful for light themes
 ```
 
 Do not use curly style for urls
