@@ -80,16 +80,6 @@ Use `f` and `t` across lines
 })
 ```
 
-## Comments
-
-```nix "modules/home/nvim/editing-plugins" +=
-{
-  plugin = comment-nvim;
-  type = "lua";
-  config = ''require"Comment".setup()'';
-}
-```
-
 ## Edit with sudo
 
 ```nix "modules/home/nvim/editing-plugins" +=
