@@ -3,10 +3,6 @@
   environment.systemPackages = with pkgs; [
     neovim
     bottom
-    bat      # cat with syntax highlighting
-    lsd      # ls with colors and icons (TODO config)
-    fd       # faster find
-    ripgrep  # alternative grep
     usbutils
     pciutils
     file
@@ -26,4 +22,8 @@
   };
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
+  programs.bat.enable = true;      # cat with syntax highlighting
+  programs.lsd.enable = true;      # ls with colors and icons (TODO config)
+  programs.fd.enable = true;       # faster find
+  programs.ripgrep.enable = true;  # alternative grep
 }

@@ -5,7 +5,6 @@
 {
   imports = [
     ./starship.nix
-    ./zoxide.nix
   ];
 
   programs.fish = {
@@ -96,7 +95,6 @@ shellAliases = {
   nix-fish = "nix-shell --run fish";
   mkcd = ''mkdir -p "$argv"; and cd'';
   # cat = "bat";
-  ll = "lsd -l";
   dc = "docker-compose";
 };
 ```

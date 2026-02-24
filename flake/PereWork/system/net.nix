@@ -1,8 +1,5 @@
 { config, pkgs, assets, lib, ... }:
 {
-  networking.firewall = {
-    allowedTCPPorts = [ 43768 ];
-  };
   sops.secrets = {
     "vpn/openvpn-config-office" = {};
     "vpn/openvpn-credentials-office" = {};
@@ -17,5 +14,8 @@
       updateResolvConf = true;
       autoStart = false;
     };
+  };
+  networking.firewall = {
+    allowedTCPPorts = [ 43768 ];
   };
 }

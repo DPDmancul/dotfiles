@@ -1,4 +1,4 @@
-# Zoxide and fzf
+# Zoxide
 
 Use zoxide and fzf for fuzzy cd
 

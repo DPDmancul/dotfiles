@@ -3,6 +3,8 @@
   imports = [
     ./kitty.nix
     ./fish.nix
+    ./fzf.nix
+    ./zoxide.nix
     ./nvim
     ./i3
     ./theme.nix
