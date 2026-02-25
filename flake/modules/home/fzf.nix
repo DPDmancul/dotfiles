@@ -11,7 +11,7 @@
       # CTRL-T
       fileWidgetCommand = "fd --type f";
       fileWidgetOptions = [
-        "--preview '${pkgs.fzf-preview}/bin/fzf-preview {}'"
+        "--preview '${pkgs.fzf-preview}/bin/fzf-preview {}'" # TODO images
       ];
 
       # ALT-C

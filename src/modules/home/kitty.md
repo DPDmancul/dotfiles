@@ -67,6 +67,38 @@ settings = {
 };
 ```
 
+Light theme for newt tuis (e.g. nmtui).  
+Remember white is foreground and black background color.
+
+```nix "modules/home/kitty" +=
+home.sessionVariables.NEWT_COLORS_FILE = pkgs.writeText "newt_colors"
+  ''
+  root=white,black
+  border=blue,black
+  window=white,black
+  shadow=white,black
+  title=white,black
+  button=black,blue
+  actbutton=black,green
+  checkbox=white,black
+  actcheckbox=black,blue
+  entry=white,black
+  label=white,black
+  listbox=white,black
+  actlistbox=black,blue
+  textbox=white,black
+  acttextbox=black,blue
+  helpline=white,black
+  roottext=white,black
+  emptyscale=black
+  fullscale=blue
+  disentry=gray,black
+  compactbutton=white,black
+  actsellistbox=black,blue
+  sellistbox=white,black
+  '';
+```
+
 #### Tabs
 
 ```nix "modules/home/kitty-config" +=
