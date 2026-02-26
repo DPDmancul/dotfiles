@@ -4,12 +4,7 @@
     plugins = [
       {
         name = "tide";
-        src = pkgs.fetchFromGitHub {
-          owner = "IlanCosman";
-          repo = "tide";
-          rev = "v6.2.0";
-          hash = "sha256-1ApDjBUZ1o5UyfQijv9a3uQJ/ZuQFfpNmHiDWzoHyuw=";
-        };
+        src = pkgs.fishPlugins.tide.src;
       }
     ];
     interactiveShellInit = lib.concatLines (
