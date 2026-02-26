@@ -30,7 +30,7 @@
     - [Terminal and shell]()
       - [Kitty (terminal emulator)](./modules/home/kitty.md)
       - [Fish (shell)](./modules/home/fish.md)
-      - [Starship](./modules/home/starship.md)
+      - [Tide](./modules/home/tide.md)
       - [fzf](./modules/home/fzf.md)
       - [Zoxide](./modules/home/zoxide.md)
     - [Neovim](./modules/home/nvim/index.md)
