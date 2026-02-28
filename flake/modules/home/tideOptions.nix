@@ -1,27 +1,3 @@
-# Tide
-
-Use tide to manage the prompt
-
-```nix modules/home/tide.nix
-{ config, pkgs, lib, ... }:
-{
-  imports = [
-    ./tideOptions.nix
-  ];
-
-  programs.fish.tide = {
-    enable = true;
-    style = "lean";
-    config = {
-      left_prompt.frame_enabled = "true";
-    };
-  };
-}
-```
-
-## Options
-
-```nix modules/home/tideOptions.nix
 { config, pkgs, lib, ... }:
 let
   inherit (lib)
@@ -113,4 +89,3 @@ in
     };
   };
 }
-```
