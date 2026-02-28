@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 {
   imports = [
-    ./tide.nix
+    ./starship.nix
   ];
 
   programs.fish = {
