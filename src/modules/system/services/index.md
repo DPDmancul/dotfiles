@@ -17,11 +17,22 @@ services.dbus.enable = true;
 
 ## Xdg desktop portal
 
+The gnome portal is required for screen cast, but it would require nautilus for file chooser.
+
 ```nix "modules/system/services" +=
 xdg.portal = {
   enable = true;
-  extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-  configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
+  extraPortals = [ 
+    pkgs.xdg-desktop-portal-gnome 
+    pkgs.xdg-desktop-portal-gtk
+  ];
+
+  config = {
+    common = {
+      default = [ "gnome" "gtk" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+    };
+  };
 };
 ```
 

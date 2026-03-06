@@ -3,8 +3,17 @@
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-    configPackages = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = [ 
+      pkgs.xdg-desktop-portal-gnome 
+      pkgs.xdg-desktop-portal-gtk
+    ];
+
+    config = {
+      common = {
+        default = [ "gnome" "gtk" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      };
+    };
   };
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
