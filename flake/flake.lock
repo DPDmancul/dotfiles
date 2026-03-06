@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "24.11": {
-      "locked": {
-        "lastModified": 1751274312,
-        "narHash": "sha256-/bVBlRpECLVzjV19t5KMdMFWSwKLtb5RyXdjz3LJT+g=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "50ab793786d9de88ee30ec4e4c24fb4236fc2674",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-24.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "25.05": {
       "locked": {
         "lastModified": 1767313136,
@@ -134,7 +118,6 @@
     },
     "root": {
       "inputs": {
-        "24.11": "24.11",
         "25.05": "25.05",
         "feh-random-background": "feh-random-background",
         "flake-utils": "flake-utils",

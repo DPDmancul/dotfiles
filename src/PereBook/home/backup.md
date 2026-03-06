@@ -41,11 +41,10 @@ in
       ];
     };
   };
-  # TODO wait home-manager update
-  # hooks.extraConfig = {
-  #   # do not execute if destination is unmounted
-  #   before_backup = "findmnt ${mntPoint} > /dev/null || exit 75";
-  # };
+  hooks.extraConfig = {
+    # do not execute if destination is unmounted
+    before_backup = "findmnt ${mntPoint} > /dev/null || exit 75";
+  };
   retention = {
     keepDaily = 7;
     keepWeekly = 4;

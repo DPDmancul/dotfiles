@@ -49,21 +49,6 @@
           config.appDefaultForMimes);
       };
     };
-    systemd.user.services.polkit-agent = {
-      Unit = {
-        Description = "Runs polkit authentication agent";
-        PartOf = "graphical-session.target";
-      };
-
-      Install = {
-        WantedBy = ["graphical-session.target"];
-      };
-
-      Service = {
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        RestartSec = 5;
-        Restart = "always";
-      };
-    };
+    services.polkit-gnome.enable = true;
   };
 }

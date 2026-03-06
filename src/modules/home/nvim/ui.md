@@ -56,7 +56,7 @@ require"mini.indentscope".setup()
 Use conceal to show pretty symbols 
 
 ```vim "modules/home/nvim/ui-config" +=
-set conceallevel=2
+set conceallevel=0 "2
 ```
 
 ## Theme

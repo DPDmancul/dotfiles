@@ -15,7 +15,7 @@
       set number          " Show line numbers
       set relativenumber  " Show relative line numbers
       set numberwidth=1   " Minimum number width
-      set conceallevel=2
+      set conceallevel=0 "2
       set noshowmode
     '';
     plugins = with pkgs; with vimPlugins; [
