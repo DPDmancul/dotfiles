@@ -16,7 +16,7 @@
     })
     kdePackages.okular
     unfree.masterpdfeditor4
-
+    pdf4qt
     kdePackages.kolourpaint
     gimp3
     inkscape
