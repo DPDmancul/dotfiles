@@ -19,11 +19,11 @@
     "feh-random-background": {
       "flake": false,
       "locked": {
-        "lastModified": 1774215621,
-        "narHash": "sha256-4C5g9PXNd/x25ar+mxvX3RLFTmo7kTV3QBkiQuIguKI=",
+        "lastModified": 1729880937,
+        "narHash": "sha256-TVUFJAOoHcKWObRsL14AN2MVGJzmYX/2XErFysfY3MI=",
         "owner": "KoviRobi",
         "repo": "feh-random-background",
-        "rev": "d506a302412fc2fabb49a067d984d5612ce2d9ce",
+        "rev": "80bc3616bb8fc87225d1447431555230a4bf3b12",
         "type": "github"
       },
       "original": {
