@@ -71,15 +71,15 @@
           ];
           config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
-              "brscan4"
-              "brscan4-etc-files"
-              "brother-udev-rule-type1"
               "broadcom-bt-firmware"
               "b43-firmware"
               "xow_dongle-firmware"
               "facetimehd-firmware"
               "facetimehd-calibration"
               "teamviewer"
+              "brscan4"
+              "brscan4-etc-files"
+              "brother-udev-rule-type1"
             ];
         }
       );

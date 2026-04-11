@@ -35,11 +35,13 @@ in
       exclude_caches = true;
       exclude_patterns = [
         "/home/*/.cache"
+        "/home/*/.local/share/Trash"
         "*/.vim*.tmp"
-        ".npm"
-        "node_modules"
-        "datos/Torrents"
-        "datos/Scrivanie/Videos"
+        "*/.npm"
+        "*/node_modules"
+        "${config.home.homeDirectory}/datos/.Trash-1000"
+        "${config.home.homeDirectory}/datos/Torrents"
+        "${config.home.homeDirectory}/datos/Scrivania/Videos"
       ];
       progress = true;
       statistics = true;

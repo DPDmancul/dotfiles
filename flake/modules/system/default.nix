@@ -25,6 +25,10 @@
     ];
   });
 
+  networking.firewall = {
+    allowedUDPPorts = [ 53317 ];
+    allowedTCPPorts = [ 53317 ];
+  };
   fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
   hardware.graphics.enable = true;
@@ -47,8 +51,4 @@
   };
   nix.settings.auto-optimise-store = true;
   system.stateVersion = "21.11";
-  networking.firewall = {
-    allowedUDPPorts = [ 53317 ];
-    allowedTCPPorts = [ 53317 ];
-  };
 }
