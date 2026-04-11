@@ -17,6 +17,8 @@
           "*/.vim*.tmp"
           ".npm"
           "node_modules"
+          "datos/Torrents"
+          "datos/Scrivanie/Videos"
         ];
       };
     };
