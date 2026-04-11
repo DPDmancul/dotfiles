@@ -25,8 +25,7 @@
     hooks.extraConfig.commands = [
       # do not execute if destination is unmounted
       {
-        before = "action";
-        when =  [ "create" ];
+        before = "repository";
         run = [ "findmnt ${mntPoint} > /dev/null || exit 75" ];
       }
     ];
