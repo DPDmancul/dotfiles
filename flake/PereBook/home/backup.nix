@@ -22,6 +22,7 @@
         ];
         progress = true;
         statistics = true;
+        verbosity = 1;
       };
     };
     hooks.extraConfig.commands = [
