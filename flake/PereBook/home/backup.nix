@@ -20,6 +20,8 @@
           "datos/Torrents"
           "datos/Scrivanie/Videos"
         ];
+        progress = true;
+        statistics = true;
       };
     };
     hooks.extraConfig.commands = [
