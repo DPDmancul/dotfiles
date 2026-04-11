@@ -41,10 +41,14 @@ in
       ];
     };
   };
-  hooks.extraConfig = {
+  hooks.extraConfig.commands = [
     # do not execute if destination is unmounted
-    before_backup = "findmnt ${mntPoint} > /dev/null || exit 75";
-  };
+    {
+      before = "action";
+      when =  [ "create" ];
+      run = [ "findmnt ${mntPoint} > /dev/null || exit 75" ];
+    }
+  ];
   retention = {
     keepDaily = 7;
     keepWeekly = 4;
