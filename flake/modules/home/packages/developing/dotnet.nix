@@ -9,7 +9,7 @@ in
   home.packages = with pkgs; [
     dotnet-sdk
     nuget
-    dotnet-ef
+    unstable.dotnet-ef
   ];
 
   home.sessionVariables = {
