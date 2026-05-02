@@ -16,7 +16,7 @@ In this folder there are also some useful modules used only by some system confi
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./services/docker.nix
-    ./lightdm.nix
+    ./greetd.nix
     ./i3.nix
     ./niri.nix
     ./keyring.nix

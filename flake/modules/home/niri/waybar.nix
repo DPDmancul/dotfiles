@@ -92,7 +92,7 @@
             activated = "󰒳";
           };
         };
-        height = 16;
+        height = 20;
         spacing = 0;
       }
     ];
