@@ -20,7 +20,7 @@
     polkit_gnome
     # swaybg
     xwayland-satellite
-    # <<<modules/home/niri-packages>>>
+    <<<modules/home/niri-packages>>>
   ];
 }
 ```
@@ -30,14 +30,19 @@
 ```nix "modules/home/niri" +=
 programs.fuzzel = {
   enable = true;
-  settings.colors = {
-    background = "fbf1c7ff";
-    text = "3c3836ff";
-    match = "9d0006ff";
-    selection = "ebdbb2ff";
-    selection-text = "3c3836ff";
-    selection-match = "9d0006ff";
-    border = "af3a0300";
+  settings = {
+    main = {
+      icon-theme = config.gtk.iconTheme.name;
+    };
+    colors = {
+      background = "fbf1c7ff";
+      text = "3c3836ff";
+      match = "9d0006ff";
+      selection = "ebdbb2ff";
+      selection-text = "3c3836ff";
+      selection-match = "9d0006ff";
+      border = "af3a0300";
+    };
   };
 };
 ```
@@ -90,6 +95,10 @@ services.copyq = {
   enable = true;
   forceXWayland = false;
 };
+```
+
+```nix "modules/home/niri-packages" +=
+wl-clipboard
 ```
 
 ### Idle

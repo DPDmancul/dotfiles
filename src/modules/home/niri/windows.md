@@ -61,24 +61,24 @@ prefer-no-csd
 
 ```kdl "modules/home/niri/windows-config" +=
 window-rule {
-  match app-id=r#"firefox$"# title=r#"^Picture-in-Picture$"#
+  match app-id=r#"^firefox$"# title=r#"^Picture-in-Picture$"#
   open-floating true
   // TODO: sticky enable, border none, inhibit_idle open
 }
 
 window-rule {
-  match app-id=r#"firefox$"# title=r#"[Ss]haring (Indicator|your screen)$"#
+  match app-id=r#"^firefox$"# title=r#"[Ss]haring (Indicator|your screen)$"#
   open-floating true
   // TODO: move to scratchpad
 }
 
 window-rule {
-  match app-id=r#"firefox$"# title=r#"^Developer Tools [-—]"#
+  match app-id=r#"^firefox$"# title=r#"^Developer Tools [-—]"#
   open-floating true
 }
 
 window-rule {
-  match app-id=r#"^file-roller$"# title=r#"Extract|Compress"#
+  match app-id=r#"\.FileRoller$"# title=r#"Extract|Compress"#
   open-floating true
 }
 
@@ -93,7 +93,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id=r#"^pavucontrol$"#
+  match app-id=r#"\.pavucontrol$"#
   open-floating true
 }
 
@@ -103,7 +103,7 @@ window-rule {
 }
 
 window-rule {
-  match app-id=r#"^copyq$"#
+  match app-id=r#"\.copyq$"#
   open-floating true
 }
 
