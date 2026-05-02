@@ -5,7 +5,7 @@ let
       "Shutdown") systemctl poweroff;;
       "Suspend") systemctl suspend;;
       "Reboot") systemctl reboot;;
-      "Logout") loginctl kill-user $(whoami);;
+      "Logout") niri msg action quit --skip-confirmation;;
     esac
   '';
 in

@@ -46,7 +46,7 @@
     - [Niri](./modules/home/niri/index.md)
       - [Keybinds](./modules/home/niri/keybinds.md)
       - [Windows](./modules/home/niri/windows.md)
-      - [ashell](./modules/home/niri/ashell.md)
+      - [waybar](./modules/home/niri/waybar.md)
     - [Theme](./modules/home/theme.md)
     - [Firefox](./modules/home/firefox.md)
     - [freedesktop.org](./modules/home/xdg.md)

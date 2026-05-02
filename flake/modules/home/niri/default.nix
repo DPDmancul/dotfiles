@@ -3,7 +3,7 @@
   imports = [
     ./keybinds.nix
     ./windows.nix
-    ./ashell.nix
+    ./waybar.nix
   ];
 
   xdg.configFile."niri/config.kdl".text = ''
