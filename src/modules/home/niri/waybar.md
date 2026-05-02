@@ -144,7 +144,7 @@ idle_inhibitor = {
 ## Style
 
 ```nix "modules/home/niri/waybar-bar-settings" +=
-height = 16;
+height = 20;
 spacing = 0;
 ```
 
