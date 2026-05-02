@@ -9,7 +9,7 @@
     ./services/pipewire.nix
     ./services/print_scan.nix
     ./services/docker.nix
-    ./greetd.nix
+    ./gdm.nix
     ./i3.nix
     ./niri.nix
     ./keyring.nix

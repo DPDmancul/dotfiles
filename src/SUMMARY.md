@@ -21,7 +21,7 @@
       - [PipeWire](./modules/system/services/pipewire.md)
       - [Print and scan](./modules/system/services/print_scan.md)
       - [Docker](./modules/system/services/docker.md)
-    - [Greetd (login manager)](./modules/system/greetd.md)
+    - [GDM (display manager)](./modules/system/gdm.md)
     - [i3 (window manager)](./modules/system/i3.md)
     - [Niri (window manager)](./modules/system/niri.md)
     - [Keyring](./modules/system/keyring.md)
