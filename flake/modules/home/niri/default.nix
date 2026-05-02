@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
     ./keybinds.nix
@@ -50,6 +50,15 @@
       icon-path = "${config.gtk.iconTheme.package}/usr/share/icons/${config.gtk.iconTheme.name}";
     };
   };
+  services.wpaperd = {
+    enable = true;
+    settings = {
+      default = {
+        path = inputs.wallpapers;
+        duration = "1m";
+      };
+    };
+  };
   services.gammastep = {
     enable = true;
     latitude = 46.; # North
@@ -85,7 +94,6 @@
   home.packages = with pkgs; [
     niri
     polkit_gnome
-    # swaybg
     xwayland-satellite
     wl-clipboard
   ];

@@ -1,7 +1,7 @@
 # Niri
 
 ```nix modules/home/niri/default.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
     ./keybinds.nix
@@ -18,7 +18,6 @@
   home.packages = with pkgs; [
     niri
     polkit_gnome
-    # swaybg
     xwayland-satellite
     <<<modules/home/niri-packages>>>
   ];
@@ -60,6 +59,20 @@ services.mako = {
 ```
 
 ## Screen
+
+### Wallpaper
+
+```nix "modules/home/niri" +=
+services.wpaperd = {
+  enable = true;
+  settings = {
+    default = {
+      path = inputs.wallpapers;
+      duration = "1m";
+    };
+  };
+};
+```
 
 ### Red light
 
