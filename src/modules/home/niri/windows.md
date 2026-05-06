@@ -48,6 +48,8 @@ layout {
 window-rule {
   geometry-corner-radius 8
   clip-to-geometry true
+  // avoid opening windows full screen on first launch
+  open-maximized-to-edges false
 }
 
 hotkey-overlay {

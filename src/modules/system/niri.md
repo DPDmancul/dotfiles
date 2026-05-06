@@ -10,6 +10,11 @@ Niri is configured with home-manager but must be activated also at system level 
     useNautilus = false;
   };
 
+  xdg.portal.config.niri = {
+    default = [ "gnome" "gtk" ];
+    "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+  };
+
   <<<modules/system/niri>>>
 }
 ```

@@ -37,6 +37,7 @@
     window-rule {
       geometry-corner-radius 8
       clip-to-geometry true
+      open-maximized-to-edges false
     }
 
     hotkey-overlay {

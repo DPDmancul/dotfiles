@@ -22,8 +22,8 @@ The gnome portal is required for screen cast, but it would require nautilus for 
 ```nix "modules/system/services" +=
 xdg.portal = {
   enable = true;
-  extraPortals = [ 
-    pkgs.xdg-desktop-portal-gnome 
+  extraPortals = [
+    pkgs.xdg-desktop-portal-gnome
     pkgs.xdg-desktop-portal-gtk
   ];
 
