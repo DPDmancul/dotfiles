@@ -367,7 +367,7 @@ Transparent bar
   #main-window {
     background: #f9f9faa5 !important;
   }
-  #navigator-toolbox {
+  body, #navigator-toolbox {
     background-color: transparent !important;
   }
   .tab-background:is([selected], [multiselected]),

@@ -93,7 +93,7 @@ Use random backgrounds with feh
 
 ```nix "flake-inputs" +=
 feh-random-background = {
-  url = github:KoviRobi/feh-random-background;
+  url = github:KoviRobi/feh-random-background/80bc3616bb8fc87225d1447431555230a4bf3b12;
   flake = false;
 };
 wallpapers = {

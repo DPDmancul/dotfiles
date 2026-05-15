@@ -14,7 +14,7 @@
     sops-nix.url = github:Mic92/sops-nix;
     nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
     feh-random-background = {
-      url = github:KoviRobi/feh-random-background;
+      url = github:KoviRobi/feh-random-background/80bc3616bb8fc87225d1447431555230a4bf3b12;
       flake = false;
     };
     wallpapers = {
