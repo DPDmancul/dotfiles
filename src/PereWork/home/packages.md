@@ -27,6 +27,7 @@
     unfree.redisinsight
     unfree.drawio
     unfree.postman
+    bruno
     wireshark
     unfree.claude-code
   ];
