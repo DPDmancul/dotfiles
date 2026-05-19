@@ -62,6 +62,14 @@ Enable BTRFS compression
 fileSystems."/".options = [ "compress=zstd" ];
 ```
 
+## Power management
+
+TODO: tlp-pd
+
+```nix "PereWork/system" +=
+services.tlp.enable = true;
+```
+
 ## Hosts
 
 ```nix "PereWork/system" +=
