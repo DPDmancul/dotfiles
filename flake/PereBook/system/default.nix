@@ -20,5 +20,6 @@
     options = [ "noatime" ];
   };
   fileSystems."/".options = [ "compress=zstd" ];
+  services.btrfs.autoScrub.enable = true;
   # hardware.opentabletdriver.enable = true;
 }

@@ -62,6 +62,12 @@ Enable BTRFS compression
 fileSystems."/".options = [ "compress=zstd" ];
 ```
 
+Enable BTRFS auto scrub
+
+```nix "PereWork/system" +=
+services.btrfs.autoScrub.enable = true;
+```
+
 ## Power management
 
 TODO: tlp-pd

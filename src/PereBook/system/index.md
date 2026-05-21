@@ -39,6 +39,12 @@ Enable BTRFS compression
 fileSystems."/".options = [ "compress=zstd" ];
 ```
 
+Enable BTRFS auto scrub
+
+```nix "PereBook/system" +=
+services.btrfs.autoScrub.enable = true;
+```
+
 Enable pen tablet FOSS drivers
 
 ```nix "PereBook/system" +=

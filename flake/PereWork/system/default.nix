@@ -30,6 +30,7 @@
     # virtualbox.host.enable = true;
   };
   fileSystems."/".options = [ "compress=zstd" ];
+  services.btrfs.autoScrub.enable = true;
   services.tlp.enable = true;
   networking.hosts = {
     "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
