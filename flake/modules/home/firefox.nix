@@ -230,4 +230,5 @@
     application = map (ext: "x-extension-" + ext) [ "htm" "html" "shtml" "xhtml" "xht" ]
       ++ [ "xhtml+xml" ];
   };
+  home.sessionVariables.MOZ_USE_XINPUT2 = "1";
 }

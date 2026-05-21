@@ -48,6 +48,14 @@ appDefaultForMimes."firefox.desktop" = {
 };
 ```
 
+## Touchpad gestures
+
+Enable touchpad gestures on X11
+
+```nix "modules/home/firefox" +=
+home.sessionVariables.MOZ_USE_XINPUT2 = "1";
+```
+
 ## Settings
 
 Ask if to download (and where) or to open a file
