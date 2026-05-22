@@ -9,27 +9,16 @@
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
+    ./disko.nix
     ./net.nix
     ./users.nix
     ./autorandr.nix
   ];
 
-  hardware = {
-    enableAllFirmware = false;
-    firmware = with pkgs.unfree; [
-      broadcom-bt-firmware
-      b43Firmware_5_1_138
-      b43Firmware_6_30_163_46
-      xow_dongle-firmware
-      facetimehd-firmware
-      facetimehd-calibration
-    ];
-  };
   virtualisation = {
     # libvirtd.enable = true;
     # virtualbox.host.enable = true;
   };
-  fileSystems."/".options = [ "compress=zstd" ];
   services.btrfs.autoScrub.enable = true;
   services.tlp.enable = true;
   networking.hosts = {

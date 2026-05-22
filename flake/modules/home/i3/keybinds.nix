@@ -103,8 +103,8 @@ in
     services.playerctld.enable = true;
     programs.mpv.scripts = [ pkgs.mpvScripts.mpris ];
     i3AddKeybinds = {
-      "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
-      "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";
+      "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
+      "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set 5%+";
     };
     i3AddKeybinds."${modifier}+Shift+e" = let
       rofi-exit = pkgs.writeShellScript "rofi-exit.sh"  ''

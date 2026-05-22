@@ -50,6 +50,9 @@
     enable = true;
     defaultTarget = "horizontal";
   };
-  programs.light.enable = true;
   programs.nix-ld.enable = true;
+
+  environment.systemPackages = [
+    <<modules/system/services-packages>>
+  ];
 }
