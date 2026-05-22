@@ -61,7 +61,6 @@ disko = {
 };
 hardware.url = github:nixos/nixos-hardware;
 sops-nix.url = github:Mic92/sops-nix;
-nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
 ```
 
 ## Outputs
