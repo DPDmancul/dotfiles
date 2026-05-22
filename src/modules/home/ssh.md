@@ -5,7 +5,7 @@
 {
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false; # to be ready for 26.05
+    enableDefaultConfig = false; # to be ready for future releases of home-manager
     matchBlocks = {
       <<<modules/home/ssh-hosts>>>
     };
