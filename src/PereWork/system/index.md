@@ -12,6 +12,7 @@
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
+    ./disko.nix
     ./net.nix
     ./users.nix
     ./autorandr.nix
@@ -19,30 +20,6 @@
 
   <<<PereWork/system>>>
 }
-```
-
-Enable unfree wireless drivers. This must be done manually, since `enableAllFirmware` requires `pkgs` to directly contain unfree packages.
-
-```nix "PereWork/system" +=
-hardware = {
-  enableAllFirmware = false;
-  firmware = with pkgs.unfree; [
-    broadcom-bt-firmware
-    b43Firmware_5_1_138
-    b43Firmware_6_30_163_46
-    xow_dongle-firmware
-    facetimehd-firmware
-    facetimehd-calibration
-  ];
-};
-```
-
-```nix "unfree-extra" +=
-"broadcom-bt-firmware"
-"b43-firmware"
-"xow_dongle-firmware"
-"facetimehd-firmware"
-"facetimehd-calibration"
 ```
 
 Enable virtualisation
@@ -55,12 +32,6 @@ virtualisation = {
 ```
 
 ## Hardware
-
-Enable BTRFS compression
-
-```nix "PereWork/system" +=
-fileSystems."/".options = [ "compress=zstd" ];
-```
 
 Enable BTRFS auto scrub
 

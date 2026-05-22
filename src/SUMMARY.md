@@ -71,6 +71,7 @@
 
 - [PereBook]()
   - [System](./PereBook/system/index.md)
+    - [Disko](./PereBook/system/disko.md)
     - [Networking](./PereBook/system/net.md)
     - [Services](./PereBook/system/services.md)
     - [Users](./PereBook/system/users.md)
@@ -81,6 +82,7 @@
 
 - [PereWork]()
   - [System](./PereWork/system/index.md)
+    - [Disko](./PereWork/system/disko.md)
     - [Networking](./PereWork/system/net.md)
     - [Users](./PereWork/system/users.md)
     - [Autorandr](./PereWork/system/autorandr.md)

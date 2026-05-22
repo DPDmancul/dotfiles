@@ -6,11 +6,12 @@
   imports = with inputs.hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
-    common-pc-laptop-hdd
-    common-cpu-intel
+    # T16 and P16s gen4 with AMD are the same
+    lenovo-thinkpad-p16s-amd-gen4
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
+    ./disko.nix
     ./net.nix
     ./services.nix
     /${modules}/system/services/print_scan/brotherDCP1612W.nix
@@ -23,31 +24,9 @@
 
 ## Hardware
 
-Mount data filesystem
-
-```nix "PereBook/system" +=
-fileSystems."/home/dpd-/datos" = {
-  device = "/dev/disk/by-uuid/42681448-3710-4f0b-9778-994a23c7f17e";
-  fsType = "ext4";
-  options = [ "noatime" ];
-};
-```
-
-Enable BTRFS compression
-
-```nix "PereBook/system" +=
-fileSystems."/".options = [ "compress=zstd" ];
-```
-
 Enable BTRFS auto scrub
 
 ```nix "PereBook/system" +=
 services.btrfs.autoScrub.enable = true;
-```
-
-Enable pen tablet FOSS drivers
-
-```nix "PereBook/system" +=
-# hardware.opentabletdriver.enable = true;
 ```
 

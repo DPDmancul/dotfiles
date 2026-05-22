@@ -36,12 +36,6 @@ In this folder there are also some useful modules used only by some system confi
 }
 ```
 
-Disable storing file last access time to improve disk performances
-
-```nix "modules/system" +=
-fileSystems."/".options = [ "noatime" ];
-```
-
 Disable emergency mode to avoid get stuck if a partition fails to mount
 
 ```nix "modules/system" +=
