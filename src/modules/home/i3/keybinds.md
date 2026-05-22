@@ -193,8 +193,8 @@ Don't know why the following are triggered twice, so a step of 2 is indeed a ste
 
 ```nix "modules/home/i3/keybinds" +=
 i3AddKeybinds = {
-  "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
-  "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";
+  "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
+  "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set 5%+";
 };
 ```
 

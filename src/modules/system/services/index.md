@@ -4,6 +4,10 @@
 { config, pkgs, lib, ... }:
 {
   <<<modules/system/services>>>
+
+  environment.systemPackages = [
+    <<modules/system/services-packages>>
+  ];
 }
 ```
 
@@ -134,8 +138,8 @@ services.autorandr = {
 
 ## Backlight control
 
-```nix "modules/system/services" +=
-programs.light.enable = true;
+```nix "modules/system/services-packages" +=
+brightnessctl
 ```
 
 ## FHS support
