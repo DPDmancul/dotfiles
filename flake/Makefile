@@ -11,9 +11,7 @@ update:
 	$(NIX) flake update
 	$(MAKE)
 
-SOPS-NIX := /var/lib/sops-nix
 install-system: .git-add
-	sudo sh -c "[ -f $(SOPS-NIX)/key.txt ] || { mkdir -p $(SOPS-NIX); ln -s \"$$HOME/.config/sops/age/keys.txt\" $(SOPS-NIX)/key.txt; chmod 500 $(SOPS-NIX); }"
 	sudo nixos-rebuild switch --flake .#
 
 install-home: .git-add

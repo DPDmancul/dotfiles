@@ -1,4 +1,5 @@
-TODO: nixos-generate-config --no-filesystems
+TODO: nixos-generate-config --root /tmp/config --no-filesystems
+
 
 
 
