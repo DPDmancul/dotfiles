@@ -3,7 +3,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; # to be ready for future releases of home-manager
-    matchBlocks = {
+    settings = {
       "*" = {
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlMaster = "auto";

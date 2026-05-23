@@ -30,3 +30,12 @@ Enable BTRFS auto scrub
 services.btrfs.autoScrub.enable = true;
 ```
 
+## Power management
+
+```nix "PereBook/system" +=
+services.tlp = {
+  enable = true;
+  pd.enable = true;
+};
+```
+

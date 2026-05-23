@@ -11,6 +11,7 @@
 
   programs.firefox = {
     enable = true;
+    configPath = ".mozilla/firefox";
     policies = {
       # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let

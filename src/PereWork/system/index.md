@@ -41,10 +41,11 @@ services.btrfs.autoScrub.enable = true;
 
 ## Power management
 
-TODO: tlp-pd
-
 ```nix "PereWork/system" +=
-services.tlp.enable = true;
+services.tlp = {
+  enable = true;
+  pd.enable = true;
+};
 ```
 
 ## Hosts

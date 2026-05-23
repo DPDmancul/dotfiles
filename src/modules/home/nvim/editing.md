@@ -55,6 +55,7 @@ Move into CamelCase and snake\_case words
 {
   plugin = camelcasemotion;
   config = "let g:camelcasemotion_key = '\\'";
+  type = "viml";
 }
 ```
 
@@ -86,6 +87,7 @@ Use `f` and `t` across lines
 {
   plugin = vim-suda;
   config = "let g:suda_smart_edit = 1";
+  type = "viml";
 }
 ```
 
@@ -112,8 +114,10 @@ require"mini.surround".setup()
 ## Table edit
 
 ```nix "modules/home/nvim/editing-plugins" +=
-vim-table-mode
+unfree.vimPlugins.vim-table-mode
 ```
+
+It is indeed under MIT license, but wrongly marked as unfree.
 
 ## Syntax highlighting
 
@@ -165,11 +169,11 @@ Show color of colors
 Open temporary buffer to edit code in Markdown
 
 ```nix "modules/home/nvim/editing-plugins" +=
-{
-  plugin = vimPlugins.nvim-FeMaco-lua;
-  type = "lua";
-  config = ''require"femaco".setup()'';
-}
+# {
+#   plugin = vimPlugins.nvim-FeMaco-lua;
+#   type = "lua";
+#   config = ''require"femaco".setup()'';
+# }
 ```
 
 ## Undo tree

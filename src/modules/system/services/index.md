@@ -5,8 +5,8 @@
 {
   <<<modules/system/services>>>
 
-  environment.systemPackages = [
-    <<modules/system/services-packages>>
+  environment.systemPackages = with pkgs; [
+    <<<modules/system/services-packages>>>
   ];
 }
 ```

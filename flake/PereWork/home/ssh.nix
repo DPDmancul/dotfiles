@@ -2,7 +2,7 @@
 {
   programs.ssh = {
     enable = true;
-    matchBlocks = {
+    settings = {
       "git.mvlabs.it" = {
         user         = "git";
         identityFile = "~/.ssh/MVLabsGit";

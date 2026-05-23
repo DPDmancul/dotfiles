@@ -9,7 +9,7 @@ with lib.generators;
   options = {
     nvimLSP = with lib; with types; let
       packagesType = coercedTo package toList (listOf package);
-      configType = nullOr (coercedTo (attrsOf anything) toLua {} lines);
+      configType = nullOr (coercedTo (attrsOf anything) (toLua {}) lines);
       packageWithConfigType = coercedTo packagesType (p: { packages = p; }) (submodule ({ config, options, ... }: {
         options = {
           packages = mkOption {

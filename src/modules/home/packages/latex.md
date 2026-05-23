@@ -58,6 +58,7 @@ programs.neovim.plugins = with pkgs.vimPlugins; [
     config = ''
       let g:vimtex_view_general_viewer =  'okular'
     '';
+    type = "viml";
   }
 ];
 ```

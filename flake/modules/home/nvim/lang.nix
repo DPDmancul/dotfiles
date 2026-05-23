@@ -102,9 +102,9 @@
   };
 
   nvimLSP = with pkgs; {
-    yamlls = nodePackages.yaml-language-server;
+    yamlls = yaml-language-server;
     jsonls = rec {
-      package = nodePackages.vscode-langservers-extracted;
+      package = vscode-langservers-extracted;
       config.cmd = ["${package}/bin/vscode-json-language-server" "--stdio"];
     };
     lemminx = lemminx; # xml

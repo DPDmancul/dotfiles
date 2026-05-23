@@ -71,6 +71,7 @@ lush-nvim
     set background=light
     colorscheme gruvbox
   '';
+  type = "viml";
 }
 ```
 
@@ -169,6 +170,7 @@ require"bufferline".setup {
 {
   plugin = wilder-nvim;
   config = "call wilder#setup({'modes': [':', '/', '?']})";
+  type = "viml";
 }
 ```
 

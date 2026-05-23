@@ -6,7 +6,7 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; # to be ready for future releases of home-manager
-    matchBlocks = {
+    settings = {
       <<<modules/home/ssh-hosts>>>
     };
   };

@@ -27,6 +27,7 @@
           set background=light
           colorscheme gruvbox
         '';
+        type = "viml";
       }
       lualine-lsp-progress
       {
@@ -92,6 +93,7 @@
       {
         plugin = wilder-nvim;
         config = "call wilder#setup({'modes': [':', '/', '?']})";
+        type = "viml";
       }
       {
         plugin = toggleterm-nvim;

@@ -25,6 +25,7 @@ Create standard user directories
 userDirs = {
   enable = true;
   createDirectories = true;
+  setSessionVariables = false;
 
   # do not create useless folders
   desktop = "$HOME";

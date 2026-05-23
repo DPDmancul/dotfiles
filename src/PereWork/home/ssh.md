@@ -5,7 +5,7 @@
 {
   programs.ssh = {
     enable = true;
-    matchBlocks = {
+    settings = {
       <<<PereWork/home/ssh-hosts>>>
     };
   };

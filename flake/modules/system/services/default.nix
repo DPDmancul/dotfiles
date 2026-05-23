@@ -52,7 +52,7 @@
   };
   programs.nix-ld.enable = true;
 
-  environment.systemPackages = [
-    <<modules/system/services-packages>>
+  environment.systemPackages = with pkgs; [
+    brightnessctl
   ];
 }

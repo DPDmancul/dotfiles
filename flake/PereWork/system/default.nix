@@ -20,7 +20,10 @@
     # virtualbox.host.enable = true;
   };
   services.btrfs.autoScrub.enable = true;
-  services.tlp.enable = true;
+  services.tlp = {
+    enable = true;
+    pd.enable = true;
+  };
   networking.hosts = {
     "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
     "192.168.69.2" = [ "k8sd-topbest-imel.i4paintshop.com" "argocd-topbest-imel.i4paintshop.com" "pgad-topbest-imel.i4paintshop.com" ];
