@@ -33,7 +33,7 @@
 
    ```sh
    cd flake
-   nix run disko#disko-install -- --write-efi-boot-entries -f .#$machine
+   nix run disko#disko-install -- --write-efi-boot-entries -f .#$machine --disk main $dev
    ```
 6. Copy your sops key.
 
