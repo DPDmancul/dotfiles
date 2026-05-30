@@ -26,7 +26,7 @@ main = {
 
 ### EFI System Partition
 
-```nix "PereBook/system/disko-main"
+```nix "PereBook/system/disko-main" +=
 ESP = {
   size = "512M";
   type = "EF00";
@@ -43,7 +43,7 @@ ESP = {
 
 Encrypt the root partition with LUKS
 
-```nix "PereBook/system/disko-main"
+```nix "PereBook/system/disko-main" +=
 root = {
   size = "100%";
   content = {
@@ -64,7 +64,7 @@ root = {
 
 #### NixOs subvolume
 
-```nix "PereBook/system/disko-main-subvols"
+```nix "PereBook/system/disko-main-subvols" +=
 "nixos" = {
   mountpoint = "/";
   mountOptions = [
@@ -76,19 +76,19 @@ root = {
 
 #### Home subvolume
 
-```nix "PereBook/system/disko-main-subvols"
+```nix "PereBook/system/disko-main-subvols" +=
 "nixos/home" = { };
 ```
 
 #### Nix store subvolume
 
-```nix "PereBook/system/disko-main-subvols"
+```nix "PereBook/system/disko-main-subvols" +=
 "nixos/nix" = { };
 ```
 
 #### Swap subvolume
 
-```nix "PereBook/system/disko-main-subvols"
+```nix "PereBook/system/disko-main-subvols" +=
 "swap" = {
   mountpoint = "/.swapvol";
   swap.swapfile.size = "8G";

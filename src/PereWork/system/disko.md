@@ -26,7 +26,7 @@ main = {
 
 ### EFI System Partition
 
-```nix "PereWork/system/disko-main"
+```nix "PereWork/system/disko-main" +=
 ESP = {
   size = "512M";
   type = "EF00";
@@ -43,7 +43,7 @@ ESP = {
 
 Encrypt the root partition with LUKS
 
-```nix "PereWork/system/disko-main"
+```nix "PereWork/system/disko-main" +=
 root = {
   end = "-8G";
   content = {
@@ -64,7 +64,7 @@ root = {
 
 #### NixOs subvolume
 
-```nix "PereWork/system/disko-main-subvols"
+```nix "PereWork/system/disko-main-subvols" +=
 "nixos" = {
   mountpoint = "/";
   mountOptions = [
@@ -76,13 +76,13 @@ root = {
 
 #### Home subvolume
 
-```nix "PereWork/system/disko-main-subvols"
+```nix "PereWork/system/disko-main-subvols" +=
 "nixos/home" = { };
 ```
 
 ### Swap
 
-```nix "PereWork/system/disko-main"
+```nix "PereWork/system/disko-main" +=
 swap = {
   size = "100%";
   content.type = "swap";
