@@ -2,11 +2,11 @@
   description = "DPD- NixOs config";
 
   inputs = {
-    stable.url = github:nixos/nixpkgs/nixos-unstable;
+    stable.url = github:nixos/nixpkgs/nixos-26.05;
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
     nixpkgs.follows = "stable";
     home-manager = {
-      url = github:nix-community/home-manager/master;
+      url = github:nix-community/home-manager/release-26.05;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     disko = {
