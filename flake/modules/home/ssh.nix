@@ -8,6 +8,7 @@
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlMaster = "auto";
         controlPersist = "10m";
+        identitiesOnly = true;
       };
       "gitlab.com" = {
         user         = "git";

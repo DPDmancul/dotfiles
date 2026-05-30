@@ -23,6 +23,7 @@ Reuse TCP connections to avoid re-authenticating (e.g. for `scp` when already lo
   controlPath = "~/.ssh/master-%r@%n:%p";
   controlMaster = "auto";
   controlPersist = "10m";
+  identitiesOnly = true;
 };
 ```
 
