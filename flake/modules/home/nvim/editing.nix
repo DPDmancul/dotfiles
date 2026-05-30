@@ -49,27 +49,11 @@
         '';
       }
       unfree.vimPlugins.vim-table-mode
-      rainbow-delimiters-nvim
       {
         plugin = nvim-treesitter.withAllGrammars;
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              disable = { "latex" },
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
+      }
+      {
+        plugin = rainbow-delimiters-nvim;
       }
       {
         plugin = nvim-colorizer-lua;

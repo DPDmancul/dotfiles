@@ -124,33 +124,16 @@ It is indeed under MIT license, but wrongly marked as unfree.
 Do syntax highlighting via treesitter
 
 ```nix "modules/home/nvim/editing-plugins" +=
-rainbow-delimiters-nvim
 {
   plugin = nvim-treesitter.withAllGrammars;
-  type = "lua";
-  config = ''
-    <<<modules/home/nvim/editing-treesitter>>>
-  '';
 }
 ```
 
-Enable all maintained languages, except LaTeX (highlighted and concealed via VimTeX)
+Rainbow delimiters
 
-```lua "modules/home/nvim/editing-treesitter" +=
-require"nvim-treesitter.configs".setup {
-  highlight = {
-    enable = true,
-    disable = { "latex" },
-  },
-  incremental_selection = { enable = true },
-  indentation = { enable = true },
-  folding = { enable = true },
-  -- rainbow parenthesis match
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters
-    max_file_lines = nil
-  }
+```nix "modules/home/nvim/editing-plugins" +=
+{
+  plugin = rainbow-delimiters-nvim;
 }
 ```
 
