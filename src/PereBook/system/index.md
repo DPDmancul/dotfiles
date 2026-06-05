@@ -48,3 +48,13 @@ services.tlp.settings = {
 };
 ```
 
+### Lid closed behaviour
+
+```nix "PereBook/system" +=
+services.logind.settings.Login = {
+  HandleLidSwitch = "suspend";
+  HandleLidSwitchExternalPower = "ignore";
+  HandleLidSwitchDocked = "ignore";
+};
+```
+

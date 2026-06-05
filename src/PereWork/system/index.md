@@ -57,6 +57,15 @@ services.tlp.settings = {
 };
 ```
 
+### Lid closed behaviour
+
+```nix "PereWork/system" +=
+services.logind.settings.Login = {
+  HandleLidSwitch = "suspend";
+  HandleLidSwitchExternalPower = "ignore";
+  HandleLidSwitchDocked = "ignore";
+};
+```
 
 ## Hosts
 

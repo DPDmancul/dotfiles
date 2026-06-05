@@ -24,4 +24,9 @@
     START_CHARGE_THRESH_BAT0 = 45;
     STOP_CHARGE_THRESH_BAT0 = 60;
   };
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
 }
