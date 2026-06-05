@@ -20,4 +20,8 @@
     enable = true;
     pd.enable = true;
   };
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 45;
+    STOP_CHARGE_THRESH_BAT0 = 60;
+  };
 }

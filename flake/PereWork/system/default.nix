@@ -24,6 +24,10 @@
     enable = true;
     pd.enable = true;
   };
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 45;
+    STOP_CHARGE_THRESH_BAT0 = 60;
+  };
   networking.hosts = {
     "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
     "192.168.69.2" = [ "k8sd-topbest-imel.i4paintshop.com" "argocd-topbest-imel.i4paintshop.com" "pgad-topbest-imel.i4paintshop.com" ];

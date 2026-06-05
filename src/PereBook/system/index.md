@@ -39,3 +39,12 @@ services.tlp = {
 };
 ```
 
+### Battery care
+
+```nix "PereBook/system" +=
+services.tlp.settings = {
+  START_CHARGE_THRESH_BAT0 = 45;
+  STOP_CHARGE_THRESH_BAT0 = 60;
+};
+```
+
