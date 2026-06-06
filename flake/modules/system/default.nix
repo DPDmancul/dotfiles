@@ -34,6 +34,7 @@
   boot.supportedFilesystems = [ "ntfs" ];
   users.mutableUsers = false;
   programs.dconf.enable = true;
+  hardware.enableRedistributableFirmware = true;
   time.timeZone = "Europe/Rome";
   fonts = {
     enableDefaultPackages = true;

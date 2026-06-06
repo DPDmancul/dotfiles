@@ -66,6 +66,14 @@ Enable dconf
 programs.dconf.enable = true;
 ```
 
+## Firmware
+
+Enable firmware
+
+```nix "modules/system" +=
+hardware.enableRedistributableFirmware = true;
+```
+
 ## Timezone
 
 ```nix "modules/system" +=
