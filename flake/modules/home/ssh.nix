@@ -10,14 +10,6 @@
         controlPersist = "10m";
         identitiesOnly = true;
       };
-      "gitlab.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitLab";
-      };
-      "github.com" = {
-        user         = "git";
-        identityFile = "~/.ssh/dpd-GitHub";
-      };
     };
   };
   # <<<modules/home/ssh>>>

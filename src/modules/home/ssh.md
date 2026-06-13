@@ -27,23 +27,6 @@ Reuse TCP connections to avoid re-authenticating (e.g. for `scp` when already lo
 };
 ```
 
-## Hosts
-
-### Git remotes
-
-Login to git remotes using keys, instead of writing the password each time
-
-```nix "modules/home/ssh-hosts" +=
-"gitlab.com" = {
-  user         = "git";
-  identityFile = "~/.ssh/dpd-GitLab";
-};
-"github.com" = {
-  user         = "git";
-  identityFile = "~/.ssh/dpd-GitHub";
-};
-```
-
 ## Private keys
 
 What?
