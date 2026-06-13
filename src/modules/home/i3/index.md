@@ -138,7 +138,7 @@ i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
 ## Clipboard
 
 ```nix "modules/home/i3-packages" +=
-copyq
+unstable.copyq
 xclip
 ```
 
@@ -146,7 +146,7 @@ Start clipboard manager
 
 ```sh "modules/home/i3-startup" +=
 {
-  command = "${pkgs.copyq}/bin/copyq";
+  command = "${pkgs.unstable.copyq}/bin/copyq";
   notification = false;
 }
 ```

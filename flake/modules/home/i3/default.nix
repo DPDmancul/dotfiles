@@ -40,7 +40,7 @@ in
         floating.titlebar = false;
         startup = [
           {
-            command = "${pkgs.copyq}/bin/copyq";
+            command = "${pkgs.unstable.copyq}/bin/copyq";
             notification = false;
           }
           {
@@ -96,7 +96,7 @@ in
   home.packages = with pkgs; [
     i3lock-color
     scrot
-    copyq
+    unstable.copyq
     xclip
     polkit_gnome
   ];
