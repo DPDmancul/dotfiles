@@ -90,6 +90,7 @@ in
       "${modifier}+x" = "exec nemo";
       "${modifier}+v" = "exec ${config.xsession.windowManager.i3.config.terminal} nvim";
     };
+    i3AddNamedKeybinds.shortcuts."${modifier}+period" = "exec bemoji";
     i3AddKeybinds = {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer --unmute --increase 5";
       "XF86AudioLowerVolume" = "exec --no-startup-id pamixer --decrease 5";
@@ -117,5 +118,10 @@ in
       '';
     in
     "exec ${rofi-exit}";
+
+    home.packages = with pkgs; [
+      bemoji
+      xdotool
+    ];
   };
 }

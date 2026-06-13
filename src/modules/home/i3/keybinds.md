@@ -46,6 +46,10 @@ functional programming techniques to build them.
     };
 
     <<<modules/home/i3/keybinds>>>
+
+    home.packages = with pkgs; [
+      <<<modules/home/i3/keybinds-packages>>>
+    ];
   };
 }
 ```
@@ -156,6 +160,17 @@ i3AddNamedKeybinds.shortcuts = {
   "${modifier}+x" = "exec nemo";
   "${modifier}+v" = "exec ${config.xsession.windowManager.i3.config.terminal} nvim";
 };
+```
+
+## Emoji input
+
+```nix "modules/home/i3/keybinds" +=
+i3AddNamedKeybinds.shortcuts."${modifier}+period" = "exec bemoji";
+```
+
+```nix "modules/home/i3/keybinds-packages" +=
+bemoji
+xdotool
 ```
 
 ## System
