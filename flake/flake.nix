@@ -54,7 +54,6 @@
             # unstable, master and fallaback channels
             (self: super: {
               unstable = import inputs.unstable { inherit system config; };
-              "25.05" = import inputs."25.05" { inherit system config; };
             })
             # Custom packages
             (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
