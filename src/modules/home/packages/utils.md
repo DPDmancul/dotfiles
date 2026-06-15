@@ -112,7 +112,9 @@ networking.firewall = {
 };
 ```
 
-tldr: short command examples
+### tldr
+
+Short command examples
 
 ```nix "modules/home/packages/utils" +=
 programs.tealdeer = {
@@ -120,6 +122,15 @@ programs.tealdeer = {
   settings = {
     updates.auto_update = true;
   };
+};
+```
+
+### parallel
+
+```nix "modules/home/packages/utils" +=
+programs.parallel = {
+  enable = true;
+  will-cite = true;
 };
 ```
 

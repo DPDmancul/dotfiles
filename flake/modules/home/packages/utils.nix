@@ -56,4 +56,8 @@
       updates.auto_update = true;
     };
   };
+  programs.parallel = {
+    enable = true;
+    will-cite = true;
+  };
 }
