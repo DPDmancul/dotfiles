@@ -222,8 +222,8 @@ Do not permit normal buffers to open in terminal, filetree, ... windows
     src = fetchFromGitHub {
       owner = "stevearc";
       repo = "stickybuf.nvim";
-      rev = "v2.0.0";
-      sha256 = "sha256-u9sjbr0e51fBQil8MlaYHd9iY6BfX8T4uRBnUpzZ/8s=";
+      rev = "v2.1.0";
+      hash = "sha256-WuT3gaYW4bV3hWoQ9Gj1uXkH+/W1hoLsTnh+j27otIo=";
     };
   });
   type = "lua";

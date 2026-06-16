@@ -35,15 +35,7 @@
       telescope-file-browser-nvim
       telescope-fzf-native-nvim
       telescope-symbols-nvim
-      (vimUtils.buildVimPlugin {
-        name = "project-nvim";
-        src = fetchFromGitHub {
-          owner = "DrKJeff16";
-          repo = "project.nvim";
-          rev = "deaec4c3606ade11f6ae89b4e9576065b3140d0e";
-          sha256 = "VYOABmvydOHu7EM8n1EQ+Le1NOtZIcaSjwW4x8uhNQI=";
-        };
-      })
+      project-nvim
       {
         plugin = telescope-nvim;
         type = "lua";
