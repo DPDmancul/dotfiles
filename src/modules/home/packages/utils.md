@@ -127,9 +127,12 @@ programs.tealdeer = {
 
 ### parallel
 
+Use base package, not `parallel-full`.
+
 ```nix "modules/home/packages/utils" +=
 programs.parallel = {
   enable = true;
+  package = pkgs.parallel;
   will-cite = true;
 };
 ```
