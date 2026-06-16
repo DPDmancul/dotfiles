@@ -6,8 +6,9 @@
       user = {
         name = "DPDmancul";
         email = "davide.peressoni@tuta.io";
-        signingkey = "694FC712B317CF9004114DC4EC1145E786990CED";
+        signingkey = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
       };
+      gpg.format = "ssh";
       commit.gpgsign = true;
       tag.gpgSign = true;
       alias = {
@@ -23,7 +24,6 @@
       core.autoclrf = "input";
       init.defaultBranch = "main";
       status.showUntrackedFiles = "all";
-      extraConfig.status.submoduleSummary = true;
       fetch = {
         prune = true;
         pruneTags = true;

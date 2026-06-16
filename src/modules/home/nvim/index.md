@@ -22,6 +22,8 @@
       nvim-web-devicons
       <<<modules/home/nvim-plugins>>>
     ];
+    withRuby = false;
+    withPython3 = false;
   };
 
   appDefaultForMimes."nvim.desktop" = "text/plain";

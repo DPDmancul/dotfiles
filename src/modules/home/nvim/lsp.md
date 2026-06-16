@@ -3,13 +3,13 @@
 Options for easily setup LSP servers for neovim.
 
 ```nix modules/home/nvim/lsp.nix
-{ config, pkgs, lib, inputs, ... }:
-with inputs.nix2lua.lib;
+{ config, pkgs, lib, ... }:
+with lib.generators;
 {
   options = {
     nvimLSP = with lib; with types; let
       packagesType = coercedTo package toList (listOf package);
-      configType = nullOr (coercedTo (attrsOf anything) toLua lines);
+      configType = nullOr (coercedTo (attrsOf anything) (toLua {}) lines);
       packageWithConfigType = coercedTo packagesType (p: { packages = p; }) (submodule ({ config, options, ... }: {
         options = {
           packages = mkOption {
@@ -45,7 +45,7 @@ with inputs.nix2lua.lib;
           plugin = nvim-lspconfig;
           type = "lua";
           config = let
-            lspConfig = toLua (mapAttrs (name: value: raw
+            lspConfig = toLua {} (mapAttrs (name: value: mkLuaInline
               value.config) config.nvimLSP);
           in
           ''

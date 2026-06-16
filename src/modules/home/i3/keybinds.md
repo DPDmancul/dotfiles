@@ -46,6 +46,10 @@ functional programming techniques to build them.
     };
 
     <<<modules/home/i3/keybinds>>>
+
+    home.packages = with pkgs; [
+      <<<modules/home/i3/keybinds-packages>>>
+    ];
   };
 }
 ```
@@ -158,6 +162,17 @@ i3AddNamedKeybinds.shortcuts = {
 };
 ```
 
+## Emoji input
+
+```nix "modules/home/i3/keybinds" +=
+i3AddNamedKeybinds.shortcuts."${modifier}+period" = "exec bemoji";
+```
+
+```nix "modules/home/i3/keybinds-packages" +=
+bemoji
+xdotool
+```
+
 ## System
 
 ### Volume
@@ -193,8 +208,8 @@ Don't know why the following are triggered twice, so a step of 2 is indeed a ste
 
 ```nix "modules/home/i3/keybinds" +=
 i3AddKeybinds = {
-  "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
-  "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";
+  "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
+  "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set 5%+";
 };
 ```
 

@@ -2,34 +2,17 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
+
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_usb_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/c16c90b5-e254-4712-9942-e33c97271bbb";
-      fsType = "btrfs";
-      options = [ "subvol=nixos" ];
-    };
-
-  boot.initrd.luks.devices."nixenc".device = "/dev/disk/by-uuid/09bc5fd9-6428-478c-b0dc-89cffae0e401";
-
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/FC6E-3186";
-      fsType = "vfat";
-    };
-
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/d56c4d70-d444-445e-914b-d1331b617240"; }];
-
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

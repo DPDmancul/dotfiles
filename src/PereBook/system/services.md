@@ -4,13 +4,17 @@
 { config, pkgs, users, lib, ... }:
 {
   <<<PereBook/system/services>>>
+
+  environment.systemPackages = with pkgs; [
+    <<<PereBook/system/services-packages>>>
+  ];
 }
 ```
 
 ## ADB
 
-```nix "PereBook/system/services" +=
-programs.adb.enable = true;
+```nix "PereBook/system/services-packages" +=
+android-tools
 ```
 
 Add user to the adb group

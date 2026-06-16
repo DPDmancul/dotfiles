@@ -56,4 +56,9 @@
       updates.auto_update = true;
     };
   };
+  programs.parallel = {
+    enable = true;
+    package = pkgs.parallel;
+    will-cite = true;
+  };
 }

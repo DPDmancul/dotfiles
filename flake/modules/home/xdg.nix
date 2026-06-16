@@ -36,6 +36,7 @@
       userDirs = {
         enable = true;
         createDirectories = true;
+        setSessionVariables = false;
 
         # do not create useless folders
         desktop = "$HOME";

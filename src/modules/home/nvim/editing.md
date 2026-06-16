@@ -55,6 +55,7 @@ Move into CamelCase and snake\_case words
 {
   plugin = camelcasemotion;
   config = "let g:camelcasemotion_key = '\\'";
+  type = "viml";
 }
 ```
 
@@ -86,6 +87,7 @@ Use `f` and `t` across lines
 {
   plugin = vim-suda;
   config = "let g:suda_smart_edit = 1";
+  type = "viml";
 }
 ```
 
@@ -112,41 +114,26 @@ require"mini.surround".setup()
 ## Table edit
 
 ```nix "modules/home/nvim/editing-plugins" +=
-vim-table-mode
+unfree.vimPlugins.vim-table-mode
 ```
+
+It is indeed under MIT license, but wrongly marked as unfree.
 
 ## Syntax highlighting
 
 Do syntax highlighting via treesitter
 
 ```nix "modules/home/nvim/editing-plugins" +=
-rainbow-delimiters-nvim
 {
   plugin = nvim-treesitter.withAllGrammars;
-  type = "lua";
-  config = ''
-    <<<modules/home/nvim/editing-treesitter>>>
-  '';
 }
 ```
 
-Enable all maintained languages, except LaTeX (highlighted and concealed via VimTeX)
+Rainbow delimiters
 
-```lua "modules/home/nvim/editing-treesitter" +=
-require"nvim-treesitter.configs".setup {
-  highlight = {
-    enable = true,
-    disable = { "latex" },
-  },
-  incremental_selection = { enable = true },
-  indentation = { enable = true },
-  folding = { enable = true },
-  -- rainbow parenthesis match
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters
-    max_file_lines = nil
-  }
+```nix "modules/home/nvim/editing-plugins" +=
+{
+  plugin = rainbow-delimiters-nvim;
 }
 ```
 
@@ -165,11 +152,11 @@ Show color of colors
 Open temporary buffer to edit code in Markdown
 
 ```nix "modules/home/nvim/editing-plugins" +=
-{
-  plugin = vimPlugins.nvim-FeMaco-lua;
-  type = "lua";
-  config = ''require"femaco".setup()'';
-}
+# {
+#   plugin = vimPlugins.nvim-FeMaco-lua;
+#   type = "lua";
+#   config = ''require"femaco".setup()'';
+# }
 ```
 
 ## Undo tree

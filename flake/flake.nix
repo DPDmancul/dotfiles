@@ -2,17 +2,19 @@
   description = "DPD- NixOs config";
 
   inputs = {
-    stable.url = github:nixos/nixpkgs/nixos-25.11;
+    stable.url = github:nixos/nixpkgs/nixos-26.05;
     unstable.url = github:nixos/nixpkgs/nixos-unstable;
-    "25.05".url = github:nixos/nixpkgs/nixos-25.05;
     nixpkgs.follows = "stable";
     home-manager = {
-      url = github:nix-community/home-manager/release-25.11;
+      url = github:nix-community/home-manager/release-26.05;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hardware.url = github:nixos/nixos-hardware;
     sops-nix.url = github:Mic92/sops-nix;
-    nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
     feh-random-background = {
       url = github:KoviRobi/feh-random-background/80bc3616bb8fc87225d1447431555230a4bf3b12;
       flake = false;
@@ -23,7 +25,7 @@
     };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, sops-nix, ... }:
+  outputs = inputs @ { self, nixpkgs, ... }:
     let
       machines = [
         {
@@ -52,7 +54,6 @@
             # unstable, master and fallaback channels
             (self: super: {
               unstable = import inputs.unstable { inherit system config; };
-              "25.05" = import inputs."25.05" { inherit system config; };
             })
             # Custom packages
             (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
@@ -71,11 +72,6 @@
           ];
           config.allowUnfreePredicate = pkg:
             builtins.elem (nixpkgs.lib.getName pkg) [
-              "broadcom-bt-firmware"
-              "b43-firmware"
-              "xow_dongle-firmware"
-              "facetimehd-firmware"
-              "facetimehd-calibration"
               "teamviewer"
               "brscan4"
               "brscan4-etc-files"
@@ -91,7 +87,8 @@
               inherit (machine) system;
               pkgs = legacyPackages.${machine.system};
               modules = [
-                sops-nix.nixosModules.sops
+                inputs.sops-nix.nixosModules.sops
+                inputs.disko.nixosModules.disko
                 { networking.hostName = machine.host; }
                 ./${machine.host}/system
               ];
@@ -106,7 +103,7 @@
         (machine: map
           (user: {
             name = "${user}@${machine.host}";
-            value = home-manager.lib.homeManagerConfiguration
+            value = inputs.home-manager.lib.homeManagerConfiguration
               rec {
                 pkgs = legacyPackages.${machine.system};
                 modules =
@@ -123,7 +120,7 @@
                 extraSpecialArgs = args // {
                   inherit user;
                   lib = pkgs.lib.extend (self: super:
-                    home-manager.lib //
+                    inputs.home-manager.lib //
                       import ./lib.nix { lib = self; }
                   );
                 };
@@ -133,7 +130,7 @@
         machines);
       apps.home-manager = forAllSystems (system: {
         type = "app";
-        program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
+        program = "${inputs.home-manager.packages.${system}.home-manager}/bin/home-manager";
       });
     };
 }

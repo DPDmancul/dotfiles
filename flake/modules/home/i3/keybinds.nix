@@ -90,6 +90,7 @@ in
       "${modifier}+x" = "exec nemo";
       "${modifier}+v" = "exec ${config.xsession.windowManager.i3.config.terminal} nvim";
     };
+    i3AddNamedKeybinds.shortcuts."${modifier}+period" = "exec bemoji";
     i3AddKeybinds = {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pamixer --unmute --increase 5";
       "XF86AudioLowerVolume" = "exec --no-startup-id pamixer --decrease 5";
@@ -103,8 +104,8 @@ in
     services.playerctld.enable = true;
     programs.mpv.scripts = [ pkgs.mpvScripts.mpris ];
     i3AddKeybinds = {
-      "XF86MonBrightnessDown" = "exec --no-startup-id light -U 2";
-      "XF86MonBrightnessUp" = "exec --no-startup-id light -A 2";
+      "XF86MonBrightnessDown" = "exec --no-startup-id brightnessctl set 5%-";
+      "XF86MonBrightnessUp" = "exec --no-startup-id brightnessctl set 5%+";
     };
     i3AddKeybinds."${modifier}+Shift+e" = let
       rofi-exit = pkgs.writeShellScript "rofi-exit.sh"  ''
@@ -117,5 +118,10 @@ in
       '';
     in
     "exec ${rofi-exit}";
+
+    home.packages = with pkgs; [
+      bemoji
+      xdotool
+    ];
   };
 }

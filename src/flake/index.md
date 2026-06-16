@@ -10,7 +10,7 @@ Managing the config with flakes allows to pin source versions.
     <<<flake-inputs>>>
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, sops-nix, ... }:
+  outputs = inputs @ { self, nixpkgs, ... }:
     let
       machines = [
         {
@@ -43,9 +43,8 @@ Managing the config with flakes allows to pin source versions.
 ### Channels
 
 ```nix "flake-inputs" +=
-stable.url = github:nixos/nixpkgs/nixos-25.11;
+stable.url = github:nixos/nixpkgs/nixos-26.05;
 unstable.url = github:nixos/nixpkgs/nixos-unstable;
-"25.05".url = github:nixos/nixpkgs/nixos-25.05;
 nixpkgs.follows = "stable";
 ```
 
@@ -53,12 +52,15 @@ nixpkgs.follows = "stable";
 
 ```nix "flake-inputs" +=
 home-manager = {
-  url = github:nix-community/home-manager/release-25.11;
+  url = github:nix-community/home-manager/release-26.05;
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+disko = {
+  url = "github:nix-community/disko/latest";
   inputs.nixpkgs.follows = "nixpkgs";
 };
 hardware.url = github:nixos/nixos-hardware;
 sops-nix.url = github:Mic92/sops-nix;
-nix2lua.url = git+https://git.pleshevski.ru/mynix/nix2lua;
 ```
 
 ## Outputs
@@ -77,7 +79,6 @@ legacyPackages = forAllSystems (system:
       # unstable, master and fallaback channels
       (self: super: {
         unstable = import inputs.unstable { inherit system config; };
-        "25.05" = import inputs."25.05" { inherit system config; };
       })
       # Custom packages
       (self: super: import ./pkgs { pkgs = self; lib = super.lib; })
@@ -113,7 +114,8 @@ nixosConfigurations = builtins.listToAttrs (map
         inherit (machine) system;
         pkgs = legacyPackages.${machine.system};
         modules = [
-          sops-nix.nixosModules.sops
+          inputs.sops-nix.nixosModules.sops
+          inputs.disko.nixosModules.disko
           { networking.hostName = machine.host; }
           ./${machine.host}/system
         ];
@@ -133,7 +135,7 @@ homeConfigurations = builtins.listToAttrs (builtins.concatMap
   (machine: map
     (user: {
       name = "${user}@${machine.host}";
-      value = home-manager.lib.homeManagerConfiguration
+      value = inputs.home-manager.lib.homeManagerConfiguration
         rec {
           pkgs = legacyPackages.${machine.system};
           modules =
@@ -150,7 +152,7 @@ homeConfigurations = builtins.listToAttrs (builtins.concatMap
           extraSpecialArgs = args // {
             inherit user;
             lib = pkgs.lib.extend (self: super:
-              home-manager.lib //
+              inputs.home-manager.lib //
                 import ./lib.nix { lib = self; }
             );
           };
@@ -167,7 +169,7 @@ Use home manager from its flake
 ```nix "flake-outputs" +=
 apps.home-manager = forAllSystems (system: {
   type = "app";
-  program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
+  program = "${inputs.home-manager.packages.${system}.home-manager}/bin/home-manager";
 });
 ```
 

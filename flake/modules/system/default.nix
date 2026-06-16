@@ -29,12 +29,12 @@
     allowedUDPPorts = [ 53317 ];
     allowedTCPPorts = [ 53317 ];
   };
-  fileSystems."/".options = [ "noatime" ];
   systemd.enableEmergencyMode = false;
   hardware.graphics.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
   users.mutableUsers = false;
   programs.dconf.enable = true;
+  hardware.enableRedistributableFirmware = true;
   time.timeZone = "Europe/Rome";
   fonts = {
     enableDefaultPackages = true;

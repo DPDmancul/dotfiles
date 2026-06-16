@@ -25,8 +25,9 @@
 user = {
   name = "DPDmancul";
   email = "davide.peressoni@tuta.io";
-  signingkey = "694FC712B317CF9004114DC4EC1145E786990CED";
+  signingkey = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
 };
+gpg.format = "ssh";
 commit.gpgsign = true;
 tag.gpgSign = true;
 ```
@@ -72,7 +73,7 @@ status.showUntrackedFiles = "all";
 
 Enable submodule summary showing the summary of commits for modified submodules
 
-```nix "modules/home/git-settings" +=
+```nix "modules/home/git-settings" +=git
 extraConfig.status.submoduleSummary = true;
 ```
 

@@ -25,6 +25,7 @@
       {
         plugin = camelcasemotion;
         config = "let g:camelcasemotion_key = '\\'";
+        type = "viml";
       }
       (vimUtils.buildVimPlugin {
         name = "vim-fanfingtastic";
@@ -38,6 +39,7 @@
       {
         plugin = vim-suda;
         config = "let g:suda_smart_edit = 1";
+        type = "viml";
       }
       {
         plugin = nvim-autopairs;
@@ -46,39 +48,23 @@
           require"nvim-autopairs".setup{}
         '';
       }
-      vim-table-mode
-      rainbow-delimiters-nvim
+      unfree.vimPlugins.vim-table-mode
       {
         plugin = nvim-treesitter.withAllGrammars;
-        type = "lua";
-        config = ''
-          require"nvim-treesitter.configs".setup {
-            highlight = {
-              enable = true,
-              disable = { "latex" },
-            },
-            incremental_selection = { enable = true },
-            indentation = { enable = true },
-            folding = { enable = true },
-            -- rainbow parenthesis match
-            rainbow = {
-              enable = true,
-              extended_mode = true, -- Also highlight non-bracket delimiters
-              max_file_lines = nil
-            }
-          }
-        '';
+      }
+      {
+        plugin = rainbow-delimiters-nvim;
       }
       {
         plugin = nvim-colorizer-lua;
         type = "lua";
         config = ''require"colorizer".setup{}'';
       }
-      {
-        plugin = vimPlugins.nvim-FeMaco-lua;
-        type = "lua";
-        config = ''require"femaco".setup()'';
-      }
+      # {
+      #   plugin = vimPlugins.nvim-FeMaco-lua;
+      #   type = "lua";
+      #   config = ''require"femaco".setup()'';
+      # }
       undotree
       (vimUtils.buildVimPlugin rec {
         name = "vim-xsampa";

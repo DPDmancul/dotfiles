@@ -11,6 +11,7 @@
 
   programs.firefox = {
     enable = true;
+    configPath = ".mozilla/firefox";
     policies = {
       # TODO: migrate to https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.profiles._name_.extensions
       ExtensionSettings = let
@@ -206,17 +207,7 @@ Manage all extensions via home-manager
 ```nix "modules/home/firefox-ext" +=
 "it-IT@dictionaries.addons.mozilla.org" = ext "dizionario-italiano";
 "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
-# "vim-vixen@i-beam.org" = ext "vim-vixen";
 "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = ext "videospeed";
-# "arklove@qq.com" = ext "git-master";
-# "extension@requestly.in" = {
-#   installation_mode = "force_installed";
-#   isntall_url = "https://rqst.ly/firefox";
-# };
-"proxydocile@unipd.it" = {
-  installation_mode = "force_installed";
-  install_url = "https://softwarecab.cab.unipd.it/proxydocile/proxydocile.xpi";
-};
 ```
 
 ### Privacy

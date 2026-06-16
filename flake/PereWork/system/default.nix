@@ -9,29 +9,30 @@
   ] ++ [
     /${modules}/system
     ./hardware-configuration.nix
+    ./disko.nix
     ./net.nix
     ./users.nix
     ./autorandr.nix
   ];
 
-  hardware = {
-    enableAllFirmware = false;
-    firmware = with pkgs.unfree; [
-      broadcom-bt-firmware
-      b43Firmware_5_1_138
-      b43Firmware_6_30_163_46
-      xow_dongle-firmware
-      facetimehd-firmware
-      facetimehd-calibration
-    ];
-  };
   virtualisation = {
     # libvirtd.enable = true;
     # virtualbox.host.enable = true;
   };
-  fileSystems."/".options = [ "compress=zstd" ];
   services.btrfs.autoScrub.enable = true;
-  services.tlp.enable = true;
+  services.tlp = {
+    enable = true;
+    pd.enable = true;
+  };
+  services.tlp.settings = {
+    START_CHARGE_THRESH_BAT0 = 45;
+    STOP_CHARGE_THRESH_BAT0 = 60;
+  };
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
   networking.hosts = {
     "10.14.201.215" = [ "k8sd-plant-jft-mvlabs.vidim.it" ];
     "192.168.69.2" = [ "k8sd-topbest-imel.i4paintshop.com" "argocd-topbest-imel.i4paintshop.com" "pgad-topbest-imel.i4paintshop.com" ];
