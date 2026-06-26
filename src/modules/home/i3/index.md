@@ -138,17 +138,27 @@ i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
 ## Clipboard
 
 ```nix "modules/home/i3-packages" +=
-unstable.copyq
 xclip
 ```
 
-Start clipboard manager
+### Manager
 
-```sh "modules/home/i3-startup" +=
-{
-  command = "${pkgs.unstable.copyq}/bin/copyq";
-  notification = false;
-}
+```sh "modules/home/i3" +=
+services.copyq.enable = true;
+home.activation.config-copyq = lib.hm.dag.entryAfter ["writeBoundary"] (
+  lib.concatLines (
+    lib.mapAttrsToList (k: v:
+      "run ${config.services.copyq.package}/bin/copyq --start-server config ${k} ${toString v}"
+    )
+    {
+      disable_tray = true;
+      hide_main_window = true; # when closed
+      hide_tabs = true;
+      hide_toolbar = true;
+      autostart = false;
+    }
+  )
+);
 ```
 
 Clipboard history picker

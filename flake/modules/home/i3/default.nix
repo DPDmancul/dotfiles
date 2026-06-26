@@ -40,10 +40,6 @@ in
         floating.titlebar = false;
         startup = [
           {
-            command = "${pkgs.unstable.copyq}/bin/copyq";
-            notification = false;
-          }
-          {
             command = "dbus-update-activation-environment --all";
             notification = false;
           }
@@ -91,12 +87,26 @@ in
         in args: "exec --no-startup-id mkdir -p ${dir} && scrot ${args} -F '${dir}/%Y-%m-%d_%H%M%S.png'";
     y = args: "exec --no-startup-id scrot ${args} - | xclip -selection clipboard -t image/png";
   };
+  services.copyq.enable = true;
+  home.activation.config-copyq = lib.hm.dag.entryAfter ["writeBoundary"] (
+    lib.concatLines (
+      lib.mapAttrsToList (k: v:
+        "run ${config.services.copyq.package}/bin/copyq --start-server config ${k} ${toString v}"
+      )
+      {
+        disable_tray = true;
+        hide_main_window = true; # when closed
+        hide_tabs = true;
+        hide_toolbar = true;
+        autostart = false;
+      }
+    )
+  );
   i3AddKeybinds."${modifier}+q" = "exec copyq toggle";
 
   home.packages = with pkgs; [
     i3lock-color
     scrot
-    unstable.copyq
     xclip
     polkit_gnome
   ];
