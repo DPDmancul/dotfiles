@@ -17,6 +17,7 @@
 ```vim "modules/home/nvim/editing-config" +=
 set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
 set clipboard=unnamedplus     " Sync yank register with system clipboard
+set inccommand=nosplit        " incremental substitute preview
 ```
 
 ## Indentation

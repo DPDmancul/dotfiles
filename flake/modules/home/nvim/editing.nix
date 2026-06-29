@@ -4,6 +4,7 @@
     extraConfig = ''
       set whichwrap=b,s,h,l,<,>,[,] " Allow moving along lines when the start/end is reached
       set clipboard=unnamedplus     " Sync yank register with system clipboard
+      set inccommand=nosplit        " incremental substitute preview
       set expandtab     " Convert tabs to spaces
       set tabstop=2     " Display 2 spaces for a tab
       set shiftwidth=2  " Use this number of spaces for indentation

@@ -36,6 +36,7 @@ ${config.programs.neovim.generatedConfigViml}
 set ideajoin # `J` to join lines
 set clipboard+=ideaput # clipboard integration
 set showmode
+set VimEverywhere
 ```
 
 ### Plugins
