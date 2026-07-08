@@ -125,9 +125,9 @@ Save (_print_) to file and copy (_yank_) to clipboard
 
 ```nix "modules/home/i3" +=
 i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
-  "--release ${modifier}+${key}" = fn "-zpu";       # Focused window
-  "--release ${modifier}+Shift+${key}" = fn "-zps"; # Select area or window
-  "--release ${modifier}+Ctrl+${key}" = fn "-zp";   # Whole screen
+  "--release ${modifier}+${key}" = fn "-zpu";        # Focused window
+  "--release ${modifier}+Shift+${key}" = fn "-zpfs"; # Select area or window
+  "--release ${modifier}+Ctrl+${key}" = fn "-zp";    # Whole screen
 }) {
   p = let dir = "${config.xdg.userDirs.pictures}/Screenshots";
       in args: "exec --no-startup-id mkdir -p ${dir} && scrot ${args} -F '${dir}/%Y-%m-%d_%H%M%S.png'";

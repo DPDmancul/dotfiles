@@ -79,9 +79,9 @@ in
   };
   i3AddKeybinds."Ctrl+${alt}+l" = ''exec --no-startup-id "i3lock-color --clock --indicator --blur 7x5 --pass-{media,screen,power,volume}-keys"'';
   i3AddNamedKeybinds.scrot = lib.concatMapAttrs (key: fn: {
-    "--release ${modifier}+${key}" = fn "-zpu";       # Focused window
-    "--release ${modifier}+Shift+${key}" = fn "-zps"; # Select area or window
-    "--release ${modifier}+Ctrl+${key}" = fn "-zp";   # Whole screen
+    "--release ${modifier}+${key}" = fn "-zpu";        # Focused window
+    "--release ${modifier}+Shift+${key}" = fn "-zpfs"; # Select area or window
+    "--release ${modifier}+Ctrl+${key}" = fn "-zp";    # Whole screen
   }) {
     p = let dir = "${config.xdg.userDirs.pictures}/Screenshots";
         in args: "exec --no-startup-id mkdir -p ${dir} && scrot ${args} -F '${dir}/%Y-%m-%d_%H%M%S.png'";
