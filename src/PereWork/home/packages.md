@@ -10,6 +10,7 @@
     /${modules}/home/packages/developing/node.nix
     /${modules}/home/packages/developing/php.nix
     /${modules}/home/packages/developing/phpstorm.nix
+    /${modules}/home/packages/developing/go.nix
     /${modules}/home/packages/developing/haskell.nix
   ];
 

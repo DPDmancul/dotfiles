@@ -60,6 +60,7 @@
         - [Agda](./modules/home/packages/developing/agda.md)
         - [DotNet](./modules/home/packages/developing/dotnet.md)
           - [Rider](./modules/home/packages/developing/rider.md)
+        - [Go](./modules/home/packages/developing/go.md)
         - [Haskell](./modules/home/packages/developing/haskell.md)
         - [Java](./modules/home/packages/developing/java.md)
         - [Node.js](./modules/home/packages/developing/node.md)

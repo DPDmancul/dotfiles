@@ -6,6 +6,7 @@
     # /${modules}/home/packages/lilypond.nix
     /${modules}/home/packages/developing/haskell.nix
     /${modules}/home/packages/developing/rust.nix
+    /${modules}/home/packages/developing/go.nix
     /${modules}/home/packages/developing/python3.nix
     /${modules}/home/packages/developing/dotnet.nix
     /${modules}/home/packages/developing/node.nix
