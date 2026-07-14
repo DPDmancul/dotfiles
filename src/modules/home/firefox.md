@@ -105,6 +105,45 @@ Disable translations for some languages
 "browser.translations.neverTranslateLanguages" = "it";
 ```
 
+### Additional search engines
+
+```nix "modules/home/firefox-profile" +=
+search.engines = {
+  nix-packages = {
+    name = "Nix Packages";
+    urls = [{
+      template = "https://search.nixos.org/packages";
+      params = [
+        { name = "query"; value = "{searchTerms}"; }
+      ];
+    }];
+    definedAliases = [ "@np" ];
+  };
+
+  nixos-options = {
+    name = "NixOs Options";
+    urls = [{
+      template = "https://search.nixos.org/options";
+      params = [
+        { name = "query"; value = "{searchTerms}"; }
+      ];
+    }];
+    definedAliases = [ "@no" ];
+  };
+
+  nixos-wiki = {
+    name = "NixOS Wiki";
+    urls = [{ 
+      template = "https://wiki.nixos.org/w/index.php";
+      params = [
+        { name = "search"; value = "{searchTerms}"; }
+      ];
+    }];
+    definedAliases = [ "@nw" ];
+  };
+};
+```
+
 ### Privacy
 
 Enable HTTPS everywhere

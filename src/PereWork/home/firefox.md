@@ -8,6 +8,7 @@
       settings = {
         <<<PereWork/home/firefox-settings>>>
       };
+      <<<PereWork/home/firefox-profile>>>
     };
   };
 }
@@ -19,5 +20,17 @@ Restore previous session on startup
 
 ```nix "PereWork/home/firefox-settings" +=
 "browser.startup.page" = 3;
+```
+
+### Additional search engines
+
+```nix "PereWork/home/firefox-profile" +=
+search.engines = {
+  redmine-issues = {
+    name = "Redmine issues";
+    urls = [{ template = "https://pm.mvlabs.it/issues/{searchTerms}"; }];
+    definedAliases = [ "@pm" ];
+  };
+};
 ```
 
