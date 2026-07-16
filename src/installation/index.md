@@ -38,7 +38,7 @@
 6. Copy your sops key.
 
    ```sh
-   cp sops-key.txt /mnt{/var/lib/sops-nix/key.txt,/home/$user/.config/sops/age/keys.txt}
+   cp sops-key.txt /mnt/var/lib/sops-nix/key.txt
    chmod 500 /mnt/var/lib/sops-nix;
    ```
 

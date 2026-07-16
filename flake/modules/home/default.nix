@@ -25,5 +25,6 @@
       nix-shell --run "make $*"
     '')
   ];
+  home.sessionVariables.SOPS_AGE_KEY_CMD = "sudo cat /var/lib/sops-nix/key.txt";
   home.stateVersion = "22.05";
 }

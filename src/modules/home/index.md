@@ -55,6 +55,12 @@ home.packages = [
 ];
 ```
 
+## Sops key
+
+```nix "modules/home" +=
+home.sessionVariables.SOPS_AGE_KEY_CMD = "sudo cat /var/lib/sops-nix/key.txt";
+```
+
 ## State version
 
 **DO NOT TOUCH!**
