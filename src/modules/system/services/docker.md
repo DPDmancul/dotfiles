@@ -4,8 +4,16 @@
 { config, pkgs, lib, assets, ... }:
 {
   virtualisation.docker = {
-    enable = true;
+    enable = !config.virtualisation.docker.rootless.enable;
     storageDriver = "btrfs";
+
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+      daemon.settings = {
+        storage-driver = config.virtualisation.docker.storageDriver;
+      };
+    };
   };
 
   environment.systemPackages = with pkgs; [
