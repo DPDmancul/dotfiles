@@ -51,6 +51,7 @@
     defaultTarget = "horizontal";
   };
   programs.nix-ld.enable = true;
+  services.fwupd.enable = true;
 
   environment.systemPackages = with pkgs; [
     brightnessctl

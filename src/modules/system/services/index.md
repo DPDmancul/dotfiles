@@ -151,3 +151,9 @@ Enable FHS support for unpatched programs with nix-ld
 programs.nix-ld.enable = true;
 ```
 
+## Firmware update
+
+```nix "modules/system/services" +=
+services.fwupd.enable = true;
+```
+

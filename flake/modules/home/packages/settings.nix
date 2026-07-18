@@ -6,5 +6,6 @@
     arandr      # screen
     libsecret   # secret-tool
     glib        # gsettings
+    gnome-firmware
   ];
 }

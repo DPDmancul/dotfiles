@@ -11,6 +11,7 @@ GUI for easily manage settings.
     arandr      # screen
     libsecret   # secret-tool
     glib        # gsettings
+    gnome-firmware
   ];
 }
 ```
