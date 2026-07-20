@@ -13,10 +13,6 @@
     };
   };
 
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = 1;
-  };
-
   environment.systemPackages = with pkgs; [
     docker-compose
   ];
@@ -24,4 +20,11 @@
   users.users."dpd-".extraGroups = lib.mkIf config.virtualisation.docker.enable [
     "docker"
   ];
+
+  security.wrappers.docker-rootlesskit = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_net_bind_service+ep";
+    source = "${pkgs.rootlesskit}/bin/rootlesskit";
+  };
 }
