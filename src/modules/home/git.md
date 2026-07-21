@@ -203,6 +203,12 @@ For C code I'm using CCLS with LSP in Neovim. Ignore the files this creates.
 ".directory"
 ```
 
+## Docker
+
+```nix "modules/home/git-ignore" +=
+"docker-compose.override.yml"
+```
+
 ## LLM settings
 
 ```nix "modules/home/git-ignore" +=

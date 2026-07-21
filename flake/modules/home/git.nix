@@ -41,6 +41,7 @@
     ignores = [
       ".ccls-cache/"
       ".directory"
+      "docker-compose.override.yml"
       "**/.claude/settings.local.json"
       "__pycache__"
       ".pytest_cache"
