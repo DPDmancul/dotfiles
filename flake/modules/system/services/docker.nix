@@ -27,4 +27,7 @@
     capabilities = "cap_net_bind_service+ep";
     source = "${pkgs.rootlesskit}/bin/rootlesskit";
   };
+  systemd.user.services.docker.environment = {
+    DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK = "false";
+  };
 }

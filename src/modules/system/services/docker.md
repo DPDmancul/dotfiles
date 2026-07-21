@@ -40,3 +40,13 @@ security.wrappers.docker-rootlesskit = {
   source = "${pkgs.rootlesskit}/bin/rootlesskit";
 };
 ```
+
+## Local loopback
+
+Enable localhost loopback on 10.0.2.2 for rootless docker
+
+```nix "modules/system/services/docker-config" +=
+systemd.user.services.docker.environment = {
+  DOCKERD_ROOTLESS_ROOTLESSKIT_DISABLE_HOST_LOOPBACK = "false";
+};
+```
