@@ -22,6 +22,7 @@
     poppler-utils
     texlivePackages.pdfbook2
     qpdf
+    pdfgrep
     calibre
     jmtpfs # For kindle
     simple-scan

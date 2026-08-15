@@ -36,6 +36,7 @@ ocrmypdf tesseract
 poppler-utils
 texlivePackages.pdfbook2
 qpdf
+pdfgrep
 ```
 
 ### E-books
