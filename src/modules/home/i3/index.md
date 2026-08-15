@@ -145,10 +145,10 @@ xclip
 
 ```sh "modules/home/i3" +=
 services.copyq.enable = true;
-home.activation.config-copyq = lib.hm.dag.entryAfter ["writeBoundary"] (
+home.activation.copyqConfig = lib.hm.dag.entryAfter ["writeBoundary"] (
   lib.concatLines (
     lib.mapAttrsToList (k: v:
-      "run ${config.services.copyq.package}/bin/copyq --start-server config ${k} ${toString v}"
+      "run --quiet ${config.services.copyq.package}/bin/copyq --start-server config ${k} ${toString v} 2> >(grep -v '^Warning: CopyQ server is already running' >&2)"
     )
     {
       disable_tray = true;
