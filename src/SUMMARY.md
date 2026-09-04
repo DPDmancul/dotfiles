@@ -89,6 +89,7 @@
     - [Autorandr](./PereWork/system/autorandr.md)
   - [Home](./PereWork/home/index.md)
     - [git](./PereWork/home/git.md)
+    - [SSH](./PereWork/home/ssh.md)
     - [Firefox](./PereWork/home/firefox.md)
     - [Packages](./PereWork/home/packages.md)
 
