@@ -5,7 +5,12 @@
   ];
 
   home.packages = with pkgs; [
-    nemo
+    (nemo-with-extensions.override {
+      useDefaultExtensions = false;
+      extensions = [
+        nemo-fileroller
+      ];
+    })
     shared-mime-info
     libheif
     libheif.out

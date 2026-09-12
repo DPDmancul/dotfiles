@@ -8,7 +8,12 @@
   ];
 
   home.packages = with pkgs; [
-    nemo
+    (nemo-with-extensions.override {
+      useDefaultExtensions = false;
+      extensions = [
+        nemo-fileroller
+      ];
+    })
     shared-mime-info
     <<<modules/home/packages/nemo-packages>>>
   ];
