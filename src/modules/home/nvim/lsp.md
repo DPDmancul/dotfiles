@@ -62,29 +62,33 @@ Enable some language servers with the additional completion capabilities
 offered by nvim-cmp
 
 ```lua "modules/home/nvim/lsp-config" +=
-local capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function (client, bufnr)
-  local wk = require "which-key"
-  local map = function (from, to, ...)
-    return {
-      from, to, ...,
-      buffer = bufnr,
-      noremap = true,
-      silent = true
-    }
-  end
-  wk.add {
-   <<<modules/home/nvim/keymap-lsp-keybind>>>
+vim.lsp.config(
+  "*",
+  {
+    capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = function (client, bufnr)
+      local wk = require "which-key"
+      local map = function (from, to, ...)
+        return {
+          from, to, ...,
+          buffer = bufnr,
+          noremap = true,
+          silent = true,
+        }
+      end
+      wk.add {
+       <<<modules/home/nvim/keymap-lsp-keybind>>>
+      }
+    end,
   }
-end
+)
+
 local servers = ${lspConfig}
 
 for lsp,cfg in pairs(servers) do
   vim.lsp.enable(lsp)
-  cfg.on_attach = on_attach
-  cfg.capabilities = capabilities
-  if lsp == "rust-tools" then
-    require"rust-tools".setup { server = cfg }
+  if lsp == "rustaceanvim" then
+    vim.lsp.config("rust-analyzer", cfg)
   else
     vim.lsp.config(lsp, cfg)
   end
