@@ -19,6 +19,7 @@
     gnumake
     gcc
   ];
+  networking.hosts."0.0.0.0" = ["get.code-industry.net"];
   environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";

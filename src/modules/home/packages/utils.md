@@ -49,6 +49,12 @@ appDefaultForMimes."okularApplication_pdf.desktop" = {
 };
 ```
 
+Disable master pdf editor looking for updates
+
+```nix "modules/system/packages" +=
+networking.hosts."0.0.0.0" = ["get.code-industry.net"];
+```
+
 ## Drawing
 
 ```nix "modules/home/packages/utils-packages" +=
