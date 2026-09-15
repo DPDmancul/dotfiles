@@ -13,8 +13,14 @@
       url = "github:nix-community/disko/latest";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hardware.url = github:nixos/nixos-hardware;
-    sops-nix.url = github:Mic92/sops-nix;
+    hardware = {
+      url = github:nixos/nixos-hardware;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = github:Mic92/sops-nix;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     feh-random-background = {
       url = github:KoviRobi/feh-random-background/80bc3616bb8fc87225d1447431555230a4bf3b12;
       flake = false;
