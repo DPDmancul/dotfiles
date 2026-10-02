@@ -12,6 +12,7 @@
       useDefaultExtensions = false;
       extensions = [
         nemo-fileroller
+        nemo-zoxide
       ];
     })
     shared-mime-info
