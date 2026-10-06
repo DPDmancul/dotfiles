@@ -12,16 +12,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "nemo-zoxide";
-  version = "1.0.0-rc.1";
+  version = "1.0.0-rc.2";
 
   src = fetchFromGitLab {
     owner = "DPDmancul";
     repo = finalAttrs.pname;
     rev = finalAttrs.version;
-    hash = "sha256-GSMHUIrRWYre5PbKWz0IT4H3CF8kzdWsda+NwJpFxMw=";
+    hash = "sha256-OL9NxMlC3KkYpfuquf/fF6B/KB8K8wtQm3wdoNIcz/I=";
   };
 
-  cargoHash = "sha256-XQTuZQHPNzLP+SsnoS1Fy611vhetfKA2P9xbeON3Q5w=";
+  cargoHash = "sha256-kJmsm6B7UNSv8sWdtnHpnrrmRYzVDYfFwD7ZD22v5rY=";
 
   nativeBuildInputs = [
     pkg-config
