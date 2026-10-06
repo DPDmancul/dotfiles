@@ -12,13 +12,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "nemo-zoxide";
-  version = "0.1.0";
+  version = "1.0.0-rc.1";
 
   src = fetchFromGitLab {
     owner = "DPDmancul";
     repo = finalAttrs.pname;
     rev = finalAttrs.version;
-    hash = "sha256-nJtpv1CLDaWv2FZb3SZREdd5FMmXrhaVIv7Tv+zs4OY=";
+    hash = "sha256-GSMHUIrRWYre5PbKWz0IT4H3CF8kzdWsda+NwJpFxMw=";
   };
 
   cargoHash = "sha256-XQTuZQHPNzLP+SsnoS1Fy611vhetfKA2P9xbeON3Q5w=";
