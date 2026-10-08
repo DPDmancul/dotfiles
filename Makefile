@@ -34,6 +34,12 @@ remove-tangled:
 install update: %: build .delegate-% ;
 install-%: build .delegate-install-%;
 
+.PHONY: update-claude
+update-claude:
+	BASE_URL="https://downloads.claude.ai/claude-code-releases"; \
+		curl -fsSL "$$BASE_URL/$$(curl -fsSL "$$BASE_URL/latest")/manifest.json" --output assets/claude-code.json
+	$(MAKE) install-home
+
 .DEFAULT:
 	@$(MAKE) .delegate-$@
 
