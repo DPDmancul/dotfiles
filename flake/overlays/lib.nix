@@ -1,5 +1,5 @@
-self: super: {
-  lib = super.lib.extend (self: super:
+final: prev: {
+  lib = prev.lib.extend (self: super:
     import ../lib.nix { lib = self; }
   );
 }
