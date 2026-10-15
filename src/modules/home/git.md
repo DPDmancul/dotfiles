@@ -52,7 +52,7 @@ alias = {
 Fix EOL for files written under Windows
 
 ```nix "modules/home/git-settings" +=
-core.autoclrf = "input";
+core.autocrlf = "input";
 ```
 
 ## Default branch

@@ -16,7 +16,6 @@
   in
   [
     #<<<PereWork/home/packages-packages>>>
-    appimage-run
     openvpn
     (writeScriptBin "openvpn_legacy" ''${openvpn_legacy}/bin/openvpn "$@"'')
     openconnect gp-saml-gui

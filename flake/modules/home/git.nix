@@ -21,7 +21,7 @@
         sc = "switch -c";
         rb = "rebase";
       };
-      core.autoclrf = "input";
+      core.autocrlf = "input";
       init.defaultBranch = "main";
       status.showUntrackedFiles = "all";
       fetch = {

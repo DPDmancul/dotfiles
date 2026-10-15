@@ -40,7 +40,7 @@
                 { "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show line diagnostics" },
                 { "<leader>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", desc = "Set loclist" },
                 { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to previous" },
-                { "]d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to next" },
+                { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Go to next" },
               }
               wk.add {
                 { "<leader>be", ht.lsp.buf_eval_all, desc = "Eval buffer" },
