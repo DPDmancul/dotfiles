@@ -41,7 +41,7 @@
               - KEY_CAPSLOCK
               - KEY_RIGHTCTRL
     '';
-    };
+  };
   # services.clamav = {
   #   daemon.enable = true;
   #   updater.enable = true;

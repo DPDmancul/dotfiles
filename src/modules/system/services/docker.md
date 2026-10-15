@@ -1,7 +1,7 @@
 # Docker
 
 ```nix modules/system/services/docker.nix
-{ config, pkgs, lib, assets, ... }:
+{ config, pkgs, lib, users, assets, ... }:
 {
   virtualisation.docker = {
     enable = !config.virtualisation.docker.rootless.enable;
@@ -20,9 +20,11 @@
     docker-compose
   ];
 
-  users.users."dpd-".extraGroups = lib.mkIf config.virtualisation.docker.enable [
-    "docker"
-  ];
+  users.users = lib.genAttrs users (user: {
+    extraGroups = [
+      "docker"
+    ];
+  });
 
   <<<modules/system/services/docker-config>>>
 }

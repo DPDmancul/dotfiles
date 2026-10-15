@@ -87,7 +87,7 @@ services.interception-tools = {
           EV_KEY:
             <<<interception-tools-keys>>>
   '';
-  };
+};
 ```
 
 ### Better capslock
