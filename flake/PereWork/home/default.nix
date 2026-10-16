@@ -2,6 +2,7 @@
 {
   imports = [
     /${modules}/home
+    ./i3.nix
     ./git.nix
     ./ssh.nix
     ./firefox.nix
