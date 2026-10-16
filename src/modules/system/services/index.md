@@ -136,6 +136,15 @@ services.autorandr = {
 };
 ```
 
+Debounce events (useful for daisy chain):
+
+```nix "modules/system/services" +=
+systemd.services.autorandr = {
+  startLimitIntervalSec = lib.mkForce 0;
+  serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+};
+```
+
 ## Backlight control
 
 ```nix "modules/system/services-packages" +=

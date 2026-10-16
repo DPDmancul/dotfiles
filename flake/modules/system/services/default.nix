@@ -50,6 +50,10 @@
     enable = true;
     defaultTarget = "horizontal";
   };
+  systemd.services.autorandr = {
+    startLimitIntervalSec = lib.mkForce 0;
+    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+  };
   programs.nix-ld.enable = true;
   services.fwupd.enable = true;
 
