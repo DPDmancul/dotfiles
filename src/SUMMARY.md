@@ -88,6 +88,7 @@
     - [Users](./PereWork/system/users.md)
     - [Autorandr](./PereWork/system/autorandr.md)
   - [Home](./PereWork/home/index.md)
+    - [i3](./PereWork/home/i3.md)
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)
     - [Firefox](./PereWork/home/firefox.md)
