@@ -12,7 +12,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "nemo-zoxide";
-  version = "1.0.0-rc.2";
+  version = "1.0.0";
 
   src = fetchFromGitLab {
     owner = "DPDmancul";
