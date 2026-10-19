@@ -42,7 +42,7 @@
     '';
     shellAliases = {
       df = "df -h"; # Human-readable sizes
-      free = "free -m"; # Show sizes in MB
+      free = "free -h"; # Human-readable sizes
       gitu = "git add . && git commit && git push";
       nv = "nvim";
       mk = "make";
