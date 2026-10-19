@@ -38,7 +38,6 @@
       };
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
-      DisablePocket = true;
       "3rdparty".Extensions."uBlock0@raymondhill.net" = {
         userSettings = [
           [ "cloudStorageEnabled" "true" ]
@@ -174,7 +173,6 @@
         "toolkit.telemetry.bhrPing.enabled" = false;
         "toolkit.telemetry.enabled" = false;
         "toolkit.telemetry.firstShutdownPing.enabled" = false;
-        "toolkit.telemetry.hybridContent.enabled" = false;
         "toolkit.telemetry.newProfilePing.enabled" = false;
         "toolkit.telemetry.reportingpolicy.firstRun" = false;
         "toolkit.telemetry.shutdownPingSender.enabled" = false;
@@ -184,12 +182,6 @@
         "browser.newtabpage.activity-stream.discoverystream.sponsored-collections.enabled" = false;
         "browser.newtabpage.activity-stream.showSponsored" = false;
         "browser.search.suggest.enabled" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "";
         "browser.uidensity" = 1;
         "browser.tabs.inTitlebar" = 0;
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;

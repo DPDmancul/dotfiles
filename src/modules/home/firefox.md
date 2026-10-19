@@ -186,7 +186,6 @@ DisableFirefoxStudies = true;
 "toolkit.telemetry.bhrPing.enabled" = false;
 "toolkit.telemetry.enabled" = false;
 "toolkit.telemetry.firstShutdownPing.enabled" = false;
-"toolkit.telemetry.hybridContent.enabled" = false;
 "toolkit.telemetry.newProfilePing.enabled" = false;
 "toolkit.telemetry.reportingpolicy.firstRun" = false;
 "toolkit.telemetry.shutdownPingSender.enabled" = false;
@@ -213,23 +212,6 @@ Use DuckDuckGo as search engine
 ```nix "modules/home/firefox-profile" +=
 search.default = "ddg";
 search.privateDefault = "ddg";
-```
-
-### Pocket
-
-Disable unused Pocket
-
-```nix "modules/home/firefox-policies" +=
-DisablePocket = true;
-```
-
-```nix "modules/home/firefox-settings" +=
-"browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-"extensions.pocket.enabled" = false;
-"extensions.pocket.api" = "";
-"extensions.pocket.oAuthConsumerKey" = "";
-"extensions.pocket.showHome" = false;
-"extensions.pocket.site" = "";
 ```
 
 ## Extensions
