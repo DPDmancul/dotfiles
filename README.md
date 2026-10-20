@@ -41,7 +41,7 @@ Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/nix/fla
 
 ## Without tangling
 
-Download [tangled dotfiles](https://gitlab.com/DPDmancul/dotfiles/-/tree/flake) and follow the instructions.
+Download [tangled dotfiles](flake/) and follow the instructions.
 
 <!-- ANCHOR_END: content -->
 
