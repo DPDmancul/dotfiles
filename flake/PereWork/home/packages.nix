@@ -26,7 +26,7 @@
     unfree.postman
     bruno
     wireshark
-    unfree.claude-code
+    # <<<PereWork/home/packages-packages>>>
   ];
 
   #<<<PereWork/home/packages>>>

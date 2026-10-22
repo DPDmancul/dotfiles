@@ -29,15 +29,10 @@
     unfree.postman
     bruno
     wireshark
-    <<<PereWork/home/packages-packages>>>
+    # <<<PereWork/home/packages-packages>>>
   ];
 
   #<<<PereWork/home/packages>>>
 }
 ```
 
-## LLMs
-
-```nix "PereWork/home/packages-packages" +=
-unfree.claude-code
-```
