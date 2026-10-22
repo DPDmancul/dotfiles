@@ -9,6 +9,7 @@
     ./git.nix
     ./ssh.nix
     ./firefox.nix
+    ./claude.nix
     # /${modules}/home/packages/qemu.nix
     ./packages.nix
   ];

@@ -92,5 +92,6 @@
     - [git](./PereWork/home/git.md)
     - [SSH](./PereWork/home/ssh.md)
     - [Firefox](./PereWork/home/firefox.md)
+    - [Claude](./PereWork/home/claude.md)
     - [Packages](./PereWork/home/packages.md)
 
