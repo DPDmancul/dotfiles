@@ -48,6 +48,7 @@
     - [git](./modules/home/git.md)
     - [SSH](./modules/home/ssh.md)
     - [GnuPG](./modules/home/gpg.md)
+    - [Canaries](./modules/home/canaries.md)
     - [Packages](./modules/home/packages/index.md)
       - [Utilities](./modules/home/packages/utils.md)
       - [Settings](./modules/home/packages/settings.md)

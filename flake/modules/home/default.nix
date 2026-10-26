@@ -13,6 +13,7 @@
     ./git.nix
     ./ssh.nix
     ./gpg.nix
+    ./canaries.nix
     ./packages
   ];
 

@@ -20,6 +20,7 @@ In this folder there are also some useful modules used only by some user configs
     ./git.nix
     ./ssh.nix
     ./gpg.nix
+    ./canaries.nix
     ./packages
   ];
 
