@@ -33,28 +33,6 @@
     image = [ "vnd.djvu" "x.djvu" ];
   };
   appDefaultForMimes."org.gnome.Loupe.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" "heic" "heif" "webp" ];
-  programs.mpv = {
-    enable = true;
-    config = {
-      osd-scale-by-window = false;
-    };
-  };
-  appDefaultForMimes."umpv.desktop" = {
-    video = [
-      "avi" "msvideo" "x-msvideo"
-      "mpeg" "x-mpeg" "mp4" "H264" "H265" "x-matroska"
-      "ogg"
-      "quicktime"
-      "webm"
-    ];
-    audio = [
-      "aac" "flac"
-      "mpeg" "mpeg3" # mp3
-      "ogg" "vorbis" "opus" "x-opus+ogg"
-      "wav" "x-wav"
-      "audio/x-ms-wma"
-    ];
-  };
   programs.tealdeer = {
     enable = true;
     settings = {

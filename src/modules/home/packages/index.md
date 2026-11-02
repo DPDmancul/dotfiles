@@ -10,6 +10,7 @@ This is a collection of common packages and related integration with other progr
     ./settings.nix
     ./libreoffice.nix
     ./nemo.nix
+    ./mpv.nix
   ];
 }
 ```

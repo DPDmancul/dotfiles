@@ -54,6 +54,7 @@
       - [Settings](./modules/home/packages/settings.md)
       - [LibreOffice](./modules/home/packages/libreoffice.md)
       - [Nemo (file manager)](./modules/home/packages/nemo.md)
+      - [mpv (player)](./modules/home/packages/mpv.md)
       - [Qemu](./modules/home/packages/qemu.md)
       - [LaTeX](./modules/home/packages/latex.md)
       - [Lilypond](./modules/home/packages/lilypond.md)

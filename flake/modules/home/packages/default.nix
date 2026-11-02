@@ -5,5 +5,6 @@
     ./settings.nix
     ./libreoffice.nix
     ./nemo.nix
+    ./mpv.nix
   ];
 }
