@@ -76,7 +76,12 @@ appDefaultForMimes."org.gnome.Loupe.desktop".image = [ "png" "jpeg" "jpg" "gif" 
 ## Video and audio player
 
 ```nix "modules/home/packages/utils" +=
-programs.mpv.enable = true;
+programs.mpv = {
+  enable = true;
+  config = {
+    osd-scale-by-window = false;
+  };
+};
 ```
 
 ```nix "modules/home/packages/utils" +=

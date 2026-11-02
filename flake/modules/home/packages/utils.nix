@@ -33,7 +33,12 @@
     image = [ "vnd.djvu" "x.djvu" ];
   };
   appDefaultForMimes."org.gnome.Loupe.desktop".image = [ "png" "jpeg" "jpg" "gif" "svg" "svg+xml" "tiff" "x-tiff" "x-dcraw" "heic" "heif" "webp" ];
-  programs.mpv.enable = true;
+  programs.mpv = {
+    enable = true;
+    config = {
+      osd-scale-by-window = false;
+    };
+  };
   appDefaultForMimes."umpv.desktop" = {
     video = [
       "avi" "msvideo" "x-msvideo"
