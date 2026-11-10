@@ -12,6 +12,8 @@
     };
     <<<PereWork/home/claude-config>>>
   };
+
+  <<<PereWork/home/claude>>>
 }
 ```
 
@@ -29,6 +31,34 @@ final: prev: {
         else prev.claude-code.override { inherit manifest; }
       );
 }
+```
+
+## Merge with claude code settings
+
+Claude code writes often to the settings file, even to set session settings (don't know why, maybe a bug).
+So we cannot use a readonly config file.
+Instead we merge our config to the one of claude code.
+
+```nix "PereWork/home/claude" +=
+home =
+  let
+    inherit (config.programs.claude-code) configDir;
+    settings = "${configDir}/settings.json";
+    nixSettings = config.home.file.${settings}.source;
+  in {
+    file.${settings}.enable = lib.mkForce false;
+
+    activation.claudeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "${configDir}"
+
+      if [ -f "$settings" ]; then
+        ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "${settings}" ${nixSettings} > "${settings}.tmp" \
+          && mv "${settings}.tmp" "${settings}"
+      else
+        install -m 644 ${nixSettings} "${settings}"
+      fi
+    '';
+  };
 ```
 
 ## Base settings
