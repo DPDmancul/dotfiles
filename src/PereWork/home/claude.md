@@ -51,7 +51,7 @@ home =
     activation.claudeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       mkdir -p "${configDir}"
 
-      if [ -f "$settings" ]; then
+      if [ -f "${settings}" ]; then
         ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "${settings}" ${nixSettings} > "${settings}.tmp" \
           && mv "${settings}.tmp" "${settings}"
       else
