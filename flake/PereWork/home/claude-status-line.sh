@@ -5,17 +5,24 @@ input=$(cat)
 
 # Extract rate limit data
 five_hour_used=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+five_hour_resets_at=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 weekly_used=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+weekly_resets_at=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 # Extract model and workspace info
 model=$(echo "$input" | jq -r '.model.display_name // "Claude"')
+effort=$(echo "$input" | jq -r '.effort.level // empty')
 workspace=$(echo "$input" | jq -r '.workspace.current_dir // ""')
 
 # Build status line parts
 parts=()
 
 # Add model name
-parts+=("$model")
+if [ -n "$effort" ]; then
+    parts+=("$model $effort")
+else
+  parts+=("$model")
+fi
 
 # Add workspace (show directory name if available)
 if [ -n "$workspace" ]; then
@@ -26,10 +33,22 @@ fi
 # Add rate limits if available
 # Format: 5h: X% | 7d: Y%
 if [ -n "$five_hour_used" ]; then
-    parts+=("5h: ${five_hour_used}%")
+    part="5h: ${five_hour_used}%"
+
+    if [ -n "five_hour_resets_at" ]; then
+      part="$part ($(date -d @"$five_hour_resets_at" +%H:%M))"
+    fi
+
+    parts+=("$part")
 fi
 if [ -n "$weekly_used" ]; then
-    parts+=("7d: ${weekly_used}%")
+    part="7d: ${weekly_used}%"
+
+    if [ -n "weekly_resets_at" ]; then
+      part="$part ($(date -d @"$weekly_resets_at" '+%a %d/%m %H:%m'))"
+    fi
+
+    parts+=("$part")
 fi
 
 # Join parts with " | "
