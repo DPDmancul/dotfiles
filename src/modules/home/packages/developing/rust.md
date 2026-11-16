@@ -18,14 +18,6 @@
 ## Neovim support
 
 ```nix "modules/home/packages/developing/rust" +=
-programs.neovim.plugins = with pkgs.vimPlugins; [
-  rustaceanvim
-];
-nvimLSP.rustaceanvim = {
-  packages = with pkgs; [
-    rust-analyzer
-    clippy
-  ];
-};
+nvimLSP.rust_analyzer = pkgs.rust-analyzer;
 ```
 

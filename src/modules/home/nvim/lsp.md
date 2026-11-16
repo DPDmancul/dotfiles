@@ -66,32 +66,36 @@ vim.lsp.config(
   "*",
   {
     capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = function (client, bufnr)
-      local wk = require "which-key"
-      local map = function (from, to, ...)
-        return {
-          from, to, ...,
-          buffer = bufnr,
-          noremap = true,
-          silent = true,
-        }
-      end
-      wk.add {
-       <<<modules/home/nvim/keymap-lsp-keybind>>>
-      }
-    end,
   }
 )
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local bufnr = args.buf
+
+    local wk = require("which-key")
+
+    local map = function(from, to, ...)
+      return {
+        from, to, ...,
+        buffer = bufnr,
+        noremap = true,
+        silent = true,
+      }
+    end
+
+    wk.add {
+      <<<modules/home/nvim/keymap-lsp-keybind>>>
+    }
+  end,
+})
 
 local servers = ${lspConfig}
 
 for lsp,cfg in pairs(servers) do
   vim.lsp.enable(lsp)
-  if lsp == "rustaceanvim" then
-    vim.lsp.config("rust-analyzer", cfg)
-  else
-    vim.lsp.config(lsp, cfg)
-  end
+  vim.lsp.config(lsp, cfg)
 end
 ```
 
