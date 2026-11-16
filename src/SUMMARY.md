@@ -58,7 +58,7 @@
       - [Qemu](./modules/home/packages/qemu.md)
       - [LaTeX](./modules/home/packages/latex.md)
       - [Lilypond](./modules/home/packages/lilypond.md)
-      - [Developing]()
+      - [Developing](./modules/home/packages/developing/index.md)
         - [Agda](./modules/home/packages/developing/agda.md)
         - [DotNet](./modules/home/packages/developing/dotnet.md)
           - [Rider](./modules/home/packages/developing/rider.md)

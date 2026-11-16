@@ -6,5 +6,6 @@
     ./libreoffice.nix
     ./nemo.nix
     ./mpv.nix
+    ./developing
   ];
 }

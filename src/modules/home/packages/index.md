@@ -11,6 +11,7 @@ This is a collection of common packages and related integration with other progr
     ./libreoffice.nix
     ./nemo.nix
     ./mpv.nix
+    ./developing
   ];
 }
 ```
