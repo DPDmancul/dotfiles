@@ -38,6 +38,14 @@
       - When Python is needed, run it through Nix, e.g. `nix-shell -p python3 --run "python3 script.py"`.
       - For Python packages, add them to the same shell: `nix-shell -p "python3.withPackages (ps: [ ps.requests ps.pyyaml ])" --run "python3 script.py"`.
       - The same applies to any other missing tool: use `nix-shell -p <package> --run "<cmd>"` instead of installing it.
+
+      # No backslashes in paths
+
+      Never create files or folders whose name contains a backslash (e.g. `bin\Debug`): this is Linux, `/` is the separator.
+      Some .NET tools (notably `dotnet ef`) join paths with `\` and leave such folders behind. After running any `dotnet ef`
+      (or other .NET tool) command, run `find . -name '*\\*' -not -path './.git/*'` and delete what it reports, before
+      doing anything else.
+
     '';
   };
 
