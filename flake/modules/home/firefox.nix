@@ -30,6 +30,7 @@
         "uBlock0@raymondhill.net" = ext "ublock-origin";
       };
       PasswordManagerEnabled = false;
+      AutofillCreditCardEnabled = false;
       EnableTrackingProtection = {
         Value = true;
         Locked = true;

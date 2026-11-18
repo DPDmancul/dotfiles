@@ -91,6 +91,7 @@ Disable password manager
 
 ```nix "modules/home/firefox-policies" +=
 PasswordManagerEnabled = false;
+AutofillCreditCardEnabled = false;
 ```
 
 Enable hardware video acceleration
