@@ -35,7 +35,6 @@ with lib.generators;
     programs.neovim = with lib; {
       extraPackages = concatMap (getAttr "packages") (attrValues config.nvimLSP);
       plugins = with pkgs.vimPlugins; [
-        cmp-nvim-lsp
         {
           plugin = nvim-lspconfig;
           type = "lua";
@@ -47,7 +46,7 @@ with lib.generators;
             vim.lsp.config(
               "*",
               {
-                capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+                capabilities = require"blink.cmp".get_lsp_capabilities(),
               }
             )
 
@@ -84,9 +83,9 @@ with lib.generators;
                   { "<leader>cf", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", desc = "Format buffer" },
                   { "<leader>cl", "<cmd>lua vim.lsp.codelens.run()<CR>", desc = "Code lens" },
                   { "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", desc = "Show line diagnostics" },
-                  { "<leader>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", desc = "Set loclist" },
-                  { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Go to previous" },
-                  { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Go to next" },
+                  { "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", desc = "Set loclist" },
+                  { "[d", function() vim.diagnostic.jump{ count = -1 } end, desc = "Go to previous" },
+                  { "]d", function() vim.diagnostic.jump{ count = 1 } end, desc = "Go to next" },
                 }
               end,
             })

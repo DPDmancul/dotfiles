@@ -40,7 +40,6 @@ with lib.generators;
     programs.neovim = with lib; {
       extraPackages = concatMap (getAttr "packages") (attrValues config.nvimLSP);
       plugins = with pkgs.vimPlugins; [
-        cmp-nvim-lsp
         {
           plugin = nvim-lspconfig;
           type = "lua";
@@ -59,13 +58,13 @@ with lib.generators;
 ```
 
 Enable some language servers with the additional completion capabilities
-offered by nvim-cmp
+offered by blink.cmp
 
 ```lua "modules/home/nvim/lsp-config" +=
 vim.lsp.config(
   "*",
   {
-    capabilities = require"cmp_nvim_lsp".default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require"blink.cmp".get_lsp_capabilities(),
   }
 )
 

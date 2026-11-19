@@ -91,11 +91,6 @@
         '';
       }
       {
-        plugin = wilder-nvim;
-        config = "call wilder#setup({'modes': [':', '/', '?']})";
-        type = "viml";
-      }
-      {
         plugin = toggleterm-nvim;
         type = "lua";
         config = ''

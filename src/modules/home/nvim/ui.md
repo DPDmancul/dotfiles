@@ -166,13 +166,7 @@ require"bufferline".setup {
 
 ## Command and search completion
 
-```nix "modules/home/nvim/ui-plugins" +=
-{
-  plugin = wilder-nvim;
-  config = "call wilder#setup({'modes': [':', '/', '?']})";
-  type = "viml";
-}
-```
+Provided by blink.cmp (see [Language support](./lang.md)).
 
 ## Toggle terminal
 
