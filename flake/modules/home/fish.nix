@@ -8,15 +8,6 @@
     enable = true;
     plugins = [
       {
-        name = "base16-fish";
-        src = pkgs.fetchFromGitHub {
-          owner = "tomyun";
-          repo = "base16-fish";
-          rev = "2f6dd97";
-          sha256 = "PebymhVYbL8trDVVXxCvZgc0S5VxI7I1Hv4RMSquTpA=";
-        };
-      }
-      {
         name = "fish-colored-man";
         src = pkgs.fetchFromGitHub {
           owner = "decors";
@@ -31,8 +22,26 @@
       set fish_cursor_default block blink
       set fish_cursor_insert line blink
       set fish_cursor_replace_one underscore blink
-      base16-gruvbox-light-medium
-      set -x BAT_THEME gruvbox-light
+      set -g fish_color_normal 080808
+      set -g fish_color_command 00627A
+      set -g fish_color_keyword 0033B3
+      set -g fish_color_param 000000
+      set -g fish_color_option 871094
+      set -g fish_color_quote 067D17
+      set -g fish_color_escape 0037A6
+      set -g fish_color_redirection 080808
+      set -g fish_color_end 080808
+      set -g fish_color_operator 080808
+      set -g fish_color_comment 8C8C8C --italics
+      set -g fish_color_error F50000
+      set -g fish_color_autosuggestion 8C8C8C
+      set -g fish_color_valid_path --underline
+      set -g fish_color_search_match --background=EDF3FF
+      set -g fish_color_selection --background=EDF3FF
+      set -g fish_pager_color_prefix 0033B3 --bold
+      set -g fish_pager_color_completion 000000
+      set -g fish_pager_color_description 8C8C8C
+      set -g fish_pager_color_progress 6C707E
       set -g man_blink -o red
       set -g man_bold -o green
       set -g man_standout -b cyan black

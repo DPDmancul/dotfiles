@@ -22,10 +22,10 @@
       vim-numbertoggle
       lush-nvim
       {
-        plugin = gruvbox-nvim;
+        plugin = jb-nvim;
         config = ''
           set background=light
-          colorscheme gruvbox
+          colorscheme jb
         '';
         type = "viml";
       }

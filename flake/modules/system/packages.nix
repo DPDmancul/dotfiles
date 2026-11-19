@@ -26,5 +26,4 @@
   };
   programs.fish.enable = true;
   users.defaultUserShell = pkgs.fish;
-  programs.bat.enable = true; # cat with syntax highlighting
 }

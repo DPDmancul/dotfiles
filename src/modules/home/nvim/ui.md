@@ -61,15 +61,15 @@ set conceallevel=0 "2
 
 ## Theme
 
-Use Gruvbox light theme 
+Use [JB](https://github.com/nickkadutskyi/jb.nvim) light theme.
 
 ```nix "modules/home/nvim/ui-plugins" +=
 lush-nvim
 {
-  plugin = gruvbox-nvim;
+  plugin = jb-nvim;
   config = ''
     set background=light
-    colorscheme gruvbox
+    colorscheme jb
   '';
   type = "viml";
 }

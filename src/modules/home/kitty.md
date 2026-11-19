@@ -18,9 +18,10 @@
 ```nix "modules/home/kitty-config" +=
 font = {
   name = "jetbrainsmono nerd font";
-  size = 10;
+  size = 13 * 72.0 / 96; # 13px @ 96 DPI (72 pt/in)
 };
-settings.text_composition_strategy = "1.3"; # useful for light themes
+# gamma 1.15 (thicker text, useful for light themes), contrast 20% (crisper edges)
+settings.text_composition_strategy = "1.15 20";
 ```
 
 Do not use curly style for urls
@@ -31,40 +32,10 @@ settings.url_style = "single";
 
 ### Colors
 
-Gruvbox light
+JB light
 
 ```nix "modules/home/kitty-config" +=
-settings = {
-  cursor                  = "#928374";
-  background              = "#fbf1c7";
-  foreground              = "#282828";
-  selection_foreground    = "#665c54";
-  selection_background    = "#d5c4a1";
-  # white
-  color0                  = "#fbf1c7";
-  color8                  = "#9d8374";
-  # red
-  color1                  = "#cc241d";
-  color9                  = "#9d0006";
-  # green
-  color2                  = "#98971a";
-  color10                 = "#79740e";
-  # yellow
-  color3                  = "#d79921";
-  color11                 = "#b57614";
-  # blue
-  color4                  = "#458588";
-  color12                 = "#076678";
-  # purple
-  color5                  = "#b16286";
-  color13                 = "#8f3f71";
-  # aqua
-  color6                  = "#689d6a";
-  color14                 = "#427b58";
-  # black
-  color7                  = "#7c6f64";
-  color15                 = "#3c3836";
-};
+extraConfig = "include ${pkgs.jb-nvim}/extras/kitty/light-theme.auto.conf";
 ```
 
 Light theme for newt tuis (e.g. nmtui).  
@@ -97,16 +68,6 @@ home.sessionVariables.NEWT_COLORS_FILE = pkgs.writeText "newt_colors"
   actsellistbox=black,blue
   sellistbox=white,black
   '';
-```
-
-#### Tabs
-
-```nix "modules/home/kitty-config" +=
-settings = {
-  active_tab_background   = "#fbf1c7";
-  inactive_tab_background = "#d5c4a1";
-  tab_bar_background      = "none";
-};
 ```
 
 #### Title bar

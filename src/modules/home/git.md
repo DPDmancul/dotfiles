@@ -142,7 +142,8 @@ programs.delta = {
     features = "interactive";
     wrap-max-lines = "unlimited";
     max-line-length = 2048;
-    syntax-theme = "gruvbox-light";
+    syntax-theme = "jb-light";
+    light = true;
   };
 };
 ```
@@ -169,8 +170,9 @@ programs.lazygit = {
   settings = {
     gui = {
       theme = {
-        selectedLineBgColor = [ "#d5c4a1" ];
-        selectedRangeBgColor = [ "#d5c4a1" ];
+        # jb.nvim
+        selectedLineBgColor = [ "#D7E1FC" ];
+        selectedRangeBgColor = [ "#D7E1FC" ];
       };
       showIcons = true;
     };

@@ -21,4 +21,6 @@
       ];
     };
   };
+  # jb.nvim light theme
+  home.sessionVariables.FZF_DEFAULT_OPTS_FILE = "${pkgs.jb-nvim}/extras/fzf/jb-light.fzfrc";
 }

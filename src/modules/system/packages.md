@@ -44,10 +44,6 @@ bottom
 
 #### Utilities
 
-```nix "modules/system/packages" +=
-programs.bat.enable = true; # cat with syntax highlighting
-```
-
 ```nix "modules/system/packages-packages" +=
 lsd      # ls with colors and icons (TODO config)
 fd       # faster find

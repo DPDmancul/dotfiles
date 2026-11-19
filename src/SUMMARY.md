@@ -31,6 +31,7 @@
       - [Fish (shell)](./modules/home/fish.md)
       - [Starship](./modules/home/starship.md)
       - [fzf](./modules/home/fzf.md)
+      - [bat](./modules/home/bat.md)
       - [Zoxide](./modules/home/zoxide.md)
     - [Neovim](./modules/home/nvim/index.md)
       - [UI](./modules/home/nvim/ui.md)

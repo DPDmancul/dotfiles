@@ -4,6 +4,7 @@
     ./kitty.nix
     ./fish.nix
     ./fzf.nix
+    ./bat.nix
     ./zoxide.nix
     ./nvim
     ./i3
