@@ -76,4 +76,6 @@
   home.packages = with pkgs; [
     neovim-remote
   ];
+
+  programs.lazygit.settings.os.editPreset = "nvim-remote";
 }

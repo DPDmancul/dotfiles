@@ -102,7 +102,6 @@ local lazygit = require"toggleterm.terminal".Terminal:new {
   on_open = function(term)
     term.old_laststatus = vim.opt_local.laststatus
     vim.opt_local.laststatus = 0
-    vim.opt_local.signcolumn = "no"
     pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
   end,
   on_close = function(term)
@@ -115,13 +114,17 @@ end
 vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
 ```
 
-Use NeoVim remote to open git message edit
+Use NeoVim remote to edit files from lazygit
 
 ```nix "modules/home/nvim-main" +=
 home.packages = with pkgs; [
   neovim-remote
 ];
+
+programs.lazygit.settings.os.editPreset = "nvim-remote";
 ```
+
+Use NeoVim remote to open git message edit
 
 ```vim "modules/home/nvim-config" +=
 let $GIT_EDITOR = 'nvr -cc split --remote-wait'
