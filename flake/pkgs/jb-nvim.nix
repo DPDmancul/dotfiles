@@ -2,12 +2,12 @@
 
 vimUtils.buildVimPlugin {
   pname = "jb-nvim";
-  version = "0-unstable-2026-11-06";
+  version = "0-unstable-2026-11-24";
   src = fetchFromGitHub {
     owner = "nickkadutskyi";
     repo = "jb.nvim";
-    rev = "27c1fb3204463bdb02497152926a820e8ad2bb0b";
-    hash = "sha256-EgLomrQ3Icqa+90XJER/ZjdEz5avWKoyxcZBSbbFL08=";
+    rev = "5fa87f58164030687f8e58d5616357297803a3c8";
+    hash = "sha256-xL3uyx/0Usf82oN7e4CsNZTahpR0v3InhbLrLdaQ3zI=";
   };
   doCheck = false;
 }
