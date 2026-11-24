@@ -90,9 +90,19 @@ lualine-lsp-progress
   '';
 }
 ```
+
+The jb lualine theme expects the project name in section `a` and the mode in
+section `z`. Here the mode is in `a` and there is no project component.
+
 ```lua "modules/home/nvim/ui-lualine" +=
+local jb_theme = vim.deepcopy(require"lualine.themes.jb")
+for _, mode in pairs(jb_theme) do
+  mode.a, mode.z = mode.z, "CustomStatusLine"
+end
+
 require"lualine".setup {
   options = {
+    theme = jb_theme,
     section_separators = {
       left = "",
       right = ""

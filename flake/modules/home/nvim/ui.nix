@@ -34,8 +34,14 @@
         plugin = lualine-nvim;
         type = "lua";
         config = ''
+          local jb_theme = vim.deepcopy(require"lualine.themes.jb")
+          for _, mode in pairs(jb_theme) do
+            mode.a, mode.z = mode.z, "CustomStatusLine"
+          end
+
           require"lualine".setup {
             options = {
+              theme = jb_theme,
               section_separators = {
                 left = "",
                 right = ""
@@ -94,6 +100,24 @@
         plugin = toggleterm-nvim;
         type = "lua";
         config = ''
+          local lazygit = require"toggleterm.terminal".Terminal:new {
+            cmd = "lazygit",
+            hidden = true,
+            count = 0,
+            direction = "tab",
+            on_open = function(term)
+              term.old_laststatus = vim.opt_local.laststatus
+              vim.opt_local.laststatus = 0
+              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
+            end,
+            on_close = function(term)
+              vim.opt_local.laststatus = term.old_laststatus
+            end
+          }
+          function lazygit_toggle()
+            lazygit:toggle()
+          end
+          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
           require"toggleterm".setup {
             open_mapping = [[<c-\>]],
             shade_terminals = false
@@ -117,24 +141,6 @@
           end
 
           vim.cmd "autocmd! TermOpen term://* lua set_terminal_keymaps()"
-          local lazygit = require"toggleterm.terminal".Terminal:new {
-            cmd = "lazygit",
-            hidden = true,
-            count = 0,
-            direction = "tab",
-            on_open = function(term)
-              term.old_laststatus = vim.opt_local.laststatus
-              vim.opt_local.laststatus = 0
-              pcall(vim.api.nvim_buf_del_keymap, term.bufnr, "t", "<esc>")
-            end,
-            on_close = function(term)
-              vim.opt_local.laststatus = term.old_laststatus
-            end
-          }
-          function lazygit_toggle()
-            lazygit:toggle()
-          end
-          vim.api.nvim_create_user_command("Lazygit", lazygit_toggle, {})
         '';
       }
       {
