@@ -27,6 +27,12 @@
     appimage-run
     localsend
   ];
+  programs.bottom = {
+    enable = true;
+    settings = {
+      styles.theme = "nord-light";
+    };
+  };
   appDefaultForMimes."org.gnome.FileRoller.desktop".application = [ "zip" "rar" "7z" "x-tar" "x-gtar" "gnutar" ];
   appDefaultForMimes."okularApplication_pdf.desktop" = {
     application = "pdf";

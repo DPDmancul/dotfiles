@@ -14,6 +14,17 @@
 }
 ```
 
+## Task manager
+
+```nix "modules/home/packages/utils" +=
+programs.bottom = {
+  enable = true;
+  settings = {
+    styles.theme = "nord-light";
+  };
+};
+```
+
 ## Archive manager
 
 File roller, when needing a terminal, doesn't look for kitty.
