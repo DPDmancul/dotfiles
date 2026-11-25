@@ -31,6 +31,7 @@ Managing the config with flakes allows to pin source versions.
         modules = ./modules;
       };
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.doubles.all;
+      lib = inputs.nixpkgs.lib;
     in
     rec {
       <<<flake-outputs>>>
@@ -112,70 +113,64 @@ legacyPackages = forAllSystems (system:
 ### System config
 
 ```nix "flake-outputs" +=
-nixosConfigurations = builtins.listToAttrs (map
-  (machine: {
-    name = machine.host;
-    value = nixpkgs.lib.nixosSystem
-      rec {
-        inherit (machine) system;
-        pkgs = legacyPackages.${machine.system};
-        modules = [
-          inputs.sops-nix.nixosModules.sops
-          inputs.disko.nixosModules.disko
-          { networking.hostName = machine.host; }
-          ./${machine.host}/system
-        ];
-        specialArgs = args // {
-          inherit (machine) users;
-          lib = pkgs.lib.extend (self: super: import ./lib.nix { lib = self; });
-        };
+nixosConfigurations = lib.genAttrs' machines (machine: {
+  name = machine.host;
+  value = nixpkgs.lib.nixosSystem
+    rec {
+      inherit (machine) system;
+      pkgs = legacyPackages.${machine.system};
+      modules = [
+        inputs.sops-nix.nixosModules.sops
+        inputs.disko.nixosModules.disko
+        { networking.hostName = machine.host; }
+        ./${machine.host}/system
+        inputs.home-manager.nixosModules.home-manager
+        {
+          <<<flake-outputs-home-manager>>>
+        }
+      ];
+      specialArgs = args // {
+        inherit (machine) users;
+        lib = pkgs.lib.extend (self: super: import ./lib.nix { lib = self; });
       };
-  })
-  machines);
-```
-
-### Home-manager config
-
-```nix "flake-outputs" +=
-homeConfigurations = builtins.listToAttrs (builtins.concatMap
-  (machine: map
-    (user: {
-      name = "${user}@${machine.host}";
-      value = inputs.home-manager.lib.homeManagerConfiguration
-        rec {
-          pkgs = legacyPackages.${machine.system};
-          modules =
-            let
-              cfg-path = ./${machine.host}/${user};
-            in
-            [
-              (
-                if builtins.pathExists cfg-path then
-                  cfg-path
-                else ./${machine.host}/home
-              )
-            ];
-          extraSpecialArgs = args // {
-            inherit user;
-            lib = pkgs.lib.extend (self: super:
-              inputs.home-manager.lib //
-                import ./lib.nix { lib = self; }
-            );
-          };
-        };
-    })
-    machine.users)
-  machines);
-```
-
-## Home manager
-
-Use home manager from its flake
-
-```nix "flake-outputs" +=
-apps.home-manager = forAllSystems (system: {
-  type = "app";
-  program = "${inputs.home-manager.packages.${system}.home-manager}/bin/home-manager";
+    };
 });
+```
+
+### Home-manager
+
+```nix "flake-outputs-home-manager" +=
+home-manager.useGlobalPkgs = true;
+home-manager.useUserPackages = true;
+home-manager.extraSpecialArgs = args // {
+  lib = pkgs.lib.extend (self: super:
+    inputs.home-manager.lib //
+      import ./lib.nix { lib = self; }
+  );
+};
+```
+
+#### Backup files
+
+```nix "flake-outputs-home-manager" +=
+home-manager.backupFileExtension = "bkp";
+home-manager.overwriteBackup = true;
+```
+
+#### Config
+
+```nix "flake-outputs-home-manager" +=
+home-manager.users = lib.genAttrs machine.users (user:
+  let
+    cfg-path = ./${machine.host}/${user};
+  in {
+    _module.args.user = user;
+    imports = [
+      (if builtins.pathExists cfg-path
+        then cfg-path
+        else ./${machine.host}/home)
+    ];
+  }
+);
 ```
 

@@ -52,6 +52,7 @@
         modules = ./modules;
       };
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.doubles.all;
+      lib = inputs.nixpkgs.lib;
     in
     rec {
       legacyPackages = forAllSystems (system:
@@ -85,58 +86,48 @@
             ];
         }
       );
-      nixosConfigurations = builtins.listToAttrs (map
-        (machine: {
-          name = machine.host;
-          value = nixpkgs.lib.nixosSystem
-            rec {
-              inherit (machine) system;
-              pkgs = legacyPackages.${machine.system};
-              modules = [
-                inputs.sops-nix.nixosModules.sops
-                inputs.disko.nixosModules.disko
-                { networking.hostName = machine.host; }
-                ./${machine.host}/system
-              ];
-              specialArgs = args // {
-                inherit (machine) users;
-                lib = pkgs.lib.extend (self: super: import ./lib.nix { lib = self; });
-              };
-            };
-        })
-        machines);
-      homeConfigurations = builtins.listToAttrs (builtins.concatMap
-        (machine: map
-          (user: {
-            name = "${user}@${machine.host}";
-            value = inputs.home-manager.lib.homeManagerConfiguration
-              rec {
-                pkgs = legacyPackages.${machine.system};
-                modules =
-                  let
-                    cfg-path = ./${machine.host}/${user};
-                  in
-                  [
-                    (
-                      if builtins.pathExists cfg-path then
-                        cfg-path
-                      else ./${machine.host}/home
-                    )
-                  ];
-                extraSpecialArgs = args // {
-                  inherit user;
+      nixosConfigurations = lib.genAttrs' machines (machine: {
+        name = machine.host;
+        value = nixpkgs.lib.nixosSystem
+          rec {
+            inherit (machine) system;
+            pkgs = legacyPackages.${machine.system};
+            modules = [
+              inputs.sops-nix.nixosModules.sops
+              inputs.disko.nixosModules.disko
+              { networking.hostName = machine.host; }
+              ./${machine.host}/system
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.extraSpecialArgs = args // {
                   lib = pkgs.lib.extend (self: super:
                     inputs.home-manager.lib //
                       import ./lib.nix { lib = self; }
                   );
                 };
-              };
-          })
-          machine.users)
-        machines);
-      apps.home-manager = forAllSystems (system: {
-        type = "app";
-        program = "${inputs.home-manager.packages.${system}.home-manager}/bin/home-manager";
+                home-manager.backupFileExtension = "bkp";
+                home-manager.overwriteBackup = true;
+                home-manager.users = lib.genAttrs machine.users (user:
+                  let
+                    cfg-path = ./${machine.host}/${user};
+                  in {
+                    _module.args.user = user;
+                    imports = [
+                      (if builtins.pathExists cfg-path
+                        then cfg-path
+                        else ./${machine.host}/home)
+                    ];
+                  }
+                );
+              }
+            ];
+            specialArgs = args // {
+              inherit (machine) users;
+              lib = pkgs.lib.extend (self: super: import ./lib.nix { lib = self; });
+            };
+          };
       });
     };
 }

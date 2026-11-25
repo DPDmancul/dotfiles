@@ -1,5 +1,5 @@
 .PHONY: all build doc clean
-.PHONY: install update
+.PHONY: install test update
 
 TIMESTAMPS := .timestamps
 SRC := src
@@ -31,14 +31,13 @@ remove-tangled:
 .delegate-%: $(BUILD)/Makefile
 	@cd $(BUILD) && $(MAKE) $*
 
-install update: %: build .delegate-% ;
-install-%: build .delegate-install-%;
+install test update: %: build .delegate-% ;
 
 .PHONY: update-claude
 update-claude:
 	BASE_URL="https://downloads.claude.ai/claude-code-releases"; \
 		curl -fsSL "$$BASE_URL/$$(curl -fsSL "$$BASE_URL/latest")/manifest.json" --output assets/claude-code.json
-	$(MAKE) install-home
+	$(MAKE) install
 
 .DEFAULT:
 	@$(MAKE) .delegate-$@
