@@ -3,7 +3,6 @@
 .PHONY: optimise collect-garbage defrag
 
 NIX := nix --extra-experimental-features "nix-command flakes"
-HOME-MANAGER := $(NIX) run .\#home-manager --
 
 install:
 	sudo nixos-rebuild switch --flake .#
@@ -19,7 +18,6 @@ optimise:
 	$(NIX) store optimise
 
 collect-garbage:
-	$(HOME-MANAGER) expire-generations "-30 days"
 	sudo nix-collect-garbage --delete-older-than 90d
 #	$(MAKE) install # update the set of boot entries
 
