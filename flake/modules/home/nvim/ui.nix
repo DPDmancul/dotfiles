@@ -53,8 +53,11 @@
             },
             sections = {
               lualine_c = {
-                "filename",
-                "lsp_progress"
+                {
+                  "filename",
+                  path = 1, -- relative
+                },
+                "lsp_progress",
               },
               lualine_x = {
                 "encoding",
