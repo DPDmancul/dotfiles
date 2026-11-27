@@ -145,20 +145,27 @@ xclip
 
 ```sh "modules/home/i3" +=
 services.copyq.enable = true;
-home.activation.copyqConfig = lib.hm.dag.entryAfter ["writeBoundary"] (
-  lib.concatLines (
-    lib.mapAttrsToList (k: v:
-      "run --quiet ${config.services.copyq.package}/bin/copyq --start-server config ${k} ${toString v} 2> >(grep -v '^Warning: CopyQ server is already running' >&2)"
-    )
-    {
-      disable_tray = true;
-      hide_main_window = true; # when closed
-      hide_tabs = true;
-      hide_toolbar = true;
-      autostart = false;
-    }
+home.activation.copyqConfig = let
+  copyq = "${config.services.copyq.package}/bin/copyq";
+in lib.hm.dag.entryAfter ["writeBoundary"] (''
+  copyqWasRunning=1
+  ${copyq} eval 0 >/dev/null 2>&1 || copyqWasRunning=0
+'' + lib.concatLines (
+  lib.mapAttrsToList (k: v:
+    "run --quiet ${copyq} --start-server config ${k} ${if builtins.isBool v then lib.boolToString v else toString v} 2> >(grep -v '^Warning: CopyQ server is already running' >&2)"
   )
-);
+  {
+    disable_tray = true;
+    hide_main_window = true; # when closed
+    hide_tabs = true;
+    hide_toolbar = true;
+    autostart = false;
+  }
+) + ''
+  if [ "$copyqWasRunning" = 0 ]; then
+    run --quiet ${copyq} exit || true
+  fi
+'');
 ```
 
 Clipboard history picker
